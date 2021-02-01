@@ -7,7 +7,7 @@ To raise a bug report please fill out the following:
 
 #UIX version number
 #UIX install location (c, e, f etc)
-# xbox version (1.0, 1.1, 1.6 etc)
+#Xbox version (1.0, 1.1, 1.6 etc)
 #Ram (64MB, or 128MB)
 #Softmod or modchip (list details)
 #Steps to repoduce the bug, list them in number order
