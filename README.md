@@ -3,21 +3,13 @@ Modern/Re-Implimented Patches and Scripts for the Xbox Dashboard #5960
 
 ## Family Tree
 
-##### tHc
-* 4920 Modified Dash Distribution from tHc and xboxdash[.]net members.
+## tHc/tHc Lite
+* Non-Source Based 4920
+* Additional, unavailable binary patches. (F and G Support)
+* XIP and XAP Modifications.
+* Live Support Stripped from XIPS. 
 
-##### tHc Lite
-* 4920 Modified Dash Distribution, in a cleaner package.
-
-##### UIX (User.Interface.X)
-* Source based modification, re-implementing many of the features of the previous two mods, in source. But missing key features of the Xbox Dashboard (Live Profiles, DLC Awareness, Proper Networking)
-
-##### UIX Lite
-* A fork, of sorts. 
-* Initially XIP and XAP modifications re-implimenting UIX features in script. 
-* Rebuilding missing functions from UIX in source to recreare that project.
-
-##### UIX Ultra Lite
+## UIX Ultra Lite
 * Non-Source Based 5960 Modification
 * Re-Implementation and open sourcing of Binary Patches from 4920.
 * Re-Implementation of XIP Modifications, adapting to changes between 4920 and 5960.
