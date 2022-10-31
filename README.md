@@ -4,8 +4,8 @@ Modern/Re-Implimented Patches and Scripts for the Xbox Dashboard #5960
 ## Family Tree
 
 ## tHc/tHc Lite
-* Non-Source Based 4920
-* Additional, unavailable binary patches. (F and G Support)
+* Non-Source Based 4920 Modification.
+* Additional, "unavailable-in-source" (F and G Support, for example. The assembly patches were never public, installer only.) binary patches.
 * XIP and XAP Modifications.
 * Live Support Stripped from XIPS. 
 
