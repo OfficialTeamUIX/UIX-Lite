@@ -479,7 +479,7 @@ Path=Emus
 ```
 
 ## Shortcuts
-By default the dashboard can see data on the E partition, since we do not currently have a patch for F and G support you can utilize the XBE Shortcut Maker and install shortcuts to using the paths you set in the config above.
+By default the dashboard can see data on the E partition, since we do not currently have a patch for F and G support you can utilize the XBE Shortcut Maker and install shortcuts to using the paths you set in the config above. You can search a list of titleID's [here](https://github.com/jeltaqq/Xbox-Original-GameList/blob/master/Xbox%20Original%20GameList.tsv) so your save menu doesnt get cluttered with bogus save files.
 ```
 E:\GamesPathHere\GameNameHere\default.xbe
 E:\AppsPathHere\AppNameHere\default.xbe
