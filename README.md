@@ -3,7 +3,7 @@ Modern/Re-Implemented Patches and Scripts for the Xbox Dashboard #5960
 
 ## How-To
 
-By following [![this link](https://github.com/MrMilenko/UIX-Ultra-Lite/tree/main/xboxdashdata.185ead00#what-are-these-files) you can follow a tutorial on how to manually patch out XIP signature checks, and modify XIP files to add an HDD Loader to dash 5960.
+By following [this link](https://github.com/MrMilenko/UIX-Ultra-Lite/tree/main/xboxdashdata.185ead00#what-are-these-files) you can follow a tutorial on how to manually patch out XIP signature checks, and modify XIP files to add an HDD Loader to dash 5960.
 
 ## Family Tree
 
