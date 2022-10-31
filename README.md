@@ -21,7 +21,7 @@ By following [this link](https://github.com/MrMilenko/UIX-Ultra-Lite/tree/main/x
 
 # Why?
 
-In the early 2000's we didn't have access to source code, thus projects like UIX and UIX Lite didn't exist. What we did have was a sub-scene, within the Xbox scene that focused on modifications to the retail dashboards files. The worlk of these people, was the foundation for what UIX eventually became, as well as the original TeamUIX. So, we're going into the archives and taking a look at patches and mods from our friends Gcue, fuckdb, Vulgasprofanum, the original tHc, and xboxdash[.]net community and implementing them in a modern, live enabled, dashboard.
+In the early 2000's we didn't have access to source code, thus projects like UIX and UIX Lite didn't exist. What we did have was a sub-scene, within the Xbox scene that focused on modifications to the retail dashboards files. The work of these people, was the foundation for what UIX eventually became, as well as the original TeamUIX. So, we're going into the archives and taking a look at patches and mods from our friends Gcue, fuckdb, Vulgasprofanum, the original tHc, and xboxdash[.]net community and implementing them in a modern, live enabled, dashboard.
 
 The end goal, will be to provide a legal, open source, distributable patch set and tutorials for ease of use.
 
