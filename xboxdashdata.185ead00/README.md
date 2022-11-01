@@ -179,7 +179,28 @@ function FillMenuList(x) // search c,e,f,g for a relative path's contents to use
              eTitles[eLoop] = e.subFolders[eLoop].name;
          }
         }
-
+    var f = new Folder;
+    f.path = "N:\\" + FolderName;
+    var fSize = f.subFolders.length();
+    var fTitles = new Array(fSize);
+        if(fSize > 0)
+        {
+         for(var fLoop = 0; fLoop < fSize; fLoop = fLoop + 1)
+         {
+             fTitles[fLoop] = f.subFolders[fLoop].name;
+         }
+        }
+    var g = new Folder;
+    g.path = "O:\\" + FolderName;
+    var gSize = g.subFolders.length();
+    var gTitles = new Array(gSize);
+        if(gSize > 0)
+        {
+         for(var gLoop = 0; gLoop < gSize; gLoop = gLoop + 1)
+         {
+             gTitles[gLoop] = g.subFolders[gLoop].name;
+         }
+        }
     var mA = eTitles.concat(fTitles);//keep merging the arrays till you have one big one
     var oA = mA.concat(cTitles);
     var nA = oA.concat(gTitles);
@@ -211,7 +232,12 @@ function LaunchItem(x,y)
     var FolderName = y;
        var checkc = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition2\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
        var checke = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition1\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-
+       var checkf = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition6\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
+       var checkg = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition7\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
+       var checkevoxc = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition2\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
+       var checkevoxe = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition1\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
+       var checkevoxf = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition6\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
+       var checkevoxg = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition7\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
        
        if(checkc == true)
        {
@@ -225,14 +251,43 @@ function LaunchItem(x,y)
         launchXbe = "default.xbe";
         theLaunchGameLevel.GoTo();
        }
-
-
+    else if(checkf == true)
+       {
+        launchPath = "\\Device\\Harddisk0\\Partition6\\" + RelativePath + "\\" + FolderName;
+        launchXbe = "default.xbe";
+        theLaunchGameLevel.GoTo();
+       }
+    else if(checkg == true)
+       {
+        launchPath = "\\Device\\Harddisk0\\Partition7\\" + RelativePath + "\\" + FolderName;
+        launchXbe = "default.xbe";
+        theLaunchGameLevel.GoTo();
+       }
+    else if(checkevoxc == true)
+       {
+        launchPath = "\\Device\\Harddisk0\\Partition2\\" + RelativePath + "\\" + FolderName;
+        launchXbe = "evoxdash.xbe";
+        theLaunchGameLevel.GoTo();
+       }
+    else if(checkevoxe == true)
+       {
+        launchPath = "\\Device\\Harddisk0\\Partition1\\" + RelativePath + "\\" + FolderName;
+        launchXbe = "evoxdash.xbe";
+        theLaunchGameLevel.GoTo();
+       }
+    else if(checkevoxf == true)
+       {
+        launchPath = "\\Device\\Harddisk0\\Partition6\\" + RelativePath + "\\" + FolderName;
+        launchXbe = "evoxdash.xbe";
+        theLaunchGameLevel.GoTo();
+       }
+    else if(checkevoxg == true)
+       {
+        launchPath = "\\Device\\Harddisk0\\Partition7\\" + RelativePath + "\\" + FolderName;
+        launchXbe = "evoxdash.xbe";
+        theLaunchGameLevel.GoTo();
+       }
 }
-
-
-
-
-
 
 ////////////////////////////////////////////////////////////////////////////
 
