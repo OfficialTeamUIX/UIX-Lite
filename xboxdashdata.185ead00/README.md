@@ -1,11 +1,13 @@
 # What are these files?
 The xbox dashboard uses a custom flavor of VRML, which is the Virtual Reality Markdown Language to create its menus. As such we are able to make modifications to the menus and utilize built in functions.
 
+* The folders in this Git represent the files you will be modifying. 
+
 # Pre-Requisites
 
 * A modded xbox, that doesn't require an alternative dashboard. Ideally you will be using a method with a shadowc, or a hardmod. We are NOT responsible if you screw anything up.
-* Xbox Dashboard 5960 (xboxdashdata.185ead00) 
-* WinXIP v0.88
+* Xbox Dashboard 5960 that utilizes the folder xboxdashdata.185ead00 
+* WinXIP v0.88 you can find this with a quick google search.
 * [TeamUIX's XBE Shortcut Maker](https://consolemods.org/wiki/Xbox:XBE_Shortcut_Maker)
 * Your favorite Hex Editor. 
 * The files in this GIT.
@@ -26,328 +28,9 @@ Replace with:
 ### default.xip
 * Open default.xip in WinXIP
 * Insert harddrive.xap (Edit > Insert)
-* Right-Click Edit default.xap
-Find this:
-```
-DEF theTranslator Translator
-```
-Add below:
-```
-///////////////////////////////////////////////////////////////////
-DEF theMusicPlayWithSubsInline Inline
-{
-    visible false
-    url "harddrive.xap"
+* Insert default.xap (Edit > Insert) Replacing the existing file.
+* Insert settings3.xap (Edit > Insert) Replacing the existing file.
 
-    function onLoad()
-    {
-        theMusicPlayWithSubsInline.children[0].theMusicPlayWithSubs.GoTo();
-    }
-}
-
-function GoToMusicPlayWithSubs()
-{
-    if (theMusicPlayWithSubsInline.visible)
-        theMusicPlayWithSubsInline.children[0].theMusicPlayWithSubs.GoTo();
-    else
-        theMusicPlayWithSubsInline.visible = true;
-}
-////////////////////////////////////////////////////////////////////
-```
-Find this:
-```
-        function OnKeyVerified()
-        {
-            theConfig.ToggleNoisyCamera();
-        } 
-```
-Replace with:
-```
-        function OnKeyVerified()
-        {
-            //theConfig.ToggleNoisyCamera();
-	    theGamesMenuIn.Play();
-	    GoToMusicPlayWithSubs();
-        }  
-```
-Find this:
-```
-function initialize()
-{
-    bBackToDVDPlayer = false;
-```
-Replace with:
-```
-// All new var's below here...
-
-var LeftTrigger;
-var RightTrigger;
-var RightThumb;
-var LeftThumb;
-
-var CurrentViewpoint;
-var CurrentAltViewpoint;
-
-var theInLine;
-var currentControlType;
-var previousControlType;
-var TotalSections;
-var SectionName;
-var SectionPath;
-var SubMenuItem1;
-var SubMenuItem2;
-var SubMenuItem3;
-var SubMenuItem4;
-
-var bMusicPlayerReady;
-var currentMusicPlayerMode;
-
-var quicklaunch;
-var gamelaunch;
-var launchPath;
-var launchXbe;
-
-var CurrentGameBoardAltViewpoint;
-
-function initialize()
-{
-
-    quicklaunch = false;
-    gamelaunch = false;
-
-
-
-    RightThumb = false;
-    LeftThumb = false;
-    LeftTrigger = false;
-    RightTrigger = false;
-    bBackToDVDPlayer = false;
-```
-Find this:
-```
-function UnblockMemoryUnitEnumeration()
-{
-    theMemoryMonitor.enumerationOn = false;
-}
-```
-APPEND, after the last bracket.
-```
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////// Added Functions for HDD Menu
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-function ReturnInteger(x) // data read from xbx is read as a string - this will convert that string value to an integer
-{
-    var a = x;
-    var b = Math.abs(a);
-    if(a.charCodeAt(0) == 45)
-    {
-        var c = b * 2;
-        b = b - c;
-    }
-    return b;
-}
-
-function FillMenuList(x) // search c,e,f,g for a relative path's contents to use to fill a menu
-{
-    var FolderName = x;
-    var c = new Folder; //def a new folder
-    c.path = "Y:\\" + FolderName; //def it's path
-    var cSize = c.subFolders.length(); //find the number of subfolders in it
-    var cTitles = new Array(cSize); //setup a loop to put it's contents into an array
-        if(cSize > 0)
-        {
-         for(var cLoop = 0; cLoop < cSize; cLoop = cLoop + 1)
-         {
-             cTitles[cLoop] = c.subFolders[cLoop].name;
-         }
-        }
-    var e = new Folder; //repeat above for all drives
-    e.path = "C:\\" + FolderName;
-    var eSize = e.subFolders.length();
-    var eTitles = new Array(eSize);
-        if(eSize > 0)
-        {
-         for(var eLoop = 0; eLoop < eSize; eLoop = eLoop + 1)
-         {
-             eTitles[eLoop] = e.subFolders[eLoop].name;
-         }
-        }
-    var f = new Folder;
-    f.path = "N:\\" + FolderName;
-    var fSize = f.subFolders.length();
-    var fTitles = new Array(fSize);
-        if(fSize > 0)
-        {
-         for(var fLoop = 0; fLoop < fSize; fLoop = fLoop + 1)
-         {
-             fTitles[fLoop] = f.subFolders[fLoop].name;
-         }
-        }
-    var g = new Folder;
-    g.path = "O:\\" + FolderName;
-    var gSize = g.subFolders.length();
-    var gTitles = new Array(gSize);
-        if(gSize > 0)
-        {
-         for(var gLoop = 0; gLoop < gSize; gLoop = gLoop + 1)
-         {
-             gTitles[gLoop] = g.subFolders[gLoop].name;
-         }
-        }
-    var mA = eTitles.concat(fTitles);//keep merging the arrays till you have one big one
-    var oA = mA.concat(cTitles);
-    var nA = oA.concat(gTitles);
-    nA = nA.sort();//sort the one big array into alphabetical order
-    return nA;//return the array
-}
-
-DEF theLaunchGameLevel Level
-{
-    function OnActivate()
-    {
-        theScreenSaver.enabled = true;
-    }
-    function OnArrival()
-    {
-        if(quicklaunch)
-        {
-            launch(launchXbe, launchPath);
-        }
-        else if(gamelaunch)
-        {
-            launch(launchXbe, launchPath);
-        }
-    }
-}
-function LaunchItem(x,y)
-{
-    var RelativePath = x;
-    var FolderName = y;
-       var checkc = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition2\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-       var checke = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition1\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-       var checkf = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition6\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-       var checkg = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition7\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-       var checkevoxc = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition2\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
-       var checkevoxe = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition1\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
-       var checkevoxf = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition6\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
-       var checkevoxg = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition7\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
-       
-       if(checkc == true)
-       {
-        launchPath = "\\Device\\Harddisk0\\Partition2\\" + RelativePath + "\\" + FolderName;
-        launchXbe = "default.xbe";
-        theLaunchGameLevel.GoTo();
-       }
-       else if(checke == true)
-       {
-        launchPath = "\\Device\\Harddisk0\\Partition1\\" + RelativePath + "\\" + FolderName;
-        launchXbe = "default.xbe";
-        theLaunchGameLevel.GoTo();
-       }
-    else if(checkf == true)
-       {
-        launchPath = "\\Device\\Harddisk0\\Partition6\\" + RelativePath + "\\" + FolderName;
-        launchXbe = "default.xbe";
-        theLaunchGameLevel.GoTo();
-       }
-    else if(checkg == true)
-       {
-        launchPath = "\\Device\\Harddisk0\\Partition7\\" + RelativePath + "\\" + FolderName;
-        launchXbe = "default.xbe";
-        theLaunchGameLevel.GoTo();
-       }
-    else if(checkevoxc == true)
-       {
-        launchPath = "\\Device\\Harddisk0\\Partition2\\" + RelativePath + "\\" + FolderName;
-        launchXbe = "evoxdash.xbe";
-        theLaunchGameLevel.GoTo();
-       }
-    else if(checkevoxe == true)
-       {
-        launchPath = "\\Device\\Harddisk0\\Partition1\\" + RelativePath + "\\" + FolderName;
-        launchXbe = "evoxdash.xbe";
-        theLaunchGameLevel.GoTo();
-       }
-    else if(checkevoxf == true)
-       {
-        launchPath = "\\Device\\Harddisk0\\Partition6\\" + RelativePath + "\\" + FolderName;
-        launchXbe = "evoxdash.xbe";
-        theLaunchGameLevel.GoTo();
-       }
-    else if(checkevoxg == true)
-       {
-        launchPath = "\\Device\\Harddisk0\\Partition7\\" + RelativePath + "\\" + FolderName;
-        launchXbe = "evoxdash.xbe";
-        theLaunchGameLevel.GoTo();
-       }
-}
-
-////////////////////////////////////////////////////////////////////////////
-
-
-function EnableCurrentAlternateViewpoint()
-{
-    CurrentAltViewpoint.isBound = true;
-}
-
-function DisableCurrentAlternateViewpoint()
-{
-    CurrentViewpoint.isBound = true;
-}
-
-DEF theMainMenuAlternateViewpoint Viewpoint
-{
-        fieldOfView 1.755000
-        orientation -0.177400 -1.983500 -0.036250 -0.045440
-        position -15.180000 -112.299999 174.300003
-        jump false
-}
-
-
-
-
-
-function GetSubmenuText()
-{
-    var info = new Settings;
-    info.file = "Y:\\config.xbx";
-    SubMenuItem1 = info.GetValue("Memory Text");
-    SubMenuItem2 = info.GetValue("Music Text");
-    SubMenuItem3 = info.GetValue("HardDrive Text");
-    SubMenuItem4 = info.GetValue("Settings Text");
-}
-
-function GetConfigInfo()
-{
-    var info = new Settings;
-    info.file = "Y:\\config.xbx";
-    TotalSections = info.GetValue("Total Sections");
-    return TotalSections;
-}
-
-function GetSectionTitles(x)
-{
-    var a = x;
-    var info = new Settings;
-    info.file = "Y:\\config.xbx";
-    info.section = "section" + a;
-    SectionName = info.GetValue("Title");
-    return SectionName;
-}
-
-function GetSectionPaths(x)
-{
-    var a = x;
-    var info = new Settings;
-    info.file = "Y:\\config.xbx";
-    info.section = "section" + a;
-    SectionPath = info.GetValue("Path");
-    return SectionPath;
-}
-```
 * Right-Click Edit AccountSelection.xap
 Find:
 ```
@@ -497,7 +180,14 @@ Find:
     children
     [
 ```
-Hopefully your were saving all of these files which WinXIP has now nicely stored in a temporary directory, and lit up the save icon in the toolbar. Save the file, and transfer it to C:\xboxdashdata.185ead00\ on your xbox harddrive.
+
+### mainmenu5.xip
+* Open mainmenu5.xip in WinXIP
+* Insert default.xap (Edit > Insert) replacing the original file.
+* Insert OrbCell-FACES.xm (Edit > Insert)
+* Insert Soundtrack_Backing.xbx (Edit > Insert)
+* Insert orbcellwall.xbx (Edit > Insert)
+* Save the file, and transfer it to C:\xboxdashdata.185ead00\ on your xbox harddrive.
 
 ### music_playedit2.xip
 * Open music_playedit2.xip in WinXIP
@@ -508,29 +198,10 @@ Hopefully your were saving all of these files which WinXIP has now nicely stored
 
 ## config.xbx
 Since we're using harddrive.xap, we also need to borrow tHc/UIX Lite's config file structure.
-* Create a file called config.xbx and save it to the ROOT of C: on your xbox harddrive.
-```
-Total Sections=4
-
-[section0]
-Title=Applications
-Path=Apps
-
-[section1]
-Title=Games
-Path=Games
-
-[section2]
-Title=Dashboards
-Path=Dashboards
-
-[section3]
-Title=Emulators
-Path=Emus
-```
+* Upload config.xbx to the root of C:\.
 
 ## Shortcuts
-By default the dashboard can see data on the E partition, since we do not currently have a patch for F and G support you can utilize the XBE Shortcut Maker and install shortcuts to using the paths you set in the config above. You can search a list of titleID's [here](https://github.com/jeltaqq/Xbox-Original-GameList/blob/master/Xbox%20Original%20GameList.tsv) so your save menu doesnt get cluttered with bogus save files.
+By default the dashboard can see data on the E partition, since we do not currently have a patch for F and G support you can utilize the XBE Shortcut Maker and install shortcuts to using the paths you set in the config above. It's not recommended, to use the same titleID of the game you're launching. So change the name, but keep XBMC's default ID when creating the shortcut. This mod sees titles based on folder name, not the name of the XBE anyway. Upload the newly created shortcut using the example structure below.
 ```
 E:\GamesPathHere\GameNameHere\default.xbe
 E:\AppsPathHere\AppNameHere\default.xbe

@@ -1,0 +1,18 @@
+Use Thc Orb=Yes
+Total Sections=4
+
+[section0]
+Title=Applications
+Path=Apps
+
+[section1]
+Title=Games
+Path=Games
+
+[section2]
+Title=Dashboards
+Path=Dashboards
+
+[section3]
+Title=Emulators
+Path=Emus
