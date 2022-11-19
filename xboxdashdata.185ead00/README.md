@@ -198,7 +198,7 @@ Find:
 
 ## config.xbx
 Since we're using harddrive.xap, we also need to borrow tHc/UIX Lite's config file structure.
-* Upload confi.xbx to the root of C:\.
+* Upload config.xbx to the root of C:\.
 
 ## Shortcuts
 By default the dashboard can see data on the E partition, since we do not currently have a patch for F and G support you can utilize the XBE Shortcut Maker and install shortcuts to using the paths you set in the config above. It's not recommended, to use the same titleID of the game you're launching. So change the name, but keep XBMC's default ID when creating the shortcut. This mod sees titles based on folder name, not the name of the XBE anyway. Upload the newly created shortcut using the example structure below.
