@@ -5,12 +5,13 @@ The xbox dashboard uses a custom flavor of VRML, which is the Virtual Reality Ma
 
 # Pre-Requisites
 
-* A modded xbox, that doesn't require an alternative dashboard. Ideally you will be using a method with a shadowc, or a hardmod. We are NOT responsible if you screw anything up.
+* A modded xbox, or a mod that doesn't stop you from using the xbox dashboard. Ideally you will be using a method with a shadowc, or a hardmod. We are NOT responsible if you screw anything up.
 * Xbox Dashboard 5960 that utilizes the folder xboxdashdata.185ead00 
 * WinXIP v0.88 you can find this with a quick google search.
 * [TeamUIX's XBE Shortcut Maker](https://consolemods.org/wiki/Xbox:XBE_Shortcut_Maker)
-* Your favorite Hex Editor. 
+* Your favorite Hex Editor; I perfer HxD
 * The files in this GIT.
+* Fifteen minutes of your time.
 
 # How-To
 ## Patch the XBE
@@ -31,8 +32,15 @@ Replace with:
 * Insert default.xap (Edit > Insert) Replacing the existing file.
 * Insert settings3.xap (Edit > Insert) Replacing the existing file.
 
-* Right-Click Edit AccountSelection.xap
-Find:
+### Modify additional XAP Files in default.XIP.
+We will be modifying the following files within default.xip. Right click > Edit each file individually, use notepad to edit them. Save the file, and continue onto the next one.
+* AccountSelection.xap
+* LiveToday.xap
+* dvd.xap
+* memory3.xap
+* music2.xap
+* These files require unloadable false to be added to their "archive string". The easiest way to get this done is to open each file listed above, and search for .xip, modifying the code like in the example below. Once your changes are made, save the xap file. WinXIP has created a temporary working folder, where these get saved.
+* When all of these are done, save the XIP by clicking the save icon in the top left of WinXIP. This will re-pack all of the files you just modified.
 ```
     archive "AccountSelection.xip"
 
@@ -47,139 +55,8 @@ Replace With:
     children
     [
 ```
-* Right-Click Edit LiveToday.xap
-Find:
-```
-    archive "PasscodeVerify.xip"
+* Transfer default.xip to C:\xboxdashdata.185ead00\ on your xbox harddrive.
 
-    children
-    [
-```
-Replace With:
-```
-    archive "PasscodeVerify.xip"
-    unloadable false
-
-    children
-    [
-```
-* Right-Click Edit dvd.xap
-Find:
-```
-    archive "dvd.xip"
-    fade false
-
-    children
-    [
-```
-Replace With:
-```
-    archive "dvd.xip"
-    unloadable false
-    fade false
-
-    children
-    [
-```
-* Right-Click Edit memory3.xap
-Find:
-```
-    archive "Memory_Files2.xip"
-
-    children
-    [
-```
-Replace With:
-```
-    archive "Memory_Files2.xip"
-    unloadable false
-
-    children
-    [
-```
-* Right-Click Edit music2.xap
-You're going to add:
-```
-    unloadable false
-```
-Under each "archive" entry below.
-Find:
-```
-    archive "Music_Copy3.xip"
-
-    children
-    [
-```
-Find:
-```
-    archive "Music_PlayEdit2.xip"
-
-    children
-    [
-```
-* Right-Click Edit settings3.xap:
-You're going to add:
-```
-    unloadable false
-```
-Under each "archive" entry below; See Settings_Clock.xip example below for the format.
-Find:
-```
-    archive "Settings_Clock.xip"
-
-    children
-    [
-```
-Replace With:
-```
-    archive "Settings_Clock.xip"
-    unloadable false
-
-    children
-    [
-```
-Find:
-```
-    archive "Settings_Timezone.xip"
-
-    children
-    [
-```
-Find:
-```
-    archive "Settings_List.xip"
-
-    children
-    [
-```
-Find:
-```
-    archive "Settings_Panel.xip"
-
-    children
-    [
-```
-Find:
-```
-    archive "Settings_Language.xip"
-
-    children
-    [
-```
-Find:
-```
-    archive "Settings_Video.xip"
-
-    children
-    [
-```
-Find:
-```
-    archive "Settings3.xip"
-
-    children
-    [
-```
 
 ### mainmenu5.xip
 * Open mainmenu5.xip in WinXIP
@@ -202,6 +79,7 @@ Since we're using harddrive.xap, we also need to borrow tHc/UIX Lite's config fi
 
 ## Shortcuts
 By default the dashboard can see data on the E partition, since we do not currently have a patch for F and G support you can utilize the XBE Shortcut Maker and install shortcuts to using the paths you set in the config above. It's not recommended, to use the same titleID of the game you're launching. So change the name, but keep XBMC's default ID when creating the shortcut. This mod sees titles based on folder name, not the name of the XBE anyway. Upload the newly created shortcut using the example structure below.
+
 ```
 E:\GamesPathHere\GameNameHere\default.xbe
 E:\AppsPathHere\AppNameHere\default.xbe
