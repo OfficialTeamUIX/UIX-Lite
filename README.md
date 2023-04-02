@@ -3,7 +3,47 @@ Modern/Re-Implemented Patches and Scripts for the Xbox Dashboard #5960
 
 ## How-To
 
-By following [this link](https://github.com/MrMilenko/UIX-Ultra-Lite/tree/main/xboxdashdata.185ead00#what-are-these-files) you can follow a tutorial on how to manually patch out XIP signature checks, and modify XIP files to add an HDD Loader to dash 5960.
+* DO NOT USE ON AN UNMODIFIED XBOX. It wont work, and you'll brick your Xbox. Make sure you have a modchip or softmod installed that doesnt rely on the dashboard files to boot.
+* Download the patch tool from the releases page.
+
+* Copy the unmodified 5960 Dashboard files to the unmodified directory in the patch tool package.
+* Run the patch tool.
+* Copy the "modified" files, including config.xbx to the root of your C drive on your Xbox.
+
+## Modifications
+
+* Completely based on old school patches and hex edits, not a source modification. So you dont need to feel "dirty" about using it.
+* Removes XIP signature checks.
+* Modifies the Orb to the tHc Orb. (Set tHc Orb to No in the config.xbx for a more stock look.)
+* Modifies Xbox Live tab to say Insignia.
+* Adds a title launcher by hijacking noisy camera. Also adds a "Launcher" tab to settings.
+
+## Example config.xbx
+```
+Use Thc Orb=Yes
+Total Sections=4
+
+[section0]
+Title=Applications
+Path=Apps
+
+[section1]
+Title=Games
+Path=Games
+
+[section2]
+Title=Dashboards
+Path=Dashboards
+
+[section3]
+Title=Emulators
+Path=Emus
+```
+
+## Usage
+* Hold L + R + Y and X to load the game launcher. Or open it from the settings menu.
+* Currently does not see F or G partitions, so you have to use shortcut files from E.
+
 
 ## Family Tree
 
@@ -17,6 +57,7 @@ By following [this link](https://github.com/MrMilenko/UIX-Ultra-Lite/tree/main/x
 * Non-Source Based 5960 Modification
 * Re-Implementation and open sourcing of Binary Patches from 4920.
 * Re-Implementation of XIP Modifications, adapting to changes between 4920 and 5960.
+* Binary Patcher is written in Go, and is cross platform. It's a simple command line tool, that will patch the files for you using the bsdiff format. :D
 
 
 # Why?
@@ -29,8 +70,6 @@ A modified console will be required to run this, but we will be utilizing 20 yea
 
 # To-Do
 
-* Run Unsigned Xips W/O Modifying the XBE Source Code, will still require a patch and a modded system.
-* Launch Games From the 5960 Dashboard.
 * Launch Games From the F and G Partitions.
 
 # Non-Features
