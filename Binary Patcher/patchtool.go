@@ -66,6 +66,36 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+	// Define the path to the new files directory
+	newFilesPath := "patches/new/"
+
+	// Create a recursive function to walk through the new files directory and copy each file to the output directory without the ".new" extension
+	err = filepath.Walk(newFilesPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// If the current item is a directory, continue recursively
+		if info.IsDir() {
+			return nil
+		}
+
+		// If the file has a .new extension, move it to the xboxdashdata folder in the output directory
+		if strings.HasSuffix(info.Name(), ".new") {
+			outputFilePath := filepath.Join(outputPath, "xboxdashdata.185ead00", filepath.Base(path[:len(path)-len(".new")]))
+			if err = os.Rename(path, outputFilePath); err != nil {
+				return err
+			}
+			fmt.Printf("Moved new file: %s\n", outputFilePath)
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	// Read the SHA1 file and get a map of filenames to SHA1 hashes
 	sha1Map, err := readSHA1File(filepath.Join(patchesPath, "sha1.input"))
@@ -84,10 +114,36 @@ func main() {
 		if info.IsDir() {
 			return nil
 		}
+
+		// If the file has a .new extension, create a corresponding file without the extension in the output directory
+		if strings.HasSuffix(info.Name(), ".new") {
+			newFilePath := filepath.Join(outputPath, path[len(patchesPath):len(path)-len(".new")])
+			newFile, err := os.Create(newFilePath)
+			if err != nil {
+				return err
+			}
+			defer newFile.Close()
+
+			patchBytes, err := ioutil.ReadFile(path)
+			if err != nil {
+				return err
+			}
+
+			_, err = io.Copy(newFile, bytes.NewReader(patchBytes))
+			if err != nil {
+				return err
+			}
+
+			fmt.Printf("Created new file: %s\n", newFilePath)
+
+			return nil
+		}
+
 		// Skip the sha1.input file
 		if filepath.Base(path) == "sha1.input" {
 			return nil
 		}
+
 		// Get the relative path to the output file
 		relPath, err := filepath.Rel(patchesPath, path[:len(path)-len(".patch")])
 		if err != nil {
@@ -150,6 +206,7 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
+	fmt.Println("Make sure to copy all files from output to your Xbox. Dont forget to backup your original files!")
 }
 
 func readSHA1File(path string) (map[string]string, error) {
@@ -170,4 +227,5 @@ func readSHA1File(path string) (map[string]string, error) {
 	}
 
 	return sha1Map, nil
+
 }
