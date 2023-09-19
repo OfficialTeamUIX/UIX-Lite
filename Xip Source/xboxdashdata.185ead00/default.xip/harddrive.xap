@@ -316,6 +316,10 @@ DEF theMusicPlayWithSubs Level
 				{ 
 					c.MU_L3_musicpod.visible = true;
 					c.MU_L3_musicpod_thc.visible = false; 
+					c.Spinning_Support.children[0].rpm = 0;
+					c.Spinning_Support2.children[0].rpm = 0;
+					c.Spinning_Support3.children[0].rpm = 0;
+					c.Spinning_Support4.children[0].rpm = 0;
 				}
 				
 				EnterMusicPlay();
