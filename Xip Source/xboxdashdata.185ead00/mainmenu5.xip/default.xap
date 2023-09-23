@@ -2227,8 +2227,6 @@ DEF ring Transform
 	translation -57.980000 -13.690000 -84.760002
 }
 
-
-
 DEF select Transform
 {
 	children
@@ -2422,394 +2420,231 @@ DEF select Transform
 	]
 	translation 162.000000 -217.500000 -36.470001
 }
-
-DEF select Transform
-{
-	children
-	[
-		Transform
-		{
-			translation -12 10 0
-			children
-			[
-				DEF Main_select_text_select Transform
-				{
-					children
-					[
-						Transform
-						{
-							rotation 1 0 0 -1.571
-							scale 10 12 0
-							translation -12 0 0
-							children
-							[
-								Shape
-								{
-									appearance Appearance
-									{
-										material MaxMaterial
-										{
-											name "XBoxGreen"
-										}
-									}
-									geometry Text { font "body" justify "left" translate true text "SELECT" }
-								}
-							]
-						}
-					]
-					rotation -0.993000 0.082680 -0.083790 -1.588000
-					translation -19.850000 60.049999 -4.620000
-				}
-				DEF Main_select_probe Transform
-				{
-					children
-					[
-						Shape
-						{
-							appearance Appearance
-							{
-								material MaxMaterial
-								{
-									name "FlatSurfaces"
-								}
-							}
-							geometry DEF Main_select_probe-FACES Mesh { url "Main_select_probe-FACES.xm" }
-						}
-					]
-					rotation -0.790800 0.512300 0.334900 -1.950000
-					translation -66.779999 115.099998 -8.603000
-				}
-				DEF Main_select_probearm Transform
-				{
-					children
-					[
-						Shape
-						{
-							appearance Appearance
-							{
-								material MaxMaterial
-								{
-									name "FlatSurfaces"
-								}
-							}
-							geometry DEF Main_select_probearm-FACES Mesh { url "Main_select_probearm-FACES.xm" }
-						}
-					]
-					rotation -0.790800 0.512300 0.334900 -1.950000
-					translation -68.660004 116.900002 -9.057000
-				}
-				DEF Main_select_tube Transform
-				{
-					children
-					[
-						Shape
-						{
-							appearance Appearance
-							{
-								material MaxMaterial
-								{
-									name "Tubes"
-								}
-							}
-							geometry DEF Main_select_tube-FACES Mesh { url "Main_select_tube-FACES.xm" }
-						}
-					]
-					rotation -0.984100 0.125300 -0.126000 -1.598000
-					translation 22.670000 25.090000 3.836000
-				}
-				DEF Main_select_pod_inner Transform
-				{
-					children
-					[
-						Shape
-						{
-							appearance Appearance
-							{
-								material MaxMaterial
-								{
-									name "CellEgg/Parts"
-								}
-							}
-							geometry Sphere
-							{
-								radius 10.540000
-							}
-						}
-					]
-					rotation -0.164700 0.986000 -0.026080 -0.064310
-					translation -47.410000 60.540001 -14.600000
-				}
-				DEF Main_select_pod_outer Transform
-				{
-					children
-					[
-						Shape
-						{
-							appearance Appearance
-							{
-								material MaxMaterial
-								{
-									name "CellEgg/Parts"
-								}
-							}
-							geometry Sphere
-							{
-								radius 11.550000
-							}
-						}
-					]
-					rotation -0.164700 0.986000 -0.026080 -0.064310
-					translation -47.410000 60.540001 -14.600000
-				}
-				DEF select_pod_HL Transform
-				{
-					children
-					[
-						Shape
-						{
-							appearance Appearance
-							{
-								material MaxMaterial
-								{
-									name "EggGlow"
-								}
-							}
-							geometry Sphere
-							{
-								radius 11.530000
-							}
-						}
-					]
-					rotation -0.164700 0.986000 -0.026080 -0.064310
-					translation -47.410000 60.540001 -14.600000
-				}
-				DEF Main_select_text_a Transform
-				{
-					children
-					[
-						Transform
-						{
-							rotation 1 0 0 -1.571
-							scale 15 15 15
-							translation -1 0 0
-							children            
-							[
-								Shape
-								{
-									appearance Appearance
-									{
-										material MaxMaterial
-										{
-											name "NavType"
-										}
-									}
-									geometry Text { font "heading" justify "middle" translate false text "A" }
-								}
-							]
-						}
-					]
-					rotation -0.995000 0.069740 -0.070990 -1.586000
-					translation -47.220001 55.810001 -14.640000
-				}
-			]
-		}
-	]
-	translation 162.000000 -217.500000 -36.470001
-}
-
 
 DEF main_pod Transform
 {
 	children
 	[
-		DEF Main_memory_podshell_11 Transform
+		DEF MainPod_1_Spinner Spinner
 		{
+			rpm 0
+			axis 0 0 2
 			children
 			[
-				Shape
+				DEF Main_memory_podshell_09 Transform
 				{
-					appearance Appearance
-					{
-						material MaxMaterial
+					children
+					[
+						Shape
 						{
-							name "MenuCell"
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "MenuCell"
+								}
+							}
+							geometry DEF Main_memory_podshell_09-FACES Mesh { url "Main_memory_podshell_09-FACES.xm" }
 						}
-					}
-					geometry DEF Main_memory_podshell_11-FACES Mesh { url "Main_memory_podshell_11-FACES.xm" }
+					]
+					rotation -0.998800 0.033520 0.034370 -1.570000
+					scale 1.626000 1.626000 1.626000
+					scaleOrientation -0.232800 0.000000 0.972500 -0.014030
+					translation -0.303900 0.651400 11.730000
 				}
 			]
-			rotation -0.220100 -0.690600 -0.688900 -2.709000
-			scale 1.626000 1.626000 1.626000
-			scaleOrientation -0.356200 0.633300 -0.687100 -0.872500
-			translation -0.303900 0.651300 11.730000
 		}
-		DEF Main_memory_podarm_1 Transform
+		DEF MainPod_2_Spinner Spinner
 		{
+			rpm 0
+			axis 0 0 2
 			children
 			[
-				Shape
+				DEF Main_memory_podshell_10 Transform
 				{
-					appearance Appearance
-					{
-						material MaxMaterial
+					children
+					[
+						Shape
 						{
-							name "MenuCell"
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "MenuCell"
+								}
+							}
+							geometry DEF Main_memory_podshell_10-FACES Mesh { url "Main_memory_podshell_10-FACES.xm" }
 						}
-					}
-					geometry DEF Main_memory_podarm_1-FACES Mesh { url "Main_memory_podarm_1-FACES.xm" }
+					]
+					rotation -0.210700 -0.692100 -0.690400 -2.727000
+					scale 1.626000 1.626000 1.626000
+					scaleOrientation -0.050250 -0.992200 0.114200 -0.266800
+					translation -0.303800 0.651400 11.730000
 				}
 			]
-			rotation 0.391600 -0.920100 0.000854 -3.143000
-			scale 1.626000 1.626000 1.626000
-			scaleOrientation 0.529700 -0.741300 0.412200 -0.418700
-			translation 14.400000 31.129999 -19.719999
 		}
-		DEF Main_memory_podsocket_outer02 Transform
+		DEF MainPod_3_Spinner Spinner
 		{
+			rpm 0
+			axis 0 0 2
 			children
 			[
-				Shape
+				DEF Main_memory_podshell_11 Transform
 				{
-					appearance Appearance
-					{
-						material MaxMaterial
+					children
+					[
+						Shape
 						{
-							name "MenuCell"
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "MenuCell"
+								}
+							}
+							geometry DEF Main_memory_podshell_11-FACES Mesh { url "Main_memory_podshell_11-FACES.xm" }
 						}
-					}
-					geometry DEF Main_memory_podsocket_outer02-FACES Mesh { url "Main_memory_podsocket_outer02-FACES.xm" }
+					]
+					rotation -0.220100 -0.690600 -0.688900 -2.709000
+					scale 1.626000 1.626000 1.626000
+					scaleOrientation -0.356200 0.633300 -0.687100 -0.872500
+					translation -0.303900 0.651300 11.730000
 				}
 			]
-			rotation 0.999900 0.009219 -0.010160 -1.573000
-			scale 1.626000 1.626000 1.626000
-			scaleOrientation 0.255900 0.000000 -0.966700 -0.008564
-			translation -0.335100 0.575300 -22.120001
 		}
-		DEF Main_memory_podsocket_inner02 Transform
+		DEF MainPod_4_Spinner Spinner
 		{
+			rpm 0
+			axis 0 0 2
 			children
 			[
-				Shape
+				DEF Main_memory_podarm_1 Transform
 				{
-					appearance Appearance
-					{
-						material MaxMaterial
+					children
+					[
+						Shape
 						{
-							name "MenuCell"
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "MenuCell"
+								}
+							}
+							geometry DEF Main_memory_podarm_1-FACES Mesh { url "Main_memory_podarm_1-FACES.xm" }
 						}
-					}
-					geometry DEF Main_memory_podsocket_inner02-FACES Mesh { url "Main_memory_podsocket_inner02-FACES.xm" }
+					]
+					rotation 0.391600 -0.920100 0.000854 -3.143000
+					scale 1.626000 1.626000 1.626000
+					scaleOrientation 0.529700 -0.741300 0.412200 -0.418700
+					translation 14.400000 31.129999 -19.719999
+				}
+				DEF Main_memory_podarm_2 Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "MenuCell"
+								}
+							}
+							geometry USE Main_memory_podarm_1-FACES
+						}
+					]
+					rotation -0.927500 0.373700 0.000000 -3.139000
+					scale 1.626000 1.626000 1.626000
+					scaleOrientation -0.187800 -0.573000 0.797700 -0.660100
+					translation -30.889999 15.310000 -19.639999
+				}
+				DEF Main_memory_podarm_3 Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "MenuCell"
+								}
+							}
+							geometry USE Main_memory_podarm_1-FACES
+						}
+					]
+					rotation -0.920100 -0.391600 0.000864 -3.140000
+					scale 1.626000 1.626000 1.626000
+					scaleOrientation -0.136000 -0.149300 0.979400 -0.476000
+					translation -15.060000 -29.969999 -19.549999
+				}
+				DEF Main_memory_podarm_4 Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "MenuCell"
+								}
+							}
+							geometry USE Main_memory_podarm_1-FACES
+						}
+					]
+					rotation -0.373700 -0.927500 0.001215 -3.142000
+					scale 1.626000 1.626000 1.626000
+					scaleOrientation -0.115500 -0.047620 -0.992200 -0.456300
+					translation 30.219999 -14.150000 -19.629999
+				}
+				DEF Main_memory_podsocket_outer02 Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "MenuCell"
+								}
+							}
+							geometry DEF Main_memory_podsocket_outer02-FACES Mesh { url "Main_memory_podsocket_outer02-FACES.xm" }
+						}
+					]
+					rotation 0.999900 0.009219 -0.010160 -1.573000
+					scale 1.626000 1.626000 1.626000
+					scaleOrientation 0.255900 0.000000 -0.966700 -0.008564
+					translation -0.335100 0.575300 -22.120001
+				}
+				DEF Main_memory_podsocket_inner02 Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "MenuCell"
+								}
+							}
+							geometry DEF Main_memory_podsocket_inner02-FACES Mesh { url "Main_memory_podsocket_inner02-FACES.xm" }
+						}
+					]
+					rotation 0.999900 0.009219 -0.010160 -1.573000
+					scale 1.626000 1.626000 1.626000
+					scaleOrientation 0.255900 0.000000 -0.966700 -0.008564
+					translation -0.335100 0.575300 -22.120001
 				}
 			]
-			rotation 0.999900 0.009219 -0.010160 -1.573000
-			scale 1.626000 1.626000 1.626000
-			scaleOrientation 0.255900 0.000000 -0.966700 -0.008564
-			translation -0.335100 0.575300 -22.120001
-		}
-		DEF Main_memory_podarm_4 Transform
-		{
-			children
-			[
-				Shape
-				{
-					appearance Appearance
-					{
-						material MaxMaterial
-						{
-							name "MenuCell"
-						}
-					}
-					geometry USE Main_memory_podarm_1-FACES
-				}
-			]
-			rotation -0.373700 -0.927500 0.001215 -3.142000
-			scale 1.626000 1.626000 1.626000
-			scaleOrientation -0.115500 -0.047620 -0.992200 -0.456300
-			translation 30.219999 -14.150000 -19.629999
-		}
-		DEF Main_memory_podarm_3 Transform
-		{
-			children
-			[
-				Shape
-				{
-					appearance Appearance
-					{
-						material MaxMaterial
-						{
-							name "MenuCell"
-						}
-					}
-					geometry USE Main_memory_podarm_1-FACES
-				}
-			]
-			rotation -0.920100 -0.391600 0.000864 -3.140000
-			scale 1.626000 1.626000 1.626000
-			scaleOrientation -0.136000 -0.149300 0.979400 -0.476000
-			translation -15.060000 -29.969999 -19.549999
-		}
-		DEF Main_memory_podshell_09 Transform
-		{
-			children
-			[
-				Shape
-				{
-					appearance Appearance
-					{
-						material MaxMaterial
-						{
-							name "MenuCell"
-						}
-					}
-					geometry DEF Main_memory_podshell_09-FACES Mesh { url "Main_memory_podshell_09-FACES.xm" }
-				}
-			]
-			rotation -0.998800 0.033520 0.034370 -1.570000
-			scale 1.626000 1.626000 1.626000
-			scaleOrientation -0.232800 0.000000 0.972500 -0.014030
-			translation -0.303900 0.651400 11.730000
-		}
-		DEF Main_memory_podshell_10 Transform
-		{
-			children
-			[
-				Shape
-				{
-					appearance Appearance
-					{
-						material MaxMaterial
-						{
-							name "MenuCell"
-						}
-					}
-					geometry DEF Main_memory_podshell_10-FACES Mesh { url "Main_memory_podshell_10-FACES.xm" }
-				}
-			]
-			rotation -0.210700 -0.692100 -0.690400 -2.727000
-			scale 1.626000 1.626000 1.626000
-			scaleOrientation -0.050250 -0.992200 0.114200 -0.266800
-			translation -0.303800 0.651400 11.730000
-		}
-		DEF Main_memory_podarm_2 Transform
-		{
-			children
-			[
-				Shape
-				{
-					appearance Appearance
-					{
-						material MaxMaterial
-						{
-							name "MenuCell"
-						}
-					}
-					geometry USE Main_memory_podarm_1-FACES
-				}
-			]
-			rotation -0.927500 0.373700 0.000000 -3.139000
-			scale 1.626000 1.626000 1.626000
-			scaleOrientation -0.187800 -0.573000 0.797700 -0.660100
-			translation -30.889999 15.310000 -19.639999
 		}
 		DEF Main_memory_pod03 Transform
 		{
