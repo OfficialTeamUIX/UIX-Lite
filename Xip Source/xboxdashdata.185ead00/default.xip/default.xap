@@ -1252,9 +1252,8 @@ DEF theMainMenu Level
 					c.Main_memory_ringpin_2.SetTranslation(56.830002, 32.290001, 101.900002);   // Music
 					c.Main_memory_ringpin_4.SetTranslation(57.430000, -23.379999, 101.500000);  // Settings
 				}
-
 				g_theMainMenuLoaded = true;
-				UpdateMainMenu();
+				UpdateMainMenu(); 
 				c.game_arm01.visible = false;
 				c.game_arm02.visible = false;
 				c.game_arm03.visible = false;
@@ -1264,18 +1263,18 @@ DEF theMainMenu Level
 				{
 					c.Main_pod_backing01.visible = false;
 					c.Main_pod_backing02.visible = true;
-					c.Main_pod_backing02.fade = 2; 
-					c.podsupport_ring.visible = false;
-					c.podsupportMaterial.name = "PanelBacking_01";
-					c.Large_X_Spinner.rpm   = 1;
-					c.Pod_1_Spinner.rpm     = 1.3;
-					c.Pod_2_Spinner.rpm     = 1.3;
-					c.Pod_3_Spinner.rpm     = 1.3;
-					c.Pod_4_Spinner.rpm     = 1.3;
-					// c.MainPod_1_Spinner.rpm = -1.0;  // Main Podarm 1-4 
-					c.MainPod_2_Spinner.rpm = 1.3;      // Main Podshell 09
-					c.MainPod_3_Spinner.rpm = -2.3;     // Main Podshell 10
-					c.MainPod_4_Spinner.rpm = -1.0;     // Main Podshell 11
+					c.Main_pod_backing02.fade    = 2; 
+					c.podsupport_ring.visible    = false;
+					c.podsupportMaterial.name    = "PanelBacking_01";
+					c.Large_X_Spinner.rpm        = 1;
+					c.Pod_1_Spinner.rpm          = 1.3;
+					c.Pod_2_Spinner.rpm          = 1.3;
+					c.Pod_3_Spinner.rpm          = 1.3;
+					c.Pod_4_Spinner.rpm          = 1.3;
+					c.MainPod_1_Spinner.rpm      = 1.3;      // Main Podshell 09
+					c.MainPod_2_Spinner.rpm      = -2.3;     // Main Podshell 10
+					c.MainPod_3_Spinner.rpm      = -1.0;     // Main Podshell 11
+					//c.MainPod_4_Spinner.rpm      = -1.0;     // Main Podarm 1-4 
 				}
 				else
 				{
@@ -1547,7 +1546,7 @@ function initialize()
 	g_bResetDiscDeferredNotification = false;
 	g_bLeaveDriveLocked = false;
 	g_bLeaveMemoryUnitsBlocked = false;
-	GetOrb();
+	thcorb = GetOrb();
 	fromSettings = false;
    
 	theAmbientSound0.Play();
@@ -2817,10 +2816,24 @@ function GetOrb()
 	var a = info.GetValue("Use Thc Orb");
 	if(a == "Yes")
 	{
-		thcorb = true;
+		return true;
 	}
 	else
 	{
-		thcorb = false;
+		return false;
+	}
+}
+
+function SetOrb(x)
+{
+	var info = new Settings;
+	info.file = "Y:\\config.xbx";
+	if(x)
+	{
+		info.SetValue("Use Thc Orb", "Yes");
+	}
+	else
+	{
+		info.SetValue("Use Thc Orb", "No");
 	}
 }

@@ -3570,18 +3570,19 @@ function StartSettingsMenu()
 		nSettingsScroll = 0;
 	}
 
-	var sSettingsMenu = new Array(7);
+	var sSettingsMenu = new Array(9);
 	var index = 0;
 
-	//sSettingsMenu[index] = theTranslator.Translate("Launcher");
-	sSettingsMenu[0] = theTranslator.Translate("Insignia");
-	index = index + 1;
-
 	// Build the Settings Menu array
-	sSettingsMenu[1] = theTranslator.Translate("CLOCK");
-	sSettingsMenu[2] = theTranslator.Translate("LANGUAGE");
-	index = 3;
-
+	sSettingsMenu[index] = theTranslator.Translate("Insignia");
+	index = index + 1;
+	sSettingsMenu[index] = theTranslator.Translate("Use tHc Orb");
+	index = index + 1;
+	sSettingsMenu[index] = theTranslator.Translate("CLOCK");
+	index = index + 1;
+	sSettingsMenu[index] = theTranslator.Translate("LANGUAGE");
+	index = index + 1;
+	
 	// Audio Setting
 	if(theConfig.GetAVPackType() != "RFU")
 	{
@@ -3673,6 +3674,10 @@ function MenuIcon()
 	{ 
 		ShowIcon(c.Icon_live); 
 	}
+	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Use tHc Orb"))
+	{
+		ShowIcon(c.ConsoleIcon);
+	}
 	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("CLOCK"))
 	{
 		UpdateClockHands();
@@ -3720,6 +3725,13 @@ function UpdateRootMeta()
 	if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Insignia")) 
 	{ 
 		metaString = "Insignia Online"; 
+	}
+	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Use tHc Orb"))
+	{
+		if (GetOrb())
+			metaString = theTranslator.Translate("ENABLED");
+		else
+			metaString = theTranslator.Translate("DISABLED");
 	}
 	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("CLOCK"))
 	{
@@ -3977,6 +3989,15 @@ DEF theSettingsMenu Level
 				strCurMenu   = "INSIGNIA";
 				fromSettings = true;
 				EnterLiveToday(false);
+			}
+			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Use tHc Orb"))
+			{
+				if (GetOrb())
+					SetOrb(false); 
+				else 
+					SetOrb(true);
+				UpdateRootMeta();
+				TellUser("You will need to reboot for new settings to take effect.","");
 			}
 			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("CLOCK"))
 			{
