@@ -48,7 +48,7 @@ QuickLaunchY=
 ```
 
 ## Usage
-* Currently does not see F or G partitions, so you will have to add shortcut files to E:\Shortcuts\[SectionName]\[TitleName].
+* Currently does not see F or G partitions, so you will have to add shortcut files to E:\Shortcuts\\[SectionName]\\[TitleName].
 
 
 ## Family Tree
