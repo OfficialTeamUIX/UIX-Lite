@@ -589,7 +589,7 @@ DEF ring Transform
 																					name "NavType"
 																				}
 																			}
-																			geometry Text { font "Heading" translate true text "MEMORY" }
+																			geometry DEF MainMenuButton1_Text Text { font "Heading" translate true text "MEMORY" }
 																		}
 																	]       
 																}
@@ -1113,7 +1113,7 @@ DEF ring Transform
 																					name "NavType"
 																				}
 																			}
-																			geometry Text { font "Heading" translate true text "MUSIC" }
+																			geometry DEF MainMenuButton2_Text Text { font "Heading" translate true text "MUSIC" }
 																		}
 																	]
 																}
@@ -1638,7 +1638,7 @@ DEF ring Transform
 																					name "NavType"
 																				}
 																			}
-																			geometry Text { font "Heading" translate true text "LAUNCHER" }
+																			geometry DEF MainMenuButton3_Text Text { font "Heading" translate true text "INSIGNIA" }
 																		}
 																	]
 																}
@@ -2161,7 +2161,7 @@ DEF ring Transform
 																					name "NavType"
 																				}
 																			}
-																			geometry Text { font "Heading" translate true text "SETTINGS" }
+																			geometry DEF MainMenuButton4_Text Text { font "Heading" translate true text "SETTINGS" }
 																		}
 																	]
 																}
