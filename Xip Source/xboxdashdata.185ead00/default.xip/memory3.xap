@@ -1706,10 +1706,16 @@ DEF theMemoryMenu Level
 			// Turn enumeration off before changing levels
 			theMemoryMonitor.enumerationOn = false;
 			if (bBackToLauncher)
+			{
 				theLauncherLevel.GoTo();
-			else
-				theMainMenu.GoBackTo();
-			theGamesMenuOut.Play();
+			} 
+			else 
+			{
+				GoToSettings();
+				//theMainMenu.GoBackTo();
+			}
+			theSettingsSubMenuOut.Play();
+			//theGamesMenuOut.Play();
 		}
 	}
 

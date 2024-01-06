@@ -1252,7 +1252,9 @@ DEF theMainMenu Level
 					c.Main_memory_ringpin_2.SetTranslation(56.830002, 32.290001, 101.900002);   // Music
 					c.Main_memory_ringpin_4.SetTranslation(57.430000, -23.379999, 101.500000);  // Settings
 				}
-				g_theMainMenuLoaded = true;
+				c.MainMenuButton1_Text.text = "MUSIC";
+				c.MainMenuButton2_Text.text = "LAUNCHER"; 
+				g_theMainMenuLoaded         = true;
 				UpdateMainMenu(); 
 				c.game_arm01.visible = false;
 				c.game_arm02.visible = false;
@@ -1350,19 +1352,22 @@ DEF theMainMenu Level
 			if ((RightTrigger == true) & (LeftTrigger == true)) { QuickLaunch("A"); return;}
 			if (nCurMainMenuItem == 0)  // Memory Button
 			{
-				theGamesMenuIn.Play();
-				GoToMemory();
+				theMusicMenuIn.Play();
+				GoToMusic();
+				//theGamesMenuIn.Play();
+				//GoToMemory();
 			}
 			else if (nCurMainMenuItem == 1) // Music Button
 			{
-				theMusicMenuIn.Play();
-				GoToMusic();
+				theGamesMenuIn.Play();
+				GoToMusicPlayWithSubs();
+				//theMusicMenuIn.Play();
+				//GoToMusic();
 			}
 			else if (nCurMainMenuItem == 2) // Xbox Live Button
 			{
 				theGamesMenuIn.Play();      // TODO: Get final sound
-				GoToMusicPlayWithSubs();
-				//EnterLiveToday(false);      // Enter LiveToday
+				EnterLiveToday(false);      // Enter LiveToday
 			}
 			else if (nCurMainMenuItem == 3) // Settings Button
 			{
@@ -2791,7 +2796,7 @@ function SetSavedValue(x,y)
 function GetConfigInfo()
 {
 	ConfigFile.section = "default";
-	var TotalSections   = ConfigFile.GetValue("TotalSections");
+	var TotalSections = ConfigFile.GetValue("TotalSections");
 	return TotalSections;
 }
 

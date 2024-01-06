@@ -4,11 +4,11 @@ Modern/Re-Implemented Patches and Scripts for the Xbox Dashboard #5960
 ## How-To
 
 * DO NOT USE ON AN UNMODIFIED XBOX. It wont work, and you'll brick your Xbox. Make sure you have a modchip or softmod installed that doesnt rely on the dashboard files to boot.
-* Download the patch tool from the releases page.
-
-* Copy the unmodified 5960 Dashboard files to the unmodified directory in the patch tool package.
-* Run the patch tool.
-* Copy the "modified" files, including config.xbx to the root of your C drive on your Xbox.
+* Download VisualXIP from the Tools page.
+* Copy the unmodified 5960 Dashboard files to a directory on your computer.
+* Use VisualXIP to patch the xboxdash.xbe to allow modified xips
+* Use VisualXIP to modify the xips in xboxdashdata.185ead00 with the updated xap source files or download the premodified xips from the releases page.
+* Copy the "modified" files via ftp, including config.xbx to the root of your C drive on your Xbox.
 
 ## Modifications
 
@@ -16,10 +16,10 @@ Modern/Re-Implemented Patches and Scripts for the Xbox Dashboard #5960
 * Removes XIP signature checks.
 * Modifies the Orb to the tHc Orb. (Set tHc Orb to No in the config.xbx for a more stock look.)
 * Modifies Xbox Live tab to say Insignia.
-* Adds a title launcher by hijacking noisy camera. Also adds a "Launcher" tab to settings.
 
 ## Example config.xbx
 ```
+[default]
 Use Thc Orb=Yes
 Total Sections=4
 
@@ -38,11 +38,17 @@ Path=Dashboards
 [section3]
 Title=Emulators
 Path=Emus
+
+[QuickLaunch]
+QuickLaunchA=E:\Dashboards\UnleashX\default.xbe
+QuickLaunchB=
+QuickLaunchX=
+QuickLaunchY=
+
 ```
 
 ## Usage
-* Hold L + R + Y and X to load the game launcher. Or open it from the settings menu.
-* Currently does not see F or G partitions, so you have to use shortcut files from E.
+* Currently does not see F or G partitions, so you will have to add shortcut files to E:\Shortcuts\[SectionName]\[TitleName].
 
 
 ## Family Tree

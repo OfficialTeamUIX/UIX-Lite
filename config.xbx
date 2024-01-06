@@ -1,5 +1,4 @@
-[default]
-UseThcOrb=Yes
+UseThcOrb=No
 TotalSections=4
 
 [section0]
