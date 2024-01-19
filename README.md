@@ -6,15 +6,15 @@ Modern/Re-Implemented Patches and Scripts for the Xbox Dashboard #5960
 * DO NOT USE ON AN UNMODIFIED XBOX. It wont work, and you'll brick your Xbox. Make sure you have a modchip or softmod installed that doesnt rely on the dashboard files to boot.
 * Download Visual XIP from the Tools page.
 * Copy the unmodified 5960 Dashboard files to a directory on your computer.
-* Use Visual XIP to patch the xboxdash.xbe to allow modified xips
-* Use Visual XIP to modify the xips in xboxdashdata.185ead00 with the updated xap source files or download the premodified xips from the releases page.
+* Use Visual XIP or the Binary Patcher to patch the xboxdash.xbe to allow modified xips
+* Use Visual XIP or WinXip to modify the xips in xboxdashdata.185ead00 with the updated xap source files or download the premodified xips from the releases page.
 * Copy the "modified" files via ftp, including config.xbx to the root of your C drive on your Xbox.
 
 ## Modifications
 
 * Completely based on old school patches and hex edits, not a source modification. So you dont need to feel "dirty" about using it.
 * Removes XIP signature checks.
-* Modifies the Orb to the tHc Orb. (Set tHc Orb to No in the config.xbx for a more stock look.)
+* Modifies the Orb to the tHc Orb. (Set UseThcOrb to false in the config.xbx for a more stock look.)
 * Modifies Xbox Live tab to say Insignia when the ShowInsignia option is set to true.
 
 ## Example config.xbx
@@ -49,7 +49,7 @@ QuickLaunchY=
 ```
 
 ## Usage
-* Currently does not see F or G partitions, so you will have to add shortcut files to E:\Shortcuts\\[SectionName]\\[TitleName].
+* Currently does not see F or G partitions, so you will need to add shortcuts to the files on those partitions to E:\Shortcuts\\[SectionName]\\[TitleName].(i.e. E:\Shortcuts\Games\Fable)
 
 
 ## Family Tree
