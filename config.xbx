@@ -1,4 +1,6 @@
-UseThcOrb=No
+[default]
+UseThcOrb=false
+ShowInsignia=false
 TotalSections=4
 
 [section0]

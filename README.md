@@ -15,13 +15,14 @@ Modern/Re-Implemented Patches and Scripts for the Xbox Dashboard #5960
 * Completely based on old school patches and hex edits, not a source modification. So you dont need to feel "dirty" about using it.
 * Removes XIP signature checks.
 * Modifies the Orb to the tHc Orb. (Set tHc Orb to No in the config.xbx for a more stock look.)
-* Modifies Xbox Live tab to say Insignia.
+* Modifies Xbox Live tab to say Insignia when the ShowInsignia option is set to true.
 
 ## Example config.xbx
 ```
 [default]
-Use Thc Orb=Yes
-Total Sections=4
+UseThcOrb=false
+ShowInsignia=false
+TotalSections=4
 
 [section0]
 Title=Applications
