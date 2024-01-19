@@ -1638,7 +1638,7 @@ DEF ring Transform
 																					name "NavType"
 																				}
 																			}
-																			geometry DEF MainMenuButton3_Text Text { font "Heading" translate true text "INSIGNIA" }
+																			geometry DEF MainMenuButton3_Text Text { font "Heading" translate true text "XONLINE" }
 																		}
 																	]
 																}

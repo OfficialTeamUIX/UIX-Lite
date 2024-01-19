@@ -1252,19 +1252,13 @@ DEF theMainMenu Level
 					c.Main_memory_ringpin_2.SetTranslation(56.830002, 32.290001, 101.900002);   // Music
 					c.Main_memory_ringpin_4.SetTranslation(57.430000, -23.379999, 101.500000);  // Settings
 				}
-				
+				// Setup Main Menu Button Text
 				c.MainMenuButton1_Text.text = theTranslator.Translate("MUSIC");
 				c.MainMenuButton2_Text.text = theTranslator.Translate("LAUNCHER");
-				if(ShowInsignia() == true)
-				{
-					c.MainMenuButton3_Text.text = theTranslator.Translate("INSIGNIA");
-				}
-				else
-				{ 
-					c.MainMenuButton3_Text.text = theTranslator.Translate("XONLINE"); 
-				}
+				if(ShowInsignia() == true) c.MainMenuButton3_Text.text = theTranslator.Translate("INSIGNIA");
 				c.MainMenuButton4_Text.text = theTranslator.Translate("SETTINGS");                
-				g_theMainMenuLoaded         = true;
+				
+				g_theMainMenuLoaded = true;
 				UpdateMainMenu(); 
 				c.game_arm01.visible = false;
 				c.game_arm02.visible = false;
