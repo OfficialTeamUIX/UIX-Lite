@@ -1252,8 +1252,18 @@ DEF theMainMenu Level
 					c.Main_memory_ringpin_2.SetTranslation(56.830002, 32.290001, 101.900002);   // Music
 					c.Main_memory_ringpin_4.SetTranslation(57.430000, -23.379999, 101.500000);  // Settings
 				}
-				c.MainMenuButton1_Text.text = "MUSIC";
-				c.MainMenuButton2_Text.text = "LAUNCHER"; 
+				
+				c.MainMenuButton1_Text.text = theTranslator.Translate("MUSIC");
+				c.MainMenuButton2_Text.text = theTranslator.Translate("LAUNCHER");
+				if(ShowInsignia() == true)
+				{
+					c.MainMenuButton3_Text.text = theTranslator.Translate("INSIGNIA");
+				}
+				else
+				{ 
+					c.MainMenuButton3_Text.text = theTranslator.Translate("XONLINE"); 
+				}
+				c.MainMenuButton4_Text.text = theTranslator.Translate("SETTINGS");                
 				g_theMainMenuLoaded         = true;
 				UpdateMainMenu(); 
 				c.game_arm01.visible = false;
@@ -2824,6 +2834,10 @@ function GetOrb()
 	{
 		return true;
 	}
+	else if(a == "true")
+	{
+		return true;
+	}
 	else
 	{
 		return false;
@@ -2835,10 +2849,24 @@ function SetOrb(x)
 	ConfigFile.section = "default";
 	if(x)
 	{
-		ConfigFile.SetValue("UseThcOrb", "Yes");
+		ConfigFile.SetValue("UseThcOrb", "true");
 	}
 	else
 	{
-		ConfigFile.SetValue("UseThcOrb", "No");
+		ConfigFile.SetValue("UseThcOrb", "false");
 	}
 }
+
+function ShowInsignia()
+{
+	var a = GetSavedValue("default","ShowInsignia");
+	if(a == "true")
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+		
