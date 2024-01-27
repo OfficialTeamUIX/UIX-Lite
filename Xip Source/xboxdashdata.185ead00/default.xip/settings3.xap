@@ -692,7 +692,7 @@ DEF theSetClockMenu Level
 	}
 */
 
-	path Viewpoint
+	path DEF theSetClockMenuViewpoint Viewpoint
 	{
 		fieldOfView 1.287000
 		orientation -0.201100 -0.979500 0.014710 -0.149100
@@ -1051,7 +1051,7 @@ DEF theSetTimezoneMenu Level
 		}
 	]
 
-	path Viewpoint
+	path DEF theSetTimezoneMenuViewpoint Viewpoint
 	{
 		fieldOfView 1.287000
 		orientation 0.034750 -0.999400 -0.002829 -0.162500
@@ -2170,7 +2170,7 @@ DEF theSetPanelMenu Level
 		}
 	]
 
-	path Viewpoint
+	path DEF theSetPanelMenuViewpoint Viewpoint
 	{
 		fieldOfView 1.287000
 		orientation 0.103700 0.994600 0.006310 -0.122200
@@ -2680,7 +2680,7 @@ DEF theSetPCMenu Level
 		}
 	]
 
-	path Viewpoint
+	path DEF theSetPCMenuViewpoint Viewpoint
 	{
 		fieldOfView 1.287000
 		orientation -0.197200 -0.980100 0.023720 -0.244200
@@ -2993,7 +2993,7 @@ DEF theSetLanguageMenu Level
 		}
 	]
 
-	path Viewpoint
+	path DEF theSetLanguageMenuViewpoint Viewpoint
 	{
 		fieldOfView 1.287000
 		orientation 0.003247 -1.000000 -0.000293 -0.180000
@@ -3308,7 +3308,7 @@ DEF theSetModeMenu Level
 		}
 	]
 
-	path Viewpoint
+	path DEF theSetModeMenuViewpoint Viewpoint
 	{
 		fieldOfView 1.287000
 		orientation 0.170200 -0.985400 -0.005572 -0.066410
@@ -3605,7 +3605,8 @@ function StartSettingsMenu()
 		sSettingsMenu[index] = theTranslator.Translate("PARENTAL CONTROL");
 		index = index + 1;
 	}
-
+	sSettingsMenu[index] = theTranslator.Translate("Reboot");
+	index = index + 1;
 	sSettingsMenu[index] = theTranslator.Translate("AUTO OFF");
 	index = index + 1;
 	sSettingsMenu[index] = theTranslator.Translate("SYSTEM INFO");
@@ -3707,6 +3708,10 @@ function MenuIcon()
 	{
 		ShowIcon(c.network_icon);
 	}
+	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Reboot"))
+	{
+		ShowIcon(c.AutoOffIcon);
+	}
 	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("AUTO OFF"))
 	{
 		ShowIcon(c.AutoOffIcon);
@@ -3801,6 +3806,10 @@ function UpdateRootMeta()
 	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("NETWORK"))
 	{
 		metaString = theTranslator.Translate("NETWORK");
+	}
+	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Reboot"))
+	{
+		metaString = theTranslator.Translate("Reboot Xbox");
 	}
 	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("AUTO OFF"))
 	{
@@ -3996,7 +4005,8 @@ DEF theSettingsMenu Level
 				else 
 					SetOrb(true);
 				UpdateRootMeta();
-				TellUser("You will need to reboot for new settings to take effect.","");
+				//TellUser("Settings saved! You will need to reboot before the new settings will take effect.","");
+				AskQuestion("Settings saved! You will need to reboot before the new settings will take effect. \n\nWould you like to reboot now?","Reboot()","",1);
 			}
 			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("CLOCK"))
 			{
@@ -4056,6 +4066,10 @@ DEF theSettingsMenu Level
 			{
 				theLiveAccounts.PersistUser(-1);
 				GoToXoDashEntryPoint(0, 0, "TROUBLE SHOOTER");
+			}
+			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Reboot"))
+			{
+				Reboot();
 			}
 			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("AUTO OFF"))
 			{
@@ -4136,6 +4150,7 @@ DEF theSettingsMenu Level
 
 	function OnActivate()
 	{
+		CurrentViewpoint = theSettingsViewpoint;
 		if (children[0].children.length() > 0)
 		{
 			StartSettingsMenu();

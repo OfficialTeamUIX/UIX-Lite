@@ -2225,6 +2225,7 @@ DEF theMusicPlayMenu Level
 
 	function OnActivate()
 	{
+		CurrentViewpoint = musicMenuViewpoint;
 		if (children[0].children.length() > 0)
 		{
 			EnterMusicPlay();
@@ -2515,7 +2516,7 @@ DEF theMusicMenu Level
 		]
 	}
 
-	path Viewpoint
+	path DEF theMusicMenuViewpoint Viewpoint
 	{
 		fieldOfView 1.287000
 		orientation 0.015660 0.999900 0.001474 -0.187700
@@ -2608,6 +2609,7 @@ DEF theMusicMenu Level
 
 	function OnActivate()
 	{
+		CurrentViewpoint = theMusicMenuViewpoint;
 		EnableAmbientAudio();
 		if (children[0].children.length() > 0)
 			StartMusicLevel();

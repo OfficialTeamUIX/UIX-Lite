@@ -1648,7 +1648,7 @@ DEF theMemoryMenu Level
 		translation 41.110001 7.940000 -140.899994
 	}
 
-	path Viewpoint
+	path DEF theMemoryMenuViewpoint Viewpoint
 	{
 		fieldOfView 1.438000
 		orientation -0.999500 -0.031970 0.000318 -0.019900
@@ -1722,6 +1722,7 @@ DEF theMemoryMenu Level
 	function OnActivate()
 	{
 		EnableAmbientAudio();
+		CurrentViewpoint = theMemoryMenuViewpoint:
 		if (children[0].children.length() > 0)
 			StartMemoryLevel();
 	}

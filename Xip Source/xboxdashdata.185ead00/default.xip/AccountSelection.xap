@@ -330,6 +330,7 @@ DEF theAccountSelectionLevel Level
 
 	function OnActivate()
 	{
+		CurrentViewpoint = theAccountSelectionViewpoint;
 		if (children[0].children.length() > 0)
 		{
 			// Use "Body" font for Japanese

@@ -197,12 +197,27 @@ DEF theScreenSaver ScreenSaver
 {
 	function OnStart()
 	{
-		theScreen.brightness = 0.1;
+		if(thcorb)
+		{
+			StartScreenSaverView();
+		}
+		else
+		{
+			theScreen.brightness = 0.1;
+		}
+		
 	}
 	
 	function OnEnd()
 	{
-		theScreen.brightness = 1;
+		if(thcorb)
+		{
+			StopScreenSaverView();
+		}
+		else
+		{
+			theScreen.brightness = 1;
+		}
 	}
 }
 
@@ -1338,7 +1353,7 @@ DEF theMainMenu Level
 	}
 	
 	
-	path Viewpoint
+	path DEF theMainMenuViewpoint Viewpoint
 	{
 		fieldOfView 1.300000
 		orientation -0.177400 -0.983500 -0.036250 -0.045440
@@ -1443,6 +1458,8 @@ DEF theMainMenu Level
 	
 	function OnActivate()
 	{
+		CurrentViewpoint    = theMainMenuViewpoint;
+		CurrentAltViewpoint = theMainMenuAlternateViewpoint;
 		EnableAmbientAudio();
 		if( g_theMainMenuLoaded )
 		{
@@ -1823,6 +1840,41 @@ function GoToFinalDestination()
 	}
 }
 
+function StartScreenSaverView()
+{
+	if(CurrentViewpoint == theMainMenuViewpoint)
+	{
+		var c = theMainMenu.children[0].children[0];
+		c.theMenuItems.SetAlpha(0);
+		c.select.SetAlpha(0);
+		c.theMainMenuLevel.fade = 100;
+		c.theMainMenuLevel.SetTranslation( 30, -104, 4 );
+		EnableCurrentAlternateViewpoint();
+	}
+	else
+	{
+		theScreen.brightness = 0.1; 
+	}
+}
+
+function StopScreenSaverView()
+{
+	if(CurrentViewpoint == theMainMenuViewpoint)
+	{
+		var c = theMainMenu.children[0].children[0];
+		//theMainMenuSpinner.rpm = 0;
+		c.theMainMenuLevel.fade = 0.25;
+		c.theMainMenuLevel.SetRotation(0,0,0,0);
+		c.theMainMenuLevel.SetTranslation(0,0,0);
+		c.theMenuItems.SetAlpha(1);
+		c.select.SetAlpha(1);
+		DisableCurrentAlternateViewpoint();
+	}
+	else
+	{
+		theScreen.brightness = 1; 
+	}
+}
 // Japanese Keyboard////////////////////////////////////////////////////////
 
 DEF theJapaneseKeyboardLayer Layer
@@ -2482,7 +2534,7 @@ DEF theXboxLogo16x9Background Background
 
 DEF theXOnlineLevel Level
 {
-	path Viewpoint
+	path DEF theXOnlineLevelViewpoint Viewpoint
 	{
 		fieldOfView 1.438000
 		orientation -0.999500 -0.031970 0.000318 -0.019900
@@ -2526,6 +2578,7 @@ DEF theXOnlineLevel Level
 	
 	function OnActivate()
 	{
+		CurrentViewpoint = theXOnlineLevelViewpoint;
 		DisableAmbientAudio();
 		BlockMemoryUnitEnumeration();
 		ClosePopup();
@@ -2760,6 +2813,10 @@ function LaunchItem(x,y)
 }
 
 ////////////////////////////////////////////////////////////////////////////
+function Reboot()//scripted reboot - last stage of a recovery is to reboot - let's make the box think we just did a recovery and now it's time to reboot :)
+{
+	theSettingsInline.children[0].theRecovery.FinishRecovery();
+}
 
 function EnableCurrentAlternateViewpoint()
 {

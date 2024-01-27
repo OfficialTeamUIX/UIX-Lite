@@ -499,6 +499,7 @@ DEF theLiveTodayLevel Level
 
 	function OnActivate()
 	{
+		CurrentViewpoint = theLiveTodayViewpoint;
 		if (children[0].children.length() > 0)
 		{
 			if (nCurrentLiveTodayMenu <= -1)
