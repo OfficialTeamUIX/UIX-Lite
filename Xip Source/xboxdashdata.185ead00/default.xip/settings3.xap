@@ -3574,7 +3574,7 @@ function StartSettingsMenu()
 	var index = 0;
 
 	// Build the Settings Menu array
-	sSettingsMenu[index] = theTranslator.Translate("Memory");
+	sSettingsMenu[index] = theTranslator.Translate("Launcher");
 	index = index + 1;
 	sSettingsMenu[index] = theTranslator.Translate("Use tHc Orb");
 	index = index + 1;
@@ -3671,7 +3671,7 @@ function MenuIcon()
 {
 	var c = theSettingsMenu.children[0].children[0];
 
-	if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Memory")) 
+	if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Launcher")) 
 	{ 
 		ShowIcon(c.ConsoleIcon); 
 	}
@@ -3727,9 +3727,9 @@ function UpdateRootMeta()
 	var c = theSettingsMenu.children[0].children[0];
 	var metaString = "";
 
-	if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Memory")) 
+	if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Launcher")) 
 	{ 
-		metaString = "Manage Saved Games"; 
+		metaString = "Launch A Title"; 
 	}
 	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Use tHc Orb"))
 	{
@@ -3993,10 +3993,11 @@ DEF theSettingsMenu Level
 			theSettingsMenu.children[0].children[0].MU_select_pod_HL.children[0].appearance.material.param = 1;
 
 			strPrevMenu = "SETTINGS";
-			if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Memory"))
+			if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Launcher"))
 			{
-				strCurMenu   = "Memory";
-				GoToMemory();
+				strCurMenu = "Launcher";
+				bBackToSettings = true;
+				GoToMusicPlayWithSubs();
 			}
 			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Use tHc Orb"))
 			{

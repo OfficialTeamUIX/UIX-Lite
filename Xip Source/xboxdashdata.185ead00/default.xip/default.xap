@@ -1268,8 +1268,8 @@ DEF theMainMenu Level
 					c.Main_memory_ringpin_4.SetTranslation(57.430000, -23.379999, 101.500000);  // Settings
 				}
 				// Setup Main Menu Button Text
-				c.MainMenuButton1_Text.text = theTranslator.Translate("MUSIC");
-				c.MainMenuButton2_Text.text = theTranslator.Translate("LAUNCHER");
+				c.MainMenuButton1_Text.text = theTranslator.Translate("MEMORY");
+				c.MainMenuButton2_Text.text = theTranslator.Translate("MUSIC");
 				if(ShowInsignia() == true) c.MainMenuButton3_Text.text = theTranslator.Translate("INSIGNIA");
 				c.MainMenuButton4_Text.text = theTranslator.Translate("SETTINGS");                
 				
@@ -1371,17 +1371,13 @@ DEF theMainMenu Level
 			if ((RightTrigger == true) & (LeftTrigger == true)) { QuickLaunch("A"); return;}
 			if (nCurMainMenuItem == 0)  // Memory Button
 			{
-				theMusicMenuIn.Play();
-				GoToMusic();
-				//theGamesMenuIn.Play();
-				//GoToMemory();
+				theGamesMenuIn.Play();
+				GoToMemory();
 			}
 			else if (nCurMainMenuItem == 1) // Music Button
 			{
-				theGamesMenuIn.Play();
-				GoToMusicPlayWithSubs();
-				//theMusicMenuIn.Play();
-				//GoToMusic();
+				theMusicMenuIn.Play();
+				GoToMusic();
 			}
 			else if (nCurMainMenuItem == 2) // Xbox Live Button
 			{
@@ -1442,7 +1438,6 @@ DEF theMainMenu Level
 					if( 2 == nCurMainMenuItem )
 						nCurMainMenuItem = nCurMainMenuItem + 1;
 				}
-				
 				theMainMenuForward.Play();
 				UpdateMainMenu();
 			}
@@ -1450,9 +1445,9 @@ DEF theMainMenu Level
 
 		function OnKeyVerified()
 		{
-			theConfig.ToggleNoisyCamera();
-			//theGamesMenuIn.Play();
-			//GoToMusicPlayWithSubs();
+			//theConfig.ToggleNoisyCamera();
+			theGamesMenuIn.Play();
+			GoToMusicPlayWithSubs();
 		}        
 	}
 	
@@ -1529,8 +1524,7 @@ var thcorb;
 var bMusicPlayerReady;
 var currentMusicPlayerMode;
 
-var quicklaunch;
-var gamelaunch;
+var bBackToSettings;
 var launchPath;
 var launchXbe;
 
@@ -1539,13 +1533,11 @@ var CurrentGameBoardAltViewpoint;
 function initialize()
 {
 	
-	quicklaunch = false;
-	gamelaunch = false;
-	
 	RightThumb = false;
 	LeftThumb = false;
 	LeftTrigger = false;
 	RightTrigger = false;
+	bBackToSettings = false;
 	bBackToDVDPlayer = false;
 	bGoToCDPlayer = false;
 	bBackToLauncher = false;

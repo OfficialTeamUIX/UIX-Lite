@@ -2552,11 +2552,23 @@ DEF theMusicMenu Level
 			musicButton = 0;
 
 			if (bBackToLauncher)
+			{
 				theLauncherLevel.GoTo();
+			}
 			else
-				theMainMenu.GoBackTo();
-
-			theMusicMenuOut.Play();
+			{
+				if(bBackToSettings)
+				{
+					bBackToSettings = false;
+					theSettingsSubMenuOut.Play();
+					GoToSettings();
+				}
+				else
+				{
+					theMainMenu.GoBackTo();
+					theMusicMenuOut.Play();
+				}
+			}
 		}
 
 		function OnMoveUp()

@@ -494,8 +494,17 @@ DEF theMusicPlayWithSubs Level
 			if (bMusicPlayWithSubsVisible0)
 			{
 				theMusicPlayWithSubs.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
-				theGamesMenuOut.Play();
-				theMainMenu.GoBackTo();
+				if(bBackToSettings)
+				{
+					bBackToSettings = false;
+					theSettingsSubMenuOut.Play();
+					GoToSettings();
+				}
+				else
+				{
+					theGamesMenuOut.Play();
+					theMainMenu.GoBackTo();
+				}
 			}
 			else
 			{

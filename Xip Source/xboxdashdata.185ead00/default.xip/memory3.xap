@@ -1711,18 +1711,25 @@ DEF theMemoryMenu Level
 			} 
 			else 
 			{
-				GoToSettings();
-				//theMainMenu.GoBackTo();
+				if(bBackToSettings)
+				{
+					bBackToSettings = false;
+					theSettingsSubMenuOut.Play();
+					GoToSettings();
+				}
+				else
+				{
+					theGamesMenuOut.Play();
+					theMainMenu.GoBackTo();
+				}
 			}
-			theSettingsSubMenuOut.Play();
-			//theGamesMenuOut.Play();
 		}
 	}
 
 	function OnActivate()
 	{
 		EnableAmbientAudio();
-		CurrentViewpoint = theMemoryMenuViewpoint:
+		CurrentViewpoint = theMemoryMenuViewpoint;
 		if (children[0].children.length() > 0)
 			StartMemoryLevel();
 	}
