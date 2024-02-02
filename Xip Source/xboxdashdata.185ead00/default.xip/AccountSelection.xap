@@ -278,10 +278,17 @@ DEF theAccountSelectionLevel Level
 			c.MU_back_pod_HL.children[0].appearance.material.param = 1;
 
 			PlaySoundB();
-			//theSettingsSubMenuOut.Play();
-			//GoToSettings();
-			theGamesMenuOut.Play();
-			theMainMenu.GoBackTo();
+			if(bBackToSettings)
+			{
+				bBackToSettings = false;
+				theSettingsSubMenuOut.Play();
+				GoToSettings();
+			}
+			else
+			{
+				theGamesMenuOut.Play();
+				theMainMenu.GoBackTo();
+			}
 		}
 
 		function OnMoveUp()

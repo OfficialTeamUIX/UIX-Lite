@@ -15,6 +15,10 @@ var nCurVideoItem;
 var nCurAudioItem;
 var nCurLockItem;
 //New Options
+var ShowMemoryInSettings;
+var ShowMusicInSettings;
+var ShowXOnlineInSettings;
+var ShowLauncherInSettings;
 
 function initialize()
 {
@@ -3574,8 +3578,36 @@ function StartSettingsMenu()
 	var index = 0;
 
 	// Build the Settings Menu array
-	sSettingsMenu[index] = theTranslator.Translate("Launcher");
-	index = index + 1;
+	if(ShowMemoryInSettings)
+	{
+		sSettingsMenu[index] = theTranslator.Translate("Memory");
+		index = index + 1;
+	}
+	
+	if(ShowMusicInSettings)
+	{
+		sSettingsMenu[index] = theTranslator.Translate("Music");
+		index = index + 1;
+	}    
+	
+	if(ShowXOnlineInSettings)
+	{
+		if(GetSavedBooleanValue("default","ShowInsignia"))
+		{
+			sSettingsMenu[index] = theTranslator.Translate("Insignia");
+		}
+		else
+		{
+			sSettingsMenu[index] = theTranslator.Translate("XONLINE");
+		}
+		index = index + 1;
+	} 
+	
+	if(ShowLauncherInSettings)
+	{
+		sSettingsMenu[index] = theTranslator.Translate("Launcher");
+		index = index + 1;
+	}
 	sSettingsMenu[index] = theTranslator.Translate("Use tHc Orb");
 	index = index + 1;
 	sSettingsMenu[index] = theTranslator.Translate("CLOCK");
@@ -3671,6 +3703,22 @@ function MenuIcon()
 {
 	var c = theSettingsMenu.children[0].children[0];
 
+	if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Memory")) 
+	{ 
+		ShowIcon(c.ConsoleIcon); 
+	}
+	if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Music")) 
+	{ 
+		SetAudioModeIcon(nCurAudioMode); 
+	}
+	if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Insignia")) 
+	{ 
+		ShowIcon(c.Icon_live); 
+	}
+	if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("XONLINE")) 
+	{ 
+		ShowIcon(c.Icon_live); 
+	}
 	if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Launcher")) 
 	{ 
 		ShowIcon(c.ConsoleIcon); 
@@ -3726,17 +3774,33 @@ function UpdateRootMeta()
 {
 	var c = theSettingsMenu.children[0].children[0];
 	var metaString = "";
-
+	if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Memory")) 
+	{ 
+		metaString = "Manage Saved Games"; 
+	}
+	if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Music")) 
+	{ 
+		metaString = "Play Your Music"; 
+	}
+	if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Insignia") | 
+	   sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("XONLINE")) 
+	{ 
+		metaString = "Xbox Online"; 
+	}
 	if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Launcher")) 
 	{ 
 		metaString = "Launch A Title"; 
 	}
 	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Use tHc Orb"))
 	{
-		if (GetOrb())
+		if(GetSavedBooleanValue("default","UseThcOrb"))
+		{
 			metaString = theTranslator.Translate("ENABLED");
+		}
 		else
+		{
 			metaString = theTranslator.Translate("DISABLED");
+		}
 	}
 	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("CLOCK"))
 	{
@@ -3902,7 +3966,10 @@ DEF theSettingsMenu Level
 
 				strCurMenu = "SETTINGS";
 				strPrevMenu = "SETTINGS";
-
+				ShowMemoryInSettings   = GetSavedBooleanValue("ShowInSettings","Memory");
+				ShowMusicInSettings    = GetSavedBooleanValue("ShowInSettings","Music");
+				ShowXOnlineInSettings  = GetSavedBooleanValue("ShowInSettings","XOnline");
+				ShowLauncherInSettings = GetSavedBooleanValue("ShowInSettings","Launcher");
 				//
 				// This used to be the very last option at the end of the if..else if statement below
 				// I moved it here, so that if a user is forced to set a specific setting, and an Audio CD or
@@ -3993,6 +4060,25 @@ DEF theSettingsMenu Level
 			theSettingsMenu.children[0].children[0].MU_select_pod_HL.children[0].appearance.material.param = 1;
 
 			strPrevMenu = "SETTINGS";
+			if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Memory"))
+			{
+				strCurMenu      = "Memory";
+				bBackToSettings = true;
+				GoToMemory();
+			}              
+			if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Music"))
+			{
+				strCurMenu      = "Music";
+				bBackToSettings = true;
+				GoToMusic();
+			}
+			if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("XONLINE") | 
+				sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Insignia"))
+			{
+				strCurMenu      = "XONLINE";
+				bBackToSettings = true;
+				EnterLiveToday(false);
+			}             
 			if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Launcher"))
 			{
 				strCurMenu = "Launcher";
@@ -4001,10 +4087,14 @@ DEF theSettingsMenu Level
 			}
 			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Use tHc Orb"))
 			{
-				if (GetOrb())
-					SetOrb(false); 
+				if(GetSavedBooleanValue("default","UseThcOrb"))
+				{
+					SetSavedBooleanValue("default","UseThcOrb",false); 
+				}
 				else 
-					SetOrb(true);
+				{
+					SetSavedBooleanValue("default","UseThcOrb",true);
+				}
 				UpdateRootMeta();
 				//TellUser("Settings saved! You will need to reboot before the new settings will take effect.","");
 				AskQuestion("Settings saved! You will need to reboot before the new settings will take effect. \n\nWould you like to reboot now?","Reboot()","",1);

@@ -1006,8 +1006,7 @@ function GoBackToAccountSelection()
 function EnterLiveToday(fSkipAccountSelecion)
 {
 	// Set current selection to "Xbox Live"
-	//nCurMainMenuItem = 2;
-	
+	if(bBackToSettings == false) nXOLineButton = nCurMainMenuItem;
 	EnableInput(false);
 	
 	if (fSkipAccountSelecion)
@@ -1042,7 +1041,7 @@ var nCurMainMenuItem;
 function UpdateMainMenu()
 {
 	// Adjust for a 3 or 4 button menu
-	if( g_bXOnDashExists )
+	if( g_bDisplay4MenuItems )
 	{
 		// Update our 4 button menu with the online button
 		Update4ButtonMainMenu();
@@ -1249,7 +1248,7 @@ DEF theMainMenu Level
 				
 				// Adjust our transforms if necessary
 				var c = theMainMenu.children[0].children[0];
-				if( g_bXOnDashExists )
+				if( g_bDisplay4MenuItems )
 				{
 					// Setup for a 4 button menu with the online button
 					c.Main_memory_ringpin_3.SetTranslation(62.779999, 13.892000, 102.000000);   // Memory
@@ -1268,9 +1267,12 @@ DEF theMainMenu Level
 					c.Main_memory_ringpin_4.SetTranslation(57.430000, -23.379999, 101.500000);  // Settings
 				}
 				// Setup Main Menu Button Text
-				c.MainMenuButton1_Text.text = theTranslator.Translate("MEMORY");
-				c.MainMenuButton2_Text.text = theTranslator.Translate("MUSIC");
-				if(ShowInsignia() == true) c.MainMenuButton3_Text.text = theTranslator.Translate("INSIGNIA");
+				c.MainMenuButton1_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button1Text"));
+				c.MainMenuButton2_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button2Text"));
+				c.MainMenuButton3_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button3Text"));
+				if(ShowInsignia & c.MainMenuButton1_Text.text == theTranslator.Translate("XONLINE")) c.MainMenuButton1_Text.text = theTranslator.Translate("INSIGNIA");
+				if(ShowInsignia & c.MainMenuButton2_Text.text == theTranslator.Translate("XONLINE")) c.MainMenuButton2_Text.text = theTranslator.Translate("INSIGNIA");
+				if(ShowInsignia & c.MainMenuButton3_Text.text == theTranslator.Translate("XONLINE")) c.MainMenuButton3_Text.text = theTranslator.Translate("INSIGNIA");
 				c.MainMenuButton4_Text.text = theTranslator.Translate("SETTINGS");                
 				
 				g_theMainMenuLoaded = true;
@@ -1372,17 +1374,17 @@ DEF theMainMenu Level
 			if (nCurMainMenuItem == 0)  // Memory Button
 			{
 				theGamesMenuIn.Play();
-				GoToMemory();
+				eval(GetSavedValue("MainMenu","Button1Action"));
 			}
 			else if (nCurMainMenuItem == 1) // Music Button
 			{
 				theMusicMenuIn.Play();
-				GoToMusic();
+				eval(GetSavedValue("MainMenu","Button2Action"));
 			}
 			else if (nCurMainMenuItem == 2) // Xbox Live Button
 			{
 				theGamesMenuIn.Play();      // TODO: Get final sound
-				EnterLiveToday(false);      // Enter LiveToday
+				eval(GetSavedValue("MainMenu","Button3Action"));      // Enter LiveToday
 			}
 			else if (nCurMainMenuItem == 3) // Settings Button
 			{
@@ -1413,7 +1415,7 @@ DEF theMainMenu Level
 				nCurMainMenuItem = nCurMainMenuItem - 1;
 				
 				// Determine if we should skip the online button
-				if( false == g_bXOnDashExists )
+				if( false == g_bDisplay4MenuItems )
 				{
 					// If we would be on the Xbox Live Button, let's skip over it
 					if( 2 == nCurMainMenuItem )
@@ -1432,7 +1434,7 @@ DEF theMainMenu Level
 				nCurMainMenuItem = nCurMainMenuItem + 1;
 				
 				// Determine if we should skip the online button
-				if( false == g_bXOnDashExists )
+				if( false == g_bDisplay4MenuItems )
 				{
 					// If we would be on the Xbox Live Button, let's skip over it
 					if( 2 == nCurMainMenuItem )
@@ -1446,8 +1448,7 @@ DEF theMainMenu Level
 		function OnKeyVerified()
 		{
 			//theConfig.ToggleNoisyCamera();
-			theGamesMenuIn.Play();
-			GoToMusicPlayWithSubs();
+			eval(GetSavedValue("MainMenu","ButtonYXAction"));
 		}        
 	}
 	
@@ -1500,7 +1501,7 @@ var bShowDVDStopBackground;
 var bCleanupSpecifiedDrive;
 var nSettingArea;
 var g_nRec;
-var g_bXOnDashExists;
+var g_bDisplay4MenuItems;
 var g_theMainMenuLoaded;
 var g_theMessageLayerLoaded;
 var g_bResetDiscDeferredNotification;
@@ -1521,10 +1522,12 @@ var currentControlType;
 var previousControlType;
 var ConfigFile;
 var thcorb;
+var ShowInsignia;
 var bMusicPlayerReady;
 var currentMusicPlayerMode;
 
 var bBackToSettings;
+var nXOLineButton;
 var launchPath;
 var launchXbe;
 
@@ -1548,6 +1551,7 @@ function initialize()
 	bShowNoDongleMessage = false;
 	bOutOfBoxFlow = false;
 	nCurMainMenuItem = 1; // start with music selected
+	nXOLineButton = 2;
 	g_bKeyboardDisplayed = false;
 	g_bPanelDisplayed = false;
 	g_bAboutToReboot = false;
@@ -1561,7 +1565,7 @@ function initialize()
 	strMessageNoFunction = "";
 	strKeyboardDoneFunction = "";
 	strKeyboardCancelFunction = "";
-	g_bXOnDashExists = false;
+	g_bDisplay4MenuItems = false;
 	g_theMainMenuLoaded = false;
 	g_theMessageLayerLoaded = false;
 	g_nCurrentAccountSelected = 0;
@@ -1574,14 +1578,15 @@ function initialize()
 	g_bLeaveMemoryUnitsBlocked = false;
 	ConfigFile = new Settings;
 	ConfigFile.file = "Y:\\config.xbx";
-	thcorb = GetOrb();
-	
+	thcorb = GetSavedBooleanValue("default","UseThcOrb");
+	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
+
 	theAmbientSound0.Play();
 	theAmbientSound1.Play();
 	theAmbientSound2.Play();
 	
 	// Figure out if we need to display 3 or 4 items on the main menu
-	g_bXOnDashExists = theConfig.NtFileExists( "\\Device\\Harddisk0\\partition2\\xodash\\xonlinedash.xbe" );
+	g_bDisplay4MenuItems = GetSavedBooleanValue("default","Display4MainMenuItems");
 	
 	var nLanguage = theConfig.GetLanguage();
 	if (nLanguage != 0) nLanguage = nLanguage - 1;
@@ -1665,10 +1670,10 @@ function MainInitPart3()
 	}
 	else if (reason == "FromOnlineDash")
 	{
-		if (true == g_bXOnDashExists)
+		if (bBacktoSettings == false)
 		{
 			// Set the focus to the proper menu item
-			nCurMainMenuItem = 3;
+			nCurMainMenuItem = nXOLineButton;
 		}
 	}
 	else if (reason == "DVD")
@@ -2837,47 +2842,22 @@ function GetSavedValue(x,y)
 	return c;
 }
 
-function SetSavedValue(x,y) 
+function SetSavedValue(x,y,z) 
+{
+	var a = x;
+	var b = y;
+	var c = z;
+	ConfigFile.section = a;
+	ConfigFile.SetValue(b,c);
+}
+
+function GetSavedBooleanValue(x,y) 
 {
 	var a = x;
 	var b = y;
 	ConfigFile.section = a;
-	var c = ConfigFile.SetValue(b);
-	return c;
-}
-
-function GetConfigInfo()
-{
-	ConfigFile.section = "default";
-	var TotalSections = ConfigFile.GetValue("TotalSections");
-	return TotalSections;
-}
-
-function GetSectionTitles(x)
-{
-	var a = x;
-	ConfigFile.section = "section" + a;
-	var SectionName = ConfigFile.GetValue("Title");
-	return SectionName;
-}
-
-function GetSectionPaths(x)
-{
-	var a = x;
-	ConfigFile.section = "section" + a;
-	var SectionPath = ConfigFile.GetValue("Path");
-	return SectionPath;
-}
-
-function GetOrb()
-{
-	ConfigFile.section = "default";
-	var a = ConfigFile.GetValue("UseThcOrb");
-	if(a == "Yes")
-	{
-		return true;
-	}
-	else if(a == "true")
+	var c = ConfigFile.GetValue(b);
+	if(c == "true")
 	{
 		return true;
 	}
@@ -2887,29 +2867,18 @@ function GetOrb()
 	}
 }
 
-function SetOrb(x)
+function SetSavedBooleanValue(x,y,z) 
 {
-	ConfigFile.section = "default";
-	if(x)
+	var a = x;
+	var b = y;
+	var c = z;
+	ConfigFile.section = a;
+	if(c)
 	{
-		ConfigFile.SetValue("UseThcOrb", "true");
+		ConfigFile.SetValue(b,"true");
 	}
 	else
 	{
-		ConfigFile.SetValue("UseThcOrb", "false");
+		ConfigFile.SetValue(b,"false");
 	}
 }
-
-function ShowInsignia()
-{
-	var a = GetSavedValue("default","ShowInsignia");
-	if(a == "true")
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-		

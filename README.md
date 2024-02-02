@@ -22,23 +22,32 @@ Modern/Re-Implemented Patches and Scripts for the Xbox Dashboard #5960
 [default]
 UseThcOrb=false
 ShowInsignia=false
-TotalSections=4
+Display4MainMenuItems=true
 
-[section0]
-Title=Applications
-Path=Apps
+[MainMenu]
+Button1Text=MEMORY
+Button1Action=GoToMemory()
+Button2Text=MUSIC
+Button2Action=GoToMusic()
+Button3Text=XONLINE
+Button3Action=EnterLiveToday(false)
+ButtonYXAction=theGamesMenuIn.Play();GoToMusicPlayWithSubs()
 
-[section1]
-Title=Games
-Path=Games
+[LauncherMenu]
+Title0=Applications
+Path0=Apps
+Title1=Dashboards
+Path1=Dashboards
+Title2=Games
+Path2=Games
+Title3=Emulators
+Path3=Emus
 
-[section2]
-Title=Dashboards
-Path=Dashboards
-
-[section3]
-Title=Emulators
-Path=Emus
+[ShowInSettings]
+Memory=false
+Music=false
+XOnline=false
+Launcher=true
 
 [QuickLaunch]
 QuickLaunchA=E:\Dashboards\UnleashX\default.xbe

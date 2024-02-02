@@ -9,6 +9,7 @@ var subTitle0;
 var CurrentSection;
 var TempTitleList;
 var CurFillDir;
+var TotalSections;
 
 function initialize()
 {
@@ -198,14 +199,27 @@ function EnterMusicPlay()
 function UpdateMusicPlayWithSubs()
 {
 	var c = theMusicPlayWithSubs.children[0].children[0];
-	
+	TotalSections = 0;
 	for (var i = 0; i < 5; i = i + 1)
 	{
+		var v = GetSavedValue("LauncherMenu", "Title" + i);
+		if(v == "")
+		{
+			c.theMenuButtons.children[i].visible = false;
+		}
+		else
+		{
+			c.theMenuButtons.children[i].visible = true;
+			c.theMenuButtons.children[i].children[1].children[0].geometry.text = v;
+			TotalSections = TotalSections + 1;
+		}
+		
 		if (i == nCurMusicPlayWithSubsItem0)
 		{
 			c.theMenuButtons.children[i].children[0].appearance.material.name = "GameHilite";
 			c.theMenuButtons.children[i].children[0].appearance.texture.url = "GameHilite_01.bmp";
 			c.theMenuButtons.children[i].children[1].children[0].appearance.name = "HilightedType";
+			c.MenuMetaText.text = v;
 		}
 		else
 		{
@@ -214,72 +228,9 @@ function UpdateMusicPlayWithSubs()
 			c.theMenuButtons.children[i].children[1].children[0].appearance.name = "NavType";
 		}
 	}
-	var v = GetSectionTitles(0);
-	if(v == "")
-	{
-		c.theMenuButtons.children[0].visible = false;
-	}
-	else
-	{
-		c.theMenuButtons.children[0].visible = true;
-	}
-	var w = GetSectionTitles(1);
-	if(w == "")
-	{
-		c.theMenuButtons.children[1].visible = false;
-	}
-	else
-	{
-		c.theMenuButtons.children[1].visible = true;
-	}
-	var x = GetSectionTitles(2);
-	if(x == "")
-	{
-		c.theMenuButtons.children[2].visible = false;
-	}
-	else
-	{
-		c.theMenuButtons.children[2].visible = true;
-	}
-	var y = GetSectionTitles(3);
-	if(y == "")
-	{
-		c.theMenuButtons.children[3].visible = false;
-	}
-	else
-	{
-		c.theMenuButtons.children[3].visible = true;
-	}
-	var z = GetSectionTitles(4);
-	if(z == "")
-	{
-		c.theMenuButtons.children[4].visible = false;
-	}
-	else
-	{
-		c.theMenuButtons.children[4].visible = true;
-	}
-	
-	c.theMenuButtons.children[0].children[1].children[0].geometry.text = v;
-	c.theMenuButtons.children[1].children[1].children[0].geometry.text = w;
-	c.theMenuButtons.children[2].children[1].children[0].geometry.text = x;
-	c.theMenuButtons.children[3].children[1].children[0].geometry.text = y;
-	c.theMenuButtons.children[4].children[1].children[0].geometry.text = z;
-	
-	c._button_surround.visible = true;
-	c.New_Line11.visible = true;
+	c._button_surround.visible   = true;
+	c.New_Line11.visible         = true;
 	c._button_surround_0.visible = false;
-	
-	if (nCurMusicPlayWithSubsItem0 == 0)
-	c.MenuMetaText.text = v;
-	else if (nCurMusicPlayWithSubsItem0 == 1)
-	c.MenuMetaText.text = w;
-	else if (nCurMusicPlayWithSubsItem0 == 2)
-	c.MenuMetaText.text = x;
-	else if (nCurMusicPlayWithSubsItem0 == 3)
-	c.MenuMetaText.text = y;
-	else if (nCurMusicPlayWithSubsItem0 == 4)
-	c.MenuMetaText.text = z;
 }
 
 DEF theMusicPlayWithSubs Level
@@ -400,75 +351,75 @@ DEF theMusicPlayWithSubs Level
 			{
 				if (nCurMusicPlayWithSubsItem0 == 0)
 				{
-					var a = GetSectionTitles(0);
+					var a = GetSavedValue("LauncherMenu", "Title0");
 					if(a == "")
 					{
 						return;
 					}
 					else
 					{
-						CurFillDir = GetSectionPaths(0);
-						subTitle0 = GetSectionTitles(0);
+						CurFillDir = GetSavedValue("LauncherMenu", "Path0");
+						subTitle0  = a;
 						thePlayerPanelIn.Play();
 						StartMusicEditor();
 					}
 				}
 				else if (nCurMusicPlayWithSubsItem0 == 1)
 				{
-					var a = GetSectionTitles(1);
+					var a = GetSavedValue("LauncherMenu", "Title1");
 					if(a == "")
 					{
 						return;
 					}
 					else
 					{
-						CurFillDir = GetSectionPaths(1);
-						subTitle0 = GetSectionTitles(1);
+						CurFillDir = GetSavedValue("LauncherMenu", "Path1");
+						subTitle0  = a;
 						thePlayerPanelIn.Play();
 						StartMusicEditor();
 					}
 				}
 				else if (nCurMusicPlayWithSubsItem0 == 2)
 				{
-					var a = GetSectionTitles(2);
+					var a = GetSavedValue("LauncherMenu", "Title2");
 					if(a == "")
 					{
 						return;
 					}
 					else
 					{
-						CurFillDir = GetSectionPaths(2);
-						subTitle0 = GetSectionTitles(2);
+						CurFillDir = GetSavedValue("LauncherMenu", "Path2");
+						subTitle0  = a;
 						thePlayerPanelIn.Play();
 						StartMusicEditor();
 					}
 				}
 				else if (nCurMusicPlayWithSubsItem0 == 3)
 				{
-					var a = GetSectionTitles(3);
+					var a = GetSavedValue("LauncherMenu", "Title3");
 					if(a == "")
 					{
 						return;
 					}
 					else
 					{
-						CurFillDir = GetSectionPaths(3);
-						subTitle0 = GetSectionTitles(3);
+						CurFillDir = GetSavedValue("LauncherMenu", "Path3");
+						subTitle0  = a;
 						thePlayerPanelIn.Play();
 						StartMusicEditor();
 					}
 				}
 				else if (nCurMusicPlayWithSubsItem0 == 4)
 				{
-					var a = GetSectionTitles(4);
+					var a = GetSavedValue("LauncherMenu", "Title4");
 					if(a == "")
 					{
 						return;
 					}
 					else
 					{
-						CurFillDir = GetSectionPaths(4);
-						subTitle0 = GetSectionTitles(4);
+						CurFillDir = GetSavedValue("LauncherMenu", "Path4");
+						subTitle0  = a;
 						thePlayerPanelIn.Play();
 						StartMusicEditor();
 					}
@@ -548,9 +499,7 @@ DEF theMusicPlayWithSubs Level
 		{
 			if (bMusicPlayWithSubsVisible0)
 			{
-				var nMenuItemCount = ReturnInteger(GetConfigInfo());
-				
-				if (nCurMusicPlayWithSubsItem0 < nMenuItemCount - 1)
+				if (nCurMusicPlayWithSubsItem0 < TotalSections - 1)
 				{
 					PlaySoundMenuChange();
 					nCurMusicPlayWithSubsItem0 = nCurMusicPlayWithSubsItem0 + 1;
