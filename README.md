@@ -20,18 +20,18 @@ Modern/Re-Implemented Patches and Scripts for the Xbox Dashboard #5960
 ## Example config.xbx
 ```
 [default]
-UseThcOrb=false
+MainOrbStyle=Stock
 ShowInsignia=false
-Display4MainMenuItems=true
 
 [MainMenu]
+MainMenuItems=4
 Button1Text=MEMORY
 Button1Action=GoToMemory()
 Button2Text=MUSIC
 Button2Action=GoToMusic()
 Button3Text=XONLINE
 Button3Action=EnterLiveToday(false)
-ButtonYXAction=theGamesMenuIn.Play();GoToMusicPlayWithSubs()
+ButtonYXAction=GoToLauncher()
 
 [LauncherMenu]
 Title0=Applications

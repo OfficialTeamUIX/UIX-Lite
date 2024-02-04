@@ -3608,7 +3608,8 @@ function StartSettingsMenu()
 		sSettingsMenu[index] = theTranslator.Translate("Launcher");
 		index = index + 1;
 	}
-	sSettingsMenu[index] = theTranslator.Translate("Use tHc Orb");
+	
+	sSettingsMenu[index] = theTranslator.Translate("Configuration");
 	index = index + 1;
 	sSettingsMenu[index] = theTranslator.Translate("CLOCK");
 	index = index + 1;
@@ -3723,7 +3724,7 @@ function MenuIcon()
 	{ 
 		ShowIcon(c.ConsoleIcon); 
 	}
-	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Use tHc Orb"))
+	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Configuration"))
 	{
 		ShowIcon(c.ConsoleIcon);
 	}
@@ -3791,16 +3792,9 @@ function UpdateRootMeta()
 	{ 
 		metaString = "Launch A Title"; 
 	}
-	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Use tHc Orb"))
-	{
-		if(GetSavedBooleanValue("default","UseThcOrb"))
-		{
-			metaString = theTranslator.Translate("ENABLED");
-		}
-		else
-		{
-			metaString = theTranslator.Translate("DISABLED");
-		}
+	if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Configuration")) 
+	{ 
+		metaString = "UIX Custom Settings"; 
 	}
 	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("CLOCK"))
 	{
@@ -4085,19 +4079,10 @@ DEF theSettingsMenu Level
 				bBackToSettings = true;
 				GoToMusicPlayWithSubs();
 			}
-			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Use tHc Orb"))
+			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Configuration"))
 			{
-				if(GetSavedBooleanValue("default","UseThcOrb"))
-				{
-					SetSavedBooleanValue("default","UseThcOrb",false); 
-				}
-				else 
-				{
-					SetSavedBooleanValue("default","UseThcOrb",true);
-				}
-				UpdateRootMeta();
-				//TellUser("Settings saved! You will need to reboot before the new settings will take effect.","");
-				AskQuestion("Settings saved! You will need to reboot before the new settings will take effect. \n\nWould you like to reboot now?","Reboot()","",1);
+				strCurMenu = "Configuration";
+				GoToUIXConfig();
 			}
 			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("CLOCK"))
 			{

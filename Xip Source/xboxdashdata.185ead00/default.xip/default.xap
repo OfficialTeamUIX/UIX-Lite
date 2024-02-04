@@ -507,6 +507,27 @@ function GoToSettings()
 
 ////////////////////////////////////////////////////////////////////////////
 
+DEF theUIXConfigInline Inline
+{
+	visible false
+	url "config.xap"
+
+	function onLoad()
+	{
+		theUIXConfigInline.children[0].theConfigPanel.GoTo();
+	}
+}
+
+function GoToUIXConfig()
+{
+	if (theUIXConfigInline.visible)
+		theUIXConfigInline.children[0].theConfigPanel.GoTo();
+	else
+		theUIXConfigInline.visible = true;
+}
+	
+////////////////////////////////////////////////////////////////////////////
+
 function ClearInvalidMU()
 {
 	theMemoryMonitor.invalidDevUnit = -1;
@@ -1266,14 +1287,18 @@ DEF theMainMenu Level
 					c.Main_memory_ringpin_2.SetTranslation(56.830002, 32.290001, 101.900002);   // Music
 					c.Main_memory_ringpin_4.SetTranslation(57.430000, -23.379999, 101.500000);  // Settings
 				}
-				// Setup Main Menu Button Text
+				// Setup Main Menu Buttons
 				c.MainMenuButton1_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button1Text"));
+				Button1Action = GetSavedValue("MainMenu","Button1Action");
 				c.MainMenuButton2_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button2Text"));
+				Button2Action = GetSavedValue("MainMenu","Button2Action");
 				c.MainMenuButton3_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button3Text"));
 				if(ShowInsignia & c.MainMenuButton1_Text.text == theTranslator.Translate("XONLINE")) c.MainMenuButton1_Text.text = theTranslator.Translate("INSIGNIA");
 				if(ShowInsignia & c.MainMenuButton2_Text.text == theTranslator.Translate("XONLINE")) c.MainMenuButton2_Text.text = theTranslator.Translate("INSIGNIA");
 				if(ShowInsignia & c.MainMenuButton3_Text.text == theTranslator.Translate("XONLINE")) c.MainMenuButton3_Text.text = theTranslator.Translate("INSIGNIA");
-				c.MainMenuButton4_Text.text = theTranslator.Translate("SETTINGS");                
+				Button3Action = GetSavedValue("MainMenu","Button3Action");
+				c.MainMenuButton4_Text.text = theTranslator.Translate("SETTINGS");
+				ButtonYXAction = GetSavedValue("MainMenu","ButtonYXAction");
 				
 				g_theMainMenuLoaded = true;
 				UpdateMainMenu(); 
@@ -1374,17 +1399,17 @@ DEF theMainMenu Level
 			if (nCurMainMenuItem == 0)  // Memory Button
 			{
 				theGamesMenuIn.Play();
-				eval(GetSavedValue("MainMenu","Button1Action"));
+				eval(Button1Action);
 			}
 			else if (nCurMainMenuItem == 1) // Music Button
 			{
 				theMusicMenuIn.Play();
-				eval(GetSavedValue("MainMenu","Button2Action"));
+				eval(Button2Action);
 			}
 			else if (nCurMainMenuItem == 2) // Xbox Live Button
 			{
 				theGamesMenuIn.Play();      // TODO: Get final sound
-				eval(GetSavedValue("MainMenu","Button3Action"));      // Enter LiveToday
+				eval(Button3Action);        // Enter LiveToday
 			}
 			else if (nCurMainMenuItem == 3) // Settings Button
 			{
@@ -1448,7 +1473,7 @@ DEF theMainMenu Level
 		function OnKeyVerified()
 		{
 			//theConfig.ToggleNoisyCamera();
-			eval(GetSavedValue("MainMenu","ButtonYXAction"));
+			eval(ButtonYXAction);
 		}        
 	}
 	
@@ -1526,6 +1551,10 @@ var ShowInsignia;
 var bMusicPlayerReady;
 var currentMusicPlayerMode;
 
+var Button1Action;
+var Button2Action;
+var Button3Action;
+var ButtonYXAction;
 var bBackToSettings;
 var nXOLineButton;
 var launchPath;
@@ -1578,7 +1607,8 @@ function initialize()
 	g_bLeaveMemoryUnitsBlocked = false;
 	ConfigFile = new Settings;
 	ConfigFile.file = "Y:\\config.xbx";
-	thcorb = GetSavedBooleanValue("default","UseThcOrb");
+	
+	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
 
 	theAmbientSound0.Play();
@@ -1586,7 +1616,7 @@ function initialize()
 	theAmbientSound2.Play();
 	
 	// Figure out if we need to display 3 or 4 items on the main menu
-	g_bDisplay4MenuItems = GetSavedBooleanValue("default","Display4MainMenuItems");
+	g_bDisplay4MenuItems = (GetSavedValue("MainMenu","MainMenuItems") == "4");
 	
 	var nLanguage = theConfig.GetLanguage();
 	if (nLanguage != 0) nLanguage = nLanguage - 1;
@@ -2813,6 +2843,17 @@ function LaunchItem(x,y)
 function Reboot()//scripted reboot - last stage of a recovery is to reboot - let's make the box think we just did a recovery and now it's time to reboot :)
 {
 	theSettingsInline.children[0].theRecovery.FinishRecovery();
+}
+
+function GoToLauncher()
+{
+	theGamesMenuIn.Play();
+	GoToMusicPlayWithSubs();
+}
+
+function ToggleNoisyCam()
+{
+	theConfig.ToggleNoisyCamera();
 }
 
 function EnableCurrentAlternateViewpoint()

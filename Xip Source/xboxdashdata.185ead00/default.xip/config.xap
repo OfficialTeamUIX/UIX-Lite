@@ -1,0 +1,843 @@
+var configList;
+var configValues;
+var configSelect;
+var LV1Item;
+var LV1Hold;
+var inLV1;
+var LV2Item;
+var LV2Hold;
+var inLV2;
+var settChanged;
+var KeyboardTitle; 
+var inQuickLaunchMenu;
+
+function initialize()
+{
+	inLV1 = true;
+	LV1Item = 0;
+	LV1Hold = 0;
+	LV2Item = 0;
+	LV2Hold = 0;
+	inLV2 = false;
+	settChanged = false;
+	inQuickLaunchMenu = false;
+}
+
+//can place the next few functions in default.xap
+function parseTrans(a,b) //search for the example somewhere in the config xap
+{
+	var inTran = returnString(a); //convert to string (new function) so we can parse
+	var parsy1 = inTran.substr(0, inTran.indexOf(" "));
+	var parsy2temp = inTran.substr(inTran.indexOf(" ") + 1, inTran.length());
+	var parsy2 = parsy2temp.substr(0, parsy2temp.indexOf(" "));
+	var parsy3 = parsy2temp.substr(parsy2temp.indexOf(" ") + 1, parsy2temp.length());
+	
+	var xTrans = StringtoInteger(parsy1); //convert back to int. before returning the value
+	var yTrans = StringtoInteger(parsy2);
+	var zTrans = StringtoInteger(parsy3);
+	
+	if(b == "X")
+	return xTrans;
+	else if(b == "Y")
+	return yTrans;
+	else if(b == "Z")
+	return zTrans;
+}
+
+function returnString(x)
+{
+	theIntToString.children[0].geometry.text = x;
+	var b = theIntToString.children[0].geometry.text;
+	return b;
+}
+
+DEF theIntToString Transform
+{
+	visible false
+	children
+	[
+		Shape
+		{
+			appearance MaxMaterial { name "ItemsType" }
+			geometry DEF theIntToStringtext Text { font "Body" width -15 translate false text ""}
+		}
+	]
+	scale 1 1 1
+	translation 2 -26 0
+}
+
+function StringtoInteger( thestring )
+{
+	var tempstring = thestring;
+	var verysmallnumber = -10000;
+	var theinteger = Math.max(tempstring, verysmallnumber);
+	return theinteger;
+}
+
+function buildconfigList() //written this way so u can easily rearrange and add, so dont change it!
+{
+	var i = 0;
+	configList = new Array;
+	configList[i] = "General Settings";
+	i = i + 1;
+	configList[i] = "Main Menu";
+	i = i + 1;
+	configList[i] = "Launcher Menu";
+	i = i + 1;
+	configList[i] = "Show in Settings";
+	i = i + 1;
+	configList[i] = "Quick Launch";
+	
+	clearText();
+	updateText();
+}
+
+function buildGSList() //just copy this function for more subsections
+{
+	var i = 0;
+	configList = new Array;
+	configValues = new Array;
+	configSelect = new Array;
+	configList[i] = "Main Orb Style:";
+	configValues[i] = "default-MainOrbStyle"; //section-value
+	configSelect[i] = "toggleMOS()";
+	i = i + 1;
+	configList[i] = "Show Insignia:";
+	configValues[i] = "default-ShowInsignia";
+	configSelect[i] = "toggleTF()";
+
+	clearText();
+	updateText();
+}
+
+function buildMMList() 
+{
+	var i = 0;
+	configList = new Array;
+	configValues = new Array;
+	configSelect = new Array;
+	configList[i] = "Main Menu Items:";
+	configValues[i] = "MainMenu-MainMenuItems";
+	configSelect[i] = "toggle34()";
+	i = i + 1;
+	
+	configList[i] = "Item 1 Text";
+	configValues[i] = "MainMenu-Button1Text";
+	configSelect[i] = "toggleMMB()";
+	i = i + 1;
+	
+	configList[i] = "Item 1 Function";
+	configValues[i] = "MainMenu-Button1Action";
+	configSelect[i] = "toggleMMF()";
+	i = i + 1;
+	
+	configList[i] = "Item 2 Text";
+	configValues[i] = "MainMenu-Button2Text";
+	configSelect[i] = "toggleMMB()";
+	i = i + 1;
+	
+	configList[i] = "Item 2 Function";
+	configValues[i] = "MainMenu-Button2Action";
+	configSelect[i] = "toggleMMF()";
+	i = i + 1;
+	
+	configList[i] = "Item 3 Text";
+	configValues[i] = "MainMenu-Button3Text";
+	configSelect[i] = "toggleMMB()";
+	i = i + 1;
+	
+	configList[i] = "Item 3 Function";
+	configValues[i] = "MainMenu-Button3Action";
+	configSelect[i] = "toggleMMF()";
+	i = i + 1;
+	
+	configList[i] = "Button YX Function";
+	configValues[i] = "MainMenu-ButtonYXAction";
+	configSelect[i] = "toggleYX()";
+	
+	clearText();
+	updateText();
+}
+
+function buildHDList()
+{
+	var i = 0;
+	configList = new Array;
+	configValues = new Array;
+	configSelect = new Array;
+	
+	configList[i] = "Item 1 Title";
+	configValues[i] = "LauncherMenu-Title0";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Item 1 Folder";
+	configValues[i] = "LauncherMenu-Path0";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Item 2 Title";
+	configValues[i] = "LauncherMenu-Title1";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Item 2 Folder";
+	configValues[i] = "LauncherMenu-Path1";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Item 3 Title";
+	configValues[i] = "LauncherMenu-Title2";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Item 3 Folder";
+	configValues[i] = "LauncherMenu-Path2";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	
+	configList[i] = "Item 4 Title";
+	configValues[i] = "LauncherMenu-Title3";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Item 4 Folder";
+	configValues[i] = "LauncherMenu-Path3";
+	configSelect[i] = "configKeyb()";
+	
+	clearText();
+	updateText();
+}
+
+function BuildSSList()
+{
+	var i = 0;
+	configList = new Array;
+	configValues = new Array;
+	configSelect = new Array;
+	configList[i] = "Memory:";
+	configValues[i] = "ShowInSettings-Memory";
+	configSelect[i] = "toggleTF()";
+	i = i + 1;
+	configList[i] = "Music:";
+	configValues[i] = "ShowInSettings-Music";
+	configSelect[i] = "toggleTF()";
+	i = i + 1;
+	configList[i] = "XOnline:";
+	configValues[i] = "ShowInSettings-XOnline";
+	configSelect[i] = "toggleTF()";
+	i = i +1;
+	configList[i] = "Launcher:";
+	configValues[i] = "ShowInSettings-Launcher";
+	configSelect[i] = "toggleTF()";
+	
+	clearText();
+	updateText();
+}
+
+function BuildQLList()
+{
+	var i = 0;
+	configList = new Array;
+	configValues = new Array;
+	configSelect = new Array;
+	
+	configList[i] = "A:";
+	configValues[i] = "QuickLaunch-QuickLaunchA";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	configList[i] = "B:";
+	configValues[i] = "QuickLaunch-QuickLaunchB";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	configList[i] = "X:";
+	configValues[i] = "QuickLaunch-QuickLaunchX";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	configList[i] = "Y:";
+	configValues[i] = "QuickLaunch-QuickLaunchY";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;  
+	
+	clearText();
+	updateText();
+}
+
+function toggleTF()
+{
+	var c = theConfigPanel.children[0].children[0];
+	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	if(b.toLowerCase() == "true")
+	{
+		refreshMenu("false");
+	}
+	else
+	{
+		refreshMenu("true");
+	}
+}
+
+function toggle34()
+{
+	var c = theConfigPanel.children[0].children[0];
+	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	if(b.toLowerCase() == "3") { refreshMenu("4"); }
+	else if(b.toLowerCase() == "4") { refreshMenu("3"); }
+}
+
+function toggle345()
+{
+	var c = theConfigPanel.children[0].children[0];
+	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	if(b.toLowerCase() == "3") { refreshMenu("4"); }
+	else if(b.toLowerCase() == "4") { refreshMenu("5"); }
+	else if(b.toLowerCase() == "5") { refreshMenu("3"); }
+}
+
+function toggleMOS()
+{
+	var c = theConfigPanel.children[0].children[0];
+	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	if(b.toLowerCase() == "thc")
+		refreshMenu("Stock");
+	else 
+		refreshMenu("tHc");
+}
+
+function toggleBacking()
+{
+	var c = theConfigPanel.children[0].children[0];
+	if(c.panel02_backing.visible == true) { c.panel02_backing.visible = false; }
+	else if(c.panel02_backing.visible == false) { c.panel02_backing.visible = true; }
+}
+
+function toggleYX()
+{
+	var c = theConfigPanel.children[0].children[0];
+	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	if(b == "ToggleNoisyCam()") { refreshMenu("GoToLauncher()"); }
+	else if(b == "GoToLauncher()") { refreshMenu("nothing"); }
+	else if(b == "nothing") { refreshMenu("ToggleNoisyCam()"); }
+}
+
+function toggleMMF()
+{
+	var c = theConfigPanel.children[0].children[0];
+	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	if(b == "GoToMemory()") { refreshMenu("GoToMusic()"); }
+	else if(b == "GoToMusic()") { refreshMenu("EnterLiveToday(false)"); }
+	else if(b == "EnterLiveToday(false)") { refreshMenu("GoToLauncher()"); }
+	else if(b == "GoToLauncher()") { refreshMenu("GoToMemory()"); }
+}
+
+function toggleMMB()
+{
+	var c = theConfigPanel.children[0].children[0];
+	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	if(b.toLowerCase() == "memory") { refreshMenu("MUSIC"); }
+	else if(b.toLowerCase() == "music") { refreshMenu("XONLINE"); }
+	else if(b.toLowerCase() == "xonline") { refreshMenu("LAUNCHER"); }
+	else if(b.toLowerCase() == "launcher") { refreshMenu("MEMORY"); }
+}
+
+function configKeyb()
+{
+	var c = theConfigPanel.children[0].children[0];
+	var a = c.theLeftSlots.children[LV2Item].children[0].geometry.text; //title
+	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text; //edit
+	if(inQuickLaunchMenu & b.length() > 30)
+	{
+		var x = b.substr(10);
+		var y = x.indexOf("\\");
+		y = y + 11;
+		KeyboardTitle = b.substr(0,y);
+		var z = b.substr(y);
+		ShowKeyboard(KeyboardTitle, z, "theUIXConfigInline.children[0].refreshMenu2(strKeyboardEdit)", "");
+	} 
+	else
+	{
+		ShowKeyboard(a, b, "theUIXConfigInline.children[0].refreshMenu(strKeyboardEdit)", "");
+	}
+}
+
+function refreshMenu2(x)
+{
+	var c = theConfigPanel.children[0].children[0];
+	var cValue = KeyboardTitle + x; 
+	c.theRightSlots.children[LV2Item].children[0].geometry.text = cValue;
+	setConfigMenuValue(configValues[LV2Item],cValue);
+}
+
+function refreshMenu(x)
+{
+	var c = theConfigPanel.children[0].children[0];
+	var cValue = x; 
+	c.theRightSlots.children[LV2Item].children[0].geometry.text = cValue;
+	setConfigMenuValue(configValues[LV2Item],cValue);
+}
+
+function tabSlot(x)
+{
+	var c = theConfigPanel.children[0].children[0];
+	var indentItemTrans = c.theLeftSlots.children[x].translation;
+	c.theLeftSlots.children[x].SetTranslation(2.35, parseTrans(indentItemTrans,"Y"), parseTrans(indentItemTrans,"Z"));
+}
+
+function unTabSlot(x)
+{
+	var c = theConfigPanel.children[0].children[0];
+	var indentItemTrans = c.theLeftSlots.children[x].translation;
+	c.theLeftSlots.children[x].SetTranslation(2, parseTrans(indentItemTrans,"Y"), parseTrans(indentItemTrans,"Z"));
+}
+
+function updateText()
+{
+	var c = theConfigPanel.children[0].children[0];
+	var loopLength = configList.length;
+	if(loopLength > 11) loopLength = 12;
+	for(var i = 0; i < loopLength; i = i + 1)
+	{
+		//left slots
+		c.theLeftSlots.children[i].children[0].geometry.text = configList[i];
+		if(configList[i].substr(0, 2) == "  ")
+		{
+			c.theLeftSlots.children[i].children[0].appearance.name = "RedType";
+			c.theLeftSlots.children[i].children[0].geometry.font = "Heading";
+		}
+		//right slots
+		if(inLV2 == true)
+		c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[i]);
+	}
+	if(configList.length > 12)
+	c.theDownArrow.visible = true;
+}
+
+function getConfigMenuValue(x)
+{
+	var dud = " ";
+	if(x == "-blank-")
+	return dud;
+	var vSection = x.substr(0,x.indexOf("-"));
+	var vValue = x.substr(x.indexOf("-") + 1, x.length());
+	var b = GetSavedValue(vSection,vValue);
+	return b;
+}
+
+function setConfigMenuValue(x,y)
+{
+	var vSection = x.substr(0,x.indexOf("-"));
+	var vValue = x.substr(x.indexOf("-") + 1, x.length());
+	SetSavedValue(vSection,vValue,y);
+}
+
+function clearText()
+{
+	var c = theConfigPanel.children[0].children[0];
+	for(var i = 0; i < 12; i = i + 1)
+	{
+		c.theLeftSlots.children[i].children[0].geometry.text = "";
+		c.theLeftSlots.children[i].children[0].appearance.name = "CellEgg/Partsz"; //NavType is selected
+		c.theLeftSlots.children[i].children[0].geometry.font = "Body";
+		
+		c.theRightSlots.children[i].children[0].geometry.text = "";
+		c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz"; //NavType is selected
+		c.theRightSlots.children[i].children[0].geometry.font = "Body";
+	}
+}
+
+DEF theConfigPanel Level
+{
+	archive "settings3.xip"
+	unloadable false
+	children
+	[
+		Inline
+		{
+			url "settings3/default2.xap"        
+			function onLoad()
+			{   
+				var c = theConfigPanel.children[0].children[0];
+				buildconfigList();
+				inLV1 = true;
+				tabSlot(0);
+				c.theLeftSlots.children[0].children[0].appearance.name = "NavType";
+				c.theConfigHeader.children[0].geometry.text = "UIX ULTRA LITE";
+				c.GlobeIcon.visible = true;
+			}       
+		}
+	]
+	
+	shell Transform
+	{
+		scale 7 7 7 //150
+		translation 108.8 1.022000 -223.050006
+		children
+		[
+			Waver
+			{
+				rpm 0.75
+				children
+				[
+					Shape
+					{
+						appearance Appearance
+						{
+							material MaxMaterial { name "InnerWall_01" }
+							texture ImageTexture
+							{
+								alpha true
+								url "cellwall.xbx"
+							}
+						}
+						geometry Mesh { url "Inner_cell-FACES.xm" }
+					}
+					Shape
+					{
+						appearance Appearance { material MaxMaterial { name "InnerWall_02" } }
+						geometry Sphere { radius 1 }
+					}
+				]
+			}
+		]
+	}
+	
+	path DEF theConfigMenuViewpoint Viewpoint
+	{
+		position 107.8 1.422000 -219.050006
+		orientation 0.03682 0.9993 0.00299 -0.1622
+		fieldOfView 1.287
+		jump false
+	}
+	
+	control DEF theSettings34Joystick Joystick
+	{
+		function OnADown()
+		{
+			var c = theConfigPanel.children[0].children[0];
+			c.MU_select_pod_HL.children[0].appearance.material.param = 1;
+			PlaySoundA();
+			if(inLV1 == true)
+			{
+				unTabSlot(LV1Hold);
+				inLV1 = false;
+				inLV2 = true;
+				LV2Item = 0;
+				LV2Hold = 0;
+				
+				if(configList[LV1Item] == "General Settings") ///add new subs here
+				{
+					buildGSList();
+					tabSlot(LV2Hold);
+					c.theConfigHeader.children[0].geometry.text = "General Settings";
+					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "NavType";
+				}
+				else if(configList[LV1Item] == "Main Menu")
+				{
+					buildMMList();
+					tabSlot(LV2Hold);
+					c.theConfigHeader.children[0].geometry.text = "Main Menu";
+					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "NavType";
+				}
+				else if(configList[LV1Item] == "Launcher Menu")
+				{
+					buildHDList();
+					tabSlot(LV2Hold);
+					c.theConfigHeader.children[0].geometry.text = "Launcher Menu";
+					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "NavType";
+				}
+				else if(configList[LV1Item] == "Show in Settings")
+				{
+					BuildSSList();
+					tabSlot(LV2Hold);
+					c.theConfigHeader.children[0].geometry.text = "Show in Settings";
+					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "NavType";
+				}
+				else if(configList[LV1Item] == "Quick Launch")
+				{
+					BuildQLList();
+					tabSlot(LV2Hold);
+					c.theConfigHeader.children[0].geometry.text = "Quick Launch";
+					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "NavType";
+					inQuickLaunchMenu = true;
+				}
+			}
+			else if(inLV2 == true)
+			{
+				settChanged = true;
+				eval(configSelect[LV2Item]);
+			}
+		}
+		
+		function OnMoveDown()
+		{
+			selectConfigDown();
+		}
+		
+		function OnMoveUp()
+		{
+			selectConfigUp();
+		}
+		
+		function OnBDown()
+		{
+			var c = theConfigPanel.children[0].children[0];
+			c.MU_back_pod_HL.children[0].appearance.material.param = 1;
+			PlaySoundB();
+			if(inLV1 == false)
+			{
+				inQuickLaunchMenu = false;
+				inLV2 = false;
+				inLV1 = true;
+				buildconfigList();
+				unTabSlot(LV2Hold);
+				tabSlot(LV1Hold);
+				c.theDownArrow.visible = false;
+				c.theUpArrow.visible = false;
+				c.theLeftSlots.children[LV1Hold].children[0].appearance.name = "NavType";
+				c.theConfigHeader.children[0].geometry.text = "UIX ULTRA LITE";
+			}
+			else
+			{
+				if(settChanged == true)
+					AskQuestion("You will need to reboot before the new settings will take effect. \n\nWould you like to reboot now?", "Reboot()", "theUIXConfigInline.children[0].leaveConfig()", 1);
+				else if(settChanged == false)
+					leaveConfig();
+			}
+		}
+		
+		function OnWhiteDown()
+		{
+			toggleBacking();
+			//theConfig.DebugOutput( configList[LV1Item] );
+		}
+	}
+	
+	function OnActivate()
+	{
+		CurrentViewpoint = theConfigMenuViewpoint;
+	}
+	
+	function OnDeactivate()
+	{
+
+	}   
+}
+
+function leaveConfig()
+{
+	theSettingsSubMenuOut.Play();
+	GoToSettings();
+}
+
+function selectConfigDown()
+{
+	var c = theConfigPanel.children[0].children[0];
+	var curItem;
+	var curHold;    
+	if(inLV1 == true)
+	{
+		curItem = LV1Item;
+		curHold = LV1Hold;
+	}
+	else
+	{
+		curItem = LV2Item;
+		curHold = LV2Hold;
+	}
+	
+	if(curItem + 1 == configList.length) //end of list
+	return;
+	
+	PlaySoundMenuChange();
+	if(curHold == 11) //SCROLL MENU DOWN
+	{
+		c.theUpArrow.visible = true;        
+		if(configList.length > curItem + 1)
+		{
+			curItem = curItem + 1;
+			for(var i = 0; i < 12; i = i + 1)
+			{
+				c.theLeftSlots.children[i].children[0].geometry.text = configList[curItem + (i - 11)];
+				if(inLV2 == true)
+				c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[curItem + (i - 11)]);
+			}
+			
+		}
+		if(configList.length == curItem + 1)
+		c.theDownArrow.visible = false;
+	}   
+	
+	else if(curHold < 11)
+	{
+		unTabSlot(curHold);
+		c.theLeftSlots.children[curHold].children[0].appearance.name = "CellEgg/Partsz";        
+		curItem = curItem + 1;
+		curHold = curHold + 1;
+		
+		tabSlot(curHold);
+		c.theLeftSlots.children[curHold].children[0].appearance.name = "NavType";       
+	}
+	
+	if(inLV1 == true)
+	{
+		LV1Item = curItem;
+		LV1Hold = curHold;
+	}
+	else
+	{
+		LV2Item = curItem;
+		LV2Hold = curHold;
+	}
+	
+}
+
+function selectConfigUp()
+{
+	var c = theConfigPanel.children[0].children[0];
+	var curItem;
+	var curHold;    
+	if(inLV1 == true)
+	{
+		curItem = LV1Item;
+		curHold = LV1Hold;
+	}
+	else
+	{
+		curItem = LV2Item;
+		curHold = LV2Hold;
+	}
+	
+	if(curItem == 0) 
+	return;
+	
+	PlaySoundMenuChange();
+	if(curItem > 0)
+	{
+		if(curHold == 0)
+		{
+			c.theDownArrow.visible = true;
+			if(curItem != 0)
+			{
+				curItem = curItem - 1;
+				for(var i = 0; i < 12; i = i + 1)
+				{
+					c.theLeftSlots.children[i].children[0].geometry.text = configList[curItem + i];
+					if(inLV2 == true)
+					c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[curItem + i]);
+				}
+			}
+			if(curItem == 0)
+			c.theUpArrow.visible = false;
+		}
+		else
+		{
+			unTabSlot(curHold);
+			c.theLeftSlots.children[curHold].children[0].appearance.name = "CellEgg/Partsz";            
+			curItem = curItem - 1;
+			curHold = curHold - 1;
+			
+			tabSlot(curHold);
+			c.theLeftSlots.children[curHold].children[0].appearance.name = "NavType";
+		}
+	}   
+	
+	if(inLV1 == true)
+	{
+		LV1Item = curItem;
+		LV1Hold = curHold;
+	}
+	else
+	{
+		LV2Item = curItem;
+		LV2Hold = curHold;
+	}
+	
+}
+
+function scrollConfigDown()
+{
+	var c = theConfigPanel.children[0].children[0];
+	
+	var curItem;
+	if(inLV1 == true)
+	curItem = LV1Item;
+	else if(inLV2 == true)
+	curItem = LV2Item;
+	
+	c.theUpArrow.visible = true;
+	
+	if(configList.length > curItem + 1)
+	{
+		curItem = curItem + 1;
+		for(var i = 0; i < 12; i = i + 1)
+		{
+			c.theLeftSlots.children[i].children[0].geometry.text = configList[curItem + (i - 11)];
+			if(inLV2 == true)
+			c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[curItem + (i - 11)]);
+		}
+		
+		if(inLV1 == true)
+		LV1Item = curItem;
+		else if(inLV2 == true)
+		LV2Item = curItem;
+	}
+	if(configList.length == curItem + 1)
+	c.theDownArrow.visible = false;
+}
+
+function scrollConfigUp()
+{
+	var c = theConfigPanel.children[0].children[0];
+	
+	var curItem;
+	if(inLV1 == true)
+	curItem = LV1Item;
+	else if(inLV2 == true)
+	curItem = LV2Item;
+	
+	c.theDownArrow.visible = true;
+	
+	if(curItem != 0)
+	{
+		curItem = curItem - 1;
+		for(var i = 0; i < 12; i = i + 1)
+		{
+			c.theLeftSlots.children[i].children[0].geometry.text = configList[curItem + i];
+			if(inLV2 == true)
+			c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[curItem + i]);
+		}
+		
+		if(inLV1 == true)
+		LV1Item = curItem;
+		else if(inLV2 == true)
+		LV2Item = curItem;
+	}
+	if(curItem == 0)
+	c.theUpArrow.visible = false;
+}
+
+function updateHeaders()
+{
+	var c = theConfigPanel.children[0].children[0];
+	var az;
+	for(var i = 0; i < 12; i = i + 1)
+	{
+		az = c.theLeftSlots.children[i].children[0].geometry.text;
+		if(az.substr(0, 2) == "  ")
+		{
+			c.theLeftSlots.children[i].children[0].appearance.name = "RedType";
+			c.theLeftSlots.children[i].children[0].geometry.font = "Heading";
+		}
+		else
+		{
+			c.theLeftSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
+			c.theLeftSlots.children[i].children[0].geometry.font = "Body";
+		}
+	}
+	var curHold;
+	if(inLV1 == true) { curHold = LV1Hold; }
+	else if(inLV2 == true) { curHold = LV2Hold; }
+}
+
+
