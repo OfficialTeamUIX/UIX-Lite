@@ -427,7 +427,6 @@ DEF theMusicPlayWithSubs Level
 			}
 			else
 			{
-				gamelaunch = true;
 				LaunchItem(CurFillDir,TempTitleList[nPlayCursor0]);
 			}
 		}
