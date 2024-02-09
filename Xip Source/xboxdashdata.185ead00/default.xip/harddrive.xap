@@ -469,8 +469,47 @@ DEF theMusicPlayWithSubs Level
 			}
 		}
 		
-		function OnRightDown()  { RightTrigger = true; }
-		function OnRightUp()  { RightTrigger = false; }
+		function OnMoveRight()  
+			{ 
+				if (bMusicPlayWithSubsVisible0 == false)
+				{
+					var a = (TempTitleList.length - 1);
+					if (nPlayCursor0 + 9 <= a)
+					{
+						nPlayCursor0 = nPlayCursor0 + 9;
+					}
+					else if(nPlayCursor0 == a)
+					{
+						nPlayCursor0 = 0;
+					} 
+					else if(a - nPlayCursor0 < 9)
+					{
+						nPlayCursor0 = a;
+					}
+					UpdateTrackList();
+				}
+			}
+			
+		function OnMoveLeft()  
+			{  
+				if (bMusicPlayWithSubsVisible0 == false)
+				{
+					var a = (TempTitleList.length - 1);
+					if (nPlayCursor0 - 9 >= 0)
+					{
+						nPlayCursor0 = nPlayCursor0 - 9;
+					}
+					else if(nPlayCursor0 == 0)
+					{
+						nPlayCursor0 = a;
+					} 
+					else if(nPlayCursor0 - 9 < 9)
+					{
+						nPlayCursor0 = 0;
+					}
+					UpdateTrackList();
+				}
+			}
 
 		function OnMoveUp()
 		{
@@ -485,23 +524,15 @@ DEF theMusicPlayWithSubs Level
 			}
 			else
 			{
-				var b = 1;
-				if(RightTrigger)
-				{
-					if (nPlayCursor0 - 9 >= 0)
-					{
-						b = 9;
-					}
-				}
-				
+				var a = (TempTitleList.length - 1);
 				if (nPlayCursor0 <= 0)
 				{
-					nPlayCursor0 = 0;
+					nPlayCursor0 = a;
 				}
 				else
 				{
 					PlaySoundMenuChange();
-					nPlayCursor0 = nPlayCursor0 - b;
+					nPlayCursor0 = nPlayCursor0 - 1;
 				}
 				UpdateTrackList();
 			}
@@ -521,23 +552,14 @@ DEF theMusicPlayWithSubs Level
 			else
 			{
 				var a = (TempTitleList.length - 1);
-				var b = 1;
-				if(RightTrigger)
-				{
-					if (nPlayCursor0 + 9 <= a)
-					{
-						b = 9;
-					}
-				}
-				
 				if (nPlayCursor0 == a)
 				{
-					return;
+					nPlayCursor0 = 0;
 				}
 				else
 				{
 					PlaySoundMenuChange();
-					nPlayCursor0 = nPlayCursor0 + b;
+					nPlayCursor0 = nPlayCursor0 + 1;
 				}
 				UpdateTrackList();
 			}
