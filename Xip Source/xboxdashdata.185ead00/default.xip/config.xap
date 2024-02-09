@@ -199,7 +199,6 @@ function buildHDList()
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-	
 	configList[i] = "Item 4 Title";
 	configValues[i] = "LauncherMenu-Title3";
 	configSelect[i] = "configKeyb()";
@@ -208,6 +207,16 @@ function buildHDList()
 	configList[i] = "Item 4 Folder";
 	configValues[i] = "LauncherMenu-Path3";
 	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Item 5 Title";
+	configValues[i] = "LauncherMenu-Title4";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Item 5 Folder";
+	configValues[i] = "LauncherMenu-Path4";
+	configSelect[i] = "configKeyb()";  
 	
 	clearText();
 	updateText();
@@ -379,14 +388,14 @@ function refreshMenu(x)
 {
 	var c = theConfigPanel.children[0].children[0];
 	var cValue = x; 
+	if(x == "x" | x == "X") 
+	{   //Delete the key and return if the user enters only an "x" on the keyboard.
+		setConfigMenuValue(configValues[LV2Item],"");
+		c.theRightSlots.children[LV2Item].children[0].geometry.text = "";
+		return; 
+	} 
 	if(inQuickLaunchMenu) 
 	{ 
-		if(x == "x" | x == "X") 
-		{   //Delete the key and return if the user enters only an "x" on the keyboard.
-			setConfigMenuValue(configValues[LV2Item],"");
-			c.theRightSlots.children[LV2Item].children[0].geometry.text = "";
-			return; 
-		}
 		if(AddKeyboardTitle) { cValue = strKeyboardTitle + cValue; AddKeyboardTitle = false; }
 		if(cValue.length() > MaxCharacters) 
 		{   //Add ellipsis to long paths and return

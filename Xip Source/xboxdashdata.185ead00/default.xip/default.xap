@@ -1339,7 +1339,7 @@ DEF theMainMenu Level
 		translation 0 -20 80
 		children
 		[
-			Waver
+			DEF theMainMenuWaver Waver
 			{
 				rpm 0.75
 				children
@@ -1875,7 +1875,23 @@ function StartScreenSaverView()
 		c.theMenuItems.SetAlpha(0);
 		c.select.SetAlpha(0);
 		c.theMainMenuLevel.fade = 100;
-		c.theMainMenuLevel.SetTranslation( 30, -104, 4 );
+		var x = GetRandomInteger(3);
+		if(x == 0) 
+		{
+			c.theMainMenuLevel.SetTranslation( 30, -104, 4 );
+		}
+		else if(x == 1)
+		{
+			c.theMainMenuLevel.SetTranslation( 74, -46, -14 );
+			c.theMainMenuLevel.SetRotation( -0.0006, 0, 0.00005, 0.314159 );
+		}
+		else
+		{
+			c.theMainMenuLevel.SetTranslation( -24, -36, -262 );
+			c.theMainMenuLevel.SetRotation( -0.001, 0.0003, 0.0003, 0.314159 );
+		}
+		theMainMenuWaver.rpm = 2.25;
+		theScreen.brightness = 0.8;
 		EnableCurrentAlternateViewpoint();
 	}
 	else
@@ -1895,6 +1911,8 @@ function StopScreenSaverView()
 		c.theMainMenuLevel.SetTranslation(0,0,0);
 		c.theMenuItems.SetAlpha(1);
 		c.select.SetAlpha(1);
+		theMainMenuWaver.rpm = 0.75;
+		theScreen.brightness = 1;
 		DisableCurrentAlternateViewpoint();
 	}
 	else
@@ -2854,6 +2872,11 @@ function GoToLauncher()
 function ToggleNoisyCam()
 {
 	theConfig.ToggleNoisyCamera();
+}
+
+function GetRandomInteger(max) 
+{
+	return Math.floor(Math.random() * max);
 }
 
 function EnableCurrentAlternateViewpoint()

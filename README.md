@@ -42,6 +42,8 @@ Title2=Games
 Path2=Games
 Title3=Emulators
 Path3=Emus
+Title4=
+Path4=
 
 [ShowInSettings]
 Memory=false
