@@ -23,7 +23,6 @@ function initialize()
 
 function UpdateTrackList()
 {
-	TempTitleList = FillMenuList(CurFillDir);
 	var c = theMusicPlayWithSubs.children[0].children[0];
 	var str = "";
 	c.LowerPanelText.text = subTitle0;
@@ -359,6 +358,7 @@ DEF theMusicPlayWithSubs Level
 					else
 					{
 						CurFillDir = GetSavedValue("LauncherMenu", "Path0");
+						TempTitleList = FillMenuList(CurFillDir);
 						subTitle0  = a;
 						thePlayerPanelIn.Play();
 						StartMusicEditor();
@@ -374,6 +374,7 @@ DEF theMusicPlayWithSubs Level
 					else
 					{
 						CurFillDir = GetSavedValue("LauncherMenu", "Path1");
+						TempTitleList = FillMenuList(CurFillDir);
 						subTitle0  = a;
 						thePlayerPanelIn.Play();
 						StartMusicEditor();
@@ -389,6 +390,7 @@ DEF theMusicPlayWithSubs Level
 					else
 					{
 						CurFillDir = GetSavedValue("LauncherMenu", "Path2");
+						TempTitleList = FillMenuList(CurFillDir);
 						subTitle0  = a;
 						thePlayerPanelIn.Play();
 						StartMusicEditor();
@@ -404,6 +406,7 @@ DEF theMusicPlayWithSubs Level
 					else
 					{
 						CurFillDir = GetSavedValue("LauncherMenu", "Path3");
+						TempTitleList = FillMenuList(CurFillDir);
 						subTitle0  = a;
 						thePlayerPanelIn.Play();
 						StartMusicEditor();
@@ -419,6 +422,7 @@ DEF theMusicPlayWithSubs Level
 					else
 					{
 						CurFillDir = GetSavedValue("LauncherMenu", "Path4");
+						TempTitleList = FillMenuList(CurFillDir);
 						subTitle0  = a;
 						thePlayerPanelIn.Play();
 						StartMusicEditor();
@@ -465,6 +469,9 @@ DEF theMusicPlayWithSubs Level
 			}
 		}
 		
+		function OnRightDown()  { RightTrigger = true; }
+		function OnRightUp()  { RightTrigger = false; }
+
 		function OnMoveUp()
 		{
 			if (bMusicPlayWithSubsVisible0)
@@ -478,17 +485,23 @@ DEF theMusicPlayWithSubs Level
 			}
 			else
 			{
+				var b = 1;
+				if(RightTrigger)
+				{
+					if (nPlayCursor0 - 9 >= 0)
+					{
+						b = 9;
+					}
+				}
+				
 				if (nPlayCursor0 <= 0)
 				{
 					nPlayCursor0 = 0;
 				}
 				else
 				{
-					if(nPlayCursor0 != 0)
-					{
-						PlaySoundMenuChange();
-						nPlayCursor0 = nPlayCursor0 - 1;
-					}
+					PlaySoundMenuChange();
+					nPlayCursor0 = nPlayCursor0 - b;
 				}
 				UpdateTrackList();
 			}
@@ -508,8 +521,14 @@ DEF theMusicPlayWithSubs Level
 			else
 			{
 				var a = (TempTitleList.length - 1);
-				if (nPlayCursor0 < 0)
-				nPlayCursor0 = 0;
+				var b = 1;
+				if(RightTrigger)
+				{
+					if (nPlayCursor0 + 9 <= a)
+					{
+						b = 9;
+					}
+				}
 				
 				if (nPlayCursor0 == a)
 				{
@@ -518,7 +537,7 @@ DEF theMusicPlayWithSubs Level
 				else
 				{
 					PlaySoundMenuChange();
-					nPlayCursor0 = nPlayCursor0 + 1;
+					nPlayCursor0 = nPlayCursor0 + b;
 				}
 				UpdateTrackList();
 			}
