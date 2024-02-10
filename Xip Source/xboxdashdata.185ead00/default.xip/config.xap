@@ -124,37 +124,37 @@ function buildMMList()
 	configSelect[i] = "toggle34()";
 	i = i + 1;
 	
-	configList[i] = "Item 1 Text";
+	configList[i] = "Item 1 Text:";
 	configValues[i] = "MainMenu-Button1Text";
 	configSelect[i] = "toggleMMB()";
 	i = i + 1;
 	
-	configList[i] = "Item 1 Function";
+	configList[i] = "Item 1 Function:";
 	configValues[i] = "MainMenu-Button1Action";
 	configSelect[i] = "toggleMMF()";
 	i = i + 1;
 	
-	configList[i] = "Item 2 Text";
+	configList[i] = "Item 2 Text:";
 	configValues[i] = "MainMenu-Button2Text";
 	configSelect[i] = "toggleMMB()";
 	i = i + 1;
 	
-	configList[i] = "Item 2 Function";
+	configList[i] = "Item 2 Function:";
 	configValues[i] = "MainMenu-Button2Action";
 	configSelect[i] = "toggleMMF()";
 	i = i + 1;
 	
-	configList[i] = "Item 3 Text";
+	configList[i] = "Item 3 Text:";
 	configValues[i] = "MainMenu-Button3Text";
 	configSelect[i] = "toggleMMB()";
 	i = i + 1;
 	
-	configList[i] = "Item 3 Function";
+	configList[i] = "Item 3 Function:";
 	configValues[i] = "MainMenu-Button3Action";
 	configSelect[i] = "toggleMMF()";
 	i = i + 1;
 	
-	configList[i] = "Button YX Function";
+	configList[i] = "Button YX Function:";
 	configValues[i] = "MainMenu-ButtonYXAction";
 	configSelect[i] = "toggleYX()";
 	
@@ -169,52 +169,52 @@ function buildHDList()
 	configValues = new Array;
 	configSelect = new Array;
 	
-	configList[i] = "Item 1 Title";
+	configList[i] = "Item 1 Title:";
 	configValues[i] = "LauncherMenu-Title0";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-	configList[i] = "Item 1 Folder";
+	configList[i] = "Item 1 Folder:";
 	configValues[i] = "LauncherMenu-Path0";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-	configList[i] = "Item 2 Title";
+	configList[i] = "Item 2 Title:";
 	configValues[i] = "LauncherMenu-Title1";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-	configList[i] = "Item 2 Folder";
+	configList[i] = "Item 2 Folder:";
 	configValues[i] = "LauncherMenu-Path1";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-	configList[i] = "Item 3 Title";
+	configList[i] = "Item 3 Title:";
 	configValues[i] = "LauncherMenu-Title2";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-	configList[i] = "Item 3 Folder";
+	configList[i] = "Item 3 Folder:";
 	configValues[i] = "LauncherMenu-Path2";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-	configList[i] = "Item 4 Title";
+	configList[i] = "Item 4 Title:";
 	configValues[i] = "LauncherMenu-Title3";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-	configList[i] = "Item 4 Folder";
+	configList[i] = "Item 4 Folder:";
 	configValues[i] = "LauncherMenu-Path3";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-	configList[i] = "Item 5 Title";
+	configList[i] = "Item 5 Title:";
 	configValues[i] = "LauncherMenu-Title4";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-	configList[i] = "Item 5 Folder";
+	configList[i] = "Item 5 Folder:";
 	configValues[i] = "LauncherMenu-Path4";
 	configSelect[i] = "configKeyb()";  
 	
