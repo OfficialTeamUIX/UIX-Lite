@@ -480,12 +480,13 @@ DEF theMusicPlayWithSubs Level
 					}
 					else if(nPlayCursor0 == a)
 					{
-						nPlayCursor0 = 0;
+						return;
 					} 
 					else if(a - nPlayCursor0 < 9)
 					{
 						nPlayCursor0 = a;
 					}
+					PlaySoundMenuChange();
 					UpdateTrackList();
 				}
 			}
@@ -501,12 +502,13 @@ DEF theMusicPlayWithSubs Level
 					}
 					else if(nPlayCursor0 == 0)
 					{
-						nPlayCursor0 = a;
+						return;
 					} 
 					else if(nPlayCursor0 - 9 < 9)
 					{
 						nPlayCursor0 = 0;
 					}
+					PlaySoundMenuChange();
 					UpdateTrackList();
 				}
 			}
@@ -531,9 +533,9 @@ DEF theMusicPlayWithSubs Level
 				}
 				else
 				{
-					PlaySoundMenuChange();
 					nPlayCursor0 = nPlayCursor0 - 1;
 				}
+				PlaySoundMenuChange();
 				UpdateTrackList();
 			}
 		}
@@ -558,9 +560,9 @@ DEF theMusicPlayWithSubs Level
 				}
 				else
 				{
-					PlaySoundMenuChange();
 					nPlayCursor0 = nPlayCursor0 + 1;
 				}
+				PlaySoundMenuChange();
 				UpdateTrackList();
 			}
 		}
