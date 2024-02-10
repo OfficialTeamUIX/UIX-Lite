@@ -2719,48 +2719,30 @@ function ReturnInteger(x) // data read from xbx is read as a string - this will 
 	return b;
 }
 
-function FillMenuList(x) // search c,e,f,g for a relative path's contents to use to fill a menu
+function FillMenuList(x) // search Y:\, C:\, and C:\Shortcuts\ for a relative path's contents to use to fill a menu
 {
 	var FolderName = x;
-	var c = new Folder; //def a new folder
-	c.path = "Y:\\" + FolderName; //def it's path
-	var cSize = c.subFolders.length(); //find the number of subfolders in it
-	var cTitles = new Array(cSize); //setup a loop to put it's contents into an array
-	if(cSize > 0)
+	var TitleList = new Array;
+	var Locations = new Array("Y:\\","C:\\","C:\\Shortcuts\\");
+	for(var i = 0; i < Locations.length; i = i + 1)
 	{
-		for(var cLoop = 0; cLoop < cSize; cLoop = cLoop + 1)
+		var c = new Folder; //def a new folder
+		c.path = Locations[i] + FolderName; //def it's path
+		var cSize = c.subFolders.length(); //find the number of subfolders in it
+		var cTitles = new Array(cSize); //setup a loop to put it's contents into an array
+		if(cSize > 0)
 		{
-			cTitles[cLoop] = c.subFolders[cLoop].name;
-		}
+			for(var cLoop = 0; cLoop < cSize; cLoop = cLoop + 1)
+			{
+				cTitles[cLoop] = c.subFolders[cLoop].name;
+			}
+			var tmp = TitleList.concat(cTitles);
+			TitleList = tmp.sort();
+		}  
 	}
-	var e = new Folder; //repeat above for all drives
-	e.path = "C:\\" + FolderName;
-	var eSize = e.subFolders.length();
-	var eTitles = new Array(eSize);
-	if(eSize > 0)
-	{
-		for(var eLoop = 0; eLoop < eSize; eLoop = eLoop + 1)
-		{
-			eTitles[eLoop] = e.subFolders[eLoop].name;
-		}
-	}
-	var Sc = new Folder;
-	Sc.path = "C:\\Shortcuts\\" + FolderName;
-	var ScSize = Sc.subFolders.length();
-	var ScTitles = new Array(ScSize);
-	if(ScSize > 0)
-	{
-		for(var ScLoop = 0; ScLoop < ScSize; ScLoop = ScLoop + 1)
-		{
-			ScTitles[ScLoop] = Sc.subFolders[ScLoop].name;
-		}
-	}
-	var mA = cTitles.concat(eTitles);//keep merging the arrays till you have one big one
-	var nA = mA.concat(ScTitles);
-	nA = nA.sort();//sort the one big array into alphabetical order
-	return nA;//return the array
-}
-
+	return TitleList;//return the array
+}    
+	
 DEF theLaunchGameLevel Level
 {
 	function OnArrival()
@@ -2819,41 +2801,16 @@ function LaunchItem(x,y)
 {
 	var RelativePath = x;
 	var FolderName = y;
-	var checkc = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition2\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-	var checke = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition1\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-	var checkShortcut = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition1\\Shortcuts\\" + RelativePath + "\\" + FolderName + "\\default.xbe" );
-	var checkevoxc = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition2\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
-	var checkevoxe = theConfig.NtFileExists( "\\Device\\Harddisk0\\Partition1\\" + RelativePath + "\\" + FolderName + "\\evoxdash.xbe" );
-	
-	if(checkc == true)
+	var Locations = new Array("\\Device\\Harddisk0\\Partition2\\","\\Device\\Harddisk0\\Partition1\\","\\Device\\Harddisk0\\Partition1\\Shortcuts\\");
+	for(var i = 0; i < Locations.length; i = i + 1)
 	{
-		launchPath = "\\Device\\Harddisk0\\Partition2\\" + RelativePath + "\\" + FolderName;
+		launchPath = Locations[i] + RelativePath + "\\" + FolderName;
 		launchXbe = "default.xbe";
-		theLaunchGameLevel.GoTo();
-	}
-	else if(checke == true)
-	{
-		launchPath = "\\Device\\Harddisk0\\Partition1\\" + RelativePath + "\\" + FolderName;
-		launchXbe = "default.xbe";
-		theLaunchGameLevel.GoTo();
-	}
-	else if(checkShortcut == true)
-	{
-		launchPath = "\\Device\\Harddisk0\\Partition1\\Shortcuts\\" + RelativePath + "\\" + FolderName;
-		launchXbe = "default.xbe";
-		theLaunchGameLevel.GoTo();
-	}
-	else if(checkevoxc == true)
-	{
-		launchPath = "\\Device\\Harddisk0\\Partition2\\" + RelativePath + "\\" + FolderName;
-		launchXbe  = "evoxdash.xbe";
-		theLaunchGameLevel.GoTo();
-	}
-	else if(checkevoxe == true)
-	{
-		launchPath = "\\Device\\Harddisk0\\Partition1\\" + RelativePath + "\\" + FolderName;
-		launchXbe  = "evoxdash.xbe";
-		theLaunchGameLevel.GoTo();
+		if (theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
+		{
+			theLaunchGameLevel.GoTo();
+			break;
+		}
 	}
 }
 
