@@ -109,7 +109,12 @@ function buildGSList() //just copy this function for more subsections
 	configValues[i] = "default-ShowInsignia";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
-	configList[i] = "Toggle Noisy Camera:";
+	configList[i] = "Configuration Panel Icon:";
+	configValues[i] = "default-ConfigPanelIcon";
+	configSelect[i] = "toggleIcon()";
+	i = i + 1;
+	configList[i] = "Toggle Noisy Camera";
+	configValues[i] = "-blank-";
 	configSelect[i] = "ToggleNoisyCam()";
 	
 	clearText();
@@ -298,7 +303,7 @@ function toggle34()
 	var c = theConfigPanel.children[0].children[0];
 	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
 	if(b.toLowerCase() == "3") { refreshMenu("4"); }
-	else if(b.toLowerCase() == "4") { refreshMenu("3"); }
+	else { refreshMenu("3"); }
 }
 
 function toggle345()
@@ -307,7 +312,7 @@ function toggle345()
 	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
 	if(b.toLowerCase() == "3") { refreshMenu("4"); }
 	else if(b.toLowerCase() == "4") { refreshMenu("5"); }
-	else if(b.toLowerCase() == "5") { refreshMenu("3"); }
+	else { refreshMenu("3"); }
 }
 
 function toggleMOS()
@@ -315,16 +320,16 @@ function toggleMOS()
 	var c = theConfigPanel.children[0].children[0];
 	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
 	if(b.toLowerCase() == "thc")
-	refreshMenu("Stock");
+		refreshMenu("Stock");
 	else 
-	refreshMenu("tHc");
+		refreshMenu("tHc");
 }
 
 function toggleBacking()
 {
 	var c = theConfigPanel.children[0].children[0];
 	if(c.panel02_backing.visible == true) { c.panel02_backing.visible = false; }
-	else if(c.panel02_backing.visible == false) { c.panel02_backing.visible = true; }
+	else { c.panel02_backing.visible = true; }
 }
 
 function toggleYX()
@@ -333,7 +338,7 @@ function toggleYX()
 	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
 	if(b == "ToggleNoisyCam()") { refreshMenu("GoToLauncher()"); }
 	else if(b == "GoToLauncher()") { refreshMenu("nothing"); }
-	else if(b == "nothing") { refreshMenu("ToggleNoisyCam()"); }
+	else { refreshMenu("ToggleNoisyCam()"); }
 }
 
 function toggleMMF()
@@ -343,7 +348,7 @@ function toggleMMF()
 	if(b == "GoToMemory()") { refreshMenu("GoToMusic()"); }
 	else if(b == "GoToMusic()") { refreshMenu("EnterLiveToday(false)"); }
 	else if(b == "EnterLiveToday(false)") { refreshMenu("GoToLauncher()"); }
-	else if(b == "GoToLauncher()") { refreshMenu("GoToMemory()"); }
+	else { refreshMenu("GoToMemory()"); }
 }
 
 function toggleMMB()
@@ -353,22 +358,28 @@ function toggleMMB()
 	if(b.toLowerCase() == "memory") { refreshMenu("MUSIC"); }
 	else if(b.toLowerCase() == "music") { refreshMenu("XONLINE"); }
 	else if(b.toLowerCase() == "xonline") { refreshMenu("LAUNCHER"); }
-	else if(b.toLowerCase() == "launcher") { refreshMenu("MEMORY"); }
+	else { refreshMenu("MEMORY"); }
 }
 
 function toggleIcon()
 {
 	var c = theConfigPanel.children[0].children[0];
-	if(c.GlobeIcon.visible)
-	{
-		c.GlobeIcon.visible = false;
-		c.ConsoleIcon.visible = true;
-	}
-	else
+	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	var cValue;
+	if(b.toLowerCase() == "console")
 	{
 		c.GlobeIcon.visible = true;
 		c.ConsoleIcon.visible = false;
+		cValue = "Globe";
 	}
+	else
+	{
+		c.GlobeIcon.visible = false;
+		c.ConsoleIcon.visible = true;
+		cValue = "Console";
+	}
+	c.theRightSlots.children[LV2Item].children[0].geometry.text = cValue;
+	setConfigMenuValue(configValues[LV2Item],cValue);
 }
 
 function PathEllipsis(x)
@@ -522,7 +533,8 @@ DEF theConfigPanel Level
 				tabSlot(0);
 				c.theLeftSlots.children[0].children[0].appearance.name = "NavType";
 				c.theConfigHeader.children[0].geometry.text = "UIX ULTRA LITE";
-				c.ConsoleIcon.visible = true;
+				var cValue = getConfigMenuValue("default-ConfigPanelIcon");
+				if(cValue.toLowerCase() == "globe") { c.GlobeIcon.visible = true; } else { c.ConsoleIcon.visible = true; }
 			}       
 		}
 	]

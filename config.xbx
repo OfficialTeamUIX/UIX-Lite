@@ -1,6 +1,7 @@
 [default]
 MainOrbStyle=Stock
 ShowInsignia=false
+ConfigPanelIcon=Globe
 
 [MainMenu]
 MainMenuItems=4

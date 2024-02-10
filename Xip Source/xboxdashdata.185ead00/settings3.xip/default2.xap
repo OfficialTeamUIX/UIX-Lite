@@ -341,6 +341,7 @@ DEF WholeMenu Transform
 						{
 							visible false
 							fade 0.25
+							translation -0.5 0 0
 							children 
 							[
 								

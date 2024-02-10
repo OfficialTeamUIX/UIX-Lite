@@ -22,6 +22,7 @@ Modern/Re-Implemented Patches and Scripts for the Xbox Dashboard #5960
 [default]
 MainOrbStyle=Stock
 ShowInsignia=false
+ConfigPanelIcon=Globe
 
 [MainMenu]
 MainMenuItems=4
