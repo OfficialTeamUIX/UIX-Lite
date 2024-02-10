@@ -1311,18 +1311,18 @@ DEF theMainMenu Level
 				{
 					c.Main_pod_backing01.visible = false;
 					c.Main_pod_backing02.visible = true;
-					c.Main_pod_backing02.fade    = 2; 
-					c.podsupport_ring.visible    = false;
-					c.podsupportMaterial.name    = "PanelBacking_01";
-					c.Large_X_Spinner.rpm        = 1;
-					c.Pod_1_Spinner.rpm          = 1.3;
-					c.Pod_2_Spinner.rpm          = 1.3;
-					c.Pod_3_Spinner.rpm          = 1.3;
-					c.Pod_4_Spinner.rpm          = 1.3;
-					c.MainPod_1_Spinner.rpm      = 1.3;      // Main Podshell 09
-					c.MainPod_2_Spinner.rpm      = -2.3;     // Main Podshell 10
-					c.MainPod_3_Spinner.rpm      = -1.0;     // Main Podshell 11
-					//c.MainPod_4_Spinner.rpm      = -1.0;     // Main Podarm 1-4 
+					c.Main_pod_backing02.fade = 2; 
+					c.podsupport_ring.visible = false;
+					c.podsupportMaterial.name = "PanelBacking_01";
+					c.Large_X_Spinner.rpm = 1;
+					c.Pod_1_Spinner.rpm = 1.3;
+					c.Pod_2_Spinner.rpm = 1.3;
+					c.Pod_3_Spinner.rpm = 1.3;
+					c.Pod_4_Spinner.rpm = 1.3;
+					c.MainPod_1_Spinner.rpm = 1.3;      // Main Podshell 09
+					c.MainPod_2_Spinner.rpm = -2.3;     // Main Podshell 10
+					c.MainPod_3_Spinner.rpm = -1.0;     // Main Podshell 11
+					//c.MainPod_4_Spinner.rpm = -1.0;     // Main Podarm 1-4 
 				}
 				else
 				{
@@ -2747,6 +2747,10 @@ DEF theLaunchGameLevel Level
 {
 	function OnArrival()
 	{
+		DisableAmbientAudio();
+		BlockMemoryUnitEnumeration();
+		ClosePopup();
+		
 		g_bAboutToLaunchGame = true;
 		// Bind the proper background image
 		if( theConfig.GetVideoMode() == 2 )
@@ -2765,7 +2769,16 @@ DEF theLaunchGameLevel Level
 	}    
 	function OnActivate()
 	{
-		theScreenSaver.enabled = true;
+		DisableAmbientAudio();
+		BlockMemoryUnitEnumeration();
+		ClosePopup();
+		EnableInput(false);
+		
+		//theScreenSaver.enabled = true;
+		if( theConfig.GetVideoMode() == 2 )
+			theXboxLogo16x9Background.isBound = true;
+		else
+			theXboxLogo4x3Background.isBound = true;        
 	}
 }
 

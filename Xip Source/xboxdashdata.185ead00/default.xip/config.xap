@@ -108,6 +108,9 @@ function buildGSList() //just copy this function for more subsections
 	configList[i] = "Show Insignia:";
 	configValues[i] = "default-ShowInsignia";
 	configSelect[i] = "toggleTF()";
+	i = i + 1;
+	configList[i] = "Toggle Noisy Camera:";
+	configSelect[i] = "ToggleNoisyCam()";
 	
 	clearText();
 	updateText();
@@ -353,6 +356,21 @@ function toggleMMB()
 	else if(b.toLowerCase() == "launcher") { refreshMenu("MEMORY"); }
 }
 
+function toggleIcon()
+{
+	var c = theConfigPanel.children[0].children[0];
+	if(c.GlobeIcon.visible)
+	{
+		c.GlobeIcon.visible = false;
+		c.ConsoleIcon.visible = true;
+	}
+	else
+	{
+		c.GlobeIcon.visible = true;
+		c.ConsoleIcon.visible = false;
+	}
+}
+
 function PathEllipsis(x)
 {
 	var size = x.length();
@@ -388,6 +406,7 @@ function refreshMenu(x)
 {
 	var c = theConfigPanel.children[0].children[0];
 	var cValue = x; 
+	settChanged = true;
 	if(x == "x" | x == "X") 
 	{   //Delete the key and return if the user enters only an "x" on the keyboard.
 		setConfigMenuValue(configValues[LV2Item],"");
@@ -503,7 +522,7 @@ DEF theConfigPanel Level
 				tabSlot(0);
 				c.theLeftSlots.children[0].children[0].appearance.name = "NavType";
 				c.theConfigHeader.children[0].geometry.text = "UIX ULTRA LITE";
-				c.GlobeIcon.visible = true;
+				c.ConsoleIcon.visible = true;
 			}       
 		}
 	]
@@ -604,7 +623,6 @@ DEF theConfigPanel Level
 			}
 			else if(inLV2 == true)
 			{
-				settChanged = true;
 				eval(configSelect[LV2Item]);
 			}
 		}
@@ -648,8 +666,9 @@ DEF theConfigPanel Level
 		
 		function OnWhiteDown()
 		{
-			toggleBacking();
+			//toggleBacking();
 			//theConfig.DebugOutput( configList[LV1Item] );
+			//toggleIcon();
 		}
 	}
 	
@@ -657,11 +676,6 @@ DEF theConfigPanel Level
 	{
 		CurrentViewpoint = theConfigMenuViewpoint;
 	}
-	
-	function OnDeactivate()
-	{
-		
-	}   
 }
 
 function leaveConfig()
