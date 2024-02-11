@@ -988,7 +988,7 @@ DEF WholeMenu Transform
 									{
 										//material MaxMaterial
 										//{
-											//  name "PanelBacking_01" //flatsr
+										//      name "PanelBacking_01" //flatsr
 										//}
 										material MaxMaterial
 										{
@@ -996,7 +996,7 @@ DEF WholeMenu Transform
 										}
 										texture ImageTexture
 										{
-											url "panel-trans.xbx"//"panel-trans.xbx"
+											url "panel-trans.xbx"
 										}
 									}
 									geometry DEF panel02_backing-FACES Mesh { url "panel02_backing-FACES.xm" }

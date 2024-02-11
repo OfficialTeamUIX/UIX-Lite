@@ -507,11 +507,11 @@ function clearText()
 	for(var i = 0; i < 12; i = i + 1)
 	{
 		c.theLeftSlots.children[i].children[0].geometry.text = "";
-		c.theLeftSlots.children[i].children[0].appearance.name = "CellEgg/Partsz"; //NavType is selected
+		c.theLeftSlots.children[i].children[0].appearance.name = "NavType"; //NavType is selected
 		c.theLeftSlots.children[i].children[0].geometry.font = "Body";
 		
 		c.theRightSlots.children[i].children[0].geometry.text = "";
-		c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz"; //NavType is selected
+		c.theRightSlots.children[i].children[0].appearance.name = "NavType"; //NavType is selected
 		c.theRightSlots.children[i].children[0].geometry.font = "Body";
 	}
 }
@@ -531,7 +531,7 @@ DEF theConfigPanel Level
 				buildconfigList();
 				inLV1 = true;
 				tabSlot(0);
-				c.theLeftSlots.children[0].children[0].appearance.name = "NavType";
+				c.theLeftSlots.children[0].children[0].appearance.name = "CellEgg/Partsz";
 				c.theConfigHeader.children[0].geometry.text = "UIX ULTRA LITE";
 				var cValue = getConfigMenuValue("default-ConfigPanelIcon");
 				if(cValue.toLowerCase() == "globe") { c.GlobeIcon.visible = true; } else { c.ConsoleIcon.visible = true; }
@@ -601,28 +601,28 @@ DEF theConfigPanel Level
 					buildGSList();
 					tabSlot(LV2Hold);
 					c.theConfigHeader.children[0].geometry.text = "General Settings";
-					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "NavType";
+					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
 				}
 				else if(configList[LV1Item] == "Main Menu")
 				{
 					buildMMList();
 					tabSlot(LV2Hold);
 					c.theConfigHeader.children[0].geometry.text = "Main Menu";
-					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "NavType";
+					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
 				}
 				else if(configList[LV1Item] == "Launcher Menu")
 				{
 					buildHDList();
 					tabSlot(LV2Hold);
 					c.theConfigHeader.children[0].geometry.text = "Launcher Menu";
-					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "NavType";
+					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
 				}
 				else if(configList[LV1Item] == "Show in Settings")
 				{
 					BuildSSList();
 					tabSlot(LV2Hold);
 					c.theConfigHeader.children[0].geometry.text = "Show in Settings";
-					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "NavType";
+					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
 				}
 				else if(configList[LV1Item] == "Quick Launch")
 				{
@@ -630,7 +630,7 @@ DEF theConfigPanel Level
 					BuildQLList();
 					tabSlot(LV2Hold);
 					c.theConfigHeader.children[0].geometry.text = "Quick Launch";
-					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "NavType";
+					c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
 				}
 			}
 			else if(inLV2 == true)
@@ -664,7 +664,7 @@ DEF theConfigPanel Level
 				tabSlot(LV1Hold);
 				c.theDownArrow.visible = false;
 				c.theUpArrow.visible = false;
-				c.theLeftSlots.children[LV1Hold].children[0].appearance.name = "NavType";
+				c.theLeftSlots.children[LV1Hold].children[0].appearance.name = "CellEgg/Partsz";
 				c.theConfigHeader.children[0].geometry.text = "UIX ULTRA LITE";
 			}
 			else
@@ -737,12 +737,12 @@ function selectConfigDown()
 	else if(curHold < 11)
 	{
 		unTabSlot(curHold);
-		c.theLeftSlots.children[curHold].children[0].appearance.name = "CellEgg/Partsz";        
+		c.theLeftSlots.children[curHold].children[0].appearance.name = "NavType";        
 		curItem = curItem + 1;
 		curHold = curHold + 1;
 		
 		tabSlot(curHold);
-		c.theLeftSlots.children[curHold].children[0].appearance.name = "NavType";       
+		c.theLeftSlots.children[curHold].children[0].appearance.name = "CellEgg/Partsz";       
 	}
 	
 	if(inLV1 == true)
@@ -799,12 +799,12 @@ function selectConfigUp()
 		else
 		{
 			unTabSlot(curHold);
-			c.theLeftSlots.children[curHold].children[0].appearance.name = "CellEgg/Partsz";            
+			c.theLeftSlots.children[curHold].children[0].appearance.name = "NavType";            
 			curItem = curItem - 1;
 			curHold = curHold - 1;
 			
 			tabSlot(curHold);
-			c.theLeftSlots.children[curHold].children[0].appearance.name = "NavType";
+			c.theLeftSlots.children[curHold].children[0].appearance.name = "CellEgg/Partsz";
 		}
 	}   
 	

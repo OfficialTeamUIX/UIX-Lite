@@ -727,7 +727,6 @@ DEF theScreenWaver Transform
 											]
 											translation -46.880001 55.130001 -205.500000
 										}
-										
 										DEF MU_L3_podsupport_05 Transform
 										{
 											children
@@ -789,7 +788,6 @@ DEF theScreenWaver Transform
 															axis 0 1 0
 															children
 															[
-																
 																DEF MU_cd_05 Transform
 																{
 																	children
@@ -815,14 +813,11 @@ DEF theScreenWaver Transform
 																	scaleOrientation -0.193000 0.354100 0.915100 -0.135400
 																	translation -0.015810 -0.030690 -0.039800
 																}
-																
-																
 																DEF Group04 Transform
 																{
 																	fade 0.25
 																	children
 																	[
-																		
 																		DEF MU_cd_04 Transform
 																		{
 																			children
@@ -851,14 +846,11 @@ DEF theScreenWaver Transform
 																	scaleOrientation 0.636300 -0.752300 0.170800 -0.080880
 																	translation 12.430000 55.830002 -30.420000
 																}
-																
-																
 																DEF Group03 Transform
 																{
 																	fade 0.25
 																	children
 																	[
-																		
 																		DEF MU_cd_03 Transform
 																		{
 																			children
@@ -893,7 +885,6 @@ DEF theScreenWaver Transform
 																	fade 0.25
 																	children
 																	[
-																		
 																		DEF MU_cd_02 Transform
 																		{
 																			children
@@ -921,15 +912,13 @@ DEF theScreenWaver Transform
 																	scale 0.331300 0.331300 0.331300
 																	scaleOrientation 0.636300 -0.752300 0.170800 -0.080880
 																	translation 12.310000 55.189999 -30.780001
-																	//                          translation 12.350000 56.110001 -29.830000
+																	//translation 12.350000 56.110001 -29.830000
 																}
-																
 																DEF Group01 Transform
 																{
 																	fade 0.25
 																	children
 																	[
-																		
 																		DEF MU_cd_01 Transform
 																		{
 																			children
@@ -958,7 +947,7 @@ DEF theScreenWaver Transform
 																	scale 0.331300 0.331300 0.331300
 																	scaleOrientation 0.636300 -0.752300 0.170800 -0.080880
 																	translation 12.260000 54.869999 -30.950001
-																	//                          translation 12.310000 56.119999 -29.680000
+																	//translation 12.310000 56.119999 -29.680000
 																}
 															]
 														}
@@ -989,7 +978,8 @@ DEF theScreenWaver Transform
 											scale 0.124700 0.124700 0.124700
 											translation -46.880001 55.130001 -205.000000
 										}
-										DEF MU_L3_musicpod_thc Transform{
+										DEF MU_L3_musicpod_thc Transform
+										{
 											children
 											[
 												Spinner
@@ -1776,7 +1766,7 @@ DEF theScreenWaver Transform
 													scaleOrientation -0.098800 -0.987300 -0.124600 -0.279200
 													translation -0.998200 0.988600 0.341600
 												}
-												DEF MU_L3_text_davidbowie01 Transform
+												DEF MU_L3_text_TrackCount Transform
 												{
 													children
 													[
@@ -1804,7 +1794,7 @@ DEF theScreenWaver Transform
 													scaleOrientation 0.967300 -0.088020 -0.237800 -0.030810
 													translation -0.147800 0.903000 0.108300
 												}
-												DEF MU_L3_text_davidbowie Transform
+												DEF MU_L3_text_Title Transform
 												{
 													children
 													[
@@ -1832,8 +1822,6 @@ DEF theScreenWaver Transform
 													scaleOrientation 0.967300 -0.088020 -0.237800 -0.030810
 													translation 0.231400 0.787100 0.111400
 												}
-												
-												
 												DEF MU_L3_panel_tracklist Transform
 												{
 													children
@@ -1848,7 +1836,8 @@ DEF theScreenWaver Transform
 																}
 																texture ImageTexture
 																{
-																	url "harddrivebg.bmp"
+																	//url "harddrivebg.bmp"
+																	url "panel-trans.xbx"
 																}
 															}
 															geometry DEF MU_L3_panel_tracklist-FACES Mesh { url "MU_L3_panel_tracklist-FACES.xm" }
@@ -1971,8 +1960,6 @@ DEF theScreenWaver Transform
 													]
 													translation -48.290001 58.809999 -203.800003
 												}
-												
-												
 												// Track list of names
 												DEF TrackNames Transform
 												{
@@ -2109,7 +2096,6 @@ DEF theScreenWaver Transform
 														}
 													]
 												}
-												
 												// Track list of numbers
 												DEF TrackNumbers Transform
 												{
@@ -2243,8 +2229,6 @@ DEF theScreenWaver Transform
 														}
 													]
 												}
-												
-												
 												DEF MU_morearrow_up Transform
 												{
 													visible false
@@ -2289,7 +2273,6 @@ DEF theScreenWaver Transform
 													scaleOrientation 1.000000 0.000329 -0.002145 -0.675500
 													translation -0.400000 -0.625100 0.161000
 												}
-												
 												DEF MU_L3_panel_headerc Transform
 												{
 													children
@@ -2394,7 +2377,6 @@ DEF theScreenWaver Transform
 													scaleOrientation -0.999100 -0.033150 0.027670 -0.149200
 													translation 0.426600 -0.804300 0.050210
 												}
-												
 												DEF MU_L3_panel_audiocontrolsb Transform
 												{
 													children
@@ -2416,7 +2398,6 @@ DEF theScreenWaver Transform
 													scaleOrientation -0.999100 -0.033150 0.027670 -0.149200
 													translation 0.426600 -0.804300 0.050410
 												}
-												
 												DEF MU_L3_panel_audiocontrols Transform
 												{
 													children
@@ -2438,7 +2419,6 @@ DEF theScreenWaver Transform
 													scaleOrientation -0.999100 -0.033150 0.027670 -0.149200
 													translation 0.426600 -0.804300 0.050710
 												}
-												
 												DEF LowerPanelText Transform
 												{
 													children
@@ -2606,7 +2586,6 @@ DEF theScreenWaver Transform
 													scaleOrientation -0.930500 -0.364900 -0.031150 -0.188400
 													translation -0.542700 -0.071710 0.049870
 												}
-												
 												DEF buttons_edit Transform
 												{
 													children
@@ -3506,7 +3485,6 @@ DEF theScreenWaver Transform
 													]
 													translation -46.830002 55.230000 -204.199997
 												}
-												
 												DEF MU_L3_text_custom Transform
 												{
 													children
@@ -3536,7 +3514,6 @@ DEF theScreenWaver Transform
 													scaleOrientation 0.198600 0.025940 -0.979700 -0.006882
 													translation 47.130001 -58.169998 204.0999941
 												}
-												
 											]
 											rotation -1.000000 0.000000 0.000000 -3.168000
 											translation -45.549999 57.200001 -203.899994
