@@ -10,6 +10,7 @@ var CurrentSection;
 var TempTitleList;
 var CurFillDir;
 var TotalSections;
+var LastTitleLaunched;
 
 function initialize()
 {
@@ -187,6 +188,7 @@ function EnterMusicPlay()
 	ShowMusicPlayWithSubs();
 	CurrentViewpoint = MusicPlayWithSubsViewpoint;
 	CurrentAltViewpoint = theMusicPlayWithSubsAlternateViewpoint;
+	LastTitleLaunched = GetSavedValue("default","LastTitleLaunched");
 }
 
 //sets up the root menu text etc.
@@ -432,8 +434,12 @@ DEF theMusicPlayWithSubs Level
 		
 		function OnXDown()
 		{
-			previousControlType = theMusicPlayWithSubsJoystick;
-			StartControlPanel();
+			if(LastTitleLaunched != "")
+			{
+				var x = LastTitleLaunched.substr(0,LastTitleLaunched.indexOf("-"));
+				var y = LastTitleLaunched.substr(LastTitleLaunched.indexOf("-") + 1);
+				LaunchItem(x,y);
+			}
 		}
 		
 		function OnBDown()
