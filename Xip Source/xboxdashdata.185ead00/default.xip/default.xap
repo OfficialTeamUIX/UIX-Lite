@@ -2821,7 +2821,7 @@ function LaunchItem(x,y)
 		launchXbe = "default.xbe";
 		if (theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
 		{
-			SetSavedValue("default","LastTitleLaunched",x + "-" + y);
+			SetSavedValue("LauncherMenu","LastTitleLaunched",x + "-" + y);
 			theLaunchGameLevel.GoTo();
 			break;
 		}

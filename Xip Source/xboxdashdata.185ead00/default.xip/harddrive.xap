@@ -188,7 +188,7 @@ function EnterMusicPlay()
 	ShowMusicPlayWithSubs();
 	CurrentViewpoint = MusicPlayWithSubsViewpoint;
 	CurrentAltViewpoint = theMusicPlayWithSubsAlternateViewpoint;
-	LastTitleLaunched = GetSavedValue("default","LastTitleLaunched");
+	LastTitleLaunched = GetSavedValue("LauncherMenu","LastTitleLaunched");
 }
 
 //sets up the root menu text etc.
@@ -438,7 +438,7 @@ DEF theMusicPlayWithSubs Level
 			{
 				var x = LastTitleLaunched.substr(0,LastTitleLaunched.indexOf("-"));
 				var y = LastTitleLaunched.substr(LastTitleLaunched.indexOf("-") + 1);
-				LaunchItem(x,y);
+				AskQuestion("You are about to launch " + y + " from the " + x + " folder.\n\nDo you wish to continue?", "LaunchItem(\"" + x + "\",\"" + y + "\")","",0);
 			}
 		}
 		
