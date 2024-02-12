@@ -8,7 +8,7 @@ Modern/Re-Implemented Patches and Scripts for the Xbox Dashboard #5960
 * Copy the unmodified 5960 Dashboard files to a directory on your computer.
 * Use Visual XIP or the Binary Patcher to patch the xboxdash.xbe to allow modified xips
 * Use Visual XIP or WinXip to modify the xips in xboxdashdata.185ead00 with the updated xap source files or download the premodified xips from the releases page.
-* Copy the "modified" files via ftp, including config.xbx to the root of your C drive on your Xbox.
+* Copy the "modified" 5960 Dashboard files via ftp, including config.xbx, to the root of your C drive on your Xbox.
 
 ## Modifications
 
