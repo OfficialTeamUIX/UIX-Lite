@@ -1,4 +1,3 @@
-
 var bMusicPlayWithSubsVisible0;
 var nPlayCursor0;
 var nPreviousPlayCursor0;
@@ -283,7 +282,7 @@ DEF theMusicPlayWithSubs Level
 		[
 			Waver
 			{
-				rpm 2
+				rpm 0.75
 				children
 				[
 					Shape
@@ -313,7 +312,7 @@ DEF theMusicPlayWithSubs Level
 						}
 						geometry Sphere
 						{
-							radius 1
+							radius 1.0
 						}
 					}
 				]
@@ -436,6 +435,7 @@ DEF theMusicPlayWithSubs Level
 		{
 			if(LastTitleLaunched != "")
 			{
+				PlaySoundA();
 				var x = LastTitleLaunched.substr(0,LastTitleLaunched.indexOf("-"));
 				var y = LastTitleLaunched.substr(LastTitleLaunched.indexOf("-") + 1);
 				AskQuestion("You are about to launch " + y + " from the " + x + " folder.\n\nDo you wish to continue?", "LaunchItem(\"" + x + "\",\"" + y + "\")","",0);

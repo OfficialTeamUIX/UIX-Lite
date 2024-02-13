@@ -554,19 +554,31 @@ DEF theConfigPanel Level
 					{
 						appearance Appearance
 						{
-							material MaxMaterial { name "InnerWall_01" }
+							material MaxMaterial 
+							{ 
+								name "InnerWall_01" 
+							}
 							texture ImageTexture
 							{
 								alpha true
-								url "cellwall.xbx"
+								url "cellwall.bmp"
 							}
 						}
 						geometry Mesh { url "Inner_cell-FACES.xm" }
 					}
 					Shape
 					{
-						appearance Appearance { material MaxMaterial { name "InnerWall_02" } }
-						geometry Sphere { radius 1 }
+						appearance Appearance 
+						{ 
+							material MaxMaterial 
+							{ 
+								name "InnerWall_02" 
+							} 
+						}
+						geometry Sphere 
+						{ 
+							radius 1.0
+						}
 					}
 				]
 			}

@@ -1371,7 +1371,7 @@ DEF theMainMenu Level
 						}
 						geometry Sphere
 						{
-							radius 1
+							radius 1.0
 						}
 					}
 				]
@@ -1472,6 +1472,7 @@ DEF theMainMenu Level
 
 		function OnKeyVerified()
 		{
+			PlaySoundA()
 			//theConfig.ToggleNoisyCamera();
 			eval(ButtonYXAction);
 		}        
@@ -2806,6 +2807,7 @@ function QuickLaunch(x)
 	
 	if (theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
 	{
+		theMainMenu.children[0].children[0].theMainMenuLevel.visible = false;
 		theLaunchGameLevel.GoTo();
 	}
 }
@@ -2821,6 +2823,7 @@ function LaunchItem(x,y)
 		launchXbe = "default.xbe";
 		if (theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
 		{
+			theMusicPlayWithSubsInline.children[0].theMusicPlayWithSubs.children[0].children[0].theWholeThing.visible = false;
 			SetSavedValue("LauncherMenu","LastTitleLaunched",x + "-" + y);
 			theLaunchGameLevel.GoTo();
 			break;
