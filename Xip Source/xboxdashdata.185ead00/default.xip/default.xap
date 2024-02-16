@@ -1472,7 +1472,7 @@ DEF theMainMenu Level
 
 		function OnKeyVerified()
 		{
-			PlaySoundA()
+			PlaySoundA();
 			//theConfig.ToggleNoisyCamera();
 			eval(ButtonYXAction);
 		}        
