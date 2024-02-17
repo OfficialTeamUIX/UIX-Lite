@@ -320,9 +320,9 @@ function toggleMOS()
 	var c = theConfigPanel.children[0].children[0];
 	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
 	if(b.toLowerCase() == "thc")
-		refreshMenu("Stock");
+	refreshMenu("Stock");
 	else 
-		refreshMenu("tHc");
+	refreshMenu("tHc");
 }
 
 function toggleBacking()
@@ -442,6 +442,7 @@ function tabSlot(x)
 {
 	var c = theConfigPanel.children[0].children[0];
 	var indentItemTrans = c.theLeftSlots.children[x].translation;
+	c.theLeftSlots.children[x].children[0].appearance.name = "CellEgg/Partsz";
 	c.theLeftSlots.children[x].SetTranslation(2.35, parseTrans(indentItemTrans,"Y"), parseTrans(indentItemTrans,"Z"));
 }
 
@@ -449,7 +450,23 @@ function unTabSlot(x)
 {
 	var c = theConfigPanel.children[0].children[0];
 	var indentItemTrans = c.theLeftSlots.children[x].translation;
+	c.theLeftSlots.children[x].children[0].appearance.name = "NavType";        
 	c.theLeftSlots.children[x].SetTranslation(2, parseTrans(indentItemTrans,"Y"), parseTrans(indentItemTrans,"Z"));
+}
+
+function clearText()
+{
+	var c = theConfigPanel.children[0].children[0];
+	for(var i = 0; i < 12; i = i + 1)
+	{
+		c.theLeftSlots.children[i].children[0].geometry.text = "";
+		c.theLeftSlots.children[i].children[0].appearance.name = "NavType"; //NavType is selected
+		c.theLeftSlots.children[i].children[0].geometry.font = "Body";
+		
+		c.theRightSlots.children[i].children[0].geometry.text = "";
+		c.theRightSlots.children[i].children[0].appearance.name = "NavType"; //NavType is selected
+		c.theRightSlots.children[i].children[0].geometry.font = "Body";
+	}
 }
 
 function updateText()
@@ -480,7 +497,7 @@ function updateText()
 			}
 		}
 	}
-	if(configList.length > 12) c.theDownArrow.visible = true;
+	if(configList.length > 12) { c.theDownArrow.visible = true; }
 }
 
 function getConfigMenuValue(x)
@@ -501,21 +518,6 @@ function setConfigMenuValue(x,y)
 	SetSavedValue(vSection,vValue,y);
 }
 
-function clearText()
-{
-	var c = theConfigPanel.children[0].children[0];
-	for(var i = 0; i < 12; i = i + 1)
-	{
-		c.theLeftSlots.children[i].children[0].geometry.text = "";
-		c.theLeftSlots.children[i].children[0].appearance.name = "NavType"; //NavType is selected
-		c.theLeftSlots.children[i].children[0].geometry.font = "Body";
-		
-		c.theRightSlots.children[i].children[0].geometry.text = "";
-		c.theRightSlots.children[i].children[0].appearance.name = "NavType"; //NavType is selected
-		c.theRightSlots.children[i].children[0].geometry.font = "Body";
-	}
-}
-
 DEF theConfigPanel Level
 {
 	archive "settings3.xip"
@@ -527,10 +529,10 @@ DEF theConfigPanel Level
 			url "settings3/default2.xap"        
 			function onLoad()
 			{   
-				var c = theConfigPanel.children[0].children[0];
 				buildconfigList();
 				inLV1 = true;
 				tabSlot(0);
+				var c = theConfigPanel.children[0].children[0];
 				c.theLeftSlots.children[0].children[0].appearance.name = "CellEgg/Partsz";
 				c.theConfigHeader.children[0].geometry.text = "UIX ULTRA LITE";
 				var cValue = getConfigMenuValue("default-ConfigPanelIcon");
@@ -704,6 +706,10 @@ DEF theConfigPanel Level
 
 function leaveConfig()
 {
+	unTabSlot(LV1Hold);
+	LV1Item = 0;
+	LV1Hold = 0;
+	tabSlot(LV1Hold);
 	theSettingsSubMenuOut.Play();
 	GoToSettings();
 }
@@ -724,8 +730,7 @@ function selectConfigDown()
 		curHold = LV2Hold;
 	}
 	
-	if(curItem + 1 == configList.length) //end of list
-	return;
+	if(curItem + 1 == configList.length) { return; } //end of list
 	
 	PlaySoundMenuChange();
 	if(curHold == 11) //SCROLL MENU DOWN
@@ -742,19 +747,15 @@ function selectConfigDown()
 			}
 			
 		}
-		if(configList.length == curItem + 1)
-		c.theDownArrow.visible = false;
+		if(configList.length == curItem + 1) { c.theDownArrow.visible = false; }
 	}   
 	
 	else if(curHold < 11)
 	{
 		unTabSlot(curHold);
-		c.theLeftSlots.children[curHold].children[0].appearance.name = "NavType";        
 		curItem = curItem + 1;
 		curHold = curHold + 1;
-		
 		tabSlot(curHold);
-		c.theLeftSlots.children[curHold].children[0].appearance.name = "CellEgg/Partsz";       
 	}
 	
 	if(inLV1 == true)
@@ -786,8 +787,7 @@ function selectConfigUp()
 		curHold = LV2Hold;
 	}
 	
-	if(curItem == 0) 
-	return;
+	if(curItem == 0) { return; }
 	
 	PlaySoundMenuChange();
 	if(curItem > 0)
@@ -805,18 +805,14 @@ function selectConfigUp()
 					c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[curItem + i]);
 				}
 			}
-			if(curItem == 0)
-			c.theUpArrow.visible = false;
+			if(curItem == 0) { c.theUpArrow.visible = false; }
 		}
 		else
 		{
 			unTabSlot(curHold);
-			c.theLeftSlots.children[curHold].children[0].appearance.name = "NavType";            
 			curItem = curItem - 1;
 			curHold = curHold - 1;
-			
 			tabSlot(curHold);
-			c.theLeftSlots.children[curHold].children[0].appearance.name = "CellEgg/Partsz";
 		}
 	}   
 	
@@ -839,9 +835,13 @@ function scrollConfigDown()
 	
 	var curItem;
 	if(inLV1 == true)
-	curItem = LV1Item;
+	{
+		curItem = LV1Item;
+	}
 	else if(inLV2 == true)
-	curItem = LV2Item;
+	{
+		curItem = LV2Item;
+	}
 	
 	c.theUpArrow.visible = true;
 	
@@ -856,12 +856,15 @@ function scrollConfigDown()
 		}
 		
 		if(inLV1 == true)
-		LV1Item = curItem;
+		{
+			LV1Item = curItem;
+		}
 		else if(inLV2 == true)
-		LV2Item = curItem;
+		{
+			LV2Item = curItem;
+		}
 	}
-	if(configList.length == curItem + 1)
-	c.theDownArrow.visible = false;
+	if(configList.length == curItem + 1) { c.theDownArrow.visible = false; }
 }
 
 function scrollConfigUp()
@@ -870,9 +873,13 @@ function scrollConfigUp()
 	
 	var curItem;
 	if(inLV1 == true)
-	curItem = LV1Item;
+	{
+		curItem = LV1Item;
+	}
 	else if(inLV2 == true)
-	curItem = LV2Item;
+	{
+		curItem = LV2Item;
+	}
 	
 	c.theDownArrow.visible = true;
 	
@@ -887,12 +894,15 @@ function scrollConfigUp()
 		}
 		
 		if(inLV1 == true)
-		LV1Item = curItem;
+		{
+			LV1Item = curItem;
+		}
 		else if(inLV2 == true)
-		LV2Item = curItem;
+		{
+			LV2Item = curItem;
+		}
 	}
-	if(curItem == 0)
-	c.theUpArrow.visible = false;
+	if(curItem == 0) {c.theUpArrow.visible = false;}
 }
 
 function updateHeaders()
@@ -914,8 +924,14 @@ function updateHeaders()
 		}
 	}
 	var curHold;
-	if(inLV1 == true) { curHold = LV1Hold; }
-	else if(inLV2 == true) { curHold = LV2Hold; }
+	if(inLV1 == true) 
+	{ 
+		curHold = LV1Hold; 
+	}
+	else if(inLV2 == true) 
+	{ 
+		curHold = LV2Hold; 
+	}
 }
 
 

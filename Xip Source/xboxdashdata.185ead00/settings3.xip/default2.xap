@@ -352,7 +352,7 @@ DEF WholeMenu Transform
 									[
 										Transform
 										{
-											scale 2.0 2.0 2.0
+											scale 2.1 2.1 2.1
 											children 
 											[
 												DEF globe Transform
