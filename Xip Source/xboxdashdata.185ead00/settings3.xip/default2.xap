@@ -1501,12 +1501,20 @@ DEF WholeMenu Transform
 											[
 												Shape
 												{
-													appearance MaxMaterial { name "ItemsType" }
-													geometry DEF theUpArrow-text Text { font "Body" width -15 translate false text "up"}
+													appearance Appearance
+													{
+														material MaxMaterial
+														{
+															name "XBoxGreen"
+														}
+													}
+													geometry DEF MU_morearrow_down-FACES Mesh { url "MU_morearrow_down-FACES.xm" }
 												}
 											]
-											scale 1 1 1
-											translation 21 -26 0
+											rotation -1.000000 -0.001438 0.001438 -1.571000
+											scale 0.800500 0.800500 0.800500
+											scaleOrientation 0.999900 -0.003463 -0.015970 -0.101300
+											translation 21 -25.5 0
 										}
 										DEF theDownArrow Transform
 										{
@@ -1515,14 +1523,23 @@ DEF WholeMenu Transform
 											[
 												Shape
 												{
-													appearance MaxMaterial { name "ItemsType" }
-													geometry DEF theDownArrow-text Text { font "Body" width -15 translate false text "down"}
+													appearance Appearance
+													{
+														material MaxMaterial
+														{
+															name "XBoxGreen"
+														}
+													}
+													geometry DEF MU_morearrow_down01-FACES Mesh { url "MU_morearrow_down01-FACES.xm" }
 												}
 											]
-											scale 1 1 1
-											translation 21 -33.5 0
+											rotation 0.001016 -0.707100 0.707100 -3.144000
+											scale 0.800500 0.800500 0.800500
+											scaleOrientation -1.000000 -0.001703 -0.004866 -0.276000
+											translation 21 -34.5 0
 										}
-									]
+									] 
+									translation -3.5 0.0 0.0
 								}
 								
 							]

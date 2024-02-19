@@ -2707,19 +2707,6 @@ function UnblockMemoryUnitEnumeration()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////// Added Functions for HDD Menu
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-function ReturnInteger(x) // data read from xbx is read as a string - this will convert that string value to an integer
-{
-	var a = x;
-	var b = Math.abs(a);
-	if(a.charCodeAt(0) == 45)
-	{
-		var c = b * 2;
-		b = b - c;
-	}
-	return b;
-}
-
 function FillMenuList(x) // search Y:\, C:\, and C:\Shortcuts\ for a relative path's contents to use to fill a menu
 {
 	var FolderName = x;
@@ -2737,13 +2724,36 @@ function FillMenuList(x) // search Y:\, C:\, and C:\Shortcuts\ for a relative pa
 			{
 				cTitles[cLoop] = c.subFolders[cLoop].name;
 			}
-			var tmp = TitleList.concat(cTitles);
-			TitleList = tmp.sort();
+			TitleList = TitleList.concat(cTitles);
 		}  
 	}
-	return TitleList;//return the array
-}    
-	
+	TitleList = TitleList.sort();
+	return TitleList; //return the array
+}
+
+function GetAllTitles()
+{    
+	var TitleList = new Array;
+	var cTitles = new Array;
+	var i = 0;
+	var x = 0;
+	for(var i = 0; i < 5; i = i + 1)
+	{
+		var cValue = GetSavedValue("LauncherMenu","Path" + i);
+		if(cValue != "")
+		{
+			cTitles = FillMenuList(cValue);
+			for(var cLoop = 0; cLoop < cTitles.length; cLoop = cLoop + 1)
+			{
+				TitleList[x] = cTitles[cLoop];
+				x = x + 1;
+			}
+		}    
+	}
+	TitleList = TitleList.sort();
+	return TitleList;
+}
+
 DEF theLaunchGameLevel Level
 {
 	function OnArrival()
@@ -2848,9 +2858,75 @@ function ToggleNoisyCam()
 	theConfig.ToggleNoisyCamera();
 }
 
+function parseTrans(translation,parameter) //A function to return the requested parameter from translation values.
+{
+	var TransParameter = Split(NumberToString(translation)," "); //convert the Translation numbers to an array of strings.
+	if(parameter.toUpperCase() == "X") 
+	{
+		return StringtoNumber(TransParameter[0]); //convert back to number before returning the value
+	} 
+	else if(parameter.toUpperCase() == "Y") 
+	{
+		return StringtoNumber(TransParameter[1]); 
+	} 
+	else if(parameter.toUpperCase() == "Z") 
+	{
+		return StringtoNumber(TransParameter[2]); 
+	}
+}
+
+function StringtoNumber( thestring )
+{
+	var tempstring = thestring;
+	var theinteger = Math.abs(tempstring);
+	if(tempstring.charAt(0) == "-") theinteger = theinteger * -1;
+	return theinteger;
+}
+
+function NumberToString(x)
+{
+	theNumberToString.children[0].geometry.text = x;
+	var b = theNumberToString.children[0].geometry.text;
+	return b;
+}
+
+DEF theNumberToString Transform
+{
+	visible false
+	children
+	[
+		Shape
+		{
+			appearance MaxMaterial { name "ItemsType" }
+			geometry Text { font "Body" width -15 translate false text ""}
+		}
+	]
+}
+
 function GetRandomInteger(max) 
 {
 	return Math.floor(Math.random() * max);
+}
+
+function Modulo(x,y)
+{
+	var a = Math.floor(x / y);
+	return (x - (a * y));
+}
+
+function Split(str,Delimiter)
+{
+	var arrReturn = new Array;
+	var x = str;
+	var i = 0;
+	while( x.indexOf(Delimiter) > 0 )
+	{
+		arrReturn[i] = x.substr(0,x.indexOf(Delimiter));
+		x = x.substr(x.indexOf(Delimiter) + Delimiter.length());
+		i = i + 1;
+	}
+	arrReturn[i] = x;
+	return arrReturn;
 }
 
 function EnableCurrentAlternateViewpoint()
@@ -2895,7 +2971,7 @@ function GetSavedBooleanValue(x,y)
 	var b = y;
 	ConfigFile.section = a;
 	var c = ConfigFile.GetValue(b);
-	if(c == "true")
+	if(c.toLowerCase() == "true")
 	{
 		return true;
 	}
