@@ -376,7 +376,7 @@ function configKeyb()
 		a = configList[LV2Item];
 		if(b == "") { b = a; }
 	} 
-	ShowKeyboard(a, b, "theUIXConfigInline.children[0].refreshMenu(strKeyboardEdit)", "");
+	ShowKeyboard(a, b, "theUIXConfigInline.children[0].refreshMenu(strKeyboardEdit)", "PlaySoundB()");
 }
 
 function refreshMenu(x)
@@ -903,6 +903,7 @@ function scrollConfigDown()
 		c.theDownArrow.visible = false;
 	}
 	
+	PlaySoundMenuChange();
 	clearText();    
 	for(var i = 0; i < loop; i = i + 1)
 	{
@@ -979,6 +980,7 @@ function scrollConfigUp()
 		curHold = curItem;
 	}
 
+	PlaySoundMenuChange();
 	clearText();
 	for(var i = 0; i < loop; i = i + 1)
 	{
