@@ -61,7 +61,7 @@ QuickLaunchY=
 ```
 
 ## Usage
-* Currently does not see F or G partitions, so you will need to add shortcuts to the files on those partitions to E:\Shortcuts\\[SectionName]\\[TitleName].(i.e. E:\Shortcuts\Games\Fable)
+* Currently does not see F or G partitions, so you will need to add [shortcuts](https://github.com/BigJx/UIX-Ultra-Lite/blob/main/Shortcuts/README.md) to the files on those partitions to E:\Shortcuts\\[SectionName]\\[TitleName].(i.e. E:\Shortcuts\Games\Fable)
 
 
 ## Family Tree
