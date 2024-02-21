@@ -16,10 +16,10 @@ Shortcuts
 
 The following is an example to create a shortcut to the game "Fable" located at F:\\Games\\Fable. 
  
-- Go to Shortcuts\\Games\\ create the folder names Fable
-- Then in Shortcuts\\Games\\Fable\\ copy the shortcut file default.xbe that you extracted from the Shortcut.zip
-- Next edit the default.cfg in your favorite text editor and put the path to the target .xbe file. i.e. F:\\Games\\Fable\\default.xbe
-- Save the changes and copy the file to Shortcuts\\Games\\Fable\\
+- Browse to Shortcuts\\Games\\ create the folder names Fable
+- Then copy the shortcut file default.xbe that you extracted from the Shortcut.zip to Shortcuts\\Games\\Fable\\
+- Next edit the default.cfg in your favorite text editor and put the path to the target .xbe file on F:\\ Drive. i.e. F:\\Games\\Fable\\default.xbe
+- Save the changes and copy the default.cfg to Shortcuts\\Games\\Fable\\
 - Repeat the above for all of your F:\\ Drive titles.
-- Once completed (if done on your computer upload the Shortcuts folder to E:\\ drive) restart UIX Ultra Lite and you title will show up in the Launcher Menu and can be launched.
+- Once completed (if this was done on your computer upload the Shortcuts folder to the E:\\ drive) restart UIX Ultra Lite and you title will show up in the Launcher Menu and can be launched.
 
