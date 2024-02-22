@@ -12,7 +12,7 @@ Shortcuts
 |-- Games
 |-- Emus
 ```
-* Note: The folder names in Shortcuts folder shown above are the default values. I you have customized these then use your custom folder names.
+* Note: The folder names in Shortcuts folder shown above are the default values. If you have customized these then use your custom folder names.
 
 The following is an example to create a shortcut to the game "Fable" located at F:\\Games\\Fable. 
  
