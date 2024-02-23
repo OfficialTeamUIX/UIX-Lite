@@ -373,8 +373,19 @@ function configKeyb()
 	}
 	else if(inChangeTitleMenu)
 	{
-		a = configList[LV2Item];
-		if(b == "") { b = a; }
+		a = "";
+		if(b == "") { b = configList[LV2Item]; }
+		if(b.length() > 30) 
+		{
+			var Cut;
+			if(b.length() > 43 ) Cut = 15; else Cut = 10;
+			var x = b.substr(Cut);
+			var y = x.indexOf(" ");
+			y = y + Cut + 1;
+			a = b.substr(0,y);
+			AddKeyboardTitle = true;
+			b = b.substr(y);
+		}
 	} 
 	ShowKeyboard(a, b, "theUIXConfigInline.children[0].refreshMenu(strKeyboardEdit)", "PlaySoundB()");
 }
@@ -383,6 +394,7 @@ function refreshMenu(x)
 {
 	var c = theConfigPanel.children[0].children[0];
 	var cValue = x; 
+	if(AddKeyboardTitle) { cValue = strKeyboardTitle + cValue; AddKeyboardTitle = false; }
 	if((inChangeTitleMenu | inQuickLaunchMenu) == false) { settChanged = true; }
 	if(x == "x" | x == "X") 
 	{   //Delete the key and return if the user enters only an "x" on the keyboard.
@@ -399,7 +411,6 @@ function refreshMenu(x)
 	} 
 	else if(inQuickLaunchMenu) 
 	{ 
-		if(AddKeyboardTitle) { cValue = strKeyboardTitle + cValue; AddKeyboardTitle = false; }
 		if(cValue.length() > MaxCharacters) 
 		{   //Add ellipsis to long paths and return
 			c.theRightSlots.children[LV2Hold].children[0].geometry.text = PathEllipsis(cValue);
@@ -411,7 +422,7 @@ function refreshMenu(x)
 	if(inChangeTitleMenu)
 	{
 		c.theLeftSlots.children[LV2Hold].children[0].geometry.text = cValue;
-		if(strKeyboardTitle == cValue) { cValue = ""; }
+		if(configList[LV2Item] == cValue) { cValue = ""; }
 	}
 	else
 	{
