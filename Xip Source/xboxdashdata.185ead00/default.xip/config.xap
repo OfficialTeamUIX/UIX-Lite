@@ -258,14 +258,14 @@ function BuildRTList()
 function toggleTF()
 {
 	var c = theConfigPanel.children[0].children[0];
-	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
 	if(b.toLowerCase() == "true") { refreshMenu("false"); } else { refreshMenu("true"); }
 }
 
 function toggle34()
 {
 	var c = theConfigPanel.children[0].children[0];
-	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
 	if(b.toLowerCase() == "3") { refreshMenu("4"); }
 	else { refreshMenu("3"); }
 }
@@ -273,7 +273,7 @@ function toggle34()
 function toggle345()
 {
 	var c = theConfigPanel.children[0].children[0];
-	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
 	if(b.toLowerCase() == "3") { refreshMenu("4"); }
 	else if(b.toLowerCase() == "4") { refreshMenu("5"); }
 	else { refreshMenu("3"); }
@@ -282,7 +282,7 @@ function toggle345()
 function toggleMOS()
 {
 	var c = theConfigPanel.children[0].children[0];
-	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
 	if(b.toLowerCase() == "thc") { refreshMenu("Stock"); } else { refreshMenu("tHc"); }
 }
 
@@ -296,7 +296,7 @@ function toggleBacking()
 function toggleYX()
 {
 	var c = theConfigPanel.children[0].children[0];
-	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
 	if(b == "ToggleNoisyCam()") { refreshMenu("GoToLauncher()"); }
 	else if(b == "GoToLauncher()") { refreshMenu("nothing"); }
 	else { refreshMenu("ToggleNoisyCam()"); }
@@ -305,7 +305,7 @@ function toggleYX()
 function toggleMMF()
 {
 	var c = theConfigPanel.children[0].children[0];
-	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
 	if(b == "GoToMemory()") { refreshMenu("GoToMusic()"); }
 	else if(b == "GoToMusic()") { refreshMenu("EnterLiveToday(false)"); }
 	else if(b == "EnterLiveToday(false)") { refreshMenu("GoToLauncher()"); }
@@ -315,7 +315,7 @@ function toggleMMF()
 function toggleMMB()
 {
 	var c = theConfigPanel.children[0].children[0];
-	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
 	if(b.toLowerCase() == "memory") { refreshMenu("MUSIC"); }
 	else if(b.toLowerCase() == "music") { refreshMenu("XONLINE"); }
 	else if(b.toLowerCase() == "xonline") { refreshMenu("LAUNCHER"); }
@@ -325,7 +325,7 @@ function toggleMMB()
 function toggleIcon()
 {
 	var c = theConfigPanel.children[0].children[0];
-	var b = c.theRightSlots.children[LV2Item].children[0].geometry.text;
+	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
 	var cValue;
 	if(b.toLowerCase() == "console")
 	{
@@ -339,7 +339,7 @@ function toggleIcon()
 		c.ConsoleIcon.visible = true;
 		cValue = "Console";
 	}
-	c.theRightSlots.children[LV2Item].children[0].geometry.text = cValue;
+	c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue;
 	setConfigMenuValue(configValues[LV2Item],cValue);
 }
 
@@ -389,11 +389,11 @@ function refreshMenu(x)
 		setConfigMenuValue(configValues[LV2Item],"");
 		if(inChangeTitleMenu) 
 		{ 
-			c.theLeftSlots.children[LV2Item].children[0].geometry.text = configList[LV2Item];
+			c.theLeftSlots.children[LV2Hold].children[0].geometry.text = configList[LV2Item];
 		}
 		else 
 		{
-			c.theRightSlots.children[LV2Item].children[0].geometry.text = ""; 
+			c.theRightSlots.children[LV2Hold].children[0].geometry.text = ""; 
 		}
 		return; 
 	} 
@@ -402,7 +402,7 @@ function refreshMenu(x)
 		if(AddKeyboardTitle) { cValue = strKeyboardTitle + cValue; AddKeyboardTitle = false; }
 		if(cValue.length() > MaxCharacters) 
 		{   //Add ellipsis to long paths and return
-			c.theRightSlots.children[LV2Item].children[0].geometry.text = PathEllipsis(cValue);
+			c.theRightSlots.children[LV2Hold].children[0].geometry.text = PathEllipsis(cValue);
 			setConfigMenuValue(configValues[LV2Item],cValue);
 			return;
 		}    
@@ -410,12 +410,12 @@ function refreshMenu(x)
 	
 	if(inChangeTitleMenu)
 	{
-		c.theLeftSlots.children[LV2Item].children[0].geometry.text = cValue;
+		c.theLeftSlots.children[LV2Hold].children[0].geometry.text = cValue;
 		if(strKeyboardTitle == cValue) { cValue = ""; }
 	}
 	else
 	{
-		c.theRightSlots.children[LV2Item].children[0].geometry.text = cValue;
+		c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue;
 	}
 	setConfigMenuValue(configValues[LV2Item],cValue);
 }
