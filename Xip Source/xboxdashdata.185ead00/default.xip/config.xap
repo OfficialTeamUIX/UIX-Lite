@@ -387,8 +387,14 @@ function configKeyb()
 			b = b.substr(y);
 		}
 	} 
-	ShowKeyboard(a, b, "theUIXConfigInline.children[0].refreshMenu(strKeyboardEdit)", "PlaySoundB()");
+	ShowKeyboard(a, b, "theUIXConfigInline.children[0].refreshMenu(strKeyboardEdit)", "theUIXConfigInline.children[0].configKeybCancel()");
 }
+
+function configKeybCancel()
+{
+	PlaySoundB();
+	AddKeyboardTitle= false;
+}    
 
 function refreshMenu(x)
 {
