@@ -17,6 +17,85 @@ DEF theMainMenuLevel Transform
 							axis 0 0 2
 							children
 							[
+								DEF podsupport_3a Transform
+								{
+									visible false
+									children
+									[
+										Shape
+										{
+											appearance Appearance
+											{
+												material DEF podsupport_3a_material MaxMaterial
+												{
+													name "PanelBacking_01"
+												}
+											}
+											geometry DEF podsupport_3-FACES Mesh { url "podsupport_3-FACES.xm" }
+										}
+									]
+									rotation 0.012260 0.999900 -0.003600 -1.432000
+									scale 19.000000 2.072000 8.992000
+									scaleOrientation -0.118800 0.987900 0.100100 -0.141000
+									translation 45.130001 0.692800 2.796000
+								}
+								DEF podsupport_1a Transform
+								{
+									visible false
+									children
+									[
+										Shape
+										{
+											appearance Appearance
+											{
+												material USE podsupport_3a_material
+											}
+											geometry DEF podsupport_1-FACES Mesh { url "podsupport_1-FACES.xm" }
+										}
+									]
+									rotation -0.754600 0.002362 0.656200 -3.126000
+									scale 19.000000 2.072000 8.992000
+									scaleOrientation -0.118800 0.987900 0.100100 -0.141000
+									translation -45.130001 0.311100 2.796000
+								}
+								DEF podsupport_2a Transform
+								{
+									visible false
+									children
+									[
+										Shape
+										{
+											appearance Appearance
+											{
+												material USE podsupport_3a_material
+											}
+											geometry DEF podsupport_2-FACES Mesh { url "podsupport_2-FACES.xm" }
+										}
+									]
+									rotation -0.600300 0.598900 0.530000 -4.089000
+									scale 19.000000 2.072000 8.992000
+									scaleOrientation -0.118800 0.987900 0.100100 -0.141000
+									translation -4.415000 41.959999 2.796000
+								}
+								DEF podsupport_4a Transform
+								{
+									visible false
+									children
+									[
+										Shape
+										{
+											appearance Appearance
+											{
+												material USE podsupport_3a_material
+											}
+											geometry DEF podsupport_4-FACES Mesh { url "podsupport_4-FACES.xm" }
+										}
+									]
+									rotation 0.557400 0.539200 0.631300 -2.018000
+									scale 19.000000 2.072000 8.992000
+									scaleOrientation -0.118800 0.987900 0.100100 -0.141000
+									translation -4.415000 -41.959999 2.796000
+								}
 								DEF podsupport_3 Transform
 								{
 									children

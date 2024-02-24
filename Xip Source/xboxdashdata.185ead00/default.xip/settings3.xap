@@ -3638,9 +3638,9 @@ function StartSettingsMenu()
 		sSettingsMenu[index] = theTranslator.Translate("PARENTAL CONTROL");
 		index = index + 1;
 	}
-	sSettingsMenu[index] = theTranslator.Translate("Reboot");
-	index = index + 1;
 	sSettingsMenu[index] = theTranslator.Translate("AUTO OFF");
+	index = index + 1;
+	sSettingsMenu[index] = theTranslator.Translate("Reboot");
 	index = index + 1;
 	sSettingsMenu[index] = theTranslator.Translate("SYSTEM INFO");
 	index = index + 1;
@@ -3757,11 +3757,11 @@ function MenuIcon()
 	{
 		ShowIcon(c.network_icon);
 	}
-	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Reboot"))
+	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("AUTO OFF"))
 	{
 		ShowIcon(c.AutoOffIcon);
 	}
-	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("AUTO OFF"))
+	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Reboot"))
 	{
 		ShowIcon(c.AutoOffIcon);
 	}
@@ -3865,16 +3865,16 @@ function UpdateRootMeta()
 	{
 		metaString = theTranslator.Translate("NETWORK");
 	}
-	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Reboot"))
-	{
-		metaString = theTranslator.Translate("Reboot Xbox");
-	}
 	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("AUTO OFF"))
 	{
 		if (theConfig.GetAutoOff())
 			metaString = theTranslator.Translate("ENABLED");
 		else
 			metaString = theTranslator.Translate("DISABLED");
+	}
+	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Reboot"))
+	{
+		metaString = theTranslator.Translate("Reboot Xbox");
 	}
 	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("SYSTEM INFO"))
 	{
@@ -4143,14 +4143,14 @@ DEF theSettingsMenu Level
 				theLiveAccounts.PersistUser(-1);
 				GoToXoDashEntryPoint(0, 0, "TROUBLE SHOOTER");
 			}
-			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Reboot"))
-			{
-				Reboot();
-			}
 			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("AUTO OFF"))
 			{
 				strCurMenu = "AUTO OFF";
 				theSetPanelMenu.GoTo();
+			}
+			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Reboot"))
+			{
+				Reboot();
 			}
 			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("SYSTEM INFO"))
 			{

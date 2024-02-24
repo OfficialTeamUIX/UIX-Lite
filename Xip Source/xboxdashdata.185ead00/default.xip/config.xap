@@ -297,8 +297,11 @@ function toggleYX()
 {
 	var c = theConfigPanel.children[0].children[0];
 	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
-	if(b == "ToggleNoisyCam()") { refreshMenu("GoToLauncher()"); }
-	else if(b == "GoToLauncher()") { refreshMenu("nothing"); }
+	if(b == "ToggleNoisyCam()") { refreshMenu("GoToMemory()"); }
+	else if(b == "GoToMemory()") { refreshMenu("GoToMusic()"); }
+	else if(b == "GoToMusic()") { refreshMenu("GoToXOnline()"); }
+	else if(b == "GoToXOnline()") { refreshMenu("GoToLauncher()"); }
+	else if(b == "GoToLauncher()") { refreshMenu("Nothing"); }
 	else { refreshMenu("ToggleNoisyCam()"); }
 }
 
@@ -307,8 +310,8 @@ function toggleMMF()
 	var c = theConfigPanel.children[0].children[0];
 	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
 	if(b == "GoToMemory()") { refreshMenu("GoToMusic()"); }
-	else if(b == "GoToMusic()") { refreshMenu("EnterLiveToday(false)"); }
-	else if(b == "EnterLiveToday(false)") { refreshMenu("GoToLauncher()"); }
+	else if(b == "GoToMusic()") { refreshMenu("GoToXOnline()"); }
+	else if(b == "GoToXOnline()") { refreshMenu("GoToLauncher()"); }
 	else { refreshMenu("GoToMemory()"); }
 }
 

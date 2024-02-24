@@ -1,9 +1,9 @@
-var bMusicPlayWithSubsVisible0;
+var bLauncherVisible0;
 var nPlayCursor0;
 var nPreviousPlayCursor0;
 var nPlayScroll0;
 var nPlayVisible0;
-var nCurMusicPlayWithSubsItem0;
+var nCurLauncherItem0;
 var subTitle0;
 var CurrentSection;
 var TempTitleList;
@@ -15,8 +15,8 @@ var LastTitleLaunched;
 
 function initialize()
 {
-	bMusicPlayWithSubsVisible0 = true;
-	nCurMusicPlayWithSubsItem0 = 0;
+	bLauncherVisible0 = true;
+	nCurLauncherItem0 = 0;
 	nPlayCursor0 = 0;
 	nPreviousPlayCursor0 = 0;
 	nPlayScroll0 = 0;
@@ -25,7 +25,7 @@ function initialize()
 
 function UpdateTrackList()
 {
-	var c = theMusicPlayWithSubs.children[0].children[0];
+	var c = theLauncher.children[0].children[0];
 	c.LowerPanelText.text = subTitle0;
 	
 	if (nPlayCursor0 < 0)
@@ -111,7 +111,7 @@ function UpdateTrackList()
 	}
 }
 
-DEF theMusicPlayWithSubsAlternateViewpoint Viewpoint
+DEF theLauncherAlternateViewpoint Viewpoint
 {
 	fieldOfView 1.387000
 	orientation 1.177400 -0.983500 -0.236250 -0.345440
@@ -119,7 +119,7 @@ DEF theMusicPlayWithSubsAlternateViewpoint Viewpoint
 	jump false
 }
 
-DEF MusicPlayWithSubsViewpoint Viewpoint
+DEF LauncherViewpoint Viewpoint
 {
 	fieldOfView 1.287000
 	orientation 0.200900 0.979000 0.034330 -0.345700
@@ -127,7 +127,7 @@ DEF MusicPlayWithSubsViewpoint Viewpoint
 	jump false
 }
 
-DEF musicPlayerMenu0Viewpoint Viewpoint
+DEF theTitleListViewpoint Viewpoint
 {
 	fieldOfView 1.316000
 	orientation -0.017440 -0.999800 0.000769 -0.088190
@@ -135,9 +135,9 @@ DEF musicPlayerMenu0Viewpoint Viewpoint
 	jump false
 }
 
-function ShowMusicPlayWithSubs()
+function ShowLauncherMenu()
 {
-	var c = theMusicPlayWithSubs.children[0].children[0];
+	var c = theLauncher.children[0].children[0];
 	c.MU_L3_text_tracklist01.visible = false;
 	c.theMenuArm.SetRotation(0, 1, 0, 0);
 	c.audio_panel.SetRotation(-1, 0, 0, -3.246000);
@@ -146,14 +146,14 @@ function ShowMusicPlayWithSubs()
 	c.back1.SetRotation(0.000000, 1.000000, 0.000000, -0.130900);
 	c.select1.SetTranslation(-45.280000, 52.339999, -204.000000);   
 	c.select1.SetRotation(0.000000, 1.000000, 0.000000, -0.497400);
-	UpdateMusicPlayWithSubs();
-	MusicPlayWithSubsViewpoint.isBound = true;
-	bMusicPlayWithSubsVisible0 = true;
+	UpdateLauncherMenu();
+	LauncherViewpoint.isBound = true;
+	bLauncherVisible0 = true;
 }
 
-function StartMusicEditor()
+function StartTitleList()
 {
-	var c = theMusicPlayWithSubs.children[0].children[0];
+	var c = theLauncher.children[0].children[0];
 	c.MU_L3_text_tracklist01.visible = false;
 	c.back1.SetTranslation(-47.340000, 52.809999, -204.300003); 
 	c.back1.SetRotation(0.000000, -1.000000, 0.000000, -0.340300);
@@ -168,32 +168,32 @@ function StartMusicEditor()
 	c.buttons_edit.visible = false;
 	nPlayCursor0 = 0;
 	UpdateTrackList();
-	musicPlayerMenu0Viewpoint.isBound = true;
-	CurrentViewpoint = musicPlayerMenu0Viewpoint;
-	bMusicPlayWithSubsVisible0 = false;
+	theTitleListViewpoint.isBound = true;
+	CurrentViewpoint = theTitleListViewpoint;
+	bLauncherVisible0 = false;
 }
 
-function EnterMusicPlay()
+function EnterLauncherMenu()
 {
-	var c = theMusicPlayWithSubs.children[0].children[0];
+	var c = theLauncher.children[0].children[0];
 	c.MU_L3_panel_playicon.visible = false;
 	c.MU_L3_icon_repeat.visible = false;
 	c.MU_L3_text_random_0.visible = false;
 	c.MU_L3_icon_stop_02.visible = false;
 	c.MU_L3_icon_pause_0.visible = false;
 	nPlayScroll0 = 0;
-	nCurMusicPlayWithSubsItem0 = 0;
+	nCurLauncherItem0 = 0;
 	c.TitleText1.text = "Xbox Hard Drive";      //menu title
 	LoadMenuItems();
-	ShowMusicPlayWithSubs();
-	CurrentViewpoint = MusicPlayWithSubsViewpoint;
-	CurrentAltViewpoint = theMusicPlayWithSubsAlternateViewpoint;
+	ShowLauncherMenu();
+	CurrentViewpoint = LauncherViewpoint;
+	CurrentAltViewpoint = theLauncherAlternateViewpoint;
 	LastTitleLaunched = GetSavedValue("LauncherMenu","LastTitleLaunched");
 }
 
 function LoadMenuItems()
 {
-	var c = theMusicPlayWithSubs.children[0].children[0];
+	var c = theLauncher.children[0].children[0];
 	TotalSections = 0;
 	arrMenuNames = new Array;
 	arrMenuPaths = new Array;
@@ -211,16 +211,16 @@ function LoadMenuItems()
 }
 
 //sets up the root menu text etc.
-function UpdateMusicPlayWithSubs()
+function UpdateLauncherMenu()
 {
-	var c = theMusicPlayWithSubs.children[0].children[0];
+	var c = theLauncher.children[0].children[0];
 	for (var i = 0; i < TotalSections; i = i + 1)
 	{
 		var v = arrMenuNames[i];
 		c.theMenuButtons.children[i].visible = true;
 		c.theMenuButtons.children[i].children[1].children[0].geometry.text = v;
 		
-		if (i == nCurMusicPlayWithSubsItem0)
+		if (i == nCurLauncherItem0)
 		{
 			c.theMenuButtons.children[i].children[0].appearance.material.name = "GameHilite";
 			c.theMenuButtons.children[i].children[0].appearance.texture.url = "GameHilite_01.bmp";
@@ -239,7 +239,7 @@ function UpdateMusicPlayWithSubs()
 	c._button_surround_0.visible = false;
 }
 
-DEF theMusicPlayWithSubs Level
+DEF theLauncher Level
 {
 	archive "Music_PlayEdit2.xip"
 	unloadable false
@@ -252,7 +252,7 @@ DEF theMusicPlayWithSubs Level
 			function onLoad()
 			{
 				
-				var c = theMusicPlayWithSubs.children[0].children[0];
+				var c = theLauncher.children[0].children[0];
 				c.MU_L3_panel_playicon.visible = false;
 				c.MU_L3_icon_repeat.visible    = false;
 				c.MU_L3_text_random_0.visible  = false;
@@ -279,7 +279,7 @@ DEF theMusicPlayWithSubs Level
 					c.Spinning_Support4.children[0].rpm = 0;
 				}
 				
-				EnterMusicPlay();
+				EnterLauncherMenu();
 			}
 		}
 	]
@@ -343,30 +343,30 @@ DEF theMusicPlayWithSubs Level
 		]
 	}
 	
-	path USE MusicPlayWithSubsViewpoint
+	path USE LauncherViewpoint
 	
-	control DEF theMusicPlayWithSubsJoystick Joystick
+	control DEF theLauncherJoystick Joystick
 	{
 		function OnADown()
 		{
-			theMusicPlayWithSubs.children[0].children[0].MU_select_pod_HL.children[0].appearance.material.param = 1;
+			theLauncher.children[0].children[0].MU_select_pod_HL.children[0].appearance.material.param = 1;
 			
 			PlaySoundA();
 			
-			if (bMusicPlayWithSubsVisible0)
+			if (bLauncherVisible0)
 			{
-				var a = arrMenuNames[nCurMusicPlayWithSubsItem0];
+				var a = arrMenuNames[nCurLauncherItem0];
 				if(a == "")
 				{
 					return;
 				}
 				else
 				{
-					CurFillDir = arrMenuPaths[nCurMusicPlayWithSubsItem0];
+					CurFillDir = arrMenuPaths[nCurLauncherItem0];
 					TempTitleList = FillMenuList(CurFillDir);
 					subTitle0  = a;
 					thePlayerPanelIn.Play();
-					StartMusicEditor();
+					StartTitleList();
 				}
 			}
 			else
@@ -390,9 +390,9 @@ DEF theMusicPlayWithSubs Level
 		{
 			PlaySoundB();
 			
-			if (bMusicPlayWithSubsVisible0)
+			if (bLauncherVisible0)
 			{
-				theMusicPlayWithSubs.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
+				theLauncher.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
 				if(bBackToSettings)
 				{
 					bBackToSettings = false;
@@ -407,16 +407,16 @@ DEF theMusicPlayWithSubs Level
 			}
 			else
 			{
-				theMusicPlayWithSubs.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
-				CurrentViewpoint = MusicPlayWithSubsViewpoint;
-				ShowMusicPlayWithSubs();
+				theLauncher.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
+				CurrentViewpoint = LauncherViewpoint;
+				ShowLauncherMenu();
 				thePlayerPanelOut.Play();
 			}
 		}
 		
 		function OnMoveRight()  
 		{ 
-			if (bMusicPlayWithSubsVisible0 == false)
+			if (bLauncherVisible0 == false)
 			{
 				var a = (TempTitleList.length - 1);
 				if (nPlayCursor0 + 9 <= a)
@@ -438,7 +438,7 @@ DEF theMusicPlayWithSubs Level
 		
 		function OnMoveLeft()  
 		{  
-			if (bMusicPlayWithSubsVisible0 == false)
+			if (bLauncherVisible0 == false)
 			{
 				var a = (TempTitleList.length - 1);
 				if (nPlayCursor0 - 9 >= 0)
@@ -460,13 +460,13 @@ DEF theMusicPlayWithSubs Level
 		
 		function OnMoveUp()
 		{
-			if (bMusicPlayWithSubsVisible0)
+			if (bLauncherVisible0)
 			{
-				if (nCurMusicPlayWithSubsItem0 > 0)
+				if (nCurLauncherItem0 > 0)
 				{
 					PlaySoundMenuChange();
-					nCurMusicPlayWithSubsItem0 = nCurMusicPlayWithSubsItem0 - 1;
-					UpdateMusicPlayWithSubs();
+					nCurLauncherItem0 = nCurLauncherItem0 - 1;
+					UpdateLauncherMenu();
 				}
 			}
 			else
@@ -487,13 +487,13 @@ DEF theMusicPlayWithSubs Level
 		
 		function OnMoveDown()
 		{
-			if (bMusicPlayWithSubsVisible0)
+			if (bLauncherVisible0)
 			{
-				if (nCurMusicPlayWithSubsItem0 < TotalSections - 1)
+				if (nCurLauncherItem0 < TotalSections - 1)
 				{
 					PlaySoundMenuChange();
-					nCurMusicPlayWithSubsItem0 = nCurMusicPlayWithSubsItem0 + 1;
-					UpdateMusicPlayWithSubs();
+					nCurLauncherItem0 = nCurLauncherItem0 + 1;
+					UpdateLauncherMenu();
 				}
 			}
 			else
@@ -517,7 +517,7 @@ DEF theMusicPlayWithSubs Level
 	{
 		if (children[0].children.length() > 0)
 		{
-			EnterMusicPlay();
+			EnterLauncherMenu();
 		}
 	}
 }

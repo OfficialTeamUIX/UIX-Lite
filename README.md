@@ -31,7 +31,7 @@ Button1Action=GoToMemory()
 Button2Text=MUSIC
 Button2Action=GoToMusic()
 Button3Text=XONLINE
-Button3Action=EnterLiveToday(false)
+Button3Action=GoToXOnline()
 ButtonYXAction=GoToLauncher()
 
 [LauncherMenu]

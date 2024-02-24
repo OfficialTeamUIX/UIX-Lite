@@ -416,23 +416,23 @@ function StartCDPlayer()
 DEF theTranslator Translator
 
 ///////////////////////////////////////////////////////////////////
-DEF theMusicPlayWithSubsInline Inline
+DEF theLauncherInline Inline
 {
 	visible false
 	url "harddrive.xap"
 
 	function onLoad()
 	{
-		theMusicPlayWithSubsInline.children[0].theMusicPlayWithSubs.GoTo();
+		theLauncherInline.children[0].theLauncher.GoTo();
 	}
 }
 
-function GoToMusicPlayWithSubs()
+function GoToLauncher()
 {
-	if (theMusicPlayWithSubsInline.visible)
-		theMusicPlayWithSubsInline.children[0].theMusicPlayWithSubs.GoTo();
+	if (theLauncherInline.visible)
+		theLauncherInline.children[0].theLauncher.GoTo();
 	else
-		theMusicPlayWithSubsInline.visible = true;
+		theLauncherInline.visible = true;
 }
 ////////////////////////////////////////////////////////////////////
 
@@ -1309,6 +1309,10 @@ DEF theMainMenu Level
 				
 				if(thcorb == true)
 				{
+					c.podsupport_1a.visible = true;
+					c.podsupport_2a.visible = true;
+					c.podsupport_3a.visible = true;
+					c.podsupport_4a.visible = true;
 					c.Main_pod_backing01.visible = false;
 					c.Main_pod_backing02.visible = true;
 					c.Main_pod_backing02.fade = 2; 
@@ -1472,9 +1476,20 @@ DEF theMainMenu Level
 
 		function OnKeyVerified()
 		{
-			PlaySoundA();
 			//theConfig.ToggleNoisyCamera();
-			eval(ButtonYXAction);
+			if(ButtonYXAction != "Nothing")
+			{
+				PlaySoundA();
+				if(ButtonYXAction == "GoToMusic()")
+				{
+					theMusicMenuIn.Play();
+				}
+				else if(ButtonYXAction != "ToggleNoisyCam()")
+				{ 
+					theGamesMenuIn.Play(); 
+				}
+				eval(ButtonYXAction);
+			}
 		}        
 	}
 	
@@ -2833,7 +2848,7 @@ function LaunchItem(x,y)
 		launchXbe = "default.xbe";
 		if (theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
 		{
-			theMusicPlayWithSubsInline.children[0].theMusicPlayWithSubs.children[0].children[0].theWholeThing.visible = false;
+			theLauncherInline.children[0].theLauncher.children[0].children[0].theWholeThing.visible = false;
 			SetSavedValue("LauncherMenu","LastTitleLaunched",x + "-" + y);
 			theLaunchGameLevel.GoTo();
 			break;
@@ -2847,15 +2862,14 @@ function Reboot()//scripted reboot - last stage of a recovery is to reboot - let
 	theSettingsInline.children[0].theRecovery.FinishRecovery();
 }
 
-function GoToLauncher()
-{
-	theGamesMenuIn.Play();
-	GoToMusicPlayWithSubs();
-}
-
 function ToggleNoisyCam()
 {
 	theConfig.ToggleNoisyCamera();
+}
+
+function GoToXOnline()
+{
+	EnterLiveToday(false);
 }
 
 function parseTrans(translation,parameter) //A function to return the requested parameter from translation values.
