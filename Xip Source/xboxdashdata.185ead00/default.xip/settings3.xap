@@ -711,7 +711,7 @@ DEF theSetClockMenu Level
 		translation 99.97 4.819000 -253.370003
 		children
 		[
-			DEF theSettingWaver Waver
+			DEF theSettingsWaver Waver
 			{
 				rpm 0.75
 				children
@@ -1070,7 +1070,7 @@ DEF theSetTimezoneMenu Level
 		translation 101.97 4.819000 -253.370003
 		children
 		[
-			USE theSettingWaver Waver
+			USE theSettingsWaver Waver
 		]
 	}
 
@@ -1589,7 +1589,7 @@ DEF theChooseClockMenu Level
 		translation 100.399997 4.815000 -221.800003
 		children
 		[
-			USE theSettingWaver Waver
+			USE theSettingsWaver Waver
 		]
 	}
 
@@ -2149,7 +2149,7 @@ DEF theSetPanelMenu Level
 		translation 97.67 4.819000 -251.870003
 		children
 		[
-			USE theSettingWaver Waver
+			USE theSettingsWaver Waver
 		]
 	}
 
@@ -2639,7 +2639,7 @@ DEF theSetPCMenu Level
 		translation 100.07 4.819000 -252.870003
 		children
 		[
-			USE theSettingWaver Waver
+			USE theSettingsWaver Waver
 		]
 	}
 
@@ -2932,7 +2932,7 @@ DEF theSetLanguageMenu Level
 		translation 100.399997 4.815000 -222.400003
 		children
 		[
-			USE theSettingWaver Waver
+			USE theSettingsWaver Waver
 		]
 	}
 
@@ -3227,7 +3227,7 @@ DEF theSetModeMenu Level
 		translation 99.67 4.819000 -253.770003
 		children
 		[
-			USE theSettingWaver Waver
+			USE theSettingsWaver Waver
 		]
 	}
 
@@ -3917,7 +3917,7 @@ DEF theSettingsMenu Level
 		translation 123.2 1.041 -190.3
 		children
 		[
-			USE theSettingWaver
+			USE theSettingsWaver
 		]
 	}
 
