@@ -14,6 +14,7 @@ var nCurClockItem;
 var nCurVideoItem;
 var nCurAudioItem;
 var nCurLockItem;
+var nNetworkItem;
 //New Options
 var ShowMemoryInSettings;
 var ShowMusicInSettings;
@@ -710,7 +711,7 @@ DEF theSetClockMenu Level
 		translation 99.97 4.819000 -253.370003
 		children
 		[
-			DEF TheShell Waver
+			DEF theSettingWaver Waver
 			{
 				rpm 0.75
 				children
@@ -1069,27 +1070,7 @@ DEF theSetTimezoneMenu Level
 		translation 101.97 4.819000 -253.370003
 		children
 		[
-			DEF TheShell Waver
-			{
-				rpm 0.75
-				children
-				[
-					Shape
-					{
-						appearance Appearance
-						{
-							material MaxMaterial { name "InnerWall_01" }
-							texture ImageTexture { alpha true url "cellwall.bmp" }
-						}
-						geometry Mesh { url "Inner_cell-FACES.xm" }
-					}
-					Shape
-					{
-						appearance MaxMaterial { name "InnerWall_02" }
-						geometry Sphere
-					}
-				]
-			}
+			USE theSettingWaver Waver
 		]
 	}
 
@@ -1608,27 +1589,7 @@ DEF theChooseClockMenu Level
 		translation 100.399997 4.815000 -221.800003
 		children
 		[
-			DEF TheShell Waver
-			{
-				rpm 0.75
-				children
-				[
-					Shape
-					{
-						appearance Appearance
-						{
-							material MaxMaterial { name "InnerWall_01" }
-							texture ImageTexture { alpha true url "cellwall.bmp" }
-						}
-						geometry Mesh { url "Inner_cell-FACES.xm" }
-					}
-					Shape
-					{
-						appearance MaxMaterial { name "InnerWall_02" }
-						geometry Sphere
-					}
-				]
-			}
+			USE theSettingWaver Waver
 		]
 	}
 
@@ -2188,27 +2149,7 @@ DEF theSetPanelMenu Level
 		translation 97.67 4.819000 -251.870003
 		children
 		[
-			DEF TheShell Waver
-			{
-				rpm 0.75
-				children
-				[
-					Shape
-					{
-						appearance Appearance
-						{
-							material MaxMaterial { name "InnerWall_01" }
-							texture ImageTexture { alpha true url "cellwall.bmp" }
-						}
-						geometry Mesh { url "Inner_cell-FACES.xm" }
-					}
-					Shape
-					{
-						appearance MaxMaterial { name "InnerWall_02" }
-						geometry Sphere
-					}
-				]
-			}
+			USE theSettingWaver Waver
 		]
 	}
 
@@ -2698,27 +2639,7 @@ DEF theSetPCMenu Level
 		translation 100.07 4.819000 -252.870003
 		children
 		[
-			DEF TheShell Waver
-			{
-				rpm 0.75
-				children
-				[
-					Shape
-					{
-						appearance Appearance
-						{
-							material MaxMaterial { name "InnerWall_01" }
-							texture ImageTexture { alpha true url "cellwall.bmp" }
-						}
-						geometry Mesh { url "Inner_cell-FACES.xm" }
-					}
-					Shape
-					{
-						appearance MaxMaterial { name "InnerWall_02" }
-						geometry Sphere
-					}
-				]
-			}
+			USE theSettingWaver Waver
 		]
 	}
 
@@ -3011,27 +2932,7 @@ DEF theSetLanguageMenu Level
 		translation 100.399997 4.815000 -222.400003
 		children
 		[
-			DEF TheShell Waver
-			{
-				rpm 0.75
-				children
-				[
-					Shape
-					{
-						appearance Appearance
-						{
-							material MaxMaterial { name "InnerWall_01" }
-							texture ImageTexture { alpha true url "cellwall.bmp" }
-						}
-						geometry Mesh { url "Inner_cell-FACES.xm" }
-					}
-					Shape
-					{
-						appearance MaxMaterial { name "InnerWall_02" }
-						geometry Sphere
-					}
-				]
-			}
+			USE theSettingWaver Waver
 		]
 	}
 
@@ -3326,27 +3227,7 @@ DEF theSetModeMenu Level
 		translation 99.67 4.819000 -253.770003
 		children
 		[
-			DEF TheShell Waver
-			{
-				rpm 0.75
-				children
-				[
-					Shape
-					{
-						appearance Appearance
-						{
-							material MaxMaterial { name "InnerWall_01" }
-							texture ImageTexture { alpha true url "cellwall.bmp" }
-						}
-						geometry Mesh { url "Inner_cell-FACES.xm" }
-					}
-					Shape
-					{
-						appearance MaxMaterial { name "InnerWall_02" }
-						geometry Sphere
-					}
-				]
-			}
+			USE theSettingWaver Waver
 		]
 	}
 
@@ -3628,6 +3509,7 @@ function StartSettingsMenu()
 	index = index + 1;
 
 	sSettingsMenu[index] = theTranslator.Translate("NETWORK");
+	nNetworkItem = index;
 	index = index + 1;
 	sSettingsMenu[index] = theTranslator.Translate("LIVE TODAY");
 	index = index + 1;
@@ -3974,8 +3856,9 @@ DEF theSettingsMenu Level
 				if (g_bLiveTodayFadeIn)
 				{
 					g_bLiveTodayFadeIn = false;
-					nCurSettingsMenuItem = 4;
-					nCurSettingsMenuButton = 4;
+					nCurSettingsMenuItem = nNetworkItem;
+					if(nCurSettingsMenuItem >= nNumSettingsMenuItems) { nSettingsScroll = nCurSettingsMenuItem - nNumSettingsMenuItems + 1; }
+					nCurSettingsMenuButton = nCurSettingsMenuItem - nSettingsScroll;
 					UpdateSettingsMenu();
 					theSettingsViewpoint.jump = false;
 				}
@@ -4034,7 +3917,7 @@ DEF theSettingsMenu Level
 		translation 123.2 1.041 -190.3
 		children
 		[
-			USE TheShell
+			USE theSettingWaver
 		]
 	}
 

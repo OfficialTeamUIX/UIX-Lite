@@ -183,7 +183,7 @@ DEF theAccountSelectionLevel Level
 		translation 123.599998 1.041000 -190.199997
 		children
 		[
-			Waver
+			DEF theAccountSelectionWaver Waver
 			{
 				rpm 0.75
 				children

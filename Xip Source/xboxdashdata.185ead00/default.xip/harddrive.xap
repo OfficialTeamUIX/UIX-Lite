@@ -291,7 +291,7 @@ DEF theLauncher Level
 		translation -47.220001 55 -204.300003
 		children
 		[
-			Waver
+			DEF theLauncherWaver Waver
 			{
 				rpm 0.75
 				children

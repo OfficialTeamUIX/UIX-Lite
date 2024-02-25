@@ -1072,7 +1072,7 @@ DEF theFilesMenu Level
 		translation 34.559999 15.220000 -214.199997
 		children
 		[
-			Waver
+			DEF theMemoryMenuWaver Waver
 			{
 				rpm 0.75
 				children
@@ -1593,43 +1593,7 @@ DEF theMemoryMenu Level
 		translation 41.549999 10.190000 -201.399994
 		children
 		[
-			Waver
-			{
-				rpm 0.75
-				children
-				[
-					Shape
-					{
-						appearance Appearance
-						{
-							material MaxMaterial
-							{
-								name "InnerWall_01"
-							}
-							texture ImageTexture
-							{
-								alpha true
-								url "cellwall.bmp"
-							}
-						}
-						geometry Mesh { url "Inner_cell-FACES.xm" }
-					}
-					Shape
-					{
-						appearance Appearance
-						{
-							material MaxMaterial
-							{
-								name "InnerWall_02"
-							}
-						}
-						geometry Sphere
-						{
-							radius 1
-						}
-					}
-				]
-			}
+			USE theMemoryMenuWaver Waver
 		]
 	}
 

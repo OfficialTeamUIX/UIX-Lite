@@ -315,7 +315,7 @@ DEF theMusicCopyMenu Level
 		translation -46.879999 54.460001 -217.359997
 		children
 		[
-			Waver
+			DEF theMusicMenuWaver Waver
 			{
 				rpm 0.75
 				children
@@ -1825,43 +1825,7 @@ DEF theMusicPlayMenu Level
 		translation -47.220001 55 -204.300003
 		children
 		[
-			Waver
-			{
-				rpm 0.75
-				children
-				[
-					Shape
-					{
-						appearance Appearance
-						{
-							material MaxMaterial
-							{
-								name "InnerWall_01"
-							}
-							texture ImageTexture
-							{
-								alpha true
-								url "cellwall.bmp"
-							}
-						}
-						geometry Mesh { url "Inner_cell-FACES.xm" }
-					}
-					Shape
-					{
-						appearance Appearance
-						{
-							material MaxMaterial
-							{
-								name "InnerWall_02"
-							}
-						}
-						geometry Sphere
-						{
-							radius 1
-						}
-					}
-				]
-			}
+			USE theMusicMenuWaver Waver
 		]
 	}
 
@@ -2464,43 +2428,7 @@ DEF theMusicMenu Level
 		translation -44.599998 54.270000 -186.500000
 		children
 		[
-			Waver
-			{
-				rpm 0.75
-				children
-				[
-					Shape
-					{
-						appearance Appearance
-						{
-							material MaxMaterial
-							{
-								name "InnerWall_01"
-							}
-							texture ImageTexture
-							{
-								alpha true
-								url "cellwall.bmp"
-							}
-						}
-						geometry Mesh { url "Inner_cell-FACES.xm" }
-					}
-					Shape
-					{
-						appearance Appearance
-						{
-							material MaxMaterial
-							{
-								name "InnerWall_02"
-							}
-						}
-						geometry Sphere
-						{
-							radius 1.0
-						}
-					}
-				]
-			}
+			USE theMusicMenuWaver Waver
 		]
 	}
 

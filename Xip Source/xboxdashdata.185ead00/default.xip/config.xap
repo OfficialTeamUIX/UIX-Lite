@@ -558,7 +558,7 @@ DEF theConfigPanel Level
 		translation 108.8 1.022000 -223.050006
 		children
 		[
-			Waver
+			DEF theConfigWaver Waver
 			{
 				rpm 0.75
 				children
@@ -709,7 +709,7 @@ DEF theConfigPanel Level
 			{
 				if(settChanged == true)
 				{
-					AskQuestion("You will need to reboot before the new settings will take effect. \n\nWould you like to reboot now?", "Reboot()", "theUIXConfigInline.children[0].leaveConfig()", 1);
+					AskQuestion("You will need to reboot before the new settings will take effect.\n\nWould you like to reboot now?", "Reboot()", "theUIXConfigInline.children[0].leaveConfig()", 1);
 				}
 				else if(settChanged == false)
 				{
