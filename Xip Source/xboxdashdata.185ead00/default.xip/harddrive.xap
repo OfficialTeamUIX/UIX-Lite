@@ -26,11 +26,13 @@ function initialize()
 function UpdateTrackList()
 {
 	var c = theLauncher.children[0].children[0];
+	var nTracks0 = TempTitleList.length;
 	c.LowerPanelText.text = subTitle0;
 	
-	if (nPlayCursor0 < 0)
+	if (nPlayCursor0 < 0 | nPlayScroll0 < 0)
 	{
 		nPlayScroll0 = 0;
+		nPlayCursor0 = 0;
 	}
 	else if ( (nPlayCursor0 >= (nPlayVisible0 - 1)) & (nPreviousPlayCursor0 < nPlayCursor0) & (nPlayCursor0 > (nPlayScroll0 + (nPlayVisible0 - 1)) ))
 	{    
@@ -41,9 +43,6 @@ function UpdateTrackList()
 		nPlayScroll0 = nPlayCursor0;
 	}
 	nPreviousPlayCursor0 = nPlayCursor0;
-	
-	var nTracks0;
-	nTracks0 = TempTitleList.length;
 	
 	if (nPlayScroll0 > 0)
 	{
@@ -421,13 +420,14 @@ DEF theLauncher Level
 				var a = (TempTitleList.length - 1);
 				if (nPlayCursor0 + 9 <= a)
 				{
-					nPlayCursor0 = nPlayCursor0 + 9;
+					nPlayCursor0 = nPlayCursor0 + nPlayVisible0;
+					nPlayScroll0 = nPlayScroll0 + nPlayVisible0;
 				}
 				else if(nPlayCursor0 == a)
 				{
 					return;
 				} 
-				else if(a - nPlayCursor0 < 9)
+				else if(a - nPlayCursor0 < nPlayVisible0)
 				{
 					nPlayCursor0 = a;
 				}
@@ -441,17 +441,19 @@ DEF theLauncher Level
 			if (bLauncherVisible0 == false)
 			{
 				var a = (TempTitleList.length - 1);
-				if (nPlayCursor0 - 9 >= 0)
+				if (nPlayCursor0 - nPlayVisible0 >= 0)
 				{
-					nPlayCursor0 = nPlayCursor0 - 9;
+					nPlayCursor0 = nPlayCursor0 - nPlayVisible0;
+					nPlayScroll0 = nPlayScroll0 - nPlayVisible0;
 				}
 				else if(nPlayCursor0 == 0)
 				{
 					return;
 				} 
-				else if(nPlayCursor0 - 9 < 9)
+				else if(nPlayCursor0 - nPlayVisible0 < nPlayVisible0)
 				{
 					nPlayCursor0 = 0;
+					nPlayScroll0 = 0;
 				}
 				PlaySoundMenuChange();
 				UpdateTrackList();
@@ -475,6 +477,7 @@ DEF theLauncher Level
 				if (nPlayCursor0 <= 0)
 				{
 					nPlayCursor0 = a;
+					nPlayScroll0 = a - nPlayVisible0;
 				}
 				else
 				{
