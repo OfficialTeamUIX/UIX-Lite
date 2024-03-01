@@ -2892,9 +2892,9 @@ function parseTrans(translation,parameter) //A function to return the requested 
 function StringtoNumber( thestring )
 {
 	var tempstring = thestring;
-	var theinteger = Math.abs(tempstring);
-	if(tempstring.charAt(0) == "-") theinteger = theinteger * -1;
-	return theinteger;
+	var theNumber = Math.abs(tempstring);
+	if(tempstring.charCodeAt(0) == 45) theNumber = theNumber * -1;
+	return theNumber;
 }
 
 function NumberToString(x)
