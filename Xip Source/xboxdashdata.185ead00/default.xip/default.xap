@@ -2877,19 +2877,19 @@ function parseTrans(translation,parameter) //A function to return the requested 
 	var TransParameter = Split(NumberToString(translation)," "); //convert the Translation numbers to an array of strings.
 	if(parameter.toUpperCase() == "X") 
 	{
-		return StringtoNumber(TransParameter[0]); //convert back to number before returning the value
+		return StringToNumber(TransParameter[0]); //convert back to number before returning the value
 	} 
 	else if(parameter.toUpperCase() == "Y") 
 	{
-		return StringtoNumber(TransParameter[1]); 
+		return StringToNumber(TransParameter[1]); 
 	} 
 	else if(parameter.toUpperCase() == "Z") 
 	{
-		return StringtoNumber(TransParameter[2]); 
+		return StringToNumber(TransParameter[2]); 
 	}
 }
 
-function StringtoNumber( thestring )
+function StringToNumber( thestring )
 {
 	var tempstring = thestring;
 	var theNumber = Math.abs(tempstring);
