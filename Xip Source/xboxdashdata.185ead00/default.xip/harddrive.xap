@@ -162,9 +162,6 @@ function StartTitleList()
 	c.audio_panel.SetRotation(1, 0, 0, -0.02618);
 	c.audio_panel.SetTranslation(-45.549999, 55.07, -204.5);
 	nPlayScroll0 = 0;
-	c.play_buttons.visible = false;
-	c.buttons_copy.visible = false;
-	c.buttons_edit.visible = false;
 	nPlayCursor0 = 0;
 	UpdateTrackList();
 	theTitleListViewpoint.isBound = true;
@@ -175,11 +172,6 @@ function StartTitleList()
 function EnterLauncherMenu()
 {
 	var c = theLauncher.children[0].children[0];
-	c.MU_L3_panel_playicon.visible = false;
-	c.MU_L3_icon_repeat.visible = false;
-	c.MU_L3_text_random_0.visible = false;
-	c.MU_L3_icon_stop_02.visible = false;
-	c.MU_L3_icon_pause_0.visible = false;
 	nPlayScroll0 = 0;
 	nCurLauncherItem0 = 0;
 	c.TitleText1.text = "Xbox Hard Drive";      //menu title
@@ -252,12 +244,7 @@ DEF theLauncher Level
 			{
 				
 				var c = theLauncher.children[0].children[0];
-				c.MU_L3_panel_playicon.visible = false;
-				c.MU_L3_icon_repeat.visible    = false;
-				c.MU_L3_text_random_0.visible  = false;
-				c.MU_L3_icon_stop_02.visible   = false;
-				c.MU_L3_icon_pause_0.visible   = false;
-				c.CD_STACK.visible             = false;
+				c.theIcons.visible = true;
 				
 				if( thcorb == true ) 
 				{
@@ -418,7 +405,7 @@ DEF theLauncher Level
 			if (bLauncherVisible0 == false)
 			{
 				var a = (TempTitleList.length - 1);
-				if (nPlayCursor0 + 9 <= a)
+				if (nPlayCursor0 + nPlayVisible0 <= a)
 				{
 					nPlayCursor0 = nPlayCursor0 + nPlayVisible0;
 					nPlayScroll0 = nPlayScroll0 + nPlayVisible0;
