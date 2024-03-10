@@ -174,7 +174,7 @@ function EnterLauncherMenu()
 	var c = theLauncher.children[0].children[0];
 	nPlayScroll0 = 0;
 	nCurLauncherItem0 = 0;
-	c.TitleText1.text = "Xbox Hard Drive";      //menu title
+	c.TitleText1.text = theTranslator.Translate("Xbox Hard Disk");      //menu title
 	LoadMenuItems();
 	ShowLauncherMenu();
 	CurrentViewpoint = LauncherViewpoint;
@@ -350,7 +350,7 @@ DEF theLauncher Level
 				{
 					CurFillDir = arrMenuPaths[nCurLauncherItem0];
 					TempTitleList = FillMenuList(CurFillDir);
-					subTitle0  = a;
+					subTitle0 = a;
 					thePlayerPanelIn.Play();
 					StartTitleList();
 				}

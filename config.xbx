@@ -2,6 +2,7 @@
 MainOrbStyle=Stock
 ShowInsignia=false
 ConfigPanelIcon=Globe
+LauncherOrbIcon=Xbox
 
 [MainMenu]
 MainMenuItems=4
