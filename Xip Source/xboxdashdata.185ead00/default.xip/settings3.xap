@@ -3960,7 +3960,7 @@ DEF theSettingsMenu Level
 			{
 				strCurMenu = "Launcher";
 				bBackToSettings = true;
-				GoToMusicPlayWithSubs();
+				GoToLauncher();
 			}
 			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Configuration"))
 			{
