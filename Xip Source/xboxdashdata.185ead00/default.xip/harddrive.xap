@@ -180,6 +180,11 @@ function EnterLauncherMenu()
 	CurrentViewpoint = LauncherViewpoint;
 	CurrentAltViewpoint = theLauncherAlternateViewpoint;
 	LastTitleLaunched = GetSavedValue("LauncherMenu","LastTitleLaunched");
+	c.theIcons.visible = true;
+	var Icon = GetSavedValue("default","LauncherOrbIcon");
+	if (Icon == "Xbox") { c.theIcons.children[0].children[0].appearance.texture.url = "xboxlogo.xbx"; }
+	else if (Icon == "UIX") { c.theIcons.children[0].children[0].appearance.texture.url = "uixlogo.xbx"; }
+	else c.theIcons.visible = false;
 }
 
 function LoadMenuItems()
@@ -244,7 +249,6 @@ DEF theLauncher Level
 			{
 				
 				var c = theLauncher.children[0].children[0];
-				c.theIcons.visible = true;
 				
 				if( thcorb == true ) 
 				{
@@ -464,7 +468,7 @@ DEF theLauncher Level
 				if (nPlayCursor0 <= 0)
 				{
 					nPlayCursor0 = a;
-					nPlayScroll0 = a - nPlayVisible0;
+					if(a > nPlayVisible0) nPlayScroll0 = a - nPlayVisible0;
 				}
 				else
 				{

@@ -66,6 +66,10 @@ function buildGSList() //just copy this function for more subsections
 	configValues[i] = "default-ConfigPanelIcon";
 	configSelect[i] = "toggleIcon()";
 	i = i + 1;
+	configList[i] = "Launcher Orb Icon:";
+	configValues[i] = "default-LauncherOrbIcon";
+	configSelect[i] = "toggleLOI()";
+	i = i + 1;
 	configList[i] = "Toggle Noisy Camera";
 	configValues[i] = "-blank-";
 	configSelect[i] = "ToggleNoisyCam()";
@@ -342,6 +346,18 @@ function toggleIcon()
 		c.ConsoleIcon.visible = true;
 		cValue = "Console";
 	}
+	c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue;
+	setConfigMenuValue(configValues[LV2Item],cValue);
+}
+
+function toggleLOI()
+{
+	var c = theConfigPanel.children[0].children[0];
+	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
+	var cValue;
+	if(b == "None") { cValue = "Xbox"; } 
+	else if(b == "Xbox") { cValue = "UIX"; }
+	else { cValue = "None"; }
 	c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue;
 	setConfigMenuValue(configValues[LV2Item],cValue);
 }
