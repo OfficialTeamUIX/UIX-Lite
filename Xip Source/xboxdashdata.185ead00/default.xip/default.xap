@@ -1061,16 +1061,158 @@ var nCurMainMenuItem;
 
 function UpdateMainMenu()
 {
-	// Adjust for a 3 or 4 button menu
-	if( g_bDisplay4MenuItems )
+	// Adjust for a 3,5 or 5 button menu
+	if( g_TotalMenuItems == "5" )
 	{
-		// Update our 4 button menu with the online button
+		// Update our 5 button menu
+		Update5ButtonMainMenu();
+	}
+	else if( g_TotalMenuItems == "4" )
+	{
+		// Update our 4 button menu
 		Update4ButtonMainMenu();
 	}
 	else
 	{
-		// Update our 3 button menu without the online button
+		// Update our 3 button menu
 		Update3ButtonMainMenu();
+	}
+}
+
+function Update5ButtonMainMenu()
+{
+	var c = theMainMenu.children[0].children[0];
+	c.game_select_pod_inner02.visible = false;      // Memory Flashing Orb
+	c.game_select_pod_inner.visible = false;        // Music Flashing Orb
+	c.game_select_pod_inner04.visible = false;      // Xbox Live Flashing Orb
+	c.game_select_pod_inner03.visible = false;      // Launcher Flashing Orb
+	c.game_select_pod_inner05.visible = false;      // Settings Flashing Orb
+
+	if (nCurMainMenuItem == 0)  // Memory Button
+	{
+		c.game_select_pod_inner02.visible = true;
+
+		if( thcorb == false ) { c.Rotating_Large_X.SetRotation(0, 0, 1, -0.25); }
+		c.theMenuItems.SetRotation(0, 0, 1, -0.25);
+
+		c.theMemoryItem.SetRotation(0, 1, 0, -0.25);
+		c.theMusicItem.SetRotation(0, 1, 0, -0.25);
+		c.theOnlineItem.SetRotation(0, 1, 0, -0.25);
+		c.theLauncherItem.SetRotation(0, 1, 0, -0.25);
+		c.theSettingsItem.SetRotation(0, 1, 0, -0.25);
+
+		c.MemoryPanelMaterial.name = "GameHilite";
+		c.MusicPanelMaterial.name = "FlatSurfaces2sided";
+		c.OnlinePanelMaterial.name = "FlatSurfaces2sided";
+		c.LauncherPanelMaterial.name = "FlatSurfaces2sided";
+		c.SettingsPanelMaterial.name = "FlatSurfaces2sided";
+
+		c.MemoryTextMaterial.name = "HilightedType";
+		c.MusicTextMaterial.name = "NavType";
+		c.OnlineTextMaterial.name = "NavType";
+		c.LauncherTextMaterial.name = "NavType";
+		c.SettingsTextMaterial.name = "NavType";
+
+	}
+	else if (nCurMainMenuItem == 1)  // Music Button (Default position)
+	{
+		c.game_select_pod_inner.visible = true;
+
+		if( thcorb == false ) { c.Rotating_Large_X.SetRotation(0, 0, 1, 0.0); }
+		c.theMenuItems.SetRotation(0, 0, 1, 0.0);
+
+		c.theMemoryItem.SetRotation(0, 1, 0, 0.0);
+		c.theMusicItem.SetRotation(0, 1, 0, 0.0);
+		c.theOnlineItem.SetRotation(0, 1, 0, 0.0);
+		c.theLauncherItem.SetRotation(0, 1, 0, 0.0);
+		c.theSettingsItem.SetRotation(0, 1, 0, 0.0);
+
+		c.MemoryPanelMaterial.name = "FlatSurfaces2sided";
+		c.MusicPanelMaterial.name = "GameHilite";
+		c.OnlinePanelMaterial.name = "FlatSurfaces2sided";
+		c.LauncherPanelMaterial.name = "FlatSurfaces2sided";
+		c.SettingsPanelMaterial.name = "FlatSurfaces2sided";
+
+		c.MemoryTextMaterial.name = "NavType";
+		c.MusicTextMaterial.name = "HilightedType";
+		c.OnlineTextMaterial.name = "NavType";
+		c.LauncherTextMaterial.name = "NavType";
+		c.SettingsTextMaterial.name = "NavType";
+	}
+	else if (nCurMainMenuItem == 2) // Xbox Live Button
+	{
+		c.game_select_pod_inner04.visible = true;
+
+		if( thcorb == false ) { c.Rotating_Large_X.SetRotation(0, 0, 1, 0.25); }
+		c.theMenuItems.SetRotation(0, 0, 1, 0.25);
+
+		c.theMemoryItem.SetRotation(0, 1, 0, 0.25);
+		c.theMusicItem.SetRotation(0, 1, 0, 0.25);
+		c.theOnlineItem.SetRotation(0, 1, 0, 0.25);
+		c.theLauncherItem.SetRotation(0, 1, 0, 0.25);
+		c.theSettingsItem.SetRotation(0, 1, 0, 0.25);
+
+		c.MemoryPanelMaterial.name = "FlatSurfaces2sided";
+		c.MusicPanelMaterial.name = "FlatSurfaces2sided";
+		c.OnlinePanelMaterial.name = "GameHilite";
+		c.LauncherPanelMaterial.name = "FlatSurfaces2sided";
+		c.SettingsPanelMaterial.name = "FlatSurfaces2sided";
+
+		c.MemoryTextMaterial.name = "NavType";
+		c.MusicTextMaterial.name = "NavType";
+		c.OnlineTextMaterial.name = "HilightedType";
+		c.LauncherTextMaterial.name = "NavType";
+		c.SettingsTextMaterial.name = "NavType";
+	}
+	else if (nCurMainMenuItem == 3) // Launcher Button
+	{
+		c.game_select_pod_inner03.visible = true;
+
+		if( thcorb == false ) { c.Rotating_Large_X.SetRotation(0, 0, 1, 0.50); }
+		c.theMenuItems.SetRotation(0, 0, 1, 0.50);
+
+		c.theMemoryItem.SetRotation(0, 1, 0, 0.50);
+		c.theMusicItem.SetRotation(0, 1, 0, 0.50);
+		c.theOnlineItem.SetRotation(0, 1, 0, 0.50);
+		c.theLauncherItem.SetRotation(0, 1, 0, 0.50);
+		c.theSettingsItem.SetRotation(0, 1, 0, 0.50);
+
+		c.MemoryPanelMaterial.name = "FlatSurfaces2sided";
+		c.MusicPanelMaterial.name = "FlatSurfaces2sided";
+		c.OnlinePanelMaterial.name = "FlatSurfaces2sided";
+		c.LauncherPanelMaterial.name = "GameHilite";
+		c.SettingsPanelMaterial.name = "FlatSurfaces2sided";
+		
+		c.MemoryTextMaterial.name = "NavType";
+		c.MusicTextMaterial.name = "NavType";
+		c.OnlineTextMaterial.name = "NavType";
+		c.LauncherTextMaterial.name = "HilightedType";
+		c.SettingsTextMaterial.name = "NavType";
+	}
+	else if (nCurMainMenuItem == 4) // Settings Button
+	{
+		c.game_select_pod_inner05.visible = true;
+
+		if( thcorb == false ) { c.Rotating_Large_X.SetRotation(0, 0, 1, 0.75); }
+		c.theMenuItems.SetRotation(0, 0, 1, 0.75);
+
+		c.theMemoryItem.SetRotation(0, 1, 0, 0.75);
+		c.theMusicItem.SetRotation(0, 1, 0, 0.75);
+		c.theOnlineItem.SetRotation(0, 1, 0, 0.75);
+		c.theLauncherItem.SetRotation(0, 1, 0, 0.75);
+		c.theSettingsItem.SetRotation(0, 1, 0, 0.75);
+
+		c.MemoryPanelMaterial.name = "FlatSurfaces2sided";
+		c.MusicPanelMaterial.name = "FlatSurfaces2sided";
+		c.OnlinePanelMaterial.name = "FlatSurfaces2sided";
+		c.LauncherPanelMaterial.name = "FlatSurfaces2sided";
+		c.SettingsPanelMaterial.name = "GameHilite";
+
+		c.MemoryTextMaterial.name = "NavType";
+		c.MusicTextMaterial.name = "NavType";
+		c.OnlineTextMaterial.name = "NavType";
+		c.LauncherTextMaterial.name = "NavType";
+		c.SettingsTextMaterial.name = "HilightedType";
 	}
 }
 
@@ -1080,7 +1222,7 @@ function Update4ButtonMainMenu()
 	c.game_select_pod_inner02.visible = false;      // Memory Flashing Orb
 	c.game_select_pod_inner.visible = false;        // Music Flashing Orb
 	c.game_select_pod_inner04.visible = false;      // Xbox Live Flashing Orb
-	c.game_select_pod_inner03.visible = false;      // Settings Flashing Orb
+	c.game_select_pod_inner05.visible = false;      // Settings Flashing Orb
 	
 	if (nCurMainMenuItem == 0)  // Memory Button
 	{
@@ -1149,9 +1291,9 @@ function Update4ButtonMainMenu()
 		c.OnlineTextMaterial.name = "HilightedType";
 		c.SettingsTextMaterial.name = "NavType";
 	}
-	else if (nCurMainMenuItem == 3) // Settings Button
+	else if (nCurMainMenuItem == 4) // Settings Button
 	{
-		c.game_select_pod_inner03.visible = true;
+		c.game_select_pod_inner05.visible = true;
 		
 		if( thcorb == false ) { c.Rotating_Large_X.SetRotation(0, 0, 1, 0.50); }
 		c.theMenuItems.SetRotation(0, 0, 1, 0.50);
@@ -1179,7 +1321,7 @@ function Update3ButtonMainMenu()
 	
 	c.game_select_pod_inner02.visible = false;      // Memory Flashing Orb
 	c.game_select_pod_inner.visible = false;        // Music Flashing Orb
-	c.game_select_pod_inner03.visible = false;      // Settings Flashing Orb
+	c.game_select_pod_inner05.visible = false;      // Settings Flashing Orb
 	
 	if (nCurMainMenuItem == 0)  // Memory Button
 	{
@@ -1231,9 +1373,9 @@ function Update3ButtonMainMenu()
 		nCurMainMenuItem = 1;
 		UpdateMainMenu();
 	}
-	else if (nCurMainMenuItem == 3) // Settings Button
+	else if (nCurMainMenuItem == 4) // Settings Button
 	{
-		c.game_select_pod_inner03.visible = true;
+		c.game_select_pod_inner05.visible = true;
 		
 		if( thcorb == false ) { c.Rotating_Large_X.SetRotation(0, 0, 1, 0.45); }
 		c.theMenuItems.SetRotation(0, 0, 1, 0.45);
@@ -1269,23 +1411,35 @@ DEF theMainMenu Level
 				
 				// Adjust our transforms if necessary
 				var c = theMainMenu.children[0].children[0];
-				if( g_bDisplay4MenuItems )
+				if( g_TotalMenuItems == "5" )
 				{
+					// Setup for a 5 button menu with the online button
+					c.Main_memory_ringpin_2.SetTranslation(56.830002, 33.300000, 102.000000);   // Memory
+					c.Main_memory_ringpin_3.SetTranslation(62.779999, 13.300000, 102.000000);   // Music
+					c.Main_Online_ringpin.SetTranslation(63.779999, -5.700000, 102.000000);     // Online
+					c.Main_memory_ringpin_4.SetTranslation(58.430000, -23.700000, 102.000000);  // Launcher
+					c.Main_memory_ringpin_5.SetTranslation(45.910098, -38.380612, 102.000000);  // Settings
+				}
+
+				else if( g_TotalMenuItems == "4" )
+				{
+					c.Main_memory_ringpin_4.visible = false;
 					// Setup for a 4 button menu with the online button
-					c.Main_memory_ringpin_3.SetTranslation(62.779999, 13.892000, 102.000000);   // Memory
-					c.Main_memory_ringpin_2.SetTranslation(56.830002, 33.290001, 101.900002);   // Music
+					c.Main_memory_ringpin_2.SetTranslation(56.830002, 33.290001, 102.000000);   // Memory
+					c.Main_memory_ringpin_3.SetTranslation(62.779999, 13.892000, 102.000000);   // Music
 					c.Main_Online_ringpin.SetTranslation(62.779999, -6.092000, 102.000000);     // Online
-					c.Main_memory_ringpin_4.SetTranslation(57.430000, -24.379999, 101.500000);  // Settings
+					c.Main_memory_ringpin_5.SetTranslation(57.430000, -24.379999, 102.000000);  // Settings
 				}
 				else
 				{
 					// Turn off the Online Menu Button's Visible Propery
-					c.Main_Online_ringpin.visible = false;
+					c.Main_Online_ringpin.visible   = false;
+					c.Main_memory_ringpin_4.visible = false;
 					
 					// Setup for a 3 button menu without the online button
-					c.Main_memory_ringpin_3.SetTranslation(62.779999, 4.492000, 102.000000);    // Memory
-					c.Main_memory_ringpin_2.SetTranslation(56.830002, 32.290001, 101.900002);   // Music
-					c.Main_memory_ringpin_4.SetTranslation(57.430000, -23.379999, 101.500000);  // Settings
+					c.Main_memory_ringpin_2.SetTranslation(56.830002, 32.000000, 102.000000);   // Memory
+					c.Main_memory_ringpin_3.SetTranslation(62.779999, 4.500000, 102.000000);    // Music
+					c.Main_memory_ringpin_5.SetTranslation(57.430000, -23.50000, 102.000000);   // Settings
 				}
 				// Setup Main Menu Buttons
 				c.MainMenuButton1_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button1Text"));
@@ -1293,11 +1447,14 @@ DEF theMainMenu Level
 				c.MainMenuButton2_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button2Text"));
 				Button2Action = GetSavedValue("MainMenu","Button2Action");
 				c.MainMenuButton3_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button3Text"));
+				Button3Action = GetSavedValue("MainMenu","Button3Action");
+				c.MainMenuButton4_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button4Text"));
+				Button4Action = GetSavedValue("MainMenu","Button4Action");
 				if(ShowInsignia & c.MainMenuButton1_Text.text == theTranslator.Translate("XONLINE")) c.MainMenuButton1_Text.text = theTranslator.Translate("INSIGNIA");
 				if(ShowInsignia & c.MainMenuButton2_Text.text == theTranslator.Translate("XONLINE")) c.MainMenuButton2_Text.text = theTranslator.Translate("INSIGNIA");
 				if(ShowInsignia & c.MainMenuButton3_Text.text == theTranslator.Translate("XONLINE")) c.MainMenuButton3_Text.text = theTranslator.Translate("INSIGNIA");
-				Button3Action = GetSavedValue("MainMenu","Button3Action");
-				c.MainMenuButton4_Text.text = theTranslator.Translate("SETTINGS");
+				if(ShowInsignia & c.MainMenuButton4_Text.text == theTranslator.Translate("XONLINE")) c.MainMenuButton4_Text.text = theTranslator.Translate("INSIGNIA");
+				c.MainMenuButton5_Text.text = theTranslator.Translate("SETTINGS");
 				ButtonYXAction = GetSavedValue("MainMenu","ButtonYXAction");
 				
 				g_theMainMenuLoaded = true;
@@ -1306,6 +1463,7 @@ DEF theMainMenu Level
 				c.game_arm02.visible = false;
 				c.game_arm03.visible = false;
 				c.game_arm04.visible = false;
+				c.game_arm05.visible = false;
 				
 				if(thcorb == true)
 				{
@@ -1323,6 +1481,7 @@ DEF theMainMenu Level
 					c.Pod_2_Spinner.rpm = 1.3;
 					c.Pod_3_Spinner.rpm = 1.3;
 					c.Pod_4_Spinner.rpm = 1.3;
+					c.Pod_5_Spinner.rpm = 1.3;
 					c.MainPod_1_Spinner.rpm = 1.3;      // Main Podshell 09
 					c.MainPod_2_Spinner.rpm = -2.3;     // Main Podshell 10
 					c.MainPod_3_Spinner.rpm = -1.0;     // Main Podshell 11
@@ -1415,7 +1574,13 @@ DEF theMainMenu Level
 				theGamesMenuIn.Play();      // TODO: Get final sound
 				eval(Button3Action);        // Enter LiveToday
 			}
-			else if (nCurMainMenuItem == 3) // Settings Button
+			else if (nCurMainMenuItem == 3) // Launcher Button
+			{
+				theGamesMenuIn.Play();
+				eval(Button4Action);
+			}
+
+			else if (nCurMainMenuItem == 4) // Settings Button
 			{
 				theSettingsMenuIn.Play();
 				GoToSettings();
@@ -1444,13 +1609,16 @@ DEF theMainMenu Level
 				nCurMainMenuItem = nCurMainMenuItem - 1;
 				
 				// Determine if we should skip the online button
-				if( false == g_bDisplay4MenuItems )
+				if( g_TotalMenuItems == "3" )
 				{
 					// If we would be on the Xbox Live Button, let's skip over it
-					if( 2 == nCurMainMenuItem )
-						nCurMainMenuItem = nCurMainMenuItem - 1;
+					if( nCurMainMenuItem == 3) nCurMainMenuItem = nCurMainMenuItem - 2;
 				}
-				
+				if( g_TotalMenuItems == "4"  )
+				{
+					// If we would be on the Launcher Button, let's skip over it
+					if( nCurMainMenuItem == 3 ) nCurMainMenuItem = nCurMainMenuItem - 1;
+				}                  
 				theMainMenuBackward.Play();
 				UpdateMainMenu();
 			}
@@ -1458,17 +1626,21 @@ DEF theMainMenu Level
 		
 		function OnMoveDown()
 		{
-			if (nCurMainMenuItem < 3)
+			if (nCurMainMenuItem < 4)
 			{
 				nCurMainMenuItem = nCurMainMenuItem + 1;
 				
 				// Determine if we should skip the online button
-				if( false == g_bDisplay4MenuItems )
+				if( g_TotalMenuItems == "3" )
 				{
 					// If we would be on the Xbox Live Button, let's skip over it
-					if( 2 == nCurMainMenuItem )
-						nCurMainMenuItem = nCurMainMenuItem + 1;
+					if( nCurMainMenuItem == 2 ) nCurMainMenuItem = nCurMainMenuItem + 2;
 				}
+				if( g_TotalMenuItems == "4"  )
+				{
+					// If we would be on the Launcher Button, let's skip over it
+					if( nCurMainMenuItem == 3 ) nCurMainMenuItem = nCurMainMenuItem + 1;
+				}                
 				theMainMenuForward.Play();
 				UpdateMainMenu();
 			}
@@ -1542,7 +1714,7 @@ var bShowDVDStopBackground;
 var bCleanupSpecifiedDrive;
 var nSettingArea;
 var g_nRec;
-var g_bDisplay4MenuItems;
+var g_TotalMenuItems;
 var g_theMainMenuLoaded;
 var g_theMessageLayerLoaded;
 var g_bResetDiscDeferredNotification;
@@ -1570,6 +1742,7 @@ var currentMusicPlayerMode;
 var Button1Action;
 var Button2Action;
 var Button3Action;
+var Button4Action;
 var ButtonYXAction;
 var bBackToSettings;
 var nXOLineButton;
@@ -1610,7 +1783,6 @@ function initialize()
 	strMessageNoFunction = "";
 	strKeyboardDoneFunction = "";
 	strKeyboardCancelFunction = "";
-	g_bDisplay4MenuItems = false;
 	g_theMainMenuLoaded = false;
 	g_theMessageLayerLoaded = false;
 	g_nCurrentAccountSelected = 0;
@@ -1631,8 +1803,8 @@ function initialize()
 	theAmbientSound1.Play();
 	theAmbientSound2.Play();
 	
-	// Figure out if we need to display 3 or 4 items on the main menu
-	g_bDisplay4MenuItems = (GetSavedValue("MainMenu","MainMenuItems") == "4");
+	// Figure out if we need to display 3, 4 or 5 items on the main menu
+	g_TotalMenuItems = GetSavedValue("MainMenu","MainMenuItems");
 	
 	var nLanguage = theConfig.GetLanguage();
 	if (nLanguage != 0) nLanguage = nLanguage - 1;

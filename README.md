@@ -33,6 +33,8 @@ Button2Text=MUSIC
 Button2Action=GoToMusic()
 Button3Text=XONLINE
 Button3Action=GoToXOnline()
+Button4Text=LAUNCHER
+Button4Action=GoToLauncher()
 ButtonYXAction=GoToLauncher()
 
 [LauncherMenu]

@@ -86,7 +86,7 @@ function buildMMList()
 	configSelect = new Array;
 	configList[i] = "Main Menu Items:";
 	configValues[i] = "MainMenu-MainMenuItems";
-	configSelect[i] = "toggle34()";
+	configSelect[i] = "toggle345()";
 	i = i + 1;
 	
 	configList[i] = "Item 1 Text:";
@@ -119,6 +119,16 @@ function buildMMList()
 	configSelect[i] = "toggleMMF()";
 	i = i + 1;
 	
+	configList[i] = "Item 4 Text:";
+	configValues[i] = "MainMenu-Button4Text";
+	configSelect[i] = "toggleMMB()";
+	i = i + 1;
+
+	configList[i] = "Item 4 Function:";
+	configValues[i] = "MainMenu-Button4Action";
+	configSelect[i] = "toggleMMF()";
+	i = i + 1;
+
 	configList[i] = "Button YX Function:";
 	configValues[i] = "MainMenu-ButtonYXAction";
 	configSelect[i] = "toggleYX()";
