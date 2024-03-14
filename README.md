@@ -4,45 +4,67 @@ Modern/Re-Implemented Patches and Scripts for the Xbox Dashboard #5960
 ## How-To
 
 * DO NOT USE ON AN UNMODIFIED XBOX. It wont work, and you'll brick your Xbox. Make sure you have a modchip or softmod installed that doesnt rely on the dashboard files to boot.
-* Download the patch tool from the releases page.
-
-* Copy the unmodified 5960 Dashboard files to the unmodified directory in the patch tool package.
-* Run the patch tool.
-* Copy the "modified" files, including config.xbx to the root of your C drive on your Xbox.
+* Download Visual XIP from the Tools page.
+* Copy the unmodified 5960 Dashboard files to a directory on your computer.
+* Use Visual XIP or the Binary Patcher to patch the xboxdash.xbe to allow modified xips
+* Use Visual XIP or WinXip to modify the xips in xboxdashdata.185ead00 with the updated xap source files or download the premodified xips from the releases page.
+* Copy the "modified" 5960 Dashboard files via ftp, including config.xbx, to the root of your C drive on your Xbox.
 
 ## Modifications
 
 * Completely based on old school patches and hex edits, not a source modification. So you dont need to feel "dirty" about using it.
 * Removes XIP signature checks.
-* Modifies the Orb to the tHc Orb. (Set tHc Orb to No in the config.xbx for a more stock look.)
-* Modifies Xbox Live tab to say Insignia.
-* Adds a title launcher by hijacking noisy camera. Also adds a "Launcher" tab to settings.
+* Modifies the Orb to the tHc Orb. (Set UseThcOrb to false in the config.xbx for a more stock look.)
+* Modifies Xbox Live tab to say Insignia when the ShowInsignia option is set to true.
 
 ## Example config.xbx
 ```
-Use Thc Orb=Yes
-Total Sections=4
+[default]
+MainOrbStyle=Stock
+ShowInsignia=false
+ConfigPanelIcon=Globe
+LauncherOrbIcon=Xbox
 
-[section0]
-Title=Applications
-Path=Apps
+[MainMenu]
+MainMenuItems=4
+Button1Text=MEMORY
+Button1Action=GoToMemory()
+Button2Text=MUSIC
+Button2Action=GoToMusic()
+Button3Text=XONLINE
+Button3Action=GoToXOnline()
+Button4Text=LAUNCHER
+Button4Action=GoToLauncher()
+ButtonYXAction=GoToLauncher()
 
-[section1]
-Title=Games
-Path=Games
+[LauncherMenu]
+Title0=Applications
+Path0=Apps
+Title1=Dashboards
+Path1=Dashboards
+Title2=Games
+Path2=Games
+Title3=Emulators
+Path3=Emus
+Title4=
+Path4=
 
-[section2]
-Title=Dashboards
-Path=Dashboards
+[ShowInSettings]
+Memory=false
+Music=false
+XOnline=false
+Launcher=true
 
-[section3]
-Title=Emulators
-Path=Emus
+[QuickLaunch]
+QuickLaunchA=E:\Dashboards\UnleashX\default.xbe
+QuickLaunchB=
+QuickLaunchX=
+QuickLaunchY=
+
 ```
 
 ## Usage
-* Hold L + R + Y and X to load the game launcher. Or open it from the settings menu.
-* Currently does not see F or G partitions, so you have to use shortcut files from E.
+* Currently does not see F or G partitions, so you will need to add [shortcuts](https://github.com/BigJx/UIX-Ultra-Lite/blob/main/Shortcuts/README.md) to the files on those partitions to E:\Shortcuts\\[SectionName]\\[TitleName].(i.e. E:\Shortcuts\Games\Fable)
 
 
 ## Family Tree
