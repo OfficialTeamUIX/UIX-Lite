@@ -7,7 +7,7 @@ Modern/Re-Implemented Patches and Scripts for the Xbox Dashboard #5960
 * Download Visual XIP from the Tools page.
 * Copy the unmodified 5960 Dashboard files to a directory on your computer.
 * Use Visual XIP or the Binary Patcher to patch the xboxdash.xbe to allow modified xips
-* Use Visual XIP or WinXip to modify the xips in xboxdashdata.185ead00 with the updated xap source files or download the premodified xips from the releases page.
+* Use Visual XIP or WinXip to modify the xips in xboxdashdata.185ead00 with the updated xap source files.
 * Copy the "modified" 5960 Dashboard files via ftp, including config.xbx, to the root of your C drive on your Xbox.
 
 ## Modifications
@@ -63,9 +63,10 @@ QuickLaunchY=
 
 ```
 
-## Usage
-* Currently does not see F or G partitions, so you will need to add [shortcuts](https://github.com/BigJx/UIX-Ultra-Lite/blob/main/Shortcuts/README.md) to the files on those partitions to E:\Shortcuts\\[SectionName]\\[TitleName].(i.e. E:\Shortcuts\Games\Fable)
-
+## Special Thanks
+* The original TeamUIX and members of xboxdash[.]net
+* The Xbox-Scene Community
+* Insignia Live; Without you guys making an effort to revive Xbox Live, we wouldn't have cared if this dash was compatible.
 
 ## Family Tree
 
@@ -76,8 +77,8 @@ QuickLaunchY=
 * Live Support Stripped from XIPS. 
 
 ## UIX Ultra Lite
-* Non-Source Based 5960 Modification
-* Re-Implementation and open sourcing of Binary Patches from 4920.
+* Non XDK Source Based 5960 Modification
+* Re-Implementation and open sourcing of patches from 4920.
 * Re-Implementation of XIP Modifications, adapting to changes between 4920 and 5960.
 * Binary Patcher is written in Go, and is cross platform. It's a simple command line tool, that will patch the files for you using the bsdiff format. :D
 
@@ -92,7 +93,8 @@ A modified console will be required to run this, but we will be utilizing 20 yea
 
 # To-Do
 
-* Launch Games From the F and G Partitions.
+* Launch Games From the F and G Partitions. UPDATE: Added functionality by currently un-credited genius.
+* Figure out what else we can add in the binaries whitespace without breaking it.
 
 # Non-Features
 One of the caveats of turning back the clock here, is we won't be touching any source code. It's leaked, old, outdated and will not allow us to have a proper setup for systems intending to connect to network services.
