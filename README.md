@@ -4,46 +4,69 @@ Modern/Re-Implemented Patches and Scripts for the Xbox Dashboard #5960
 ## How-To
 
 * DO NOT USE ON AN UNMODIFIED XBOX. It wont work, and you'll brick your Xbox. Make sure you have a modchip or softmod installed that doesnt rely on the dashboard files to boot.
-* Download the patch tool from the releases page.
-
-* Copy the unmodified 5960 Dashboard files to the unmodified directory in the patch tool package.
-* Run the patch tool.
-* Copy the "modified" files, including config.xbx to the root of your C drive on your Xbox.
+* Download Visual XIP from the Tools page.
+* Copy the unmodified 5960 Dashboard files to a directory on your computer.
+* Use Visual XIP or the Binary Patcher to patch the xboxdash.xbe to allow modified xips
+* Use Visual XIP or WinXip to modify the xips in xboxdashdata.185ead00 with the updated xap source files.
+* Copy the "modified" 5960 Dashboard files via ftp, including config.xbx, to the root of your C drive on your Xbox.
 
 ## Modifications
 
 * Completely based on old school patches and hex edits, not a source modification. So you dont need to feel "dirty" about using it.
 * Removes XIP signature checks.
-* Modifies the Orb to the tHc Orb. (Set tHc Orb to No in the config.xbx for a more stock look.)
-* Modifies Xbox Live tab to say Insignia.
-* Adds a title launcher by hijacking noisy camera. Also adds a "Launcher" tab to settings.
+* Modifies the Orb to the tHc Orb. (Set UseThcOrb to false in the config.xbx for a more stock look.)
+* Modifies Xbox Live tab to say Insignia when the ShowInsignia option is set to true.
 
 ## Example config.xbx
 ```
-Use Thc Orb=Yes
-Total Sections=4
+[default]
+MainOrbStyle=Stock
+ShowInsignia=false
+ConfigPanelIcon=Globe
+LauncherOrbIcon=Xbox
 
-[section0]
-Title=Applications
-Path=Apps
+[MainMenu]
+MainMenuItems=4
+Button1Text=MEMORY
+Button1Action=GoToMemory()
+Button2Text=MUSIC
+Button2Action=GoToMusic()
+Button3Text=XONLINE
+Button3Action=GoToXOnline()
+Button4Text=LAUNCHER
+Button4Action=GoToLauncher()
+ButtonYXAction=GoToLauncher()
 
-[section1]
-Title=Games
-Path=Games
+[LauncherMenu]
+Title0=Applications
+Path0=Apps
+Title1=Dashboards
+Path1=Dashboards
+Title2=Games
+Path2=Games
+Title3=Emulators
+Path3=Emus
+Title4=
+Path4=
 
-[section2]
-Title=Dashboards
-Path=Dashboards
+[ShowInSettings]
+Memory=false
+Music=false
+XOnline=false
+Launcher=true
 
-[section3]
-Title=Emulators
-Path=Emus
+[QuickLaunch]
+QuickLaunchA=E:\Dashboards\UnleashX\default.xbe
+QuickLaunchB=
+QuickLaunchX=
+QuickLaunchY=
+
 ```
 
-## Usage
-* Hold L + R + Y and X to load the game launcher. Or open it from the settings menu.
-* Currently does not see F or G partitions, so you have to use shortcut files from E.
-
+## Special Thanks
+* The original TeamUIX and members of xboxdash[.]net
+* The Xbox-Scene Community
+* Insignia Live; Without you guys making an effort to revive Xbox Live, we wouldn't have cared if this dash was compatible.
 
 ## Family Tree
 
@@ -54,8 +77,8 @@ Path=Emus
 * Live Support Stripped from XIPS. 
 
 ## UIX Ultra Lite
-* Non-Source Based 5960 Modification
-* Re-Implementation and open sourcing of Binary Patches from 4920.
+* Non XDK Source Based 5960 Modification
+* Re-Implementation and open sourcing of patches from 4920.
 * Re-Implementation of XIP Modifications, adapting to changes between 4920 and 5960.
 * Binary Patcher is written in Go, and is cross platform. It's a simple command line tool, that will patch the files for you using the bsdiff format. :D
 
@@ -70,7 +93,8 @@ A modified console will be required to run this, but we will be utilizing 20 yea
 
 # To-Do
 
-* Launch Games From the F and G Partitions.
+* Launch Games From the F and G Partitions. UPDATE: Added functionality by currently un-credited genius.
+* Figure out what else we can add in the binaries whitespace without breaking it.
 
 # Non-Features
 One of the caveats of turning back the clock here, is we won't be touching any source code. It's leaked, old, outdated and will not allow us to have a proper setup for systems intending to connect to network services.
