@@ -12,9 +12,13 @@ var arrMenuNames;
 var arrMenuPaths;
 var TotalSections;
 var LastTitleLaunched;
+var bInitializing;
+var bInitialized;
 
 function initialize()
 {
+	bInitializing = false;
+	bInitialized = false;
 	bLauncherVisible0 = true;
 	nCurLauncherItem0 = 0;
 	nPlayCursor0 = 0;
@@ -512,6 +516,26 @@ DEF theLauncher Level
 		if (children[0].children.length() > 0)
 		{
 			EnterLauncherMenu();
+		}
+	}
+	function OnArrival()
+	{
+		if(bInitialized == false)
+		{
+			BlockUser("Indexing the harddisk's extended partitions. This could take several seconds.\n\nPlease Wait...");
+			bInitializing = true;
+		}
+	}
+	behavior
+	{
+		sleep 1.1;
+		
+		if (bInitializing)
+		{
+			bInitializing = false;
+			FillMenuList("-Nothing-"); 
+			bInitialized = true;
+			CloseMessage();
 		}
 	}
 }
