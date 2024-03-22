@@ -234,9 +234,9 @@ function UpdateLauncherMenu()
 			c.theMenuButtons.children[i].children[1].children[0].appearance.name = "NavType";
 		}
 	}
-	c._button_surround.visible   = true;
-	c.New_Line11.visible         = true;
-	c._button_surround_0.visible = false;
+	c._button_surround.visible = (TotalSections >= 3);
+	c.New_Line11.visible = (TotalSections >= 3);
+	c._button_surround_0.visible = (TotalSections < 3);
 }
 
 DEF theLauncher Level

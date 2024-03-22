@@ -3524,6 +3524,8 @@ function StartSettingsMenu()
 	index = index + 1;
 	sSettingsMenu[index] = theTranslator.Translate("Reboot");
 	index = index + 1;
+	sSettingsMenu[index] = theTranslator.Translate("Shutdown");
+	index = index + 1;
 	sSettingsMenu[index] = theTranslator.Translate("SYSTEM INFO");
 	index = index + 1;
 	nSettingsItemCount = index;
@@ -3647,6 +3649,10 @@ function MenuIcon()
 	{
 		ShowIcon(c.AutoOffIcon);
 	}
+	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Shutdown"))
+	{
+		ShowIcon(c.AutoOffIcon);
+	}
 	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("SYSTEM INFO"))
 	{
 		ShowIcon(c.ConsoleIcon);
@@ -3757,6 +3763,10 @@ function UpdateRootMeta()
 	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Reboot"))
 	{
 		metaString = theTranslator.Translate("Reboot Xbox");
+	}
+	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Shutdown"))
+	{
+		metaString = theTranslator.Translate("Shutdown Xbox");
 	}
 	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("SYSTEM INFO"))
 	{
@@ -4034,6 +4044,10 @@ DEF theSettingsMenu Level
 			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Reboot"))
 			{
 				Reboot();
+			}
+			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Shutdown"))
+			{
+				PowerOff();
 			}
 			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("SYSTEM INFO"))
 			{

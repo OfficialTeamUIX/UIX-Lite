@@ -1667,7 +1667,7 @@ DEF theMainMenu Level
 	
 	function OnActivate()
 	{
-		CurrentViewpoint    = theMainMenuViewpoint;
+		CurrentViewpoint = theMainMenuViewpoint;
 		CurrentAltViewpoint = theMainMenuAlternateViewpoint;
 		EnableAmbientAudio();
 		if( g_theMainMenuLoaded )
@@ -1988,7 +1988,7 @@ function MainInitPart3()
 		if (g_nCurrentAccountSelected < 0)
 		{
 			// Set the focus to the proper menu item
-			nCurMainMenuItem = 3;
+			nCurMainMenuItem = 4;
 			GoToSettings();
 			theLiveAccounts.ClearLastLogonUser();
 		}
@@ -3034,6 +3034,18 @@ function LaunchItem(x,y)
 function Reboot()//scripted reboot - last stage of a recovery is to reboot - let's make the box think we just did a recovery and now it's time to reboot :)
 {
 	theSettingsInline.children[0].theRecovery.FinishRecovery();
+}
+function PowerOff()
+{
+	AskQuestion("This will power off the Xbox.\n\nDo you wish to continue?", "ShutDown()", "", 1);
+}
+
+function ShutDown()
+{
+	if(theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00\\shutdown.xip"))
+	{
+		launch("shutdown.xip","\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00" );
+	}
 }
 
 function ToggleNoisyCam()
