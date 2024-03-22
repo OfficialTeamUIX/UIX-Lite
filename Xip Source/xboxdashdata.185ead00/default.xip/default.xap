@@ -1291,6 +1291,17 @@ function Update4ButtonMainMenu()
 		c.OnlineTextMaterial.name = "HilightedType";
 		c.SettingsTextMaterial.name = "NavType";
 	}
+	else if (nCurMainMenuItem == 3) // Launcher Button
+	{
+		// This should never happen in a 4 button menu config
+		// This code is purly defensive.  If there is a bug, this could help prevent bad behavior
+		
+		// NOTE: This is still bad though, as it would most likely prevent the user from reaching
+		// the settings area
+		
+		nCurMainMenuItem = 2;
+		UpdateMainMenu();        
+	}
 	else if (nCurMainMenuItem == 4) // Settings Button
 	{
 		c.game_select_pod_inner05.visible = true;
@@ -1362,7 +1373,7 @@ function Update3ButtonMainMenu()
 		c.MusicTextMaterial.name = "HilightedType";
 		c.SettingsTextMaterial.name = "NavType";
 	}
-	else if (nCurMainMenuItem == 2) // Xbox Live Button
+	else if (nCurMainMenuItem == 2 | nCurMainMenuItem == 3 ) // Xbox Live Button or Launcher Button
 	{
 		// This should never happen in a 3 button menu config
 		// This code is purly defensive.  If there is a bug, this could help prevent bad behavior
