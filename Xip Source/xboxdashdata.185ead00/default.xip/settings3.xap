@@ -3435,8 +3435,8 @@ function UpdateSettingsMenu()
 			c.MenuText.children[i].children[0].appearance.material.name = "NavType";
 		}
 
-		if(nSettingsItemCount > i)
-			c.MenuText.children[i].children[0].geometry.text = sSettingsElements[nSettingsScroll + i];
+		if(nSettingsScroll + i < nSettingsItemCount){c.MenuText.children[i].children[0].geometry.text = sSettingsElements[nSettingsScroll + i];}
+		else {c.MenuText.children[i].children[0].geometry.text = "";}
 	}
 
 	UpdateRootMeta();
@@ -4081,15 +4081,62 @@ DEF theSettingsMenu Level
 				theSettingsMenuOut.Play();
 			}
 		}
-
+		
+		function OnMoveLeft()  
+		{  
+			if (nCurSettingsMenuItem - nNumSettingsMenuItems >= 0)
+			{
+				nCurSettingsMenuItem = nCurSettingsMenuItem - nNumSettingsMenuItems;
+				if(nSettingsScroll - nNumSettingsMenuItems >= 0) { nSettingsScroll = nSettingsScroll - nNumSettingsMenuItems; }
+				else { nSettingsScroll = nCurSettingsMenuItem; nCurSettingsMenuButton = 0; }
+			}
+			else if(nCurSettingsMenuItem == 0)
+			{
+				return;
+			} 
+			else 
+			{
+				nCurSettingsMenuItem = 0;
+				nSettingsScroll = 0;
+				nCurSettingsMenuButton = 0;
+			}
+			PlaySoundMenuChange();
+			UpdateSettingsMenu();
+		}
+		
+		function OnMoveRight()  
+		{ 
+			var a = (nSettingsItemCount - 1);
+			if (nCurSettingsMenuItem + nNumSettingsMenuItems <= a)
+			{
+				nCurSettingsMenuItem = nCurSettingsMenuItem + nNumSettingsMenuItems;
+				nSettingsScroll = nSettingsScroll + nNumSettingsMenuItems;
+			}
+			else if(nCurSettingsMenuItem == a)
+			{
+				return;
+			} 
+			else 
+			{
+				nCurSettingsMenuItem = a;
+				if(nSettingsScroll + nNumSettingsMenuItems <= a) { nSettingsScroll = nSettingsScroll + nNumSettingsMenuItems; }
+				nCurSettingsMenuButton = a - nSettingsScroll;
+			}
+			PlaySoundMenuChange();
+			UpdateSettingsMenu();
+		}
+		
 		function OnMoveUp()
 		{
-			if (nCurSettingsMenuItem <= 0)
-				return;
-
 			PlaySoundMenuChange();
 			nCurSettingsMenuItem = nCurSettingsMenuItem - 1;
-			if (nCurSettingsMenuButton == 0)
+			if (nCurSettingsMenuItem < 0)
+			{
+				nCurSettingsMenuItem = nSettingsItemCount - 1;
+				nSettingsScroll = nCurSettingsMenuItem - (nNumSettingsMenuItems - 1);
+				nCurSettingsMenuButton = nNumSettingsMenuItems - 1;
+			}
+			else if (nCurSettingsMenuButton == 0)
 			{
 				nSettingsScroll = nSettingsScroll - 1;
 			}
@@ -4103,12 +4150,15 @@ DEF theSettingsMenu Level
 
 		function OnMoveDown()
 		{
-			if (nCurSettingsMenuItem == nSettingsItemCount - 1)
-				return;
-
 			PlaySoundMenuChange();
 			nCurSettingsMenuItem = nCurSettingsMenuItem + 1;
-			if (nCurSettingsMenuButton == nNumSettingsMenuItems - 1)
+			if (nCurSettingsMenuItem == nSettingsItemCount)
+			{
+				nCurSettingsMenuItem = 0;
+				nSettingsScroll = 0;
+				nCurSettingsMenuButton = 0;
+			}
+			else if (nCurSettingsMenuButton == nNumSettingsMenuItems - 1)
 			{
 				nSettingsScroll = nSettingsScroll + 1;
 			}
