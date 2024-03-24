@@ -2093,6 +2093,17 @@ function StartScreenSaverView()
 		theScreen.brightness = 0.8;
 		EnableCurrentAlternateViewpoint();
 	}
+	else if(CurrentViewpoint == theLauncherInline.children[0].LauncherViewpoint | CurrentViewpoint == theLauncherInline.children[0].theTitleListViewpoint)
+	{
+		var c = theLauncherInline.children[0].theLauncher.children[0].children[0];
+		c.back1.SetAlpha(0);
+		c.select1.SetAlpha(0);
+		//c.GM_L2_Arm01_03.SetAlpha(0);     //Hides Menu panel
+		//c.audio_panel.SetAlpha(0);        //Hides TitleList panel
+		EnableCurrentAlternateViewpoint();
+		theScreen.brightness = 0.8;
+		theLauncherInline.children[0].theLauncherWaver.rpm = 2.25;
+	}
 	else
 	{
 		theScreen.brightness = 0.1; 
@@ -2101,6 +2112,7 @@ function StartScreenSaverView()
 
 function StopScreenSaverView()
 {
+	theScreen.brightness = 1; 
 	if(CurrentViewpoint == theMainMenuViewpoint)
 	{
 		var c = theMainMenu.children[0].children[0];
@@ -2111,13 +2123,18 @@ function StopScreenSaverView()
 		c.theMenuItems.SetAlpha(1);
 		c.select.SetAlpha(1);
 		theMainMenuWaver.rpm = 0.75;
-		theScreen.brightness = 1;
 		DisableCurrentAlternateViewpoint();
 	}
-	else
+	else if(CurrentViewpoint == theLauncherInline.children[0].LauncherViewpoint | CurrentViewpoint == theLauncherInline.children[0].theTitleListViewpoint)
 	{
-		theScreen.brightness = 1; 
-	}
+		var c = theLauncherInline.children[0].theLauncher.children[0].children[0];
+		c.back1.SetAlpha(1);
+		c.select1.SetAlpha(1);
+		c.GM_L2_Arm01_03.SetAlpha(1);
+		c.audio_panel.SetAlpha(1);        
+		DisableCurrentAlternateViewpoint();
+		theLauncherInline.children[0].theLauncherWaver.rpm = 0.75;
+	}    
 }
 // Japanese Keyboard////////////////////////////////////////////////////////
 
