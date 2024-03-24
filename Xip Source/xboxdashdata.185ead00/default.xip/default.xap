@@ -3026,10 +3026,10 @@ function QuickLaunch(x)
 	
 	launchXbe = a.substr(d + 1);
 	
-	if(b == "C") { launchPath = "\\Device\\Harddisk0\\Partition2" + e; }
-	else if(b == "E") { launchPath = "\\Device\\Harddisk0\\Partition1" + e; }
-	else if(b == "F") { launchPath = "\\Device\\Harddisk0\\Partition6" + e; }
-	else if(b == "G") { launchPath = "\\Device\\Harddisk0\\Partition7" + e; }
+	if(b.toUpperCase() == "C") { launchPath = "\\Device\\Harddisk0\\Partition2" + e; }
+	else if(b.toUpperCase() == "E") { launchPath = "\\Device\\Harddisk0\\Partition1" + e; }
+	else if(b.toUpperCase() == "F") { launchPath = "\\Device\\Harddisk0\\Partition6" + e; }
+	else if(b.toUpperCase() == "G") { launchPath = "\\Device\\Harddisk0\\Partition7" + e; }
 	else return;
 	
 	if (theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
@@ -3063,6 +3063,7 @@ function Reboot()//scripted reboot - last stage of a recovery is to reboot - let
 {
 	theSettingsInline.children[0].theRecovery.FinishRecovery();
 }
+
 function PowerOff()
 {
 	AskQuestion("This will power off the Xbox.\n\nDo you wish to continue?", "ShutDown()", "", 1);

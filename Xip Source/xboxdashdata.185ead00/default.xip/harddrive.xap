@@ -14,6 +14,7 @@ var TotalSections;
 var LastTitleLaunched;
 var bInitializing;
 var bInitialized;
+var DefaultIcon;
 
 function initialize()
 {
@@ -66,9 +67,6 @@ function UpdateTrackList()
 		c.MU_morearrow_down.visible = false;
 	}
 	
-	var nHiliteItem0 = nPlayCursor0;
-	if(nHiliteItem0 == -1) nHiliteItem0 = 0;
-	
 	for (var i = 0; i < nPlayVisible0; i = i + 1)
 	{
 		var n = nPlayScroll0 + i;
@@ -89,7 +87,7 @@ function UpdateTrackList()
 			c.TrackNames.children[i].children[0].geometry.text = strName0;
 			c.TrackNumbers.children[i].children[0].geometry.text = strTime0;
 			
-			if (n == nHiliteItem0)
+			if (n == nPlayCursor0)
 			{
 				c.TrackNames.children[i].SetScale(0.14, 0.14, 0.14);
 				c.TrackNames.children[i].children[0].appearance.name = "CellEgg/Partsz";
@@ -104,6 +102,8 @@ function UpdateTrackList()
 		}
 	}
 	
+	//c.theIcons.children[0].children[0].appearance.texture.url = TempTitleList[nPlayCursor0] + ".xbx"; 
+	 
 	if (nTracks0 == 1)
 	{    
 		c.SubMenuHeaderText.text = nTracks0 + " " + theTranslator.Translate("Title");
@@ -152,6 +152,7 @@ function ShowLauncherMenu()
 	UpdateLauncherMenu();
 	LauncherViewpoint.isBound = true;
 	bLauncherVisible0 = true;
+	if(c.theIcons.visible) c.theIcons.children[0].children[0].appearance.texture.url = DefaultIcon;
 }
 
 function StartTitleList()
@@ -176,6 +177,11 @@ function StartTitleList()
 function EnterLauncherMenu()
 {
 	var c = theLauncher.children[0].children[0];
+	c.theIcons.visible = true;
+	var Icon = GetSavedValue("default","LauncherOrbIcon");
+	if (Icon == "Xbox") { DefaultIcon = "xboxlogo.xbx"; }
+	else if (Icon == "UIX") { DefaultIcon =  "uixlogo.xbx"; }
+	else { DefaultIcon =  ""; c.theIcons.visible = false; }
 	nPlayScroll0 = 0;
 	nCurLauncherItem0 = 0;
 	c.TitleText1.text = theTranslator.Translate("Xbox Hard Disk");      //menu title
@@ -184,11 +190,6 @@ function EnterLauncherMenu()
 	CurrentViewpoint = LauncherViewpoint;
 	CurrentAltViewpoint = theLauncherAlternateViewpoint;
 	LastTitleLaunched = GetSavedValue("LauncherMenu","LastTitleLaunched");
-	c.theIcons.visible = true;
-	var Icon = GetSavedValue("default","LauncherOrbIcon");
-	if (Icon == "Xbox") { c.theIcons.children[0].children[0].appearance.texture.url = "xboxlogo.xbx"; }
-	else if (Icon == "UIX") { c.theIcons.children[0].children[0].appearance.texture.url = "uixlogo.xbx"; }
-	else c.theIcons.visible = false;
 }
 
 function LoadMenuItems()
