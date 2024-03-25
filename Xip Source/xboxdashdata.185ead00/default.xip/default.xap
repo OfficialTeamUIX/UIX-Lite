@@ -3019,6 +3019,15 @@ function QuickLaunch(x)
 	{
 		return;
 	}
+	else
+	{
+		ExecuteFile(a);
+	}
+}
+
+function ExecuteFile(sPath)
+{
+	var a = sPath;
 	var b = a.substr(0,1);
 	var c = a.indexOf("\\");
 	var d = a.lastIndexOf("\\");
