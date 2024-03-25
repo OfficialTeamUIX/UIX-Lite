@@ -1,9 +1,18 @@
 # UIX-Ultra-Lite
 Modern/Re-Implemented Patches and Scripts for the Xbox Dashboard #5960
 
-## How-To
+## How-To (Pre-Patched)
 
 * DO NOT USE ON AN UNMODIFIED XBOX. It wont work, and you'll brick your Xbox. Make sure you have a modchip or softmod installed that doesnt rely on the dashboard files to boot.
+* DO NOT DELETE YOUR ORIGINAL DASHBOARD FILES. SIMPLY REPLACE THE EXISTING FILES WITH THE MODIFIED FILES ONLY. KEEP ANY UNMODIFIED FILES.
+* Copy the unmodified 5960 Dashboard binary to your PC. Download the pre-patched XIP's in the releases tab.
+* Use Visual XIP or the Binary Patcher from the tools release to patch the xboxdash.xbe to allow modified xips.
+* Copy the "modified" 5960 Dashboard files via ftp, including config.xbx, to the root of your C drive on your Xbox.
+
+## How-To (Manual)
+
+* DO NOT USE ON AN UNMODIFIED XBOX. It wont work, and you'll brick your Xbox. Make sure you have a modchip or softmod installed that doesnt rely on the dashboard files to boot.
+* DO NOT DELETE YOUR ORIGINAL DASHBOARD FILES. SIMPLY REPLACE THE EXISTING FILES WITH THE MODIFIED FILES ONLY. KEEP ANY UNMODIFED FILES.
 * Download Visual XIP from the Tools page.
 * Copy the unmodified 5960 Dashboard files to a directory on your computer.
 * Use Visual XIP or the Binary Patcher to patch the xboxdash.xbe to allow modified xips
