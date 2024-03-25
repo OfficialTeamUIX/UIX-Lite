@@ -1291,6 +1291,17 @@ function Update4ButtonMainMenu()
 		c.OnlineTextMaterial.name = "HilightedType";
 		c.SettingsTextMaterial.name = "NavType";
 	}
+	else if (nCurMainMenuItem == 3) // Launcher Button
+	{
+		// This should never happen in a 4 button menu config
+		// This code is purly defensive.  If there is a bug, this could help prevent bad behavior
+		
+		// NOTE: This is still bad though, as it would most likely prevent the user from reaching
+		// the settings area
+		
+		nCurMainMenuItem = 2;
+		UpdateMainMenu();        
+	}
 	else if (nCurMainMenuItem == 4) // Settings Button
 	{
 		c.game_select_pod_inner05.visible = true;
@@ -1362,7 +1373,7 @@ function Update3ButtonMainMenu()
 		c.MusicTextMaterial.name = "HilightedType";
 		c.SettingsTextMaterial.name = "NavType";
 	}
-	else if (nCurMainMenuItem == 2) // Xbox Live Button
+	else if (nCurMainMenuItem == 2 | nCurMainMenuItem == 3 ) // Xbox Live Button or Launcher Button
 	{
 		// This should never happen in a 3 button menu config
 		// This code is purly defensive.  If there is a bug, this could help prevent bad behavior
@@ -1667,7 +1678,7 @@ DEF theMainMenu Level
 	
 	function OnActivate()
 	{
-		CurrentViewpoint    = theMainMenuViewpoint;
+		CurrentViewpoint = theMainMenuViewpoint;
 		CurrentAltViewpoint = theMainMenuAlternateViewpoint;
 		EnableAmbientAudio();
 		if( g_theMainMenuLoaded )
@@ -1988,7 +1999,7 @@ function MainInitPart3()
 		if (g_nCurrentAccountSelected < 0)
 		{
 			// Set the focus to the proper menu item
-			nCurMainMenuItem = 3;
+			nCurMainMenuItem = 4;
 			GoToSettings();
 			theLiveAccounts.ClearLastLogonUser();
 		}
@@ -2082,6 +2093,17 @@ function StartScreenSaverView()
 		theScreen.brightness = 0.8;
 		EnableCurrentAlternateViewpoint();
 	}
+	else if(CurrentViewpoint == theLauncherInline.children[0].LauncherViewpoint | CurrentViewpoint == theLauncherInline.children[0].theTitleListViewpoint)
+	{
+		var c = theLauncherInline.children[0].theLauncher.children[0].children[0];
+		c.back1.SetAlpha(0);
+		c.select1.SetAlpha(0);
+		//c.GM_L2_Arm01_03.SetAlpha(0);     //Hides Menu panel
+		//c.audio_panel.SetAlpha(0);        //Hides TitleList panel
+		EnableCurrentAlternateViewpoint();
+		theScreen.brightness = 0.8;
+		theLauncherInline.children[0].theLauncherWaver.rpm = 2.25;
+	}
 	else
 	{
 		theScreen.brightness = 0.1; 
@@ -2090,6 +2112,7 @@ function StartScreenSaverView()
 
 function StopScreenSaverView()
 {
+	theScreen.brightness = 1; 
 	if(CurrentViewpoint == theMainMenuViewpoint)
 	{
 		var c = theMainMenu.children[0].children[0];
@@ -2100,13 +2123,18 @@ function StopScreenSaverView()
 		c.theMenuItems.SetAlpha(1);
 		c.select.SetAlpha(1);
 		theMainMenuWaver.rpm = 0.75;
-		theScreen.brightness = 1;
 		DisableCurrentAlternateViewpoint();
 	}
-	else
+	else if(CurrentViewpoint == theLauncherInline.children[0].LauncherViewpoint | CurrentViewpoint == theLauncherInline.children[0].theTitleListViewpoint)
 	{
-		theScreen.brightness = 1; 
-	}
+		var c = theLauncherInline.children[0].theLauncher.children[0].children[0];
+		c.back1.SetAlpha(1);
+		c.select1.SetAlpha(1);
+		c.GM_L2_Arm01_03.SetAlpha(1);
+		c.audio_panel.SetAlpha(1);        
+		DisableCurrentAlternateViewpoint();
+		theLauncherInline.children[0].theLauncherWaver.rpm = 0.75;
+	}    
 }
 // Japanese Keyboard////////////////////////////////////////////////////////
 
@@ -2998,10 +3026,10 @@ function QuickLaunch(x)
 	
 	launchXbe = a.substr(d + 1);
 	
-	if(b == "C") { launchPath = "\\Device\\Harddisk0\\Partition2" + e; }
-	else if(b == "E") { launchPath = "\\Device\\Harddisk0\\Partition1" + e; }
-	else if(b == "F") { launchPath = "\\Device\\Harddisk0\\Partition6" + e; }
-	else if(b == "G") { launchPath = "\\Device\\Harddisk0\\Partition7" + e; }
+	if(b.toUpperCase() == "C") { launchPath = "\\Device\\Harddisk0\\Partition2" + e; }
+	else if(b.toUpperCase() == "E") { launchPath = "\\Device\\Harddisk0\\Partition1" + e; }
+	else if(b.toUpperCase() == "F") { launchPath = "\\Device\\Harddisk0\\Partition6" + e; }
+	else if(b.toUpperCase() == "G") { launchPath = "\\Device\\Harddisk0\\Partition7" + e; }
 	else return;
 	
 	if (theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
@@ -3034,6 +3062,19 @@ function LaunchItem(x,y)
 function Reboot()//scripted reboot - last stage of a recovery is to reboot - let's make the box think we just did a recovery and now it's time to reboot :)
 {
 	theSettingsInline.children[0].theRecovery.FinishRecovery();
+}
+
+function PowerOff()
+{
+	AskQuestion("This will power off the Xbox.\n\nDo you wish to continue?", "ShutDown()", "", 1);
+}
+
+function ShutDown()
+{
+	if(theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00\\shutdown.xip"))
+	{
+		launch("shutdown.xip","\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00" );
+	}
 }
 
 function ToggleNoisyCam()
