@@ -1514,7 +1514,7 @@ DEF WholeMenu Transform
 											rotation -1.000000 -0.001438 0.001438 -1.571000
 											scale 0.800500 0.800500 0.800500
 											scaleOrientation 0.999900 -0.003463 -0.015970 -0.101300
-											translation 21 -25.5 0
+											translation 21 -25 0
 										}
 										DEF theDownArrow Transform
 										{
@@ -1536,7 +1536,7 @@ DEF WholeMenu Transform
 											rotation 0.001016 -0.707100 0.707100 -3.144000
 											scale 0.800500 0.800500 0.800500
 											scaleOrientation -1.000000 -0.001703 -0.004866 -0.276000
-											translation 21 -34.5 0
+											translation 21 -35.2 0
 										}
 									] 
 									translation -3.5 0.0 0.0

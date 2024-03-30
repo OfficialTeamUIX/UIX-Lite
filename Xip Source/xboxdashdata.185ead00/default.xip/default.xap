@@ -2922,7 +2922,7 @@ function UnblockMemoryUnitEnumeration()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////// Added Functions for HDD Menu
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function FillMenuList(x) // search Y:\, C:\, and C:\Shortcuts\ for a relative path's contents to use to fill a menu
+function FillMenuList(x) // search Y:\, C:\, N:\ and O:\ for a relative path's contents to use to fill a menu
 {
 	var FolderName = x;
 	var TitleList = new Array;

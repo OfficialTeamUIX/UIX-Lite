@@ -4,6 +4,8 @@ var nPreviousPlayCursor0;
 var nPlayScroll0;
 var nPlayVisible0;
 var nCurLauncherItem0;
+var nCurLauncherScroll0;
+var nCurLauncherVisible0;
 var subTitle0;
 var CurrentSection;
 var TempTitleList;
@@ -22,6 +24,7 @@ function initialize()
 	bInitialized = false;
 	bLauncherVisible0 = true;
 	nCurLauncherItem0 = 0;
+	nCurLauncherScroll0 = 0;
 	nPlayCursor0 = 0;
 	nPreviousPlayCursor0 = 0;
 	nPlayScroll0 = 0;
@@ -183,6 +186,7 @@ function EnterLauncherMenu()
 	else if (Icon == "UIX") { DefaultIcon =  "uixlogo.xbx"; }
 	else { DefaultIcon =  ""; c.theIcons.visible = false; }
 	nPlayScroll0 = 0;
+	nCurLauncherScroll0 = 0;
 	nCurLauncherItem0 = 0;
 	c.TitleText1.text = theTranslator.Translate("Xbox Hard Disk");      //menu title
 	LoadMenuItems();
@@ -198,9 +202,9 @@ function LoadMenuItems()
 	TotalSections = 0;
 	arrMenuNames = new Array;
 	arrMenuPaths = new Array;
-	for (var i = 0; i < 5; i = i + 1)
+	for (var i = 0; i < 8; i = i + 1)
 	{
-		c.theMenuButtons.children[i].visible = false;
+		if(i < 5) c.theMenuButtons.children[i].visible = false;
 		var v = GetSavedValue("LauncherMenu", "Title" + i);
 		if(v != "") 
 		{
@@ -209,19 +213,21 @@ function LoadMenuItems()
 			TotalSections = TotalSections + 1;
 		}
 	}
+	if(TotalSections >= 3) { nCurLauncherVisible0 = Math.min(5, TotalSections); } else { nCurLauncherVisible0 = 2; }
 }
 
 //sets up the root menu text etc.
 function UpdateLauncherMenu()
 {
 	var c = theLauncher.children[0].children[0];
-	for (var i = 0; i < TotalSections; i = i + 1)
+	for (var i = 0; i < nCurLauncherVisible0; i = i + 1)
 	{
-		var v = arrMenuNames[i];
+		var n = nCurLauncherScroll0 + i;
+		var v = arrMenuNames[n];
 		c.theMenuButtons.children[i].visible = true;
 		c.theMenuButtons.children[i].children[1].children[0].geometry.text = v;
 		
-		if (i == nCurLauncherItem0)
+		if (n == nCurLauncherItem0)
 		{
 			c.theMenuButtons.children[i].children[0].appearance.material.name = "GameHilite";
 			c.theMenuButtons.children[i].children[0].appearance.texture.url = "GameHilite_01.bmp";
@@ -464,6 +470,7 @@ DEF theLauncher Level
 				{
 					PlaySoundMenuChange();
 					nCurLauncherItem0 = nCurLauncherItem0 - 1;
+					if(nCurLauncherItem0 < nCurLauncherScroll0) nCurLauncherScroll0 = nCurLauncherItem0; 
 					UpdateLauncherMenu();
 				}
 			}
@@ -491,7 +498,8 @@ DEF theLauncher Level
 				if (nCurLauncherItem0 < TotalSections - 1)
 				{
 					PlaySoundMenuChange();
-					nCurLauncherItem0 = nCurLauncherItem0 + 1;
+					nCurLauncherItem0 = nCurLauncherItem0 + 1; 
+					if(nCurLauncherItem0 - nCurLauncherScroll0 >= nCurLauncherVisible0) nCurLauncherScroll0 = nCurLauncherScroll0 + 1; 
 					UpdateLauncherMenu();
 				}
 			}
