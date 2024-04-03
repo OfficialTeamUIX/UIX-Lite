@@ -1316,6 +1316,25 @@ DEF theWholeThing Transform
 																		}
 																	]
 																}
+																DEF morearrow_up Transform
+																{
+																	children
+																	[
+																		Shape
+																		{
+																			appearance Appearance
+																			{
+																				material MaxMaterial
+																				{
+																					name "XBoxGreen"
+																				}
+																			}
+																			geometry DEF morearrow_down-FACES Mesh { url "MU_morearrow_down-FACES.xm" }
+																		}
+																	]
+																	scale 0.800500 0.800500 0.800500
+																	translation 6.000000 0.000000 0.000000
+																}
 															]
 															rotation 0.954300 0.215500 -0.207200 -1.620000
 															scale 1.210000 1.210000 1.210000
@@ -1460,6 +1479,25 @@ DEF theWholeThing Transform
 																		}
 																	]
 																}
+																DEF morearrow_down Transform
+																{
+																	children
+																	[
+																		Shape
+																		{
+																			appearance Appearance
+																			{
+																				material MaxMaterial
+																				{
+																					name "XBoxGreen"
+																				}
+																			}
+																			geometry DEF morearrow_down01-FACES Mesh { url "MU_morearrow_down01-FACES.xm" }
+																		}
+																	]
+																	scale 0.800500 0.800500 0.800500
+																	translation 6.500000 0.000000 0.000000
+																}
 															]
 															rotation 0.954300 0.215500 -0.207200 -1.620000
 															scale 1.210000 1.210000 1.210000
@@ -1468,7 +1506,6 @@ DEF theWholeThing Transform
 														}
 													]
 												}
-												
 											]
 											translation -44.279999 57.430000 -207.100006
 										}

@@ -220,6 +220,27 @@ function LoadMenuItems()
 function UpdateLauncherMenu()
 {
 	var c = theLauncher.children[0].children[0];
+	
+	if (nCurLauncherScroll0 > 0)
+	{
+		c.morearrow_up.visible = true;
+		c.morearrow_up.children[0].appearance.material.name = "NavType";
+	}
+	else
+	{
+		c.morearrow_up.visible = false;
+	}
+	
+	if ((nCurLauncherScroll0 + nCurLauncherVisible0) < TotalSections)
+	{
+		c.morearrow_down.visible = true;
+		c.morearrow_down.children[0].appearance.material.name = "NavType";
+	}
+	else
+	{    
+		c.morearrow_down.visible = false;
+	}
+	
 	for (var i = 0; i < nCurLauncherVisible0; i = i + 1)
 	{
 		var n = nCurLauncherScroll0 + i;
@@ -233,6 +254,8 @@ function UpdateLauncherMenu()
 			c.theMenuButtons.children[i].children[0].appearance.texture.url = "GameHilite_01.bmp";
 			c.theMenuButtons.children[i].children[1].children[0].appearance.name = "HilightedType";
 			c.MenuMetaText.text = v;
+			if(i == 0) c.morearrow_up.children[0].appearance.material.name = "HilightedType";
+			else if(i == 4) c.morearrow_down.children[0].appearance.material.name = "HilightedType";
 		}
 		else
 		{
