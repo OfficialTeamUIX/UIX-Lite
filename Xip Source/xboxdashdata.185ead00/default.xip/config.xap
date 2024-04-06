@@ -192,6 +192,36 @@ function buildHDList()
 	configList[i] = "Item 5 Folder:";
 	configValues[i] = "LauncherMenu-Path4";
 	configSelect[i] = "configKeyb()";  
+	i = i + 1;
+  
+	configList[i] = "Item 6 Title:";
+	configValues[i] = "LauncherMenu-Title5";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Item 6 Folder:";
+	configValues[i] = "LauncherMenu-Path5";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Item 7 Title:";
+	configValues[i] = "LauncherMenu-Title6";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Item 7 Folder:";
+	configValues[i] = "LauncherMenu-Path6";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Item 8 Title:";
+	configValues[i] = "LauncherMenu-Title7";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	
+	configList[i] = "Item 8 Folder:";
+	configValues[i] = "LauncherMenu-Path7";
+	configSelect[i] = "configKeyb()";
 	
 	clearText();
 	updateText();
@@ -857,7 +887,7 @@ function selectConfigUp()
 	{
 		if(curHold == 0)
 		{
-			c.theDownArrow.visible = true;
+			if(configList.length - curItem > 11) c.theDownArrow.visible = true;
 			if(curItem != 0)
 			{
 				curItem = curItem - 1;
@@ -927,7 +957,6 @@ function scrollConfigDown()
 		if(curItem - curHold + 12 < configList.length) 
 		{ 
 			loop = 12;
-			c.theUpArrow.visible = true;
 		}
 		else
 		{
@@ -949,6 +978,7 @@ function scrollConfigDown()
 		c.theDownArrow.visible = false;
 	}
 	
+	if (curItem - curHold > 11) c.theUpArrow.visible = true;
 	PlaySoundMenuChange();
 	clearText();    
 	for(var i = 0; i < loop; i = i + 1)
