@@ -297,6 +297,7 @@ function BuildRTList()
 	
 	clearText();
 	updateText();
+	tabSlot(LV2Hold);
 }
 
 function toggleTF()
@@ -711,8 +712,15 @@ DEF theConfigPanel Level
 				else if(configList[LV1Item] == "Change Displayed Title Names")
 				{
 					inChangeTitleMenu = true;
-					BuildRTList();
-					tabSlot(LV2Hold);
+					if(bHDDInitialized == false & bHasExtendedPartition)
+					{
+						bBuildRTList = true;
+						bHDDInitialize = true;
+					}
+					else
+					{
+						BuildRTList();
+					}
 					c.theConfigHeader.children[0].geometry.text = "Change Title Names";
 				}                
 			}
