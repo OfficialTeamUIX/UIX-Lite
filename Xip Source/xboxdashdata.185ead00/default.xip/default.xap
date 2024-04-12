@@ -1703,10 +1703,15 @@ DEF theMainMenu Level
 			}
 			else if(bLaunchItem)
 			{
-				if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
+				for(var i = 2; i < PartitionLocations.length; i = i + 1)
 				{
-					theLauncherInline.children[0].theLauncher.children[0].children[0].theWholeThing.visible = false;
-					theLaunchGameLevel.GoTo();
+					launchPath = PartitionLocations[i] + sLocation;
+					if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
+					{
+						theLauncherInline.children[0].theLauncher.children[0].children[0].theWholeThing.visible = false;
+						theLaunchGameLevel.GoTo();
+						break;
+					}
 				}
 				bLaunchItem = false;
 			}
@@ -1820,6 +1825,7 @@ var bBackToSettings;
 var nXOLineButton;
 var launchPath;
 var launchXbe;
+var sLocation;
 var bLaunchItem;
 var bStartTitleList;
 var bGetTitleList;
@@ -3156,6 +3162,7 @@ function LaunchItem(x,y)
 		launchXbe = "default.xbe";
 		if(i > 1 & bHDDInitialized == false)
 		{
+			sLocation = RelativePath + "\\" + FolderName;
 			bLaunchItem = true;
 			bHDDInitialize = true;
 			break;
@@ -3168,6 +3175,15 @@ function LaunchItem(x,y)
 			break;
 		}
 	}
+}
+
+function RescanPartitions()
+{
+	DriveLocations = new Array("Y:\\","C:\\");
+	PartitionLocations = new Array("\\Device\\Harddisk0\\Partition2\\","\\Device\\Harddisk0\\Partition1\\");
+	bPartitionScanCompleted = false;
+	bHDDInitialized = false;
+	bHDDInitialize = true;
 }
 
 function ScanPartitions()

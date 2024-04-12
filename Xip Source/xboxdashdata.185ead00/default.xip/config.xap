@@ -73,6 +73,11 @@ function buildGSList() //just copy this function for more subsections
 	configList[i] = "Toggle Noisy Camera";
 	configValues[i] = "-blank-";
 	configSelect[i] = "ToggleNoisyCam()";
+	i = i + 1;
+	configList[i] = "Rescan Partitions";
+	configValues[i] = "-blank-";
+	configSelect[i] = "RescanPartitions()";
+	
 	
 	clearText();
 	updateText();
