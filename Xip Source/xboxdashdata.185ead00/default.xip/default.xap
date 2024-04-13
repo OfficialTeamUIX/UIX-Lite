@@ -1902,12 +1902,15 @@ function initialize()
 	DriveLocations = new Array("Y:\\","C:\\");
 	PartitionLocations = new Array("\\Device\\Harddisk0\\Partition2\\","\\Device\\Harddisk0\\Partition1\\");
 	bPartitionScanCompleted = GetSavedBooleanValue("ExtendedPartitions","PartitionScanCompleted");
-	bHasFdrive = GetSavedBooleanValue("ExtendedPartitions","HasFdrive");
-	bHasGdrive = GetSavedBooleanValue("ExtendedPartitions","HasGdrive");
-	bHasExtendedPartition = bHasFdrive | bHasGdrive;
-	if(bHasFdrive) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition6\\"; DriveLocations[DriveLocations.length] = "N:\\"; }
-	if(bHasGdrive) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition7\\"; DriveLocations[DriveLocations.length] = "O:\\"; }
-	
+	if(bPartitionScanCompleted)
+	{
+		bHasFdrive = GetSavedBooleanValue("ExtendedPartitions","HasFdrive");
+		bHasGdrive = GetSavedBooleanValue("ExtendedPartitions","HasGdrive");
+		bHasExtendedPartition = bHasFdrive | bHasGdrive;
+		if(bHasFdrive) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition6\\"; DriveLocations[DriveLocations.length] = "N:\\"; }
+		if(bHasGdrive) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition7\\"; DriveLocations[DriveLocations.length] = "O:\\"; }
+	}
+
 	theAmbientSound0.Play();
 	theAmbientSound1.Play();
 	theAmbientSound2.Play();
