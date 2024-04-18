@@ -73,6 +73,11 @@ function buildGSList() //just copy this function for more subsections
 	configList[i] = "Toggle Noisy Camera";
 	configValues[i] = "-blank-";
 	configSelect[i] = "ToggleNoisyCam()";
+	i = i + 1;
+	configList[i] = "Rescan Partitions";
+	configValues[i] = "-blank-";
+	configSelect[i] = "RescanPartitions()";
+	
 	
 	clearText();
 	updateText();
@@ -297,6 +302,7 @@ function BuildRTList()
 	
 	clearText();
 	updateText();
+	tabSlot(LV2Hold);
 }
 
 function toggleTF()
@@ -711,8 +717,15 @@ DEF theConfigPanel Level
 				else if(configList[LV1Item] == "Change Displayed Title Names")
 				{
 					inChangeTitleMenu = true;
-					BuildRTList();
-					tabSlot(LV2Hold);
+					if(bHDDInitialized == false & bHasExtendedPartition)
+					{
+						bBuildRTList = true;
+						bHDDInitialize = true;
+					}
+					else
+					{
+						BuildRTList();
+					}
 					c.theConfigHeader.children[0].geometry.text = "Change Title Names";
 				}                
 			}

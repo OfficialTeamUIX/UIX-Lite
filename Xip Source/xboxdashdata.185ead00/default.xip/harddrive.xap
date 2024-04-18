@@ -14,14 +14,10 @@ var arrMenuNames;
 var arrMenuPaths;
 var TotalSections;
 var LastTitleLaunched;
-var bInitializing;
-var bInitialized;
 var DefaultIcon;
 
 function initialize()
 {
-	bInitializing = false;
-	bInitialized = false;
 	bLauncherVisible0 = true;
 	nCurLauncherItem0 = 0;
 	nCurLauncherScroll0 = 0;
@@ -387,10 +383,18 @@ DEF theLauncher Level
 				else
 				{
 					CurFillDir = arrMenuPaths[nCurLauncherItem0];
-					TempTitleList = FillMenuList(CurFillDir);
 					subTitle0 = a;
-					thePlayerPanelIn.Play();
-					StartTitleList();
+					if(bHDDInitialized == false & bHasExtendedPartition)
+					{
+						bGetTitleList = true;
+						bHDDInitialize = true;
+					}
+					else
+					{
+						TempTitleList = FillMenuList(CurFillDir);
+						thePlayerPanelIn.Play();
+						StartTitleList();
+					}
 				}
 			}
 			else
@@ -548,26 +552,6 @@ DEF theLauncher Level
 		if (children[0].children.length() > 0)
 		{
 			EnterLauncherMenu();
-		}
-	}
-	function OnArrival()
-	{
-		if(bInitialized == false)
-		{
-			BlockUser("Indexing the harddisk's extended partitions. This could take several seconds.\n\nPlease Wait...");
-			bInitializing = true;
-		}
-	}
-	behavior
-	{
-		sleep 1.1;
-		
-		if (bInitializing)
-		{
-			bInitializing = false;
-			FillMenuList("-Nothing-"); 
-			bInitialized = true;
-			CloseMessage();
 		}
 	}
 }

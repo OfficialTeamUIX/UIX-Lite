@@ -1676,6 +1676,72 @@ DEF theMainMenu Level
 		}        
 	}
 	
+	behavior
+	{
+		sleep 0.8;
+		
+		if(bHDDInitialize)
+		{
+			BlockUser("Indexing the harddisk's extended partitions. This could take several seconds.\n\nPlease Wait...");
+			bHDDInitialize = false;
+			bHDDInitializing = true;
+		}
+		else if(bHDDInitializing)
+		{
+			if(bPartitionScanCompleted == false)
+			{
+				ScanPartitions();
+			}
+			else if(bExecuteFile)
+			{
+				if (theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
+				{
+					theMainMenu.children[0].children[0].theMainMenuLevel.visible = false;
+					theLaunchGameLevel.GoTo();
+				}
+				bExecuteFile = false;
+			}
+			else if(bLaunchItem)
+			{
+				for(var i = 2; i < PartitionLocations.length; i = i + 1)
+				{
+					launchPath = PartitionLocations[i] + sLocation;
+					if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
+					{
+						theLauncherInline.children[0].theLauncher.children[0].children[0].theWholeThing.visible = false;
+						theLaunchGameLevel.GoTo();
+						break;
+					}
+				}
+				bLaunchItem = false;
+			}
+			else if(bGetTitleList)
+			{
+				theLauncherInline.children[0].TempTitleList = FillMenuList(theLauncherInline.children[0].CurFillDir);
+				bGetTitleList = false;
+				bStartTitleList = true;
+			}
+			else if(bBuildRTList)
+			{
+				theUIXConfigInline.children[0].BuildRTList();
+				bBuildRTList = false;
+			}
+			bHDDInitializing = false;
+			bHDDInitialized = true;
+			CloseMessage();
+		}
+		else if(bStartTitleList & bHDDInitialized)
+		{
+			thePlayerPanelIn.Play();
+			theLauncherInline.children[0].StartTitleList();
+			bStartTitleList = false;
+		}
+		else if(bPartitionScanCompleted == false)
+		{
+			bHDDInitialize = true;
+		}
+	}
+	
 	function OnActivate()
 	{
 		CurrentViewpoint = theMainMenuViewpoint;
@@ -1759,12 +1825,35 @@ var bBackToSettings;
 var nXOLineButton;
 var launchPath;
 var launchXbe;
+var sLocation;
+var bLaunchItem;
+var bStartTitleList;
+var bGetTitleList;
+var bBuildRTList;
+var bExecuteFile;
+var bHDDInitialize;
+var bHDDInitializing;
+var bHDDInitialized;
+var bPartitionScanCompleted;
+var bHasFdrive;
+var bHasGdrive;
+var bHasExtendedPartition;
+var DriveLocations;
+var PartitionLocations;
 
 var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
 	
+	bLaunchItem = false;
+	bStartTitleList = false;
+	bGetTitleList = false;
+	bBuildRTList = false;
+	bExecuteFile = false;
+	bHDDInitialize = false;
+	bHDDInitializing = false;
+	bHDDInitialized = false;
 	RightThumb = false;
 	LeftThumb = false;
 	LeftTrigger = false;
@@ -1809,6 +1898,18 @@ function initialize()
 	
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
+
+	DriveLocations = new Array("Y:\\","C:\\");
+	PartitionLocations = new Array("\\Device\\Harddisk0\\Partition2\\","\\Device\\Harddisk0\\Partition1\\");
+	bPartitionScanCompleted = GetSavedBooleanValue("ExtendedPartitions","PartitionScanCompleted");
+	if(bPartitionScanCompleted)
+	{
+		bHasFdrive = GetSavedBooleanValue("ExtendedPartitions","HasFdrive");
+		bHasGdrive = GetSavedBooleanValue("ExtendedPartitions","HasGdrive");
+		bHasExtendedPartition = bHasFdrive | bHasGdrive;
+		if(bHasFdrive) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition6\\"; DriveLocations[DriveLocations.length] = "N:\\"; }
+		if(bHasGdrive) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition7\\"; DriveLocations[DriveLocations.length] = "O:\\"; }
+	}
 
 	theAmbientSound0.Play();
 	theAmbientSound1.Play();
@@ -2926,11 +3027,10 @@ function FillMenuList(x) // search Y:\, C:\, N:\ and O:\ for a relative path's c
 {
 	var FolderName = x;
 	var TitleList = new Array;
-	var Locations = new Array("Y:\\","C:\\","N:\\","O:\\");
-	for(var i = 0; i < Locations.length; i = i + 1)
+	for(var i = 0; i < DriveLocations.length; i = i + 1)
 	{
 		var c = new Folder; //def a new folder
-		c.path = Locations[i] + FolderName; //def it's path
+		c.path = DriveLocations[i] + FolderName; //def it's path
 		var cSize = c.subFolders.length(); //find the number of subfolders in it
 		var cTitles = new Array(cSize); //setup a loop to put it's contents into an array
 		if(cSize > 0)
@@ -2952,7 +3052,7 @@ function GetAllTitles()
 	var cTitles = new Array;
 	var i = 0;
 	var x = 0;
-	for(var i = 0; i < 5; i = i + 1)
+	for(var i = 0; i < 8; i = i + 1)
 	{
 		var cValue = GetSavedValue("LauncherMenu","Path" + i);
 		if(cValue != "")
@@ -3032,16 +3132,22 @@ function ExecuteFile(sPath)
 	var c = a.indexOf("\\");
 	var d = a.lastIndexOf("\\");
 	var e = a.substr(c , d - c);
+	var ExtendedPartition = false;
 	
 	launchXbe = a.substr(d + 1);
 	
 	if(b.toUpperCase() == "C") { launchPath = "\\Device\\Harddisk0\\Partition2" + e; }
 	else if(b.toUpperCase() == "E") { launchPath = "\\Device\\Harddisk0\\Partition1" + e; }
-	else if(b.toUpperCase() == "F") { launchPath = "\\Device\\Harddisk0\\Partition6" + e; }
-	else if(b.toUpperCase() == "G") { launchPath = "\\Device\\Harddisk0\\Partition7" + e; }
+	else if(b.toUpperCase() == "F") { launchPath = "\\Device\\Harddisk0\\Partition6" + e; ExtendedPartition = true; }
+	else if(b.toUpperCase() == "G") { launchPath = "\\Device\\Harddisk0\\Partition7" + e; ExtendedPartition = true; }
 	else return;
 	
-	if (theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
+	if(ExtendedPartition & bHDDInitialized == false)
+	{
+		bExecuteFile = true;
+		bHDDInitialize = true;
+	}
+	else if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
 	{
 		theMainMenu.children[0].children[0].theMainMenuLevel.visible = false;
 		theLaunchGameLevel.GoTo();
@@ -3052,12 +3158,19 @@ function LaunchItem(x,y)
 {
 	var RelativePath = x;
 	var FolderName = y;
-	var Locations = new Array("\\Device\\Harddisk0\\Partition2\\","\\Device\\Harddisk0\\Partition1\\","\\Device\\Harddisk0\\Partition6\\","\\Device\\Harddisk0\\Partition7\\");
-	for(var i = 0; i < Locations.length; i = i + 1)
+	
+	for(var i = 0; i < PartitionLocations.length; i = i + 1)
 	{
-		launchPath = Locations[i] + RelativePath + "\\" + FolderName;
+		launchPath = PartitionLocations[i] + RelativePath + "\\" + FolderName;
 		launchXbe = "default.xbe";
-		if (theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
+		if(i > 1 & bHDDInitialized == false)
+		{
+			sLocation = RelativePath + "\\" + FolderName;
+			bLaunchItem = true;
+			bHDDInitialize = true;
+			break;
+		}
+		else if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
 		{
 			theLauncherInline.children[0].theLauncher.children[0].children[0].theWholeThing.visible = false;
 			SetSavedValue("LauncherMenu","LastTitleLaunched",x + "-" + y);
@@ -3065,6 +3178,72 @@ function LaunchItem(x,y)
 			break;
 		}
 	}
+}
+
+function RescanPartitions()
+{
+	DriveLocations = new Array("Y:\\","C:\\");
+	PartitionLocations = new Array("\\Device\\Harddisk0\\Partition2\\","\\Device\\Harddisk0\\Partition1\\");
+	bPartitionScanCompleted = false;
+	bHDDInitialized = false;
+	bHDDInitialize = true;
+}
+
+function ScanPartitions()
+{
+	var c = new Folder;
+	var TestFile = new Settings;
+	var nFolders;
+	var nFiles;
+	var nTotal;
+	
+	c.path = "N:";
+	nFolders = c.subFolders.length();
+	nFiles = c.files.length();
+	nTotal = nFolders + nFiles;
+	if(nTotal > 0)
+	{
+		bHasFdrive = true;
+	}
+	else
+	{
+		TestFile.file = "N:\\-DeleteMe-";
+		TestFile.SetValue("Dummy","true");
+		bHasFdrive = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition6\\-DeleteMe-");
+	}
+	
+	c.path = "O:";
+	nFolders = c.subFolders.length();
+	nFiles = c.files.length();
+	nTotal = nFolders + nFiles;
+	if(nTotal > 0)
+	{
+		bHasGdrive = true;
+	}
+	else
+	{
+		TestFile.file = "O:\\-DeleteMe-";
+		TestFile.SetValue("Dummy","true");
+		bHasGdrive = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition7\\-DeleteMe-");
+	}
+	
+	if(bHasFdrive)
+	{
+		PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition6\\"; 
+		DriveLocations[DriveLocations.length] = "N:\\";
+	}
+	
+	if(bHasGdrive)
+	{
+		PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition7\\"; 
+		DriveLocations[DriveLocations.length] = "O:\\";
+	}
+	
+	bHasExtendedPartition = bHasFdrive | bHasGdrive;
+	bPartitionScanCompleted = true; 
+	SetSavedBooleanValue("ExtendedPartitions","HasFdrive",bHasFdrive);
+	SetSavedBooleanValue("ExtendedPartitions","HasGdrive",bHasGdrive);
+	SetSavedBooleanValue("ExtendedPartitions","PartitionScanCompleted",bPartitionScanCompleted);
 }
 
 ////////////////////////////////////////////////////////////////////////////
