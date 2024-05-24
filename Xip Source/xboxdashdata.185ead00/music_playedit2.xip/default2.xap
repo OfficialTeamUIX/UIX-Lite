@@ -91,6 +91,27 @@ DEF theWholeThing Transform
 					//scaleOrientation 0.000000 0.000000 1.000000 -0.003505
 					translation 1.889000 2.422000 -0.409300
 				}
+				DEF MU_Text_back Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "XBoxGreen2"
+								}
+							}
+							geometry Text { font "Body" text "BACK" justify "end"}
+						}
+					]
+					//rotation -1.000000 0.000000 0.000000 -1.571000
+					scale 0.405000 0.445000 0.465000
+					//scaleOrientation 0.000000 0.000000 1.000000 -0.003505
+					translation 1.163300 2.095000 -0.409200
+				}
 				DEF MU_back_pod_outer Transform
 				{
 					children
@@ -203,6 +224,27 @@ DEF theWholeThing Transform
 					scale 0.465000 0.465000 0.465000
 					scaleOrientation -0.382800 0.000000 -0.923800 -0.250900
 					translation -9.489000 15.920000 6.071000
+				}
+				DEF MU_text_select Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "XBoxGreen2"
+								}
+							}
+							geometry Text { font "Body" text "SELECT" }
+						}
+					]
+					//rotation -1.000000 0.000000 0.000000 -1.571000
+					scale 0.405000 0.445000 0.465000
+					//scaleOrientation 0.000000 0.000000 -1.000000 -0.032780
+					translation -1.138900 2.056000 -0.409300
 				}
 				DEF MU_select_probe Transform
 				{

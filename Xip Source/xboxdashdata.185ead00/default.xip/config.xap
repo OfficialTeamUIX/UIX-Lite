@@ -12,6 +12,7 @@ var AddKeyboardTitle;
 var inQuickLaunchMenu;
 var inChangeTitleMenu;
 var MaxCharacters;
+var bAdvancedMode;
 
 function initialize()
 {
@@ -26,6 +27,7 @@ function initialize()
 	inQuickLaunchMenu = false;
 	inChangeTitleMenu = false;
 	AddKeyboardTitle = false;
+	bAdvancedMode =  GetSavedBooleanValue("MainMenu","AdvancedMode");
 }
 
 function buildconfigList() //written this way so u can easily rearrange and add, so dont change it!
@@ -54,12 +56,17 @@ function buildGSList() //just copy this function for more subsections
 	configList = new Array;
 	configValues = new Array;
 	configSelect = new Array;
+	
 	configList[i] = "Main Orb Style:";
 	configValues[i] = "default-MainOrbStyle"; //section-value
 	configSelect[i] = "toggleMOS()";
 	i = i + 1;
 	configList[i] = "Show Insignia:";
 	configValues[i] = "default-ShowInsignia";
+	configSelect[i] = "toggleTF()";
+	i = i + 1;
+	configList[i] = "Always use tHc ScreenSaver:";
+	configValues[i] = "default-UsetHcScreenSaver";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
 	configList[i] = "Configuration Panel Icon:";
@@ -78,7 +85,6 @@ function buildGSList() //just copy this function for more subsections
 	configValues[i] = "-blank-";
 	configSelect[i] = "RescanPartitions()";
 	
-	
 	clearText();
 	updateText();
 }
@@ -89,54 +95,60 @@ function buildMMList()
 	configList = new Array;
 	configValues = new Array;
 	configSelect = new Array;
+	
 	configList[i] = "Main Menu Items:";
 	configValues[i] = "MainMenu-MainMenuItems";
 	configSelect[i] = "toggle345()";
 	i = i + 1;
 	
-	configList[i] = "Item 1 Text:";
+	configList[i] = "Item 1 Title:";
 	configValues[i] = "MainMenu-Button1Text";
 	configSelect[i] = "toggleMMB()";
 	i = i + 1;
 	
-	configList[i] = "Item 1 Function:";
+	configList[i] = "Item 1 Action:";
 	configValues[i] = "MainMenu-Button1Action";
 	configSelect[i] = "toggleMMF()";
 	i = i + 1;
 	
-	configList[i] = "Item 2 Text:";
+	configList[i] = "Item 2 Title:";
 	configValues[i] = "MainMenu-Button2Text";
 	configSelect[i] = "toggleMMB()";
 	i = i + 1;
 	
-	configList[i] = "Item 2 Function:";
+	configList[i] = "Item 2 Action:";
 	configValues[i] = "MainMenu-Button2Action";
 	configSelect[i] = "toggleMMF()";
 	i = i + 1;
 	
-	configList[i] = "Item 3 Text:";
+	configList[i] = "Item 3 Title:";
 	configValues[i] = "MainMenu-Button3Text";
 	configSelect[i] = "toggleMMB()";
 	i = i + 1;
 	
-	configList[i] = "Item 3 Function:";
+	configList[i] = "Item 3 Action:";
 	configValues[i] = "MainMenu-Button3Action";
 	configSelect[i] = "toggleMMF()";
 	i = i + 1;
 	
-	configList[i] = "Item 4 Text:";
+	configList[i] = "Item 4 Title:";
 	configValues[i] = "MainMenu-Button4Text";
 	configSelect[i] = "toggleMMB()";
 	i = i + 1;
 
-	configList[i] = "Item 4 Function:";
+	configList[i] = "Item 4 Action:";
 	configValues[i] = "MainMenu-Button4Action";
 	configSelect[i] = "toggleMMF()";
 	i = i + 1;
 
-	configList[i] = "Button YX Function:";
+	configList[i] = "YX Button Action:";
 	configValues[i] = "MainMenu-ButtonYXAction";
 	configSelect[i] = "toggleYX()";
+	i = i + 1;
+
+	configList[i] = "Advanced Mode:";
+	configValues[i] = "MainMenu-AdvancedMode";
+	configSelect[i] = "toggleAM()";    
 	
 	clearText();
 	updateText();
@@ -154,7 +166,7 @@ function buildHDList()
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-	configList[i] = "Item 1 Folder:";
+	configList[i] = "Item 1 Path:";
 	configValues[i] = "LauncherMenu-Path0";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
@@ -164,7 +176,7 @@ function buildHDList()
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-	configList[i] = "Item 2 Folder:";
+	configList[i] = "Item 2 Path:";
 	configValues[i] = "LauncherMenu-Path1";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
@@ -174,7 +186,7 @@ function buildHDList()
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-	configList[i] = "Item 3 Folder:";
+	configList[i] = "Item 3 Path:";
 	configValues[i] = "LauncherMenu-Path2";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
@@ -184,7 +196,7 @@ function buildHDList()
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-	configList[i] = "Item 4 Folder:";
+	configList[i] = "Item 4 Path:";
 	configValues[i] = "LauncherMenu-Path3";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
@@ -194,7 +206,7 @@ function buildHDList()
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-	configList[i] = "Item 5 Folder:";
+	configList[i] = "Item 5 Path:";
 	configValues[i] = "LauncherMenu-Path4";
 	configSelect[i] = "configKeyb()";  
 	i = i + 1;
@@ -204,7 +216,7 @@ function buildHDList()
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-	configList[i] = "Item 6 Folder:";
+	configList[i] = "Item 6 Path:";
 	configValues[i] = "LauncherMenu-Path5";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
@@ -214,7 +226,7 @@ function buildHDList()
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-	configList[i] = "Item 7 Folder:";
+	configList[i] = "Item 7 Path:";
 	configValues[i] = "LauncherMenu-Path6";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
@@ -224,7 +236,7 @@ function buildHDList()
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	
-	configList[i] = "Item 8 Folder:";
+	configList[i] = "Item 8 Path:";
 	configValues[i] = "LauncherMenu-Path7";
 	configSelect[i] = "configKeyb()";
 	
@@ -238,6 +250,7 @@ function BuildSSList()
 	configList = new Array;
 	configValues = new Array;
 	configSelect = new Array;
+	
 	configList[i] = "Memory:";
 	configValues[i] = "ShowInSettings-Memory";
 	configSelect[i] = "toggleTF()";
@@ -252,6 +265,18 @@ function BuildSSList()
 	i = i +1;
 	configList[i] = "Launcher:";
 	configValues[i] = "ShowInSettings-Launcher";
+	configSelect[i] = "toggleTF()";
+	i = i + 1;
+	configList[i] = "Configuration:";
+	configValues[i] = "ShowInSettings-Configuration";
+	configSelect[i] = "toggleTF()";
+	i = i + 1;
+	configList[i] = "Reboot:";
+	configValues[i] = "ShowInSettings-Reboot";
+	configSelect[i] = "toggleTF()";
+	i = i +1;
+	configList[i] = "Shutdown:";
+	configValues[i] = "ShowInSettings-Shutdown";
 	configSelect[i] = "toggleTF()";
 	
 	clearText();
@@ -291,6 +316,7 @@ function BuildRTList()
 	configList = new Array;
 	configValues = new Array;
 	configSelect = new Array;
+	
 	configList = GetAllTitles();
 	var x = 0;
 	for(var i = 0; i < configList.length; i = i + 1)
@@ -345,6 +371,7 @@ function toggleBacking()
 
 function toggleYX()
 {
+	if(bAdvancedMode) { configKeyb(); return; }
 	var c = theConfigPanel.children[0].children[0];
 	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
 	if(b == "ToggleNoisyCam()") { refreshMenu("GoToMemory()"); }
@@ -357,6 +384,7 @@ function toggleYX()
 
 function toggleMMF()
 {
+	if(bAdvancedMode) { configKeyb(); return; }
 	var c = theConfigPanel.children[0].children[0];
 	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
 	if(b == "GoToMemory()") { refreshMenu("GoToMusic()"); }
@@ -367,6 +395,7 @@ function toggleMMF()
 
 function toggleMMB()
 {
+	if(bAdvancedMode) { configKeyb(); return; }
 	var c = theConfigPanel.children[0].children[0];
 	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
 	if(b.toLowerCase() == "memory") { refreshMenu("MUSIC"); }
@@ -408,6 +437,15 @@ function toggleLOI()
 	setConfigMenuValue(configValues[LV2Item],cValue);
 }
 
+function toggleAM()
+{
+	var cValue;
+	if(bAdvancedMode) { bAdvancedMode = false; cValue = "false"; } else { bAdvancedMode = true; cValue = "true"; }
+	SetSavedBooleanValue("MainMenu","AdvancedMode",bAdvancedMode);
+	var c = theConfigPanel.children[0].children[0];
+	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue;
+}
+
 function PathEllipsis(x)
 {
 	var size = x.length();
@@ -424,17 +462,26 @@ function configKeyb()
 {
 	var c = theConfigPanel.children[0].children[0];
 	var a = c.theLeftSlots.children[LV2Hold].children[0].geometry.text; //title
-	var b = getConfigMenuValue(configValues[LV2Item]); //edit
-	if(inQuickLaunchMenu & (b.length() > 30))
+	var b = getConfigMenuValue(configValues[LV2Item]); 
+	if(b.length() > 30)
 	{
-		var Cut;
-		if(b.length() > 43 ) Cut = 15; else Cut = 10;
-		var x = b.substr(Cut);
-		var y = x.indexOf("\\");
-		y = y + Cut + 1;
-		a = b.substr(0,y);
-		AddKeyboardTitle = true;
-		b = b.substr(y);
+		if(inQuickLaunchMenu)
+		{
+			var Cut;
+			if(b.length() > 43 ) Cut = 15; else Cut = 10;
+			var x = b.substr(Cut);
+			var y = x.indexOf("\\");
+			y = y + Cut + 1;
+			a = b.substr(0,y);
+			AddKeyboardTitle = true;
+			b = b.substr(y);
+		}
+		else
+		{
+			a = b.substr(0,25);
+			b = b.substr(25);
+			AddKeyboardTitle = true;
+		}
 	}
 	else if(inChangeTitleMenu)
 	{
@@ -467,7 +514,7 @@ function refreshMenu(x)
 	var cValue = x; 
 	if(AddKeyboardTitle) { cValue = strKeyboardTitle + cValue; AddKeyboardTitle = false; }
 	if((inChangeTitleMenu | inQuickLaunchMenu) == false) { settChanged = true; }
-	if(x == "x" | x == "X") 
+	if(x.toLowerCase() == "x") 
 	{   //Delete the key and return if the user enters only an "x" on the keyboard.
 		setConfigMenuValue(configValues[LV2Item],"");
 		if(inChangeTitleMenu) 
@@ -497,7 +544,8 @@ function refreshMenu(x)
 	}
 	else
 	{
-		c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue;
+		if(cValue.length() > 20) { c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue.substr(0, 20) + "..."; }
+		else { c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue; }
 	}
 	setConfigMenuValue(configValues[LV2Item],cValue);
 }
@@ -565,7 +613,8 @@ function updateText()
 				}
 				else
 				{
-					c.theRightSlots.children[i].children[0].geometry.text =  cValue;
+					if(cValue.length() > 20) { c.theRightSlots.children[i].children[0].geometry.text = cValue.substr(0, 20) + "..."; }
+					else { c.theRightSlots.children[i].children[0].geometry.text =  cValue; }
 				}
 			}
 		}
@@ -575,7 +624,7 @@ function updateText()
 
 function getConfigMenuValue(x)
 {
-	var dud = " ";
+	var dud = "";
 	if(x == "-blank-")
 	return dud;
 	var vSection = x.substr(0,x.indexOf("-"));
@@ -602,15 +651,15 @@ DEF theConfigPanel Level
 			url "settings3/default2.xap"        
 			function onLoad()
 			{   
+				initialize();
 				buildconfigList();
-				inLV1 = true;
 				tabSlot(0);
 				var c = theConfigPanel.children[0].children[0];
 				c.theLeftSlots.children[0].children[0].appearance.name = "CellEgg/Partsz";
 				c.theConfigHeader.children[0].geometry.text = "UIX ULTRA LITE";
 				var cValue = getConfigMenuValue("default-ConfigPanelIcon");
 				if(cValue.toLowerCase() == "globe") { c.GlobeIcon.visible = true; } else { c.ConsoleIcon.visible = true; }
-			}       
+			}
 		}
 	]
 	
@@ -668,7 +717,7 @@ DEF theConfigPanel Level
 		jump false
 	}
 	
-	control DEF theSettings34Joystick Joystick
+	control DEF theConfigMenuJoystick Joystick
 	{
 		function OnADown()
 		{
