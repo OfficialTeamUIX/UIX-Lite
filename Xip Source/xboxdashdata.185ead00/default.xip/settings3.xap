@@ -20,6 +20,9 @@ var ShowMemoryInSettings;
 var ShowMusicInSettings;
 var ShowXOnlineInSettings;
 var ShowLauncherInSettings;
+var ShowConfigInSettings;
+var ShowRebootInSettings;
+var ShowShutdownInSettings;
 
 function initialize()
 {
@@ -3490,8 +3493,12 @@ function StartSettingsMenu()
 		index = index + 1;
 	}
 	
-	sSettingsMenu[index] = theTranslator.Translate("Configuration");
-	index = index + 1;
+	if(ShowConfigInSettings)
+	{
+		sSettingsMenu[index] = theTranslator.Translate("Configuration");
+		index = index + 1;
+	}
+	
 	sSettingsMenu[index] = theTranslator.Translate("CLOCK");
 	index = index + 1;
 	sSettingsMenu[index] = theTranslator.Translate("LANGUAGE");
@@ -3522,10 +3529,19 @@ function StartSettingsMenu()
 	}
 	sSettingsMenu[index] = theTranslator.Translate("AUTO OFF");
 	index = index + 1;
-	sSettingsMenu[index] = theTranslator.Translate("Reboot");
-	index = index + 1;
-	sSettingsMenu[index] = theTranslator.Translate("Shutdown");
-	index = index + 1;
+	
+	if(ShowRebootInSettings)
+	{
+		sSettingsMenu[index] = theTranslator.Translate("Reboot");
+		index = index + 1;
+	}
+	
+	if(ShowShutdownInSettings)
+	{
+		sSettingsMenu[index] = theTranslator.Translate("Shutdown");
+		index = index + 1;
+	}
+	
 	sSettingsMenu[index] = theTranslator.Translate("SYSTEM INFO");
 	index = index + 1;
 	nSettingsItemCount = index;
@@ -3852,10 +3868,16 @@ DEF theSettingsMenu Level
 
 				strCurMenu = "SETTINGS";
 				strPrevMenu = "SETTINGS";
+				if(GetSavedValue("ShowInSettings","Configuration") == "") SetSavedBooleanValue("ShowInSettings","Configuration",true);
+				if(GetSavedValue("ShowInSettings","Reboot") == "") SetSavedBooleanValue("ShowInSettings","Reboot",true);
+				if(GetSavedValue("ShowInSettings","Shutdown") == "") SetSavedBooleanValue("ShowInSettings","Shutdown",true);
 				ShowMemoryInSettings   = GetSavedBooleanValue("ShowInSettings","Memory");
 				ShowMusicInSettings    = GetSavedBooleanValue("ShowInSettings","Music");
 				ShowXOnlineInSettings  = GetSavedBooleanValue("ShowInSettings","XOnline");
 				ShowLauncherInSettings = GetSavedBooleanValue("ShowInSettings","Launcher");
+				ShowConfigInSettings   = GetSavedBooleanValue("ShowInSettings","Configuration");
+				ShowRebootInSettings   = GetSavedBooleanValue("ShowInSettings","Reboot");
+				ShowShutdownInSettings = GetSavedBooleanValue("ShowInSettings","Shutdown");
 				//
 				// This used to be the very last option at the end of the if..else if statement below
 				// I moved it here, so that if a user is forced to set a specific setting, and an Audio CD or
