@@ -197,7 +197,7 @@ DEF theScreenSaver ScreenSaver
 {
 	function OnStart()
 	{
-		if(thcorb)
+		if(thcorb | btHcScreenSaver)
 		{
 			StartScreenSaverView();
 		}
@@ -210,7 +210,7 @@ DEF theScreenSaver ScreenSaver
 	
 	function OnEnd()
 	{
-		if(thcorb)
+		if(thcorb | btHcScreenSaver)
 		{
 			StopScreenSaverView();
 		}
@@ -1703,16 +1703,8 @@ DEF theMainMenu Level
 			}
 			else if(bLaunchItem)
 			{
-				for(var i = 2; i < PartitionLocations.length; i = i + 1)
-				{
-					launchPath = PartitionLocations[i] + sLocation;
-					if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
-					{
-						theLauncherInline.children[0].theLauncher.children[0].children[0].theWholeThing.visible = false;
-						theLaunchGameLevel.GoTo();
-						break;
-					}
-				}
+				bHDDInitialized = true;
+				LaunchItem(sLocation,sFolder);
 				bLaunchItem = false;
 			}
 			else if(bGetTitleList)
@@ -1813,6 +1805,7 @@ var previousControlType;
 var ConfigFile;
 var thcorb;
 var ShowInsignia;
+var btHcScreenSaver;
 var bMusicPlayerReady;
 var currentMusicPlayerMode;
 
@@ -1826,6 +1819,7 @@ var nXOLineButton;
 var launchPath;
 var launchXbe;
 var sLocation;
+var sFolder;
 var bLaunchItem;
 var bStartTitleList;
 var bGetTitleList;
@@ -1898,6 +1892,7 @@ function initialize()
 	
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
+	btHcScreenSaver = GetSavedBooleanValue("default","UsetHcScreenSaver");
 
 	DriveLocations = new Array("Y:\\","C:\\");
 	PartitionLocations = new Array("\\Device\\Harddisk0\\Partition2\\","\\Device\\Harddisk0\\Partition1\\");
@@ -3025,21 +3020,22 @@ function UnblockMemoryUnitEnumeration()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function FillMenuList(x) // search Y:\, C:\, N:\ and O:\ for a relative path's contents to use to fill a menu
 {
-	var FolderName = x;
-	var TitleList = new Array;
+	var RelativePath = Split(x,";");
+	var TitleList = new Array(0);
 	for(var i = 0; i < DriveLocations.length; i = i + 1)
 	{
-		var c = new Folder; //def a new folder
-		c.path = DriveLocations[i] + FolderName; //def it's path
-		var cSize = c.subFolders.length(); //find the number of subfolders in it
-		var cTitles = new Array(cSize); //setup a loop to put it's contents into an array
-		if(cSize > 0)
+		for(var ix = 0; ix < RelativePath.length; ix = ix + 1)
 		{
-			for(var cLoop = 0; cLoop < cSize; cLoop = cLoop + 1)
+			var c = new Folder; //def a new folder
+			c.path = DriveLocations[i] + RelativePath[ix]; //def it's path
+			var cSize = c.subFolders.length(); //find the number of subfolders in it
+			if(cSize > 0)
 			{
-				cTitles[cLoop] = c.subFolders[cLoop].name;
+				for(var cLoop = 0; cLoop < cSize; cLoop = cLoop + 1)
+				{
+					TitleList[TitleList.length] = c.subFolders[cLoop].name;
+				}
 			}
-			TitleList = TitleList.concat(cTitles);
 		}  
 	}
 	TitleList = TitleList.sort();
@@ -3048,10 +3044,8 @@ function FillMenuList(x) // search Y:\, C:\, N:\ and O:\ for a relative path's c
 
 function GetAllTitles()
 {    
-	var TitleList = new Array;
+	var TitleList = new Array(0);
 	var cTitles = new Array;
-	var i = 0;
-	var x = 0;
 	for(var i = 0; i < 8; i = i + 1)
 	{
 		var cValue = GetSavedValue("LauncherMenu","Path" + i);
@@ -3060,8 +3054,7 @@ function GetAllTitles()
 			cTitles = FillMenuList(cValue);
 			for(var cLoop = 0; cLoop < cTitles.length; cLoop = cLoop + 1)
 			{
-				TitleList[x] = cTitles[cLoop];
-				x = x + 1;
+				TitleList[TitleList.length] = cTitles[cLoop];
 			}
 		}    
 	}
@@ -3156,26 +3149,30 @@ function ExecuteFile(sPath)
 
 function LaunchItem(x,y)
 {
-	var RelativePath = x;
+	var RelativePath = Split(x,";");
 	var FolderName = y;
 	
 	for(var i = 0; i < PartitionLocations.length; i = i + 1)
 	{
-		launchPath = PartitionLocations[i] + RelativePath + "\\" + FolderName;
-		launchXbe = "default.xbe";
-		if(i > 1 & bHDDInitialized == false)
+		for(var ix = 0; ix < RelativePath.length; ix = ix + 1)
 		{
-			sLocation = RelativePath + "\\" + FolderName;
-			bLaunchItem = true;
-			bHDDInitialize = true;
-			break;
-		}
-		else if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
-		{
-			theLauncherInline.children[0].theLauncher.children[0].children[0].theWholeThing.visible = false;
-			SetSavedValue("LauncherMenu","LastTitleLaunched",x + "-" + y);
-			theLaunchGameLevel.GoTo();
-			break;
+			launchPath = PartitionLocations[i] + RelativePath[ix] + "\\" + FolderName;
+			launchXbe = "default.xbe";
+			if(i > 1 & bHDDInitialized == false)
+			{
+				sLocation = x;
+				sFolder = y;
+				bLaunchItem = true;
+				bHDDInitialize = true;
+				return;
+			}
+			else if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
+			{
+				if(theLauncherInline.visible) theLauncherInline.children[0].theLauncher.children[0].children[0].theWholeThing.visible = false;
+				SetSavedValue("LauncherMenu","LastTitleLaunched",x + "-" + y);
+				theLaunchGameLevel.GoTo();
+				return;
+			}
 		}
 	}
 }
@@ -3191,15 +3188,16 @@ function RescanPartitions()
 
 function ScanPartitions()
 {
-	var c = new Folder;
+	var N = new Folder;
+	var O = new Folder;
 	var TestFile = new Settings;
 	var nFolders;
 	var nFiles;
 	var nTotal;
 	
-	c.path = "N:";
-	nFolders = c.subFolders.length();
-	nFiles = c.files.length();
+	N.path = "N:";
+	nFolders = N.subFolders.length();
+	nFiles = N.files.length();
 	nTotal = nFolders + nFiles;
 	if(nTotal > 0)
 	{
@@ -3212,9 +3210,9 @@ function ScanPartitions()
 		bHasFdrive = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition6\\-DeleteMe-");
 	}
 	
-	c.path = "O:";
-	nFolders = c.subFolders.length();
-	nFiles = c.files.length();
+	O.path = "O:";
+	nFolders = O.subFolders.length();
+	nFiles = O.files.length();
 	nTotal = nFolders + nFiles;
 	if(nTotal > 0)
 	{

@@ -410,7 +410,7 @@ DEF theLauncher Level
 				PlaySoundA();
 				var x = LastTitleLaunched.substr(0,LastTitleLaunched.indexOf("-"));
 				var y = LastTitleLaunched.substr(LastTitleLaunched.indexOf("-") + 1);
-				AskQuestion("You are about to launch " + y + " from the " + x + " folder.\n\nDo you wish to continue?", "LaunchItem(\"" + x + "\",\"" + y + "\")","",0);
+				AskQuestion("You are about to re-launch the title \"" + y + "\"\n\nDo you wish to continue?", "LaunchItem(\"" + x + "\",\"" + y + "\")","",0);
 			}
 		}
 		
