@@ -1114,7 +1114,19 @@ DEF WholeMenu Transform
 											scale 1.25 1.25 1.25
 											translation 1.8 -23.399929 0
 										}
-										
+										DEF theBuildInfo Transform
+										{
+											children
+											[
+												Shape
+												{
+													appearance MaxMaterial { name "ItemsType" }
+													geometry DEF BuildInfo Text { font "Body" width -15 translate false text "Build: YYMMDD"}
+												}
+											]
+											scale 0.5 0.5 0.5
+											translation 0.8 -37.5 0
+										}                                        
 										DEF theLeftSlots Transform
 										{
 											children

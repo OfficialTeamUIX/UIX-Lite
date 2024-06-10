@@ -197,26 +197,19 @@ DEF theScreenSaver ScreenSaver
 {
 	function OnStart()
 	{
+		theScreen.brightness = 0.1;
 		if(thcorb | btHcScreenSaver)
 		{
 			StartScreenSaverView();
 		}
-		else
-		{
-			theScreen.brightness = 0.1;
-		}
-		
 	}
 	
 	function OnEnd()
 	{
+		theScreen.brightness = 1;
 		if(thcorb | btHcScreenSaver)
 		{
 			StopScreenSaverView();
-		}
-		else
-		{
-			theScreen.brightness = 1;
 		}
 	}
 }
@@ -336,7 +329,7 @@ DEF theDiscDrive DiscDrive
 			if (theMusicInline.visible == false)
 			{
 				ClosePopup();
-				nCurMainMenuItem = 1;   // select music when backing up
+				nCurMainMenuItem = nMusicButton;   // select music when backing up
 				StartCDPlayer();
 				return;
 			}
@@ -1027,7 +1020,6 @@ function GoBackToAccountSelection()
 function EnterLiveToday(fSkipAccountSelecion)
 {
 	// Set current selection to "Xbox Live"
-	if(bBackToSettings == false) nXOLineButton = nCurMainMenuItem;
 	EnableInput(false);
 	
 	if (fSkipAccountSelecion)
@@ -1454,17 +1446,21 @@ DEF theMainMenu Level
 				}
 				// Setup Main Menu Buttons
 				c.MainMenuButton1_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button1Text"));
+				if(c.MainMenuButton1_Text.text == theTranslator.Translate("XONLINE")) { nXOLineButton = 0; if(ShowInsignia) c.MainMenuButton1_Text.text = theTranslator.Translate("INSIGNIA"); }
+				if(c.MainMenuButton1_Text.text == theTranslator.Translate("MUSIC")) { nMusicButton = 0; }
 				Button1Action = GetSavedValue("MainMenu","Button1Action");
 				c.MainMenuButton2_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button2Text"));
+				if(c.MainMenuButton2_Text.text == theTranslator.Translate("XONLINE")) { nXOLineButton = 1; if(ShowInsignia) c.MainMenuButton2_Text.text = theTranslator.Translate("INSIGNIA"); }
+				if(c.MainMenuButton2_Text.text == theTranslator.Translate("MUSIC")) { nMusicButton = 1; }
 				Button2Action = GetSavedValue("MainMenu","Button2Action");
 				c.MainMenuButton3_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button3Text"));
+				if(c.MainMenuButton3_Text.text == theTranslator.Translate("XONLINE")) { nXOLineButton = 2; if(ShowInsignia) c.MainMenuButton3_Text.text = theTranslator.Translate("INSIGNIA"); }
+				if(c.MainMenuButton3_Text.text == theTranslator.Translate("MUSIC")) { nMusicButton = 2; }
 				Button3Action = GetSavedValue("MainMenu","Button3Action");
 				c.MainMenuButton4_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button4Text"));
+				if(c.MainMenuButton4_Text.text == theTranslator.Translate("XONLINE")) { nXOLineButton = 3; if(ShowInsignia) c.MainMenuButton4_Text.text = theTranslator.Translate("INSIGNIA"); }
+				if(c.MainMenuButton4_Text.text == theTranslator.Translate("MUSIC")) { nMusicButton = 3; }
 				Button4Action = GetSavedValue("MainMenu","Button4Action");
-				if(ShowInsignia & c.MainMenuButton1_Text.text == theTranslator.Translate("XONLINE")) c.MainMenuButton1_Text.text = theTranslator.Translate("INSIGNIA");
-				if(ShowInsignia & c.MainMenuButton2_Text.text == theTranslator.Translate("XONLINE")) c.MainMenuButton2_Text.text = theTranslator.Translate("INSIGNIA");
-				if(ShowInsignia & c.MainMenuButton3_Text.text == theTranslator.Translate("XONLINE")) c.MainMenuButton3_Text.text = theTranslator.Translate("INSIGNIA");
-				if(ShowInsignia & c.MainMenuButton4_Text.text == theTranslator.Translate("XONLINE")) c.MainMenuButton4_Text.text = theTranslator.Translate("INSIGNIA");
 				c.MainMenuButton5_Text.text = theTranslator.Translate("SETTINGS");
 				ButtonYXAction = GetSavedValue("MainMenu","ButtonYXAction");
 				
@@ -1816,6 +1812,7 @@ var Button4Action;
 var ButtonYXAction;
 var bBackToSettings;
 var nXOLineButton;
+var nMusicButton;
 var launchPath;
 var launchXbe;
 var sLocation;
@@ -1834,12 +1831,13 @@ var bHasGdrive;
 var bHasExtendedPartition;
 var DriveLocations;
 var PartitionLocations;
+var sBuildDate;
 
 var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	
+	sBuildDate = "240610"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bStartTitleList = false;
 	bGetTitleList = false;
@@ -1863,7 +1861,7 @@ function initialize()
 	bShowNoDongleMessage = false;
 	bOutOfBoxFlow = false;
 	nCurMainMenuItem = 1; // start with music selected
-	nXOLineButton = 2;
+	nMusicButton = 1;
 	g_bKeyboardDisplayed = false;
 	g_bPanelDisplayed = false;
 	g_bAboutToReboot = false;
@@ -2039,7 +2037,7 @@ function MainInitPart3()
 	else if (reason == "MessagesInternal")
 	{
 		// Set the focus to the proper menu item
-		nCurMainMenuItem = 2;
+		nCurMainMenuItem = nXOLineButton;
 		// Go back to account selection and highlight appropriate user
 		g_bLiveTodayFadeIn = true;
 		GoToAccountSelectionWithDefaultUser();
@@ -2064,7 +2062,7 @@ function MainInitPart3()
 	else if (reason == "NewAccountInternal")
 	{
 		// Set the focus to the proper menu item
-		nCurMainMenuItem = 2;
+		nCurMainMenuItem = nXOLineButton;
 		// Go back to account selection and highlight appropriate user
 		g_bLiveTodayFadeIn = true;
 		GoToAccountSelectionWithDefaultUser();
@@ -2074,7 +2072,7 @@ function MainInitPart3()
 	else if (reason == "AccountRecoveryInternal")
 	{
 		// Set the focus to the proper menu item
-		nCurMainMenuItem = 2;
+		nCurMainMenuItem = nXOLineButton;
 		// Go back to account selection and highlight appropriate user
 		g_bLiveTodayFadeIn = true;
 		GoToAccountSelectionWithDefaultUser();
@@ -2102,7 +2100,7 @@ function MainInitPart3()
 		else
 		{
 			// Set the focus to the proper menu item
-			nCurMainMenuItem = 2;
+			nCurMainMenuItem = nXOLineButton;
 			GoToAccountSelectionWithDefaultUser();
 		}
 		
@@ -2126,7 +2124,7 @@ function GoToFinalDestination()
 	}
 	else if (theDiscDrive.discType == "Audio")
 	{
-		nCurMainMenuItem = 1; // select music when backing up
+		nCurMainMenuItem = nMusicButton; // select music when backing up
 		StartCDPlayer();
 	}
 	else if (theDiscDrive.discType == "unknown")
@@ -2196,19 +2194,14 @@ function StartScreenSaverView()
 		c.select1.SetAlpha(0);
 		//c.GM_L2_Arm01_03.SetAlpha(0);     //Hides Menu panel
 		//c.audio_panel.SetAlpha(0);        //Hides TitleList panel
-		EnableCurrentAlternateViewpoint();
 		theScreen.brightness = 0.8;
 		theLauncherInline.children[0].theLauncherWaver.rpm = 2.25;
-	}
-	else
-	{
-		theScreen.brightness = 0.1; 
+		EnableCurrentAlternateViewpoint();
 	}
 }
 
 function StopScreenSaverView()
 {
-	theScreen.brightness = 1; 
 	if(CurrentViewpoint == theMainMenuViewpoint)
 	{
 		var c = theMainMenu.children[0].children[0];
@@ -3245,9 +3238,10 @@ function ScanPartitions()
 }
 
 ////////////////////////////////////////////////////////////////////////////
+DEF theReboot Recovery
 function Reboot()//scripted reboot - last stage of a recovery is to reboot - let's make the box think we just did a recovery and now it's time to reboot :)
 {
-	theSettingsInline.children[0].theRecovery.FinishRecovery();
+	theReboot.FinishRecovery();
 }
 
 function PowerOff()

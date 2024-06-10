@@ -378,7 +378,8 @@ function toggleYX()
 	else if(b == "GoToMemory()") { refreshMenu("GoToMusic()"); }
 	else if(b == "GoToMusic()") { refreshMenu("GoToXOnline()"); }
 	else if(b == "GoToXOnline()") { refreshMenu("GoToLauncher()"); }
-	else if(b == "GoToLauncher()") { refreshMenu("Nothing"); }
+	else if(b == "GoToLauncher()") { refreshMenu("GoToUIXConfig()"); }
+	else if(b == "GoToUIXConfig()") { refreshMenu("Nothing"); }
 	else { refreshMenu("ToggleNoisyCam()"); }
 }
 
@@ -443,7 +444,7 @@ function toggleAM()
 	if(bAdvancedMode) { bAdvancedMode = false; cValue = "false"; } else { bAdvancedMode = true; cValue = "true"; }
 	SetSavedBooleanValue("MainMenu","AdvancedMode",bAdvancedMode);
 	var c = theConfigPanel.children[0].children[0];
-	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue;
+	c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue;
 }
 
 function PathEllipsis(x)
@@ -656,6 +657,7 @@ DEF theConfigPanel Level
 				tabSlot(0);
 				var c = theConfigPanel.children[0].children[0];
 				c.theLeftSlots.children[0].children[0].appearance.name = "CellEgg/Partsz";
+				c.theBuildInfo.children[0].geometry.text = "Build: " + sBuildDate;
 				c.theConfigHeader.children[0].geometry.text = "UIX ULTRA LITE";
 				var cValue = getConfigMenuValue("default-ConfigPanelIcon");
 				if(cValue.toLowerCase() == "globe") { c.GlobeIcon.visible = true; } else { c.ConsoleIcon.visible = true; }
@@ -856,8 +858,17 @@ function leaveConfig()
 	LV1Item = 0;
 	LV1Hold = 0;
 	tabSlot(LV1Hold);
-	theSettingsSubMenuOut.Play();
-	GoToSettings();
+	if(bBackToSettings)
+	{ 
+		bBackToSettings = false;
+		theSettingsSubMenuOut.Play();
+		GoToSettings();
+	} 
+	else 
+	{ 
+		theGamesMenuOut.Play();
+		theMainMenu.GoBackTo();
+	}
 }
 
 function selectConfigDown()

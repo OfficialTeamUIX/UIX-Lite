@@ -3997,6 +3997,7 @@ DEF theSettingsMenu Level
 			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Configuration"))
 			{
 				strCurMenu = "Configuration";
+				bBackToSettings = true;
 				GoToUIXConfig();
 			}
 			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("CLOCK"))
