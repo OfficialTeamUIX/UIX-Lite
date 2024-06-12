@@ -3,10 +3,10 @@ MainOrbStyle=Stock
 ShowInsignia=false
 ConfigPanelIcon=Globe
 LauncherOrbIcon=Xbox
-UsetHcScreenSaver=false
+UsetHcScreenSaver=true
 
 [MainMenu]
-MainMenuItems=4
+MainMenuItems=5
 Button1Text=MEMORY
 Button1Action=GoToMemory()
 Button2Text=MUSIC
@@ -15,7 +15,7 @@ Button3Text=XONLINE
 Button3Action=GoToXOnline()
 Button4Text=LAUNCHER
 Button4Action=GoToLauncher()
-ButtonYXAction=GoToLauncher()
+ButtonYXAction=ToggleNoisyCam()
 AdvancedMode=false
 
 [LauncherMenu]
@@ -40,7 +40,7 @@ Path7=
 Memory=false
 Music=false
 XOnline=false
-Launcher=true
+Launcher=false
 Configuration=true
 Reboot=true
 Shutdown=true

@@ -34,7 +34,6 @@ Some of these features include;
 
 ## Configuration and Use
 
-* Using the settings in the Example config.xbx below will cause your xbox to appear as stock on boot until you go to Settings and find the Launcher and Configuration menu items. The Launcher can also be accessed by pressing YX.
 * You can customize the Main Menu, Launcher Menu, and other settings in-dash by navigating to Settings>Configuration.
 * When configuring the Main Menu, advanced users can enable Advanced Mode. When this is enabled, selecting a setting will bring up the xbox onscreen keyboard for custom input instead of using the built-in toggles.
 * When configuring the Launcher, you may define both the “Title” for a content type and the relative “Path(s)” to the content for up to eight launcher menu items. The Launcher will scan the relative paths provided on each partition and compile a list of the subdirectories found. The name of these subdirectories should correspond to the name of the title and contain the title's default.xbe. Use a semicolon as a separator when defining multiple relative paths to like content.
@@ -53,10 +52,10 @@ MainOrbStyle=Stock
 ShowInsignia=false
 ConfigPanelIcon=Globe
 LauncherOrbIcon=Xbox
-UsetHcScreenSaver=false
+UsetHcScreenSaver=true
 
 [MainMenu]
-MainMenuItems=4
+MainMenuItems=5
 Button1Text=MEMORY
 Button1Action=GoToMemory()
 Button2Text=MUSIC
@@ -65,7 +64,7 @@ Button3Text=XONLINE
 Button3Action=GoToXOnline()
 Button4Text=LAUNCHER
 Button4Action=GoToLauncher()
-ButtonYXAction=GoToLauncher()
+ButtonYXAction=ToggleNoisyCam()
 AdvancedMode=false
 
 [LauncherMenu]
@@ -90,7 +89,7 @@ Path7=
 Memory=false
 Music=false
 XOnline=false
-Launcher=true
+Launcher=false
 Configuration=true
 Reboot=true
 Shutdown=true
