@@ -1700,7 +1700,7 @@ DEF theMainMenu Level
 			else if(bLaunchItem)
 			{
 				bHDDInitialized = true;
-				LaunchItem(sLocation,sFolder);
+				theLauncherInline.children[0].LaunchItem(sLocation,sFolder);
 				bLaunchItem = false;
 			}
 			else if(bGetTitleList)
@@ -1837,7 +1837,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "240610"; //Date of commit YYMMDD
+	sBuildDate = "240705"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bStartTitleList = false;
 	bGetTitleList = false;
@@ -3137,36 +3137,6 @@ function ExecuteFile(sPath)
 	{
 		theMainMenu.children[0].children[0].theMainMenuLevel.visible = false;
 		theLaunchGameLevel.GoTo();
-	}
-}
-
-function LaunchItem(x,y)
-{
-	var RelativePath = Split(x,";");
-	var FolderName = y;
-	
-	for(var i = 0; i < PartitionLocations.length; i = i + 1)
-	{
-		for(var ix = 0; ix < RelativePath.length; ix = ix + 1)
-		{
-			launchPath = PartitionLocations[i] + RelativePath[ix] + "\\" + FolderName;
-			launchXbe = "default.xbe";
-			if(i > 1 & bHDDInitialized == false)
-			{
-				sLocation = x;
-				sFolder = y;
-				bLaunchItem = true;
-				bHDDInitialize = true;
-				return;
-			}
-			else if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
-			{
-				if(theLauncherInline.visible) theLauncherInline.children[0].theLauncher.children[0].children[0].theWholeThing.visible = false;
-				SetSavedValue("LauncherMenu","LastTitleLaunched",x + "-" + y);
-				theLaunchGameLevel.GoTo();
-				return;
-			}
-		}
 	}
 }
 

@@ -1,4 +1,5 @@
 var bLauncherVisible0;
+var bRecentTitles;
 var nPlayCursor0;
 var nPreviousPlayCursor0;
 var nPlayScroll0;
@@ -10,6 +11,9 @@ var subTitle0;
 var CurrentSection;
 var TempTitleList;
 var CurFillDir;
+var MaxRecentTitles;
+var arrRecentNames;
+var arrRecentPaths;
 var arrMenuNames;
 var arrMenuPaths;
 var TotalSections;
@@ -19,6 +23,7 @@ var DefaultIcon;
 function initialize()
 {
 	bLauncherVisible0 = true;
+	bRecentTitles = false;
 	nCurLauncherItem0 = 0;
 	nCurLauncherScroll0 = 0;
 	nPlayCursor0 = 0;
@@ -151,6 +156,7 @@ function ShowLauncherMenu()
 	UpdateLauncherMenu();
 	LauncherViewpoint.isBound = true;
 	bLauncherVisible0 = true;
+	bRecentTitles = false;
 	if(c.theIcons.visible) c.theIcons.children[0].children[0].appearance.texture.url = DefaultIcon;
 }
 
@@ -189,7 +195,7 @@ function EnterLauncherMenu()
 	ShowLauncherMenu();
 	CurrentViewpoint = LauncherViewpoint;
 	CurrentAltViewpoint = theLauncherAlternateViewpoint;
-	LastTitleLaunched = GetSavedValue("LauncherMenu","LastTitleLaunched");
+	LoadRecentTitles();
 }
 
 function LoadMenuItems()
@@ -210,6 +216,38 @@ function LoadMenuItems()
 		}
 	}
 	if(TotalSections >= 3) { nCurLauncherVisible0 = Math.min(5, TotalSections); } else { nCurLauncherVisible0 = 2; }
+}
+
+function LoadRecentTitles()
+{
+	arrRecentNames = new Array;
+	arrRecentPaths = new Array;
+	MaxRecentTitles = 9;
+	for (var i = 0; i < MaxRecentTitles; i = i + 1)
+	{
+		var v = GetSavedValue("RecentTitles", "Title" + i);
+		if(v != "") 
+		{
+			var arrTemp = Split(v,"|");
+			arrRecentPaths[i] = arrTemp[0];
+			arrRecentNames[i] = arrTemp[1];
+		}
+	}
+}
+
+function UpdateRecentTitles(x,y)
+{
+	SetSavedValue("RecentTitles", "Title0", x + "|" + y );
+	var index = 1;
+	for (var i = 0; i < arrRecentNames.length; i = i + 1)
+	{
+		if(arrRecentNames[i] != y)
+		{
+			SetSavedValue("RecentTitles", "Title" + index, arrRecentPaths[i] + "|" + arrRecentNames[i] );
+			index = index + 1;
+			if(index == MaxRecentTitles) return;
+		}
+	}
 }
 
 //sets up the root menu text etc.
@@ -263,6 +301,36 @@ function UpdateLauncherMenu()
 	c._button_surround.visible = (TotalSections >= 3);
 	c.New_Line11.visible = (TotalSections >= 3);
 	c._button_surround_0.visible = (TotalSections < 3);
+}
+
+function LaunchItem(x,y)
+{
+	var RelativePath = Split(x,";");
+	var FolderName = y;
+	
+	for(var i = 0; i < PartitionLocations.length; i = i + 1)
+	{
+		for(var ix = 0; ix < RelativePath.length; ix = ix + 1)
+		{
+			launchPath = PartitionLocations[i] + RelativePath[ix] + "\\" + FolderName;
+			launchXbe = "default.xbe";
+			if(i > 1 & bHDDInitialized == false)
+			{
+				sLocation = x;
+				sFolder = y;
+				bLaunchItem = true;
+				bHDDInitialize = true;
+				return;
+			}
+			else if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
+			{
+				theLauncher.children[0].children[0].theWholeThing.visible = false;
+				UpdateRecentTitles(x,y);
+				theLaunchGameLevel.GoTo();
+				return;
+			}
+		}
+	}
 }
 
 DEF theLauncher Level
@@ -397,6 +465,10 @@ DEF theLauncher Level
 					}
 				}
 			}
+			else if(bRecentTitles)
+			{
+				LaunchItem(arrRecentPaths[nPlayCursor0],TempTitleList[nPlayCursor0]);
+			}
 			else
 			{
 				LaunchItem(CurFillDir,TempTitleList[nPlayCursor0]);
@@ -405,13 +477,22 @@ DEF theLauncher Level
 		
 		function OnXDown()
 		{
-			if(LastTitleLaunched != "")
+			if(bRecentTitles) return;
+			PlaySoundA();
+			subTitle0 = "Recent Titles";
+			TempTitleList = arrRecentNames;
+			if(bLauncherVisible0) 
 			{
-				PlaySoundA();
-				var x = LastTitleLaunched.substr(0,LastTitleLaunched.indexOf("-"));
-				var y = LastTitleLaunched.substr(LastTitleLaunched.indexOf("-") + 1);
-				AskQuestion("You are about to re-launch the title \"" + y + "\"\n\nDo you wish to continue?", "LaunchItem(\"" + x + "\",\"" + y + "\")","",0);
+				thePlayerPanelIn.Play();
+				StartTitleList(); 
+			} 
+			else 
+			{
+				nPlayScroll0 = 0;
+				nPlayCursor0 = 0;
+				UpdateTrackList(); 
 			}
+			bRecentTitles = true;
 		}
 		
 		function OnBDown()
