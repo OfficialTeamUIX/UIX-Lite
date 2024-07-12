@@ -1397,6 +1397,22 @@ function Update3ButtonMainMenu()
 	}
 }
 
+function GetMainMenuButtons()
+{
+	Button1Text = theTranslator.Translate(GetSavedValue("MainMenu","Button1Text"));
+	if(Button1Text == theTranslator.Translate("XONLINE")) { nXOLineButton = 0; if(ShowInsignia) Button1Text = theTranslator.Translate("INSIGNIA"); }
+	if(Button1Text == theTranslator.Translate("MUSIC")) { nMusicButton = 0; }
+	Button2Text = theTranslator.Translate(GetSavedValue("MainMenu","Button2Text"));
+	if(Button2Text == theTranslator.Translate("XONLINE")) { nXOLineButton = 1; if(ShowInsignia) Button2Text = theTranslator.Translate("INSIGNIA"); }
+	if(Button2Text == theTranslator.Translate("MUSIC")) { nMusicButton = 1; }
+	Button3Text = theTranslator.Translate(GetSavedValue("MainMenu","Button3Text"));
+	if(Button3Text == theTranslator.Translate("XONLINE")) { nXOLineButton = 2; if(ShowInsignia) Button3Text = theTranslator.Translate("INSIGNIA"); }
+	if(Button3Text == theTranslator.Translate("MUSIC")) { nMusicButton = 2; }
+	Button4Text = theTranslator.Translate(GetSavedValue("MainMenu","Button4Text"));
+	if(Button4Text == theTranslator.Translate("XONLINE")) { nXOLineButton = 3; if(ShowInsignia) Button4Text = theTranslator.Translate("INSIGNIA"); }
+	if(Button4Text == theTranslator.Translate("MUSIC")) { nMusicButton = 3; }
+}
+
 DEF theMainMenu Level
 {
 	archive "MainMenu5.xip"
@@ -1445,21 +1461,13 @@ DEF theMainMenu Level
 					c.Main_memory_ringpin_5.SetTranslation(57.430000, -23.50000, 102.000000);   // Settings
 				}
 				// Setup Main Menu Buttons
-				c.MainMenuButton1_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button1Text"));
-				if(c.MainMenuButton1_Text.text == theTranslator.Translate("XONLINE")) { nXOLineButton = 0; if(ShowInsignia) c.MainMenuButton1_Text.text = theTranslator.Translate("INSIGNIA"); }
-				if(c.MainMenuButton1_Text.text == theTranslator.Translate("MUSIC")) { nMusicButton = 0; }
+				c.MainMenuButton1_Text.text = Button1Text;
 				Button1Action = GetSavedValue("MainMenu","Button1Action");
-				c.MainMenuButton2_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button2Text"));
-				if(c.MainMenuButton2_Text.text == theTranslator.Translate("XONLINE")) { nXOLineButton = 1; if(ShowInsignia) c.MainMenuButton2_Text.text = theTranslator.Translate("INSIGNIA"); }
-				if(c.MainMenuButton2_Text.text == theTranslator.Translate("MUSIC")) { nMusicButton = 1; }
+				c.MainMenuButton2_Text.text = Button2Text;
 				Button2Action = GetSavedValue("MainMenu","Button2Action");
-				c.MainMenuButton3_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button3Text"));
-				if(c.MainMenuButton3_Text.text == theTranslator.Translate("XONLINE")) { nXOLineButton = 2; if(ShowInsignia) c.MainMenuButton3_Text.text = theTranslator.Translate("INSIGNIA"); }
-				if(c.MainMenuButton3_Text.text == theTranslator.Translate("MUSIC")) { nMusicButton = 2; }
+				c.MainMenuButton3_Text.text = Button3Text;
 				Button3Action = GetSavedValue("MainMenu","Button3Action");
-				c.MainMenuButton4_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button4Text"));
-				if(c.MainMenuButton4_Text.text == theTranslator.Translate("XONLINE")) { nXOLineButton = 3; if(ShowInsignia) c.MainMenuButton4_Text.text = theTranslator.Translate("INSIGNIA"); }
-				if(c.MainMenuButton4_Text.text == theTranslator.Translate("MUSIC")) { nMusicButton = 3; }
+				c.MainMenuButton4_Text.text = Button4Text;
 				Button4Action = GetSavedValue("MainMenu","Button4Action");
 				c.MainMenuButton5_Text.text = theTranslator.Translate("SETTINGS");
 				ButtonYXAction = GetSavedValue("MainMenu","ButtonYXAction");
@@ -1674,7 +1682,6 @@ DEF theMainMenu Level
 	
 	behavior
 	{
-		sleep 0.8;
 		
 		if(bHDDInitialize)
 		{
@@ -1682,7 +1689,16 @@ DEF theMainMenu Level
 			bHDDInitialize = false;
 			bHDDInitializing = true;
 		}
-		else if(bHDDInitializing)
+		
+		sleep 1.1;
+		
+		if(bHideMessage) 
+		{
+			theMessageInline.children[0].MessagePanel.SetAlpha(0.0);
+			bHideMessage=false;
+		}
+		
+		if(bHDDInitializing)
 		{
 			if(bPartitionScanCompleted == false)
 			{
@@ -1805,6 +1821,10 @@ var btHcScreenSaver;
 var bMusicPlayerReady;
 var currentMusicPlayerMode;
 
+var Button1Text;
+var Button2Text;
+var Button3Text;
+var Button4Text;
 var Button1Action;
 var Button2Action;
 var Button3Action;
@@ -1837,7 +1857,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "240705"; //Date of commit YYMMDD
+	sBuildDate = "240712"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bStartTitleList = false;
 	bGetTitleList = false;
@@ -1860,8 +1880,9 @@ function initialize()
 	bShowInvalidDiscWithNav = false;
 	bShowNoDongleMessage = false;
 	bOutOfBoxFlow = false;
-	nCurMainMenuItem = 1; // start with music selected
 	nMusicButton = 1;
+	nXOLineButton = 2;
+	nCurMainMenuItem = 1; // start with music selected
 	g_bKeyboardDisplayed = false;
 	g_bPanelDisplayed = false;
 	g_bAboutToReboot = false;
@@ -1946,6 +1967,7 @@ function initialize()
 		return;
 	}
 	
+	GetMainMenuButtons();
 	MainInitPart3();
 }
 
@@ -2523,6 +2545,7 @@ var strMessageYesFunction;
 var strMessageNoFunction;
 var nCurMessageButton;
 var nMessageButtonCount;
+var bHideMessage;
 
 function UpdateMessageButtonHighlight()
 {
@@ -2783,7 +2806,7 @@ function CloseMessage()
 	var c = theMessageInline.children[0];
 	
 	c.MessagePanel.SetRotation(0, 0, 1, 1.5);
-	c.MessagePanel.SetAlpha(0.0);
+	bHideMessage = true;
 	
 	theMessageJoystick.isBound = false;
 	theMessageLayer.transparency = 1;

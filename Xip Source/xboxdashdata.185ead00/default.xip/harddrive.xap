@@ -1,13 +1,17 @@
 var bLauncherVisible0;
-var bRecentTitles;
+var bInRecentTitles;
+var bRecentToggled;
 var nPlayCursor0;
+var nPlayCursor1;
 var nPreviousPlayCursor0;
 var nPlayScroll0;
+var nPlayScroll1;
 var nPlayVisible0;
 var nCurLauncherItem0;
 var nCurLauncherScroll0;
 var nCurLauncherVisible0;
 var subTitle0;
+var subTitle1;
 var CurrentSection;
 var TempTitleList;
 var CurFillDir;
@@ -23,7 +27,8 @@ var DefaultIcon;
 function initialize()
 {
 	bLauncherVisible0 = true;
-	bRecentTitles = false;
+	bInRecentTitles = false;
+	bRecentToggled = false;
 	nCurLauncherItem0 = 0;
 	nCurLauncherScroll0 = 0;
 	nPlayCursor0 = 0;
@@ -156,7 +161,8 @@ function ShowLauncherMenu()
 	UpdateLauncherMenu();
 	LauncherViewpoint.isBound = true;
 	bLauncherVisible0 = true;
-	bRecentTitles = false;
+	bInRecentTitles = false;
+	bRecentToggled = false;
 	if(c.theIcons.visible) c.theIcons.children[0].children[0].appearance.texture.url = DefaultIcon;
 }
 
@@ -465,7 +471,7 @@ DEF theLauncher Level
 					}
 				}
 			}
-			else if(bRecentTitles)
+			else if(bInRecentTitles)
 			{
 				LaunchItem(arrRecentPaths[nPlayCursor0],TempTitleList[nPlayCursor0]);
 			}
@@ -477,8 +483,9 @@ DEF theLauncher Level
 		
 		function OnXDown()
 		{
-			if(bRecentTitles) return;
+			if(bInRecentTitles) return;
 			PlaySoundA();
+			subTitle1 = subTitle0;
 			subTitle0 = "Recent Titles";
 			TempTitleList = arrRecentNames;
 			if(bLauncherVisible0) 
@@ -488,11 +495,14 @@ DEF theLauncher Level
 			} 
 			else 
 			{
+				nPlayScroll1 = nPlayScroll0;
+				nPlayCursor1 = nPlayCursor0;
 				nPlayScroll0 = 0;
 				nPlayCursor0 = 0;
+				bRecentToggled = true;
 				UpdateTrackList(); 
 			}
-			bRecentTitles = true;
+			bInRecentTitles = true;
 		}
 		
 		function OnBDown()
@@ -513,6 +523,16 @@ DEF theLauncher Level
 					theGamesMenuOut.Play();
 					theMainMenu.GoBackTo();
 				}
+			}
+			else if(bRecentToggled)
+			{
+				TempTitleList = FillMenuList(CurFillDir);
+				nPlayScroll0 = nPlayScroll1;
+				nPlayCursor0 = nPlayCursor1;
+				subTitle0 = subTitle1;
+				bInRecentTitles = false;
+				bRecentToggled = false;
+				UpdateTrackList();
 			}
 			else
 			{
