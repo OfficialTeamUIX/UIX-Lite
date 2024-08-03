@@ -1682,24 +1682,18 @@ DEF theMainMenu Level
 	
 	behavior
 	{
+		sleep nTime;
 		
 		if(bHDDInitialize)
 		{
 			BlockUser("Indexing the harddisk's extended partitions. This could take several seconds.\n\nPlease Wait...");
 			bHDDInitialize = false;
 			bHDDInitializing = true;
+			nTime = 1.1;
 		}
-		
-		sleep 1.1;
-		
-		if(bHideMessage) 
+		else if(bHDDInitializing)
 		{
-			theMessageInline.children[0].MessagePanel.SetAlpha(0.0);
-			bHideMessage=false;
-		}
-		
-		if(bHDDInitializing)
-		{
+			nTime = 0.1;
 			if(bPartitionScanCompleted == false)
 			{
 				ScanPartitions();
@@ -1742,7 +1736,7 @@ DEF theMainMenu Level
 		}
 		else if(bPartitionScanCompleted == false)
 		{
-			bHDDInitialize = true;
+			if(g_theMainMenuLoaded) { bHDDInitialize = true; nTime = 1.0; }
 		}
 	}
 	
@@ -1833,6 +1827,7 @@ var ButtonYXAction;
 var bBackToSettings;
 var nXOLineButton;
 var nMusicButton;
+var nTime;
 var launchPath;
 var launchXbe;
 var sLocation;
@@ -1857,7 +1852,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "240712"; //Date of commit YYMMDD
+	sBuildDate = "240803"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bStartTitleList = false;
 	bGetTitleList = false;
@@ -1883,6 +1878,7 @@ function initialize()
 	nMusicButton = 1;
 	nXOLineButton = 2;
 	nCurMainMenuItem = 1; // start with music selected
+	nTime = 0.1;
 	g_bKeyboardDisplayed = false;
 	g_bPanelDisplayed = false;
 	g_bAboutToReboot = false;
@@ -1912,7 +1908,7 @@ function initialize()
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
 	btHcScreenSaver = GetSavedBooleanValue("default","UsetHcScreenSaver");
-
+	
 	DriveLocations = new Array("Y:\\","C:\\");
 	PartitionLocations = new Array("\\Device\\Harddisk0\\Partition2\\","\\Device\\Harddisk0\\Partition1\\");
 	bPartitionScanCompleted = GetSavedBooleanValue("ExtendedPartitions","PartitionScanCompleted");
@@ -1924,13 +1920,14 @@ function initialize()
 		if(bHasFdrive) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition6\\"; DriveLocations[DriveLocations.length] = "N:\\"; }
 		if(bHasGdrive) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition7\\"; DriveLocations[DriveLocations.length] = "O:\\"; }
 	}
-
+	
 	theAmbientSound0.Play();
 	theAmbientSound1.Play();
 	theAmbientSound2.Play();
 	
 	// Figure out if we need to display 3, 4, or 5 items on the main menu
 	g_TotalMenuItems = GetSavedValue("MainMenu","MainMenuItems");
+	GetMainMenuButtons();
 	
 	var nLanguage = theConfig.GetLanguage();
 	if (nLanguage != 0) nLanguage = nLanguage - 1;
@@ -1967,7 +1964,6 @@ function initialize()
 		return;
 	}
 	
-	GetMainMenuButtons();
 	MainInitPart3();
 }
 
@@ -2545,7 +2541,6 @@ var strMessageYesFunction;
 var strMessageNoFunction;
 var nCurMessageButton;
 var nMessageButtonCount;
-var bHideMessage;
 
 function UpdateMessageButtonHighlight()
 {
@@ -2806,7 +2801,7 @@ function CloseMessage()
 	var c = theMessageInline.children[0];
 	
 	c.MessagePanel.SetRotation(0, 0, 1, 1.5);
-	bHideMessage = true;
+	c.MessagePanel.SetAlpha(0.0);
 	
 	theMessageJoystick.isBound = false;
 	theMessageLayer.transparency = 1;
