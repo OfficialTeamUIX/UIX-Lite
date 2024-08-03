@@ -1397,6 +1397,22 @@ function Update3ButtonMainMenu()
 	}
 }
 
+function GetMainMenuButtons()
+{
+	Button1Text = theTranslator.Translate(GetSavedValue("MainMenu","Button1Text"));
+	if(Button1Text == theTranslator.Translate("XONLINE")) { nXOLineButton = 0; if(ShowInsignia) Button1Text = theTranslator.Translate("INSIGNIA"); }
+	if(Button1Text == theTranslator.Translate("MUSIC")) { nMusicButton = 0; }
+	Button2Text = theTranslator.Translate(GetSavedValue("MainMenu","Button2Text"));
+	if(Button2Text == theTranslator.Translate("XONLINE")) { nXOLineButton = 1; if(ShowInsignia) Button2Text = theTranslator.Translate("INSIGNIA"); }
+	if(Button2Text == theTranslator.Translate("MUSIC")) { nMusicButton = 1; }
+	Button3Text = theTranslator.Translate(GetSavedValue("MainMenu","Button3Text"));
+	if(Button3Text == theTranslator.Translate("XONLINE")) { nXOLineButton = 2; if(ShowInsignia) Button3Text = theTranslator.Translate("INSIGNIA"); }
+	if(Button3Text == theTranslator.Translate("MUSIC")) { nMusicButton = 2; }
+	Button4Text = theTranslator.Translate(GetSavedValue("MainMenu","Button4Text"));
+	if(Button4Text == theTranslator.Translate("XONLINE")) { nXOLineButton = 3; if(ShowInsignia) Button4Text = theTranslator.Translate("INSIGNIA"); }
+	if(Button4Text == theTranslator.Translate("MUSIC")) { nMusicButton = 3; }
+}
+
 DEF theMainMenu Level
 {
 	archive "MainMenu5.xip"
@@ -1445,21 +1461,13 @@ DEF theMainMenu Level
 					c.Main_memory_ringpin_5.SetTranslation(57.430000, -23.50000, 102.000000);   // Settings
 				}
 				// Setup Main Menu Buttons
-				c.MainMenuButton1_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button1Text"));
-				if(c.MainMenuButton1_Text.text == theTranslator.Translate("XONLINE")) { nXOLineButton = 0; if(ShowInsignia) c.MainMenuButton1_Text.text = theTranslator.Translate("INSIGNIA"); }
-				if(c.MainMenuButton1_Text.text == theTranslator.Translate("MUSIC")) { nMusicButton = 0; }
+				c.MainMenuButton1_Text.text = Button1Text;
 				Button1Action = GetSavedValue("MainMenu","Button1Action");
-				c.MainMenuButton2_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button2Text"));
-				if(c.MainMenuButton2_Text.text == theTranslator.Translate("XONLINE")) { nXOLineButton = 1; if(ShowInsignia) c.MainMenuButton2_Text.text = theTranslator.Translate("INSIGNIA"); }
-				if(c.MainMenuButton2_Text.text == theTranslator.Translate("MUSIC")) { nMusicButton = 1; }
+				c.MainMenuButton2_Text.text = Button2Text;
 				Button2Action = GetSavedValue("MainMenu","Button2Action");
-				c.MainMenuButton3_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button3Text"));
-				if(c.MainMenuButton3_Text.text == theTranslator.Translate("XONLINE")) { nXOLineButton = 2; if(ShowInsignia) c.MainMenuButton3_Text.text = theTranslator.Translate("INSIGNIA"); }
-				if(c.MainMenuButton3_Text.text == theTranslator.Translate("MUSIC")) { nMusicButton = 2; }
+				c.MainMenuButton3_Text.text = Button3Text;
 				Button3Action = GetSavedValue("MainMenu","Button3Action");
-				c.MainMenuButton4_Text.text = theTranslator.Translate(GetSavedValue("MainMenu","Button4Text"));
-				if(c.MainMenuButton4_Text.text == theTranslator.Translate("XONLINE")) { nXOLineButton = 3; if(ShowInsignia) c.MainMenuButton4_Text.text = theTranslator.Translate("INSIGNIA"); }
-				if(c.MainMenuButton4_Text.text == theTranslator.Translate("MUSIC")) { nMusicButton = 3; }
+				c.MainMenuButton4_Text.text = Button4Text;
 				Button4Action = GetSavedValue("MainMenu","Button4Action");
 				c.MainMenuButton5_Text.text = theTranslator.Translate("SETTINGS");
 				ButtonYXAction = GetSavedValue("MainMenu","ButtonYXAction");
@@ -1674,16 +1682,18 @@ DEF theMainMenu Level
 	
 	behavior
 	{
-		sleep 0.8;
+		sleep nTime;
 		
 		if(bHDDInitialize)
 		{
 			BlockUser("Indexing the harddisk's extended partitions. This could take several seconds.\n\nPlease Wait...");
 			bHDDInitialize = false;
 			bHDDInitializing = true;
+			nTime = 1.1;
 		}
 		else if(bHDDInitializing)
 		{
+			nTime = 0.1;
 			if(bPartitionScanCompleted == false)
 			{
 				ScanPartitions();
@@ -1700,7 +1710,7 @@ DEF theMainMenu Level
 			else if(bLaunchItem)
 			{
 				bHDDInitialized = true;
-				LaunchItem(sLocation,sFolder);
+				theLauncherInline.children[0].LaunchItem(sLocation,sFolder);
 				bLaunchItem = false;
 			}
 			else if(bGetTitleList)
@@ -1726,7 +1736,7 @@ DEF theMainMenu Level
 		}
 		else if(bPartitionScanCompleted == false)
 		{
-			bHDDInitialize = true;
+			if(g_theMainMenuLoaded) { bHDDInitialize = true; nTime = 1.0; }
 		}
 	}
 	
@@ -1805,6 +1815,10 @@ var btHcScreenSaver;
 var bMusicPlayerReady;
 var currentMusicPlayerMode;
 
+var Button1Text;
+var Button2Text;
+var Button3Text;
+var Button4Text;
 var Button1Action;
 var Button2Action;
 var Button3Action;
@@ -1813,6 +1827,7 @@ var ButtonYXAction;
 var bBackToSettings;
 var nXOLineButton;
 var nMusicButton;
+var nTime;
 var launchPath;
 var launchXbe;
 var sLocation;
@@ -1837,7 +1852,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "240610"; //Date of commit YYMMDD
+	sBuildDate = "240803"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bStartTitleList = false;
 	bGetTitleList = false;
@@ -1860,8 +1875,10 @@ function initialize()
 	bShowInvalidDiscWithNav = false;
 	bShowNoDongleMessage = false;
 	bOutOfBoxFlow = false;
-	nCurMainMenuItem = 1; // start with music selected
 	nMusicButton = 1;
+	nXOLineButton = 2;
+	nCurMainMenuItem = 1; // start with music selected
+	nTime = 0.1;
 	g_bKeyboardDisplayed = false;
 	g_bPanelDisplayed = false;
 	g_bAboutToReboot = false;
@@ -1891,7 +1908,7 @@ function initialize()
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
 	btHcScreenSaver = GetSavedBooleanValue("default","UsetHcScreenSaver");
-
+	
 	DriveLocations = new Array("Y:\\","C:\\");
 	PartitionLocations = new Array("\\Device\\Harddisk0\\Partition2\\","\\Device\\Harddisk0\\Partition1\\");
 	bPartitionScanCompleted = GetSavedBooleanValue("ExtendedPartitions","PartitionScanCompleted");
@@ -1903,13 +1920,14 @@ function initialize()
 		if(bHasFdrive) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition6\\"; DriveLocations[DriveLocations.length] = "N:\\"; }
 		if(bHasGdrive) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition7\\"; DriveLocations[DriveLocations.length] = "O:\\"; }
 	}
-
+	
 	theAmbientSound0.Play();
 	theAmbientSound1.Play();
 	theAmbientSound2.Play();
 	
 	// Figure out if we need to display 3, 4, or 5 items on the main menu
 	g_TotalMenuItems = GetSavedValue("MainMenu","MainMenuItems");
+	GetMainMenuButtons();
 	
 	var nLanguage = theConfig.GetLanguage();
 	if (nLanguage != 0) nLanguage = nLanguage - 1;
@@ -3137,36 +3155,6 @@ function ExecuteFile(sPath)
 	{
 		theMainMenu.children[0].children[0].theMainMenuLevel.visible = false;
 		theLaunchGameLevel.GoTo();
-	}
-}
-
-function LaunchItem(x,y)
-{
-	var RelativePath = Split(x,";");
-	var FolderName = y;
-	
-	for(var i = 0; i < PartitionLocations.length; i = i + 1)
-	{
-		for(var ix = 0; ix < RelativePath.length; ix = ix + 1)
-		{
-			launchPath = PartitionLocations[i] + RelativePath[ix] + "\\" + FolderName;
-			launchXbe = "default.xbe";
-			if(i > 1 & bHDDInitialized == false)
-			{
-				sLocation = x;
-				sFolder = y;
-				bLaunchItem = true;
-				bHDDInitialize = true;
-				return;
-			}
-			else if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
-			{
-				if(theLauncherInline.visible) theLauncherInline.children[0].theLauncher.children[0].children[0].theWholeThing.visible = false;
-				SetSavedValue("LauncherMenu","LastTitleLaunched",x + "-" + y);
-				theLaunchGameLevel.GoTo();
-				return;
-			}
-		}
 	}
 }
 

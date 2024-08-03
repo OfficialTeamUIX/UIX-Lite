@@ -286,6 +286,7 @@ DEF theAccountSelectionLevel Level
 			}
 			else
 			{
+				nCurMainMenuItem = nXOLineButton;
 				theGamesMenuOut.Play();
 				theMainMenu.GoBackTo();
 			}

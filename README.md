@@ -38,10 +38,11 @@ Some of these features include;
 * When configuring the Main Menu, advanced users can enable Advanced Mode. When this is enabled, selecting a setting will bring up the xbox onscreen keyboard for custom input instead of using the built-in toggles.
 * When configuring the Launcher, you may define both the “Title” for a content type and the relative “Path(s)” to the content for up to eight launcher menu items. The Launcher will scan the relative paths provided on each partition and compile a list of the subdirectories found. The name of these subdirectories should correspond to the name of the title and contain the title's default.xbe. Use a semicolon as a separator when defining multiple relative paths to like content.
 * You can fast scroll most menus by pressing Left/Right on the directional pad to PageUp/PageDown.
-* To re-launch the last title launched, simply press the X button while in the Launcher menu.
+* To re-launch a recently launched title, simply press the X button while in the Launcher menu.
 * You can assign a QuickLaunch path to each of the A, B, X, and Y buttons. To active the QuickLaunch feature, while in the Main Menu hold both triggers and press the assigned button.
 
  NOTE: The xbox onscreen keyboard does not allow you to enter an empty text string. Therefore, to delete an entry just enter an single "x" and select Done.
+ 
  NOTE: The xbox onscreen keyboard is limited to 31 charaters. So, if you need more characters, just enter as much as you can and select Done. Then edit it again and some of the text will be moved into the title bar and you can add more text.
  
 
