@@ -408,6 +408,56 @@ function StartCDPlayer()
 
 DEF theTranslator Translator
 
+function Translate(text)
+{
+	var MatchWord = text.toUpperCase();
+	if(theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xlate.xbx"))
+	{
+		var Languages = new Array( "ENGLISH","JAPANESE","DEUTSCH","FRANÇAIS","ESPAÑOL","ITALIANO","KOREAN","CHINESE","PORTUGUÊS");
+		var index = Math.max(0,theConfig.GetLanguage() - 1);
+		XlateFile.section = Languages[index];
+		var xlate = XlateFile.GetValue(MatchWord);
+		if(xlate == "") xlate = XlateFile.GetValue(text);
+		if(xlate != "") return ParseEscapedChars(xlate);
+	}
+	else
+	{
+		if(MatchWord == "MEMORY") { return "Memory"; }
+		else if(MatchWord == "MUSIC") { return "Music"; }
+		else if(MatchWord == "LAUNCHER") { return "Launcher"; }
+		else if(MatchWord == "INSIGNIA") { return "Insignia"; }
+		else if(MatchWord == "CONFIGURATION") { return "UIX Settings"; }
+		else if(MatchWord == "INDEXING_PARTITION") { return "Indexing the harddisk's extended partitions. This could take several seconds.\n\nPlease Wait..."; }
+		else if(MatchWord == "SETTINGS_CHANGED") { return "You will need to reboot before the new settings will take effect.\n\nWould you like to reboot now?"; }
+		else if(MatchWord == "POWER_OFF") { return "This will power off the Xbox.\n\nDo you wish to continue?"; }
+	}
+	return theTranslator.Translate(text);
+}
+
+function ParseEscapedChars(sText)
+{
+	var Chars = new Array("\\n","\\t");
+	for(var x = 0; x < Chars.length; x = x + 1)
+	{
+		if(sText.indexOf(Chars[x]) >= 0)
+		{
+			var arrTemp = Split(sText,Chars[x]);
+			var sRet;
+			if(arrTemp.length > 0)
+			{
+				sRet = arrTemp[0];
+				for(var i = 1; i < arrTemp.length; i = i + 1)
+				{
+					if(x == 0) { sRet = sRet + "\n" + arrTemp[i];}
+					else if(x == 1) { sRet = sRet + "\t" + arrTemp[i]; }
+				}
+				return sRet;
+			}
+		}
+	}
+	return sText;
+}
+
 ///////////////////////////////////////////////////////////////////
 DEF theLauncherInline Inline
 {
@@ -1399,18 +1449,28 @@ function Update3ButtonMainMenu()
 
 function GetMainMenuButtons()
 {
-	Button1Text = theTranslator.Translate(GetSavedValue("MainMenu","Button1Text"));
-	if(Button1Text == theTranslator.Translate("XONLINE")) { nXOLineButton = 0; if(ShowInsignia) Button1Text = theTranslator.Translate("INSIGNIA"); }
-	if(Button1Text == theTranslator.Translate("MUSIC")) { nMusicButton = 0; }
-	Button2Text = theTranslator.Translate(GetSavedValue("MainMenu","Button2Text"));
-	if(Button2Text == theTranslator.Translate("XONLINE")) { nXOLineButton = 1; if(ShowInsignia) Button2Text = theTranslator.Translate("INSIGNIA"); }
-	if(Button2Text == theTranslator.Translate("MUSIC")) { nMusicButton = 1; }
-	Button3Text = theTranslator.Translate(GetSavedValue("MainMenu","Button3Text"));
-	if(Button3Text == theTranslator.Translate("XONLINE")) { nXOLineButton = 2; if(ShowInsignia) Button3Text = theTranslator.Translate("INSIGNIA"); }
-	if(Button3Text == theTranslator.Translate("MUSIC")) { nMusicButton = 2; }
-	Button4Text = theTranslator.Translate(GetSavedValue("MainMenu","Button4Text"));
-	if(Button4Text == theTranslator.Translate("XONLINE")) { nXOLineButton = 3; if(ShowInsignia) Button4Text = theTranslator.Translate("INSIGNIA"); }
-	if(Button4Text == theTranslator.Translate("MUSIC")) { nMusicButton = 3; }
+	Button1Text = Translate(GetSavedValue("MainMenu","Button1Text"));
+	if(Button1Text == Translate("XONLINE")) { nXOLineButton = 0; if(ShowInsignia) Button1Text = Translate("INSIGNIA"); }
+	if(Button1Text == Translate("MUSIC")) { nMusicButton = 0; }
+	Button2Text = Translate(GetSavedValue("MainMenu","Button2Text"));
+	if(Button2Text == Translate("XONLINE")) { nXOLineButton = 1; if(ShowInsignia) Button2Text = Translate("INSIGNIA"); }
+	if(Button2Text == Translate("MUSIC")) { nMusicButton = 1; }
+	Button3Text = Translate(GetSavedValue("MainMenu","Button3Text"));
+	if(Button3Text == Translate("XONLINE")) { nXOLineButton = 2; if(ShowInsignia) Button3Text = Translate("INSIGNIA"); }
+	if(Button3Text == Translate("MUSIC")) { nMusicButton = 2; }
+	Button4Text = Translate(GetSavedValue("MainMenu","Button4Text"));
+	if(Button4Text == Translate("XONLINE")) { nXOLineButton = 3; if(ShowInsignia) Button4Text = Translate("INSIGNIA"); }
+	if(Button4Text == Translate("MUSIC")) { nMusicButton = 3; }
+}
+
+function SetButtonText()
+{
+	var c = theMainMenu.children[0].children[0];
+	c.MainMenuButton1_Text.text = Button1Text;
+	c.MainMenuButton2_Text.text = Button2Text;
+	c.MainMenuButton3_Text.text = Button3Text;
+	c.MainMenuButton4_Text.text = Button4Text;
+	c.MainMenuButton5_Text.text = theTranslator.Translate("SETTINGS");
 }
 
 DEF theMainMenu Level
@@ -1461,15 +1521,11 @@ DEF theMainMenu Level
 					c.Main_memory_ringpin_5.SetTranslation(57.430000, -23.50000, 102.000000);   // Settings
 				}
 				// Setup Main Menu Buttons
-				c.MainMenuButton1_Text.text = Button1Text;
+				SetButtonText();
 				Button1Action = GetSavedValue("MainMenu","Button1Action");
-				c.MainMenuButton2_Text.text = Button2Text;
 				Button2Action = GetSavedValue("MainMenu","Button2Action");
-				c.MainMenuButton3_Text.text = Button3Text;
 				Button3Action = GetSavedValue("MainMenu","Button3Action");
-				c.MainMenuButton4_Text.text = Button4Text;
 				Button4Action = GetSavedValue("MainMenu","Button4Action");
-				c.MainMenuButton5_Text.text = theTranslator.Translate("SETTINGS");
 				ButtonYXAction = GetSavedValue("MainMenu","ButtonYXAction");
 				
 				g_theMainMenuLoaded = true;
@@ -1613,10 +1669,10 @@ DEF theMainMenu Level
 		{        
 			if ((RightTrigger == true) & (LeftTrigger == true)) { QuickLaunch("Y"); return;}
 		}
-		function OnRightDown(){ RightTrigger = true;  }
-		function OnRightUp()  { RightTrigger = false; }
-		function OnLeftDown() { LeftTrigger = true;   }
-		function OnLeftUp()   { LeftTrigger = false;  }
+		function OnRightDown() { RightTrigger = true; }
+		function OnRightUp() { RightTrigger = false; }
+		function OnLeftDown() { LeftTrigger = true; }
+		function OnLeftUp() { LeftTrigger = false; }
 		function OnMoveUp()
 		{
 			if (nCurMainMenuItem > 0)
@@ -1686,7 +1742,7 @@ DEF theMainMenu Level
 		
 		if(bHDDInitialize)
 		{
-			BlockUser("Indexing the harddisk's extended partitions. This could take several seconds.\n\nPlease Wait...");
+			BlockUser(Translate("INDEXING_PARTITION"));
 			bHDDInitialize = false;
 			bHDDInitializing = true;
 			nTime = 1.1;
@@ -1809,6 +1865,7 @@ var theInLine;
 var currentControlType;
 var previousControlType;
 var ConfigFile;
+var XlateFile;
 var thcorb;
 var ShowInsignia;
 var btHcScreenSaver;
@@ -1904,11 +1961,13 @@ function initialize()
 	g_bLeaveMemoryUnitsBlocked = false;
 	ConfigFile = new Settings;
 	ConfigFile.file = "Y:\\config.xbx";
+	XlateFile = new Settings;
+	XlateFile.file = "Y:\\xlate.xbx";
 	
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
 	btHcScreenSaver = GetSavedBooleanValue("default","UsetHcScreenSaver");
-	
+
 	DriveLocations = new Array("Y:\\","C:\\");
 	PartitionLocations = new Array("\\Device\\Harddisk0\\Partition2\\","\\Device\\Harddisk0\\Partition1\\");
 	bPartitionScanCompleted = GetSavedBooleanValue("ExtendedPartitions","PartitionScanCompleted");
@@ -1920,7 +1979,7 @@ function initialize()
 		if(bHasFdrive) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition6\\"; DriveLocations[DriveLocations.length] = "N:\\"; }
 		if(bHasGdrive) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition7\\"; DriveLocations[DriveLocations.length] = "O:\\"; }
 	}
-	
+
 	theAmbientSound0.Play();
 	theAmbientSound1.Play();
 	theAmbientSound2.Play();
@@ -2011,11 +2070,8 @@ function MainInitPart3()
 	}
 	else if (reason == "FromOnlineDash")
 	{
-		if (bBacktoSettings == false)
-		{
-			// Set the focus to the proper menu item
-			nCurMainMenuItem = nXOLineButton;
-		}
+		// Set the focus to the proper menu item
+		nCurMainMenuItem = nXOLineButton;
 	}
 	else if (reason == "DVD")
 	{
@@ -3234,7 +3290,7 @@ function Reboot()//scripted reboot - last stage of a recovery is to reboot - let
 
 function PowerOff()
 {
-	AskQuestion("This will power off the Xbox.\n\nDo you wish to continue?", "ShutDown()", "", 1);
+	AskQuestion(Translate("POWER_OFF"), "ShutDown()", "", 1);
 }
 
 function ShutDown()
@@ -3316,7 +3372,7 @@ function Split(str,Delimiter)
 	var arrReturn = new Array;
 	var x = str;
 	var i = 0;
-	while( x.indexOf(Delimiter) > 0 )
+	while( x.indexOf(Delimiter) >= 0 )
 	{
 		arrReturn[i] = x.substr(0,x.indexOf(Delimiter));
 		x = x.substr(x.indexOf(Delimiter) + Delimiter.length());

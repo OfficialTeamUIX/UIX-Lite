@@ -2948,7 +2948,9 @@ DEF theSetLanguageMenu Level
 
 			theTranslator.SetLanguage(nCurLanguageMenuItem);
 			SetLanguage(nCurLanguageMenuItem + 1);
-
+			GetMainMenuButtons();
+			SetButtonText();
+			
 			if (nCurLanguageMenuItem == 0)      // English
 				b24hour = false;
 			else if (nCurLanguageMenuItem == 1) // Japanese
@@ -3464,13 +3466,13 @@ function StartSettingsMenu()
 	// Build the Settings Menu array
 	if(ShowMemoryInSettings)
 	{
-		sSettingsMenu[index] = theTranslator.Translate("Memory");
+		sSettingsMenu[index] = Translate("Memory");
 		index = index + 1;
 	}
 	
 	if(ShowMusicInSettings)
 	{
-		sSettingsMenu[index] = theTranslator.Translate("Music");
+		sSettingsMenu[index] = Translate("Music");
 		index = index + 1;
 	}    
 	
@@ -3478,24 +3480,24 @@ function StartSettingsMenu()
 	{
 		if(GetSavedBooleanValue("default","ShowInsignia"))
 		{
-			sSettingsMenu[index] = theTranslator.Translate("Insignia");
+			sSettingsMenu[index] = Translate("Insignia");
 		}
 		else
 		{
-			sSettingsMenu[index] = theTranslator.Translate("XONLINE");
+			sSettingsMenu[index] = Translate("XONLINE");
 		}
 		index = index + 1;
 	} 
 	
 	if(ShowLauncherInSettings)
 	{
-		sSettingsMenu[index] = theTranslator.Translate("Launcher");
+		sSettingsMenu[index] = Translate("Launcher");
 		index = index + 1;
 	}
 	
 	if(ShowConfigInSettings)
 	{
-		sSettingsMenu[index] = theTranslator.Translate("Configuration");
+		sSettingsMenu[index] = Translate("Configuration");
 		index = index + 1;
 	}
 	
@@ -3532,13 +3534,13 @@ function StartSettingsMenu()
 	
 	if(ShowRebootInSettings)
 	{
-		sSettingsMenu[index] = theTranslator.Translate("Reboot");
+		sSettingsMenu[index] = Translate("Reboot");
 		index = index + 1;
 	}
 	
 	if(ShowShutdownInSettings)
 	{
-		sSettingsMenu[index] = theTranslator.Translate("Shutdown");
+		sSettingsMenu[index] = Translate("Shutdown");
 		index = index + 1;
 	}
 	
@@ -3604,27 +3606,27 @@ function MenuIcon()
 {
 	var c = theSettingsMenu.children[0].children[0];
 
-	if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Memory")) 
+	if (sSettingsElements[nCurSettingsMenuItem] == Translate("Memory")) 
 	{ 
 		ShowIcon(c.ConsoleIcon); 
 	}
-	if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Music")) 
+	if (sSettingsElements[nCurSettingsMenuItem] == Translate("Music")) 
 	{ 
 		SetAudioModeIcon(nCurAudioMode); 
 	}
-	if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Insignia")) 
+	if (sSettingsElements[nCurSettingsMenuItem] == Translate("Insignia")) 
 	{ 
 		ShowIcon(c.Icon_live); 
 	}
-	if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("XONLINE")) 
+	if (sSettingsElements[nCurSettingsMenuItem] == Translate("XONLINE")) 
 	{ 
 		ShowIcon(c.Icon_live); 
 	}
-	if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Launcher")) 
+	if (sSettingsElements[nCurSettingsMenuItem] == Translate("Launcher")) 
 	{ 
 		ShowIcon(c.ConsoleIcon); 
 	}
-	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Configuration"))
+	else if (sSettingsElements[nCurSettingsMenuItem] == Translate("Configuration"))
 	{
 		ShowIcon(c.ConsoleIcon);
 	}
@@ -3661,11 +3663,11 @@ function MenuIcon()
 	{
 		ShowIcon(c.AutoOffIcon);
 	}
-	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Reboot"))
+	else if (sSettingsElements[nCurSettingsMenuItem] == Translate("Reboot"))
 	{
 		ShowIcon(c.AutoOffIcon);
 	}
-	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Shutdown"))
+	else if (sSettingsElements[nCurSettingsMenuItem] == Translate("Shutdown"))
 	{
 		ShowIcon(c.AutoOffIcon);
 	}
@@ -3679,26 +3681,26 @@ function UpdateRootMeta()
 {
 	var c = theSettingsMenu.children[0].children[0];
 	var metaString = "";
-	if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Memory")) 
+	if(sSettingsElements[nCurSettingsMenuItem] == Translate("Memory")) 
 	{ 
-		metaString = "Manage Saved Games"; 
+		metaString = Translate("Manage Saved Games"); 
 	}
-	if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Music")) 
+	if(sSettingsElements[nCurSettingsMenuItem] == Translate("Music")) 
 	{ 
-		metaString = "Play Your Music"; 
+		metaString = Translate("Play Your Music"); 
 	}
-	if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Insignia") | 
-	   sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("XONLINE")) 
+	if(sSettingsElements[nCurSettingsMenuItem] == Translate("Insignia") | 
+	   sSettingsElements[nCurSettingsMenuItem] == Translate("XONLINE")) 
 	{ 
-		metaString = "Xbox Online"; 
+		metaString = Translate("Play Online"); 
 	}
-	if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Launcher")) 
+	if(sSettingsElements[nCurSettingsMenuItem] == Translate("Launcher")) 
 	{ 
-		metaString = "Launch A Title"; 
+		metaString = Translate("Launch a Title"); 
 	}
-	if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Configuration")) 
+	if(sSettingsElements[nCurSettingsMenuItem] == Translate("Configuration")) 
 	{ 
-		metaString = "UIX Custom Settings"; 
+		metaString = Translate("Configure UIX Settings"); 
 	}
 	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("CLOCK"))
 	{
@@ -3776,13 +3778,13 @@ function UpdateRootMeta()
 		else
 			metaString = theTranslator.Translate("DISABLED");
 	}
-	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Reboot"))
+	else if(sSettingsElements[nCurSettingsMenuItem] == Translate("Reboot"))
 	{
-		metaString = theTranslator.Translate("Reboot Xbox");
+		metaString = Translate("Reboot Xbox");
 	}
-	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Shutdown"))
+	else if(sSettingsElements[nCurSettingsMenuItem] == Translate("Shutdown"))
 	{
-		metaString = theTranslator.Translate("Shutdown Xbox");
+		metaString = Translate("Shutdown Xbox");
 	}
 	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("SYSTEM INFO"))
 	{
@@ -3969,34 +3971,34 @@ DEF theSettingsMenu Level
 			theSettingsMenu.children[0].children[0].MU_select_pod_HL.children[0].appearance.material.param = 1;
 
 			strPrevMenu = "SETTINGS";
-			if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Memory"))
+			if (sSettingsElements[nCurSettingsMenuItem] == Translate("Memory"))
 			{
-				strCurMenu      = "Memory";
+				strCurMenu      = "MEMORY";
 				bBackToSettings = true;
 				GoToMemory();
 			}              
-			if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Music"))
+			if (sSettingsElements[nCurSettingsMenuItem] == Translate("Music"))
 			{
-				strCurMenu      = "Music";
+				strCurMenu      = "MUSIC";
 				bBackToSettings = true;
 				GoToMusic();
 			}
-			if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("XONLINE") | 
-				sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Insignia"))
+			if (sSettingsElements[nCurSettingsMenuItem] == Translate("XONLINE") | 
+			sSettingsElements[nCurSettingsMenuItem] == Translate("Insignia"))
 			{
 				strCurMenu      = "XONLINE";
 				bBackToSettings = true;
 				EnterLiveToday(false);
 			}             
-			if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Launcher"))
+			if (sSettingsElements[nCurSettingsMenuItem] == Translate("Launcher"))
 			{
-				strCurMenu = "Launcher";
+				strCurMenu = "LAUNCHER";
 				bBackToSettings = true;
 				GoToLauncher();
 			}
-			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Configuration"))
+			else if (sSettingsElements[nCurSettingsMenuItem] == Translate("Configuration"))
 			{
-				strCurMenu = "Configuration";
+				strCurMenu = "CONFIGURATION";
 				bBackToSettings = true;
 				GoToUIXConfig();
 			}
@@ -4064,11 +4066,11 @@ DEF theSettingsMenu Level
 				strCurMenu = "AUTO OFF";
 				theSetPanelMenu.GoTo();
 			}
-			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Reboot"))
+			else if (sSettingsElements[nCurSettingsMenuItem] == Translate("Reboot"))
 			{
 				Reboot();
 			}
-			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Shutdown"))
+			else if (sSettingsElements[nCurSettingsMenuItem] == Translate("Shutdown"))
 			{
 				PowerOff();
 			}
