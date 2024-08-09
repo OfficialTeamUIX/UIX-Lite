@@ -1473,6 +1473,38 @@ function SetButtonText()
 	c.MainMenuButton5_Text.text = theTranslator.Translate("SETTINGS");
 }
 
+function MainMenuAttract()
+{
+	var a = 0;
+	var c = theMainMenu.children[0].children[0];
+	
+	c.theMainMenuLevel.fade = a;
+	c.Rotating_Large_X.fade = a;
+	c.ring.fade = a; 
+	c.main_pod.fade = a; 
+	c.select.visible = false;
+	
+	c.theMainMenuLevel.SetRotation(-1,-5.1,0,-1.570796);
+	c.theMainMenuLevel.SetTranslation(0,0,-400);
+	c.Rotating_Large_X.SetTranslation(-900,500,20);
+	c.ring.SetTranslation(400,0,-180);
+	c.main_pod.SetTranslation(-400,13.4,-300);
+	
+	a = 2;
+	c.theMainMenuLevel.fade = a;
+	c.Rotating_Large_X.fade = a;
+	c.ring.fade = a; 
+	c.main_pod.fade = a; 
+	c.Main_pod_backing01.fade = a; 
+	c.Main_pod_backing02.fade = a; 
+	
+	c.theMainMenuLevel.SetRotation(0,0,0,0);
+	c.theMainMenuLevel.SetTranslation(0,0,0);
+	c.Rotating_Large_X.SetTranslation(0,0,0);
+	c.ring.SetTranslation(-57.980000,-13.690000,-84.760002);
+	c.main_pod.SetTranslation(-61.689999,-13.400000,0.337400);
+}
+
 DEF theMainMenu Level
 {
 	archive "MainMenu5.xip"
@@ -1528,7 +1560,6 @@ DEF theMainMenu Level
 				Button4Action = GetSavedValue("MainMenu","Button4Action");
 				ButtonYXAction = GetSavedValue("MainMenu","ButtonYXAction");
 				
-				g_theMainMenuLoaded = true;
 				UpdateMainMenu(); 
 				c.game_arm01.visible = false;
 				c.game_arm02.visible = false;
@@ -1542,6 +1573,7 @@ DEF theMainMenu Level
 					c.podsupport_2a.visible = true;
 					c.podsupport_3a.visible = true;
 					c.podsupport_4a.visible = true;
+					c.Main_memory_pod03.visible = false;
 					c.Main_pod_backing01.visible = false;
 					c.Main_pod_backing02.visible = true;
 					c.Main_pod_backing02.fade = 2; 
@@ -1563,6 +1595,8 @@ DEF theMainMenu Level
 					c.Main_pod_backing01.visible = true;
 					c.Main_pod_backing02.visible = false;
 				}
+				if(bUseMainMenuAttract) MainMenuAttract();
+				g_theMainMenuLoaded = true;
 			}
 		}
 	]
@@ -1716,7 +1750,11 @@ DEF theMainMenu Level
 				UpdateMainMenu();
 			}
 		}
-
+		function OnWhiteDown()
+		{
+			nTime = 2.4;
+			MainMenuAttract();
+		}
 		function OnKeyVerified()
 		{
 			//theConfig.ToggleNoisyCamera();
@@ -1739,7 +1777,8 @@ DEF theMainMenu Level
 	behavior
 	{
 		sleep nTime;
-		
+		nTime = 0.1;
+			
 		if(bHDDInitialize)
 		{
 			BlockUser(Translate("INDEXING_PARTITION"));
@@ -1749,7 +1788,6 @@ DEF theMainMenu Level
 		}
 		else if(bHDDInitializing)
 		{
-			nTime = 0.1;
 			if(bPartitionScanCompleted == false)
 			{
 				ScanPartitions();
@@ -1792,7 +1830,12 @@ DEF theMainMenu Level
 		}
 		else if(bPartitionScanCompleted == false)
 		{
-			if(g_theMainMenuLoaded) { bHDDInitialize = true; nTime = 1.0; }
+			bHDDInitialize = true;
+		}
+		else if(theMainMenu.children[0].children[0].select.visible != true)
+		{
+			theMainMenu.children[0].children[0].select.visible = true;
+			theMainMenu.children[0].children[0].Rotating_Large_X.fade = 0.25;
 		}
 	}
 	
@@ -1901,6 +1944,7 @@ var bPartitionScanCompleted;
 var bHasFdrive;
 var bHasGdrive;
 var bHasExtendedPartition;
+var bUseMainMenuAttract;
 var DriveLocations;
 var PartitionLocations;
 var sBuildDate;
@@ -1909,7 +1953,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "240803"; //Date of commit YYMMDD
+	sBuildDate = "240809"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bStartTitleList = false;
 	bGetTitleList = false;
@@ -1935,7 +1979,6 @@ function initialize()
 	nMusicButton = 1;
 	nXOLineButton = 2;
 	nCurMainMenuItem = 1; // start with music selected
-	nTime = 0.1;
 	g_bKeyboardDisplayed = false;
 	g_bPanelDisplayed = false;
 	g_bAboutToReboot = false;
@@ -1967,7 +2010,9 @@ function initialize()
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
 	btHcScreenSaver = GetSavedBooleanValue("default","UsetHcScreenSaver");
-
+	bUseMainMenuAttract = GetSavedBooleanValue("default","UseMainMenuAttract");
+	if(bUseMainMenuAttract) nTime = 2.4; else nTime = 1.2;
+	
 	DriveLocations = new Array("Y:\\","C:\\");
 	PartitionLocations = new Array("\\Device\\Harddisk0\\Partition2\\","\\Device\\Harddisk0\\Partition1\\");
 	bPartitionScanCompleted = GetSavedBooleanValue("ExtendedPartitions","PartitionScanCompleted");

@@ -65,11 +65,15 @@ function buildGSList() //just copy this function for more subsections
 	configValues[i] = "default-ShowInsignia";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
+	configList[i] = "Animate Main Menu:";
+	configValues[i] = "default-UseMainMenuAttract";
+	configSelect[i] = "toggleTF()";
+	i = i + 1;
 	configList[i] = "Always Use tHc ScreenSaver:";
 	configValues[i] = "default-UsetHcScreenSaver";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
-	configList[i] = "Configuration Panel Icon:";
+	configList[i] = "UIX Settings Icon:";
 	configValues[i] = "default-ConfigPanelIcon";
 	configSelect[i] = "toggleIcon()";
 	i = i + 1;

@@ -3116,6 +3116,15 @@ DEF theMainMenuLevel Transform
 						}
 					]
 				}
+			]
+			scale 1.130000 1.130000 1.130000
+			translation -61.689999 -13.400000 0.337400
+		}
+		
+		DEF main_poda Transform
+		{
+			children
+			[
 				DEF MainPod_4_Spinner Spinner
 				{
 					rpm 0
@@ -3409,7 +3418,7 @@ DEF theMainMenuLevel Transform
 			rotation -0.993700 -0.088440 0.068970 -1.576000
 			scale 43.000000 43.000000 43.000000 
 			scaleOrientation 0.036530 0.975200 0.218400 -0.396500
-			translation -54.880000 -15.100000 29.980000
+			translation -58.220000 -12.100000 15.000000
 		}
 	]
 }
