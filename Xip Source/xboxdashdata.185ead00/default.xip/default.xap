@@ -3422,21 +3422,6 @@ function RefreshCache()
 			CacheFile.SetValue(arrMenuNames[x], cache);
 		}
 	}
-	UpdateIconFile();
-}
-
-function UpdateIconFile()
-{
-	var cTitles = new Array;
-	cTitles = GetAllTitles();
-	IconFile.section = "default";
-	for(var i = 0; i < cTitles.length; i = i + 1)
-	{
-		if(IconFile.GetValue(cTitles[i]) == "")
-		{
-			IconFile.SetValue(cTitles[i],"Unknown");
-		}
-	}
 }
 
 ////////////////////////////////////////////////////////////////////////////

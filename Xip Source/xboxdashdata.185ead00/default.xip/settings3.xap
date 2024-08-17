@@ -136,8 +136,8 @@ function UpdateClockMenu()
 		dx = 0.63;
 	}
 
-	c.Clock_morearrow_up.children[0].appearance.material.name = "Material #133";
-	c.Clock_morearrow_down.children[0].appearance.material.name = "Material #133";
+	c.Clock_morearrow_up.children[0].appearance.material.name = "HilightedType";
+	c.Clock_morearrow_down.children[0].appearance.material.name = "HilightedType";
 	c.Clock_morearrow_up.SetTranslation(x + n * dx, -0.6111, 1.893);
 	c.Clock_morearrow_down.SetTranslation(x - 0.105 + n * dx, -1.222, 1.893);
 
@@ -162,37 +162,37 @@ function UpdateClockMenu()
 	{
 		c.Clock_time_panel_03.children[0].appearance.material.name = "GameHilite";
 		c.Clock_time_panel_03.children[0].appearance.texture.url = "GameHilite_01.bmp";
-		c.Clock_text_time_twelve_W.children[0].appearance.material.name = "Material #133";
+		c.Clock_text_time_twelve_W.children[0].appearance.material.name = "HilightedType";
 	}
 	else if (nCurClockMenuItem == 1)
 	{
 		c.Clock_time_panel_01.children[0].appearance.material.name = "GameHilite";
 		c.Clock_time_panel_01.children[0].appearance.texture.url = "GameHilite_01.bmp";
-		c.Clock_text_time_fifteen_W.children[0].appearance.material.name = "Material #133";
+		c.Clock_text_time_fifteen_W.children[0].appearance.material.name = "HilightedType";
 	}
 	else if (nCurClockMenuItem == 2)
 	{
 		c.Clock_time_panel_04.children[0].appearance.material.name = "GameHilite";
 		c.Clock_time_panel_04.children[0].appearance.texture.url = "GameHilite_01.bmp";
-		c.Clock_text_time_pm__W.children[0].appearance.material.name = "Material #133";
+		c.Clock_text_time_pm__W.children[0].appearance.material.name = "HilightedType";
 	}
 	else if (nCurClockMenuItem == 3)
 	{
 		c.Clock_date_panel_01.children[0].appearance.material.name = "GameHilite";
 		c.Clock_date_panel_01.children[0].appearance.texture.url = "GameHilite_01.bmp";
-		c.Clock_text_date_twelve_W.children[0].appearance.material.name = "Material #133";
+		c.Clock_text_date_twelve_W.children[0].appearance.material.name = "HilightedType";
 	}
 	else if (nCurClockMenuItem == 4)
 	{
 		c.Clock_date_panel_03.children[0].appearance.material.name = "GameHilite";
 		c.Clock_date_panel_03.children[0].appearance.texture.url = "GameHilite_01.bmp";
-		c.Clock_text_date_ten.children[0].appearance.material.name = "Material #133";
+		c.Clock_text_date_ten.children[0].appearance.material.name = "HilightedType";
 	}
 	else if (nCurClockMenuItem == 5)
 	{
 		c.Clock_date_panel_05.children[0].appearance.material.name = "GameHilite";
 		c.Clock_date_panel_05.children[0].appearance.texture.url = "GameHilite_01.bmp";
-		c.Clock_text_date_doublezero.children[0].appearance.material.name = "Material #133";
+		c.Clock_text_date_doublezero.children[0].appearance.material.name = "HilightedType";
 	}
 }
 
@@ -913,7 +913,7 @@ function UpdateTimezoneMenu()
 		{
 			c.MenuButtons.children[i].children[0].appearance.material.name = "GameHilite";
 			c.MenuButtons.children[i].children[0].appearance.texture.url = "GameHilite_01.bmp";
-			c.MenuButtonText.children[i].children[0].appearance.material.name = "Material #133";
+			c.MenuButtonText.children[i].children[0].appearance.material.name = "HilightedType";
 
 			// hilite scroll arrows as well
 			if(i == 0)
@@ -1553,7 +1553,7 @@ function UpdateListHighlight()
 		if (nCurListItems == i)
 		{
 			buttons[i].appearance.material.name = "GameHilite";
-			c.Menu_Buttons.children[i * 2].children[0].children[0].appearance.material.name = "Material #133";
+			c.Menu_Buttons.children[i * 2].children[0].children[0].appearance.material.name = "HilightedType";
 
 		}
 		else
@@ -1807,12 +1807,12 @@ function UpdatePanelMenu()
 	if (nCurPanelMenuItem == 1)
 	{
 		c.MU_L3_button_yes.children[0].appearance.material.name = "GameHilite";
-		c.S_Home_text_yes.children[0].appearance.material.name = "Material #133";
+		c.S_Home_text_yes.children[0].appearance.material.name = "HilightedType";
 	}
 	else if (nCurPanelMenuItem == 0)
 	{
 		c.MU_L3_button_no.children[0].appearance.material.name = "GameHilite";
-		c.S_Home_text_no.children[0].appearance.material.name = "Material #133";
+		c.S_Home_text_no.children[0].appearance.material.name = "HilightedType";
 	}
 
 }
@@ -2794,7 +2794,7 @@ function UpdateLanguageMenu()
 	{
 		c.S_Lang_menubutton_01.children[0].appearance.material.name = "GameHilite";
 		c.S_Lang_menubutton_01.children[0].appearance.texture.url = "GameHilite_01.bmp";
-		c.txtLang1.appearance.name = "Material #133";
+		c.txtLang1.appearance.name = "HilightedType";
 
 		// Highlight the scroll arrow if necessary
 		if( nLanguageItemScroll > 0 )
@@ -2804,31 +2804,31 @@ function UpdateLanguageMenu()
 	{
 		c.S_Lang_menubutton_02.children[0].appearance.material.name = "GameHilite";
 		c.S_Lang_menubutton_02.children[0].appearance.texture.url = "GameHilite_01.bmp";
-		c.txtLang2.appearance.name = "Material #133";
+		c.txtLang2.appearance.name = "HilightedType";
 	}
 	else if (nCurLanguageButton == 2)
 	{
 		c.S_Lang_menubutton_03.children[0].appearance.material.name = "GameHilite";
 		c.S_Lang_menubutton_03.children[0].appearance.texture.url = "GameHilite_01.bmp";
-		c.txtLang3.appearance.name = "Material #133";
+		c.txtLang3.appearance.name = "HilightedType";
 	}
 	else if (nCurLanguageButton == 3)
 	{
 		c.S_Lang_menubutton_04.children[0].appearance.material.name = "GameHilite";
 		c.S_Lang_menubutton_04.children[0].appearance.texture.url = "GameHilite_01.bmp";
-		c.txtLang4.appearance.name = "Material #133";
+		c.txtLang4.appearance.name = "HilightedType";
 	}
 	else if (nCurLanguageButton == 4)
 	{
 		c.S_Lang_menubutton_05.children[0].appearance.material.name = "GameHilite";
 		c.S_Lang_menubutton_05.children[0].appearance.texture.url = "GameHilite_01.bmp";
-		c.txtLang5.appearance.name = "Material #133";
+		c.txtLang5.appearance.name = "HilightedType";
 	}
 	else if (nCurLanguageButton == 5)
 	{
 		c.S_Lang_menubutton_06.children[0].appearance.material.name = "GameHilite";
 		c.S_Lang_menubutton_06.children[0].appearance.texture.url = "GameHilite_01.bmp";
-		c.txtLang6.appearance.name = "Material #133";
+		c.txtLang6.appearance.name = "HilightedType";
 
 		// Highlight the scroll arrow if necessary
 		if( nLanguageItemScroll + 6 < nLanguageItemCount )
@@ -3145,19 +3145,19 @@ function UpdateModeMenu()
 	{
 		// Normal
 		c.S_Vid__panel_support_01.children[0].appearance.material.name = "GameHilite";
-		c.S_Vid__text_normal.children[0].appearance.material.name = "Material #133";
+		c.S_Vid__text_normal.children[0].appearance.material.name = "HilightedType";
 	}
 	else if (nCurModeMenuItem == 1)
 	{
 		// Letterbox
 		c.S_Vid__panel_support_03.children[0].appearance.material.name = "GameHilite";
-		c.S_Vid__text_letterbox.children[0].appearance.material.name = "Material #133";
+		c.S_Vid__text_letterbox.children[0].appearance.material.name = "HilightedType";
 	}
 	else if (nCurModeMenuItem == 2)
 	{
 		// Widescreen
 		c.S_Vid__panel_support_05.children[0].appearance.material.name = "GameHilite";
-		c.S_Vid__text_widescreen.children[0].appearance.material.name = "Material #133";
+		c.S_Vid__text_widescreen.children[0].appearance.material.name = "HilightedType";
 	}
 
 	UpdateModeIcons();
@@ -3424,7 +3424,7 @@ function UpdateSettingsMenu()
 		{
 			c.MenuButtons.children[i].children[0].appearance.material.name = "GameHilite";
 			c.MenuButtons.children[i].children[0].appearance.texture.url = "GameHilite_01.bmp";
-			c.MenuText.children[i].children[0].appearance.material.name = "Material #133";
+			c.MenuText.children[i].children[0].appearance.material.name = "HilightedType";
 
 			// hilite scroll arrows as well
 			if(i == 0)
