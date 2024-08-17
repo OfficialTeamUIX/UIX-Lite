@@ -1,0 +1,21 @@
+DEF theSkin Level
+{
+	archive "Skin.xip"
+
+	children
+	[
+		DEF theIconsPath Inline
+		{
+			url "Skin/default.xap"
+		}
+	]
+	function OnArrival()
+	{
+		if (nSkinLoadSettings == 1) { GoToSettings(); }
+		else if (nSkinLoadSettings == 2) { GoToMusic(); }
+		else if (nSkinLoadSettings == 3) { GoToMemory(); }
+		else if (nSkinLoadSettings == 4) { GoToAccountSelectionWithDefaultUser(); }
+		else if (nSkinLoadSettings == 5) { EnterLiveToday(true); }
+		else { theMainMenu.GoTo(); }
+	}
+}

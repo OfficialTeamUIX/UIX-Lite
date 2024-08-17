@@ -3,6 +3,7 @@ MainOrbStyle=Stock
 ShowInsignia=false
 ConfigPanelIcon=Globe
 LauncherOrbIcon=Xbox
+UseMainMenuAttract=false
 UsetHcScreenSaver=true
 
 [MainMenu]

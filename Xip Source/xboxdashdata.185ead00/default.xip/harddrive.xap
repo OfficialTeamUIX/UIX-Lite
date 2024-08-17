@@ -101,6 +101,9 @@ function UpdateTrackList()
 				c.TrackNames.children[i].SetScale(0.14, 0.14, 0.14);
 				c.TrackNames.children[i].children[0].appearance.name = "CellEgg/Partsz";
 				c.TrackNumbers.children[i].children[0].appearance.name = "CellEgg/Partsz";
+				var Icon = IconFile.GetValue(TempTitleList[nPlayCursor0]);
+				if(Icon == "Unknown") Icon = DefaultIcon; else  Icon = Icon + ".xbx";
+				c.theIcons.children[0].children[0].appearance.texture.url = Icon; 
 			}
 			else
 			{               
@@ -110,16 +113,14 @@ function UpdateTrackList()
 			}
 		}
 	}
-	
-	//c.theIcons.children[0].children[0].appearance.texture.url = TempTitleList[nPlayCursor0] + ".xbx"; 
 	 
 	if (nTracks0 == 1)
 	{    
-		c.SubMenuHeaderText.text = nTracks0 + " " + theTranslator.Translate("Title");
+		c.SubMenuHeaderText.text = nTracks0 + " " + Translate("Title");
 	}
 	else
 	{
-		c.SubMenuHeaderText.text = nTracks0 + " " + theTranslator.Translate("Titles");
+		c.SubMenuHeaderText.text = nTracks0 + " " + Translate("Titles");
 	}
 }
 
@@ -190,7 +191,7 @@ function EnterLauncherMenu()
 	var c = theLauncher.children[0].children[0];
 	c.theIcons.visible = true;
 	var Icon = GetSavedValue("default","LauncherOrbIcon");
-	if (Icon == "Xbox") { DefaultIcon = "xboxlogo.xbx"; }
+	if (Icon == "Xbox") { DefaultIcon = "xboxlogo.bmp"; }
 	else if (Icon == "UIX") { DefaultIcon =  "uixlogo.xbx"; }
 	else { DefaultIcon =  ""; c.theIcons.visible = false; }
 	nPlayScroll0 = 0;
@@ -330,13 +331,30 @@ function LaunchItem(x,y)
 			}
 			else if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
 			{
-				theLauncher.children[0].children[0].theWholeThing.visible = false;
+				theLauncher.children[0].children[0].theWholeThing.alpha = 0;
 				UpdateRecentTitles(x,y);
 				theLaunchGameLevel.GoTo();
 				return;
 			}
 		}
 	}
+}
+
+function GetTitleList(mnuName)
+{
+	CacheFile.section = "Cache";
+	var TitleList = new Array;
+	var TempList = new Array;
+	var i = 1;
+	TempList = Split(CacheFile.GetValue(mnuName),"|");
+	while(TempList.length == 25)
+	{
+		TitleList = TitleList.concat(TempList);
+		TempList = Split(CacheFile.GetValue(mnuName + "-" + i),"|");
+		i = i + 1;
+	}
+	TitleList = TitleList.concat(TempList);
+	return TitleList.sort();
 }
 
 DEF theLauncher Level
@@ -449,26 +467,18 @@ DEF theLauncher Level
 			
 			if (bLauncherVisible0)
 			{
-				var a = arrMenuNames[nCurLauncherItem0];
-				if(a == "")
+				var mnuName = arrMenuNames[nCurLauncherItem0];
+				if(mnuName == "")
 				{
 					return;
 				}
 				else
 				{
 					CurFillDir = arrMenuPaths[nCurLauncherItem0];
-					subTitle0 = a;
-					if(bHDDInitialized == false & bHasExtendedPartition)
-					{
-						bGetTitleList = true;
-						bHDDInitialize = true;
-					}
-					else
-					{
-						TempTitleList = FillMenuList(CurFillDir);
-						thePlayerPanelIn.Play();
-						StartTitleList();
-					}
+					subTitle0 = mnuName;
+					TempTitleList = GetTitleList(mnuName);
+					thePlayerPanelIn.Play();
+					StartTitleList();
 				}
 			}
 			else if(bInRecentTitles)
@@ -486,7 +496,7 @@ DEF theLauncher Level
 			if(bInRecentTitles) return;
 			PlaySoundA();
 			subTitle1 = subTitle0;
-			subTitle0 = "Recent Titles";
+			subTitle0 = Translate("Recent Titles");
 			TempTitleList = arrRecentNames;
 			if(bLauncherVisible0) 
 			{
@@ -503,6 +513,11 @@ DEF theLauncher Level
 				UpdateTrackList(); 
 			}
 			bInRecentTitles = true;
+		}
+		
+		function OnYDown()
+		{
+			
 		}
 		
 		function OnBDown()
@@ -526,7 +541,7 @@ DEF theLauncher Level
 			}
 			else if(bRecentToggled)
 			{
-				TempTitleList = FillMenuList(CurFillDir);
+				TempTitleList = GetTitleList(arrMenuNames[nCurLauncherItem0]);
 				nPlayScroll0 = nPlayScroll1;
 				nPlayCursor0 = nPlayCursor1;
 				subTitle0 = subTitle1;

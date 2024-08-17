@@ -28,7 +28,7 @@ Some of these features include;
 
 * DO NOT USE ON AN UNMODIFIED XBOX. It won’t work, and you'll brick your Xbox. Make sure you have a modchip or softmod installed that doesn’t rely on the dashboard files to boot.
 * DO NOT DELETE YOUR ORIGINAL MS DASHBOARD FILES. SIMPLY REPLACE THE EXISTING FILES WITH THE MODIFIED FILES ONLY. KEEP ANY UNMODIFIED FILES.
-* Download the latest xboxdashdata.185ead00-vXX-XX-XX.zip from the assets in the pre-patched release.
+* Download the latest xboxdashdata.185ead00-vXXXXXX.zip from the assets in the pre-patched release.
 * Extract and Copy the pre-patched 5960 Dashboard files via ftp to the root of the C partition on your Xbox.
 
 ## How-To (Manual)
@@ -43,7 +43,7 @@ Some of these features include;
 
 ## Configuration and Use
 
-* You can customize the Main Menu, Launcher Menu, and other settings in-dash by navigating to Settings>Configuration.
+* You can customize the Main Menu, Launcher Menu, and other settings in-dash by navigating to Settings>UIX Settings.
 * When configuring the Main Menu, advanced users can enable Advanced Mode. When this is enabled, selecting a setting will bring up the xbox onscreen keyboard for custom input instead of using the built-in toggles.
 * When configuring the Launcher, you may define both the “Title” for a content type and the relative “Path(s)” to the content for up to eight launcher menu items. The Launcher will scan the relative paths provided on each partition and compile a list of the subdirectories found. The name of these subdirectories should correspond to the name of the title and contain the title's default.xbe. Use a semicolon as a separator when defining multiple relative paths to like content.
 * You can fast scroll most menus by pressing Left/Right on the directional pad to PageUp/PageDown.
@@ -54,6 +54,10 @@ Some of these features include;
  
  NOTE: The xbox onscreen keyboard is limited to 31 charaters. So, if you need more characters, just enter as much as you can and select Done. Then edit it again and some of the text will be moved into the title bar and you can add more text.
  
+## Launguage Support
+
+* You can add German, French, Spanish, Italian, and Portuguese lauguage translations by placing the optional xlate.xbx into the root of the C partion.
+* Currently does not support CJK Characters.
 
 ## Example config.xbx
 ```
@@ -62,6 +66,7 @@ MainOrbStyle=Stock
 ShowInsignia=false
 ConfigPanelIcon=Globe
 LauncherOrbIcon=Xbox
+UseMainMenuAttract=false
 UsetHcScreenSaver=true
 
 [MainMenu]

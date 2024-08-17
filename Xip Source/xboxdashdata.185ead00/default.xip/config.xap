@@ -44,7 +44,7 @@ function buildconfigList() //written this way so u can easily rearrange and add,
 	i = i + 1;
 	configList[i] = "Quick Launch";
 	i = i + 1;
-	configList[i] = "Change Displayed Title Names";
+	configList[i] = "Change Displayed Name of Titles";
 	
 	clearText();
 	updateText();
@@ -65,11 +65,15 @@ function buildGSList() //just copy this function for more subsections
 	configValues[i] = "default-ShowInsignia";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
-	configList[i] = "Always use tHc ScreenSaver:";
+	configList[i] = "Animate Main Menu:";
+	configValues[i] = "default-UseMainMenuAttract";
+	configSelect[i] = "toggleTF()";
+	i = i + 1;
+	configList[i] = "Always Use tHc ScreenSaver:";
 	configValues[i] = "default-UsetHcScreenSaver";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
-	configList[i] = "Configuration Panel Icon:";
+	configList[i] = "UIX Settings Icon:";
 	configValues[i] = "default-ConfigPanelIcon";
 	configSelect[i] = "toggleIcon()";
 	i = i + 1;
@@ -259,7 +263,7 @@ function BuildSSList()
 	configValues[i] = "ShowInSettings-Music";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
-	configList[i] = "XOnline:";
+	configList[i] = "XONLINE:";
 	configValues[i] = "ShowInSettings-XOnline";
 	configSelect[i] = "toggleTF()";
 	i = i +1;
@@ -325,7 +329,7 @@ function BuildRTList()
 		configSelect[x] = "configKeyb()";
 		x = x + 1;
 	}
-	
+
 	clearText();
 	updateText();
 	tabSlot(LV2Hold);
@@ -333,23 +337,20 @@ function BuildRTList()
 
 function toggleTF()
 {
-	var c = theConfigPanel.children[0].children[0];
-	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
+	var b = getConfigMenuValue(configValues[LV2Item]);
 	if(b.toLowerCase() == "true") { refreshMenu("false"); } else { refreshMenu("true"); }
 }
 
 function toggle34()
 {
-	var c = theConfigPanel.children[0].children[0];
-	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
+	var b = getConfigMenuValue(configValues[LV2Item]);
 	if(b.toLowerCase() == "3") { refreshMenu("4"); }
 	else { refreshMenu("3"); }
 }
 
 function toggle345()
 {
-	var c = theConfigPanel.children[0].children[0];
-	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
+	var b = getConfigMenuValue(configValues[LV2Item]);
 	if(b.toLowerCase() == "3") { refreshMenu("4"); }
 	else if(b.toLowerCase() == "4") { refreshMenu("5"); }
 	else { refreshMenu("3"); }
@@ -357,23 +358,14 @@ function toggle345()
 
 function toggleMOS()
 {
-	var c = theConfigPanel.children[0].children[0];
-	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
+	var b = getConfigMenuValue(configValues[LV2Item]);
 	if(b.toLowerCase() == "thc") { refreshMenu("Stock"); } else { refreshMenu("tHc"); }
-}
-
-function toggleBacking()
-{
-	var c = theConfigPanel.children[0].children[0];
-	if(c.panel02_backing.visible == true) { c.panel02_backing.visible = false; }
-	else { c.panel02_backing.visible = true; }
 }
 
 function toggleYX()
 {
 	if(bAdvancedMode) { configKeyb(); return; }
-	var c = theConfigPanel.children[0].children[0];
-	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
+	var b = getConfigMenuValue(configValues[LV2Item]);
 	if(b == "ToggleNoisyCam()") { refreshMenu("GoToMemory()"); }
 	else if(b == "GoToMemory()") { refreshMenu("GoToMusic()"); }
 	else if(b == "GoToMusic()") { refreshMenu("GoToXOnline()"); }
@@ -386,8 +378,7 @@ function toggleYX()
 function toggleMMF()
 {
 	if(bAdvancedMode) { configKeyb(); return; }
-	var c = theConfigPanel.children[0].children[0];
-	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
+	var b = getConfigMenuValue(configValues[LV2Item]);
 	if(b == "GoToMemory()") { refreshMenu("GoToMusic()"); }
 	else if(b == "GoToMusic()") { refreshMenu("GoToXOnline()"); }
 	else if(b == "GoToXOnline()") { refreshMenu("GoToLauncher()"); }
@@ -397,8 +388,7 @@ function toggleMMF()
 function toggleMMB()
 {
 	if(bAdvancedMode) { configKeyb(); return; }
-	var c = theConfigPanel.children[0].children[0];
-	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
+	var b = getConfigMenuValue(configValues[LV2Item]);
 	if(b.toLowerCase() == "memory") { refreshMenu("MUSIC"); }
 	else if(b.toLowerCase() == "music") { refreshMenu("XONLINE"); }
 	else if(b.toLowerCase() == "xonline") { refreshMenu("LAUNCHER"); }
@@ -408,7 +398,7 @@ function toggleMMB()
 function toggleIcon()
 {
 	var c = theConfigPanel.children[0].children[0];
-	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
+	var b = getConfigMenuValue(configValues[LV2Item]);
 	var cValue;
 	if(b.toLowerCase() == "console")
 	{
@@ -422,19 +412,19 @@ function toggleIcon()
 		c.ConsoleIcon.visible = true;
 		cValue = "Console";
 	}
-	c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue;
+	c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue);
 	setConfigMenuValue(configValues[LV2Item],cValue);
 }
 
 function toggleLOI()
 {
 	var c = theConfigPanel.children[0].children[0];
-	var b = c.theRightSlots.children[LV2Hold].children[0].geometry.text;
+	var b = getConfigMenuValue(configValues[LV2Item]);
 	var cValue;
 	if(b == "None") { cValue = "Xbox"; } 
 	else if(b == "Xbox") { cValue = "UIX"; }
 	else { cValue = "None"; }
-	c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue;
+	c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue);
 	setConfigMenuValue(configValues[LV2Item],cValue);
 }
 
@@ -444,7 +434,7 @@ function toggleAM()
 	if(bAdvancedMode) { bAdvancedMode = false; cValue = "false"; } else { bAdvancedMode = true; cValue = "true"; }
 	SetSavedBooleanValue("MainMenu","AdvancedMode",bAdvancedMode);
 	var c = theConfigPanel.children[0].children[0];
-	c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue;
+	c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue);
 }
 
 function PathEllipsis(x)
@@ -546,7 +536,7 @@ function refreshMenu(x)
 	else
 	{
 		if(cValue.length() > 20) { c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue.substr(0, 20) + "..."; }
-		else { c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue; }
+		else { c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue); }
 	}
 	setConfigMenuValue(configValues[LV2Item],cValue);
 }
@@ -598,7 +588,10 @@ function updateText()
 		}
 		else
 		{
-			c.theLeftSlots.children[i].children[0].geometry.text = configList[i];
+			var tValue = configList[i];
+			if(tValue.charAt(tValue.length() - 1) == ":") tValue = Translate(tValue.substr(0,tValue.length() - 1)) + ":";
+			else tValue = Translate(tValue);
+			c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 			if(configList[i].substr(0, 2) == "  ")
 			{
 				c.theLeftSlots.children[i].children[0].appearance.name = "RedType";
@@ -610,12 +603,12 @@ function updateText()
 				var cValue = getConfigMenuValue(configValues[i]);
 				if(inQuickLaunchMenu & (cValue.length() > MaxCharacters))
 				{
-					c.theRightSlots.children[i].children[0].geometry.text = PathEllipsis(cValue);
+					c.theRightSlots.children[i].children[0].geometry.text = Translate(PathEllipsis(cValue));
 				}
 				else
 				{
 					if(cValue.length() > 20) { c.theRightSlots.children[i].children[0].geometry.text = cValue.substr(0, 20) + "..."; }
-					else { c.theRightSlots.children[i].children[0].geometry.text =  cValue; }
+					else { c.theRightSlots.children[i].children[0].geometry.text =  Translate(cValue); }
 				}
 			}
 		}
@@ -658,7 +651,7 @@ DEF theConfigPanel Level
 				var c = theConfigPanel.children[0].children[0];
 				c.theLeftSlots.children[0].children[0].appearance.name = "CellEgg/Partsz";
 				c.theBuildInfo.children[0].geometry.text = "Build: " + sBuildDate;
-				c.theConfigHeader.children[0].geometry.text = "UIX ULTRA LITE";
+				c.theConfigHeader.children[0].geometry.text = "UIX Lite";
 				var cValue = getConfigMenuValue("default-ConfigPanelIcon");
 				if(cValue.toLowerCase() == "globe") { c.GlobeIcon.visible = true; } else { c.ConsoleIcon.visible = true; }
 			}
@@ -738,46 +731,38 @@ DEF theConfigPanel Level
 				{
 					buildGSList();
 					tabSlot(LV2Hold);
-					c.theConfigHeader.children[0].geometry.text = "General Settings";
+					c.theConfigHeader.children[0].geometry.text = Translate("General Settings");
 				}
 				else if(configList[LV1Item] == "Main Menu")
 				{
 					buildMMList();
 					tabSlot(LV2Hold);
-					c.theConfigHeader.children[0].geometry.text = "Main Menu";
+					c.theConfigHeader.children[0].geometry.text = Translate("Main Menu");
 				}
 				else if(configList[LV1Item] == "Launcher Menu")
 				{
 					buildHDList();
 					tabSlot(LV2Hold);
-					c.theConfigHeader.children[0].geometry.text = "Launcher Menu";
+					c.theConfigHeader.children[0].geometry.text = Translate("Launcher Menu");
 				}
 				else if(configList[LV1Item] == "Show in Settings")
 				{
 					BuildSSList();
 					tabSlot(LV2Hold);
-					c.theConfigHeader.children[0].geometry.text = "Show in Settings";
+					c.theConfigHeader.children[0].geometry.text = Translate("Show in Settings");
 				}
 				else if(configList[LV1Item] == "Quick Launch")
 				{
 					inQuickLaunchMenu = true;
 					BuildQLList();
 					tabSlot(LV2Hold);
-					c.theConfigHeader.children[0].geometry.text = "Quick Launch";
+					c.theConfigHeader.children[0].geometry.text = Translate("Quick Launch");
 				}
-				else if(configList[LV1Item] == "Change Displayed Title Names")
+				else if(configList[LV1Item] == "Change Displayed Name of Titles")
 				{
 					inChangeTitleMenu = true;
-					if(bHDDInitialized == false & bHasExtendedPartition)
-					{
-						bBuildRTList = true;
-						bHDDInitialize = true;
-					}
-					else
-					{
-						BuildRTList();
-					}
-					c.theConfigHeader.children[0].geometry.text = "Change Title Names";
+					BuildRTList();
+					c.theConfigHeader.children[0].geometry.text = Translate("Change Title Names");
 				}                
 			}
 			else if(inLV2 == true)
@@ -823,13 +808,13 @@ DEF theConfigPanel Level
 				c.theDownArrow.visible = false;
 				c.theUpArrow.visible = false;
 				c.theLeftSlots.children[LV1Hold].children[0].appearance.name = "CellEgg/Partsz";
-				c.theConfigHeader.children[0].geometry.text = "UIX ULTRA LITE";
+				c.theConfigHeader.children[0].geometry.text = "UIX Lite";
 			}
 			else
 			{
 				if(settChanged == true)
 				{
-					AskQuestion("You will need to reboot before the new settings will take effect.\n\nWould you like to reboot now?", "Reboot()", "theUIXConfigInline.children[0].leaveConfig()", 1);
+					AskQuestion(Translate("SETTINGS_CHANGED"), "Reload()", "theUIXConfigInline.children[0].leaveConfig()", 1);
 				}
 				else if(settChanged == false)
 				{
@@ -840,24 +825,23 @@ DEF theConfigPanel Level
 		
 		function OnWhiteDown()
 		{
-			//toggleBacking();
-			//theConfig.DebugOutput( configList[LV1Item] );
-			//toggleIcon();
+			//theConfig.DebugOutput(configList[LV1Item] );
 		}
 	}
 	
 	function OnActivate()
 	{
 		CurrentViewpoint = theConfigMenuViewpoint;
+		buildconfigList();
+		LV1Item = 0;
+		LV1Hold = 0;
+		tabSlot(LV1Hold);
 	}
 }
 
 function leaveConfig()
 {
 	unTabSlot(LV1Hold);
-	LV1Item = 0;
-	LV1Hold = 0;
-	tabSlot(LV1Hold);
 	if(bBackToSettings)
 	{ 
 		bBackToSettings = false;
@@ -906,10 +890,13 @@ function selectConfigDown()
 				}
 				else
 				{
-					c.theLeftSlots.children[i].children[0].geometry.text = configList[curItem + (i - 11)];
+					var tValue = configList[curItem + (i - 11)];
+					if(tValue.charAt(tValue.length() - 1) == ":") tValue = Translate(tValue.substr(0,tValue.length() - 1)) + ":";
+					else tValue = Translate(tValue);
+					c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 					if(inLV2 == true)
 					{
-						c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[curItem + (i - 11)]);
+						c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[curItem + (i - 11)]));
 					}
 				}
 			}
@@ -975,10 +962,13 @@ function selectConfigUp()
 					}
 					else
 					{
-						c.theLeftSlots.children[i].children[0].geometry.text = configList[curItem + i];
+						var tValue = configList[curItem + i];
+						if(tValue.charAt(tValue.length() - 1) == ":") tValue = Translate(tValue.substr(0,tValue.length() - 1)) + ":";
+						else tValue = Translate(tValue);
+						c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 						if(inLV2 == true)
 						{
-							c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[curItem + i]);
+							c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[curItem + i]));
 						}
 					}
 				}
@@ -1064,10 +1054,13 @@ function scrollConfigDown()
 		}
 		else
 		{
-			c.theLeftSlots.children[i].children[0].geometry.text = configList[(curItem - curHold) + i];
+			var tValue = configList[(curItem - curHold) + i];
+			if(tValue.charAt(tValue.length() - 1) == ":") tValue = Translate(tValue.substr(0,tValue.length() - 1)) + ":";
+			else tValue = Translate(tValue);
+			c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 			if(inLV2 == true)
 			{
-				c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[(curItem - curHold) + i]);
+				c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[(curItem - curHold) + i]));
 			}
 		}
 	}
@@ -1141,10 +1134,13 @@ function scrollConfigUp()
 		}
 		else
 		{
-			c.theLeftSlots.children[i].children[0].geometry.text = configList[(curItem - curHold) + i];
+			var tValue = configList[(curItem - curHold) + i];
+			if(tValue.charAt(tValue.length() - 1) == ":") tValue = Translate(tValue.substr(0,tValue.length() - 1)) + ":";
+			else tValue = Translate(tValue);
+			c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 			if(inLV2 == true)
 			{
-				c.theRightSlots.children[i].children[0].geometry.text = getConfigMenuValue(configValues[(curItem - curHold) + i]);
+				c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[(curItem - curHold) + i]));
 			}
 		}
 	}
