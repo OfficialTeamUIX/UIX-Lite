@@ -1,9 +1,18 @@
-# UIX-Ultra-Lite
-Modern/Re-Implemented Patches and Scripts for the Xbox Dashboard #5960
-* Completely based on old school patches and hex edits, not a source modification. So you don’t need to feel "dirty" about using it.
+# UIX-Lite
+## What's with all the names?
 
-## What is UIX Ultra Lite
-As stated in the title above UIX Ultra Lite is a collection of patches and XIP edits that adds some of the features of UIX to the stock 5960 MS Dash. 
+UIX, originally released in 2003, was a modification of source code developed by JbOnE/TeamUIX. In 2020, during the Covid-19 pandemic, various parts of the original Xbox source code tree, along with snippets of code from pre-UIX modifications like XboxDashNext (tHc Final), were discovered, sparking the revival of UIX as UIX Lite. Initially, UIX Ultra Lite was introduced during the launch of Insignia as a streamlined game launcher within the 5960 dashboard. It was designed to maintain Xbox Live (Insignia) support while preserving the original dashboard's aesthetic. However, as is common with many projects, "Ultra Lite" evolved over time. By August 2024, it became our mainline project and was rebranded simply as UIX Lite. Concurrently, a reverse engineering project focused on the 5960 dashboard is being developed privately.
+
+In the early 2000s, limited access to source code led to the creation of several pioneering projects like tHc, tHc Lite, TrueBlue, BlackStormX (BSX), User.Interface.X, and Dash2GAM. These projects laid the groundwork for what UIX would eventually become. The foundation of UIX was built by a dedicated sub-community within the Xbox scene, focused on modifying retail dashboard files. Contributions from notable figures such as JbOnE, Gcue, fuckdb, Vulgasprofanum,Xbox-Scene forums, and the xboxdash[.]net community were instrumental in shaping both UIX and TeamUIX. Today, we continue to explore these archives, integrating patches and mods from this rich legacy into a modern, live-enabled dashboard.
+
+Our ultimate goal is to provide a legal, open-source, and distributable patch set, along with comprehensive tutorials to ensure ease of use.
+
+Please note that a modified console is required to run this project. However, we will leverage two decades of modification techniques to simplify the process for end users as much as possible.
+
+For more information and community support, join us on [Discord](https://discord.gg/xbox-scene).
+
+## What is UIX Lite
+As stated in the title above UIX Lite is a collection of patches and XIP edits that adds some of the features of UIX to the stock 5960 MS Dash. 
 Some of these features include; 
 * A customizable Launcher to launch titles from your Xbox hard disk.
 * The ability to customize the Main Menu items.
@@ -13,7 +22,7 @@ Some of these features include;
 * All configuration changes can be made in-dashboard via Settings>Configuration.
 
 ## Installation
-* Since UIX Ultra Lite is merely patches for the MS Dash, you must first have a complete working copy of the 5960 MS Dash installed in the root of your C partition before attempting either of the two methods below.
+* Since UIX Lite is merely patches for the MS Dash, you must first have a complete working copy of the 5960 MS Dash installed in the root of your C partition before attempting either of the two methods below.
 
 ## How-To (Pre-Patched)
 
@@ -104,46 +113,16 @@ QuickLaunchY=
 ```
 
 ## Special Thanks
-* The original TeamUIX and members of xboxdash[.]net
-* The Xbox-Scene Community
-* Insignia Live; Without you guys making an effort to revive Xbox Live, we wouldn't have cared if this dash was compatible.
-
-## Family Tree
-
-## tHc/tHc Lite
-* Non-Source Based 4920 Modification.
-* Additional, "unavailable-in-source" (F and G Support, for example. The assembly patches were never public, installer only.) binary patches.
-* XIP and XAP Modifications.
-* Live Support Stripped from XIPS. 
-
-## UIX Ultra Lite
-* Non XDK Source Based 5960 Modification
-* Re-Implementation and open sourcing of patches from 4920.
-* Re-Implementation of XIP Modifications, adapting to changes between 4920 and 5960.
-* Binary Patcher is written in Go, and is cross platform. It's a simple command line tool, that will patch the files for you using the bsdiff format. :D
-
-
-# Why?
-
-In the early 2000's we didn't have access to source code, thus projects like UIX and UIX Lite didn't exist. What we did have was a sub-scene, within the Xbox scene that focused on modifications to the retail dashboards files. The work of these people, was the foundation for what UIX eventually became, as well as the original TeamUIX. So, we're going into the archives and taking a look at patches and mods from our friends Gcue, fuckdb, Vulgasprofanum, the original tHc, and xboxdash[.]net community and implementing them in a modern, live enabled, dashboard.
-
-The end goal, will be to provide a legal, open source, distributable patch set and tutorials for ease of use.
-
-A modified console will be required to run this, but we will be utilizing 20 years of modification techniques to make this as easy as possible for the end user.
+* The original TeamUIX and members of [xboxdash.net](https://web.archive.org/web/20041204190858/http://xboxdash.net)
+* The [Xbox-Scene](https://xbox-scene.info) Community
+* [Insignia Live](https://insignia.live); Without you guys making an effort to revive Xbox Live, we wouldn't have cared if this dash was compatible.
+* The [xemu project](https://github.com/mborgerson/xemu)
 
 # To-Do
 
-* Launch Games From the F and G Partitions. UPDATE: Added functionality by currently un-credited genius.
 * Figure out what else we can add in the binaries whitespace without breaking it.
 
-# Non-Features
-One of the caveats of turning back the clock here, is we won't be touching any source code. It's leaked, old, outdated and will not allow us to have a proper setup for systems intending to connect to network services.
-
-* No FTP Server.
-* No Web Server.
-* No Game Icons In HDD Loader (Maybe..)
-
-# POC
+# Original POC
 
 We successfully got the HDD Loader from tHc Lite (Which is why the POC Video here is called tHc Ultra-Lite) to launch XBE's from within 5960.
 
