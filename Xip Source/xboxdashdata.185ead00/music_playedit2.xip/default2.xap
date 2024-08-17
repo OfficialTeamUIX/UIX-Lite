@@ -808,7 +808,7 @@ DEF theWholeThing Transform
 			]
 			rotation -1.000000 0.000000 0.000000 -1.571000
 			scale 0.324700 0.324700 0.324700
-			translation -46.980001 55.130001 -204.800000
+			translation -46.99 55.19 -204.8
 		}
 		DEF MU_L3_musicpod Transform
 		{
@@ -1724,12 +1724,14 @@ DEF theWholeThing Transform
 							{
 								material MaxMaterial
 								{
-									name "InnerWall_01"
+									name "PanelBacking_03"
+									//name "PanelBacking_04"
 								}
 								texture ImageTexture
 								{
 									//url "harddrivebg.bmp"
 									url "panel-trans.xbx"
+									//url "tracklist_lines.tga"
 								}
 							}
 							geometry DEF MU_L3_panel_tracklist-FACES Mesh { url "MU_L3_panel_tracklist-FACES.xm" }
@@ -1752,12 +1754,12 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName1 Text { font "Body" justify "end" width -15 translate false text "1." }
+									geometry DEF TrackName1 Text { font "Body" width -14.5 translate false text "1." }
 								}
 								
 							]
 							scale 0.13 0.13 0.13
-							translation 1.58 0.569100 0.119000
+							translation -0.37 0.556 0.119100
 						}
 						Transform
 						{
@@ -1766,13 +1768,13 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName2 Text { font "Body" justify "end" width -15 translate false text"2."}
+									geometry DEF TrackName2 Text { font "Body" width -14.5 translate false text"2."}
 								}
 								
 							]
 							scale 0.13 0.13 0.13
 							//translation -0.38 0.442 0.1
-							translation 1.58 0.411 0.119200
+							translation -0.37 0.405 0.119200
 						}
 						Transform
 						{
@@ -1781,12 +1783,12 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName3 Text { font "Body" justify "end" width -15 translate false text "3."}
+									geometry DEF TrackName3 Text { font "Body" width -14.5 translate false text "3."}
 								}
 								
 							]
 							scale 0.13 0.13 0.13
-							translation 1.58 0.253 0.119300
+							translation -0.37 0.254 0.119300
 						}
 						Transform
 						{
@@ -1795,12 +1797,12 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName4 Text { font "Body" justify "end" width -15 translate false text "4."}
+									geometry DEF TrackName4 Text { font "Body" width -14.5 translate false text "4."}
 								}
 								
 							]
 							scale 0.13 0.13 0.13
-							translation 1.58 0.100 0.119400
+							translation -0.37 0.098 0.119400
 						}
 						Transform
 						{
@@ -1809,12 +1811,12 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName5 Text { font "Body" justify "end" width -15 translate false text "5."}
+									geometry DEF TrackName5 Text { font "Body" width -14.5 translate false text "5."}
 								}
 								
 							]
 							scale 0.13 0.13 0.13
-							translation 1.58 -0.052 0.119500
+							translation -0.37 -0.057 0.119500
 						}
 						Transform
 						{
@@ -1823,12 +1825,12 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName6 Text { font "Body" justify "end" width -15 translate false text "6."}
+									geometry DEF TrackName6 Text { font "Body" width -14.5 translate false text "6."}
 								}
 								
 							]
 							scale 0.13 0.13 0.13
-							translation 1.58 -0.202 0.119600
+							translation -0.37 -0.210 0.119600
 						}
 						Transform
 						{
@@ -1837,12 +1839,12 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName7 Text { font "Body" justify "end" width -15 translate false text "7."}
+									geometry DEF TrackName7 Text { font "Body" width -14.5 translate false text "7."}
 								}
 								
 							]
 							scale 0.13 0.13 0.13
-							translation 1.58 -0.360 0.119700
+							translation -0.37 -0.364 0.119700
 						}
 						Transform
 						{
@@ -1851,13 +1853,13 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName8 Text { font "Body" justify "end" width -15 translate false text "8."}
+									geometry DEF TrackName8 Text { font "Body" width -14.5 translate false text "8."}
 								}
 								
 							]
 							scale 0.13 0.13 0.13
 							//translation -0.38 -0.482 0.1
-							translation 1.58 -0.520 0.119800
+							translation -0.37 -0.523 0.119800
 						}
 						Transform
 						{
@@ -1866,13 +1868,13 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName9 Text { font "Body" justify "end" width -15 translate false text "9."}
+									geometry DEF TrackName9 Text { font "Body" width -14.5 translate false text "9."}
 								}
 								
 							]
 							scale 0.13 0.13 0.13
 							//translation -0.38 -0.58 0.1
-							translation 1.58 -0.689 0.119900
+							translation -0.37 -0.686 0.119900
 						}
 					]
 				}
@@ -2029,7 +2031,7 @@ DEF theWholeThing Transform
 					rotation 0.001003 -0.697800 0.716300 -3.144000
 					scale 0.123300 0.123300 0.123300
 					scaleOrientation -1.000000 -0.001587 -0.003636 -0.315100
-					translation -0.380000 0.568100 0.129800
+					translation 1.561000 0.568100 0.129800
 				}
 				DEF MU_morearrow_down Transform
 				{
@@ -2051,7 +2053,7 @@ DEF theWholeThing Transform
 					rotation -1.000000 -0.001438 0.001476 -1.545000
 					scale 0.123300 0.123300 0.123300
 					scaleOrientation 1.000000 0.000329 -0.002145 -0.675500
-					translation -0.400000 -0.625100 0.161000
+					translation 1.561000 -0.625100 0.161000
 				}
 				DEF MU_L3_panel_headerc Transform
 				{
