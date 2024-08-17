@@ -226,6 +226,12 @@ DEF theBackground Background
 	skyColor 0 0 0
 }
 
+DEF theSkinBackground Background
+{
+	backdrop ImageTexture { url "background.bmp" }
+	skyColor 0 0 0
+}
+
 DEF theConfig Config
 
 function GetLanguage()
@@ -411,7 +417,7 @@ DEF theTranslator Translator
 function Translate(text)
 {
 	var MatchWord = text.toUpperCase();
-	if(theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xlate.xbx"))
+	if(theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\xlate.xbx"))
 	{
 		var Languages = new Array( "ENGLISH","JAPANESE","DEUTSCH","FRANÇAIS","ESPAÑOL","ITALIANO","KOREAN","CHINESE","PORTUGUÊS");
 		var index = Math.max(0,theConfig.GetLanguage() - 1);
@@ -428,7 +434,7 @@ function Translate(text)
 		else if(MatchWord == "INSIGNIA") { return "Insignia"; }
 		else if(MatchWord == "CONFIGURATION") { return "UIX Settings"; }
 		else if(MatchWord == "INDEXING_PARTITION") { return "Indexing the harddisk's extended partitions. This could take several seconds.\n\nPlease Wait..."; }
-		else if(MatchWord == "SETTINGS_CHANGED") { return "You will need to reboot before the new settings will take effect.\n\nWould you like to reboot now?"; }
+		else if(MatchWord == "SETTINGS_CHANGED") { return "You will need to reload before the new settings will take effect.\n\nWould you like to reload now?"; }
 		else if(MatchWord == "POWER_OFF") { return "This will power off the Xbox.\n\nDo you wish to continue?"; }
 	}
 	return theTranslator.Translate(text);
@@ -459,6 +465,27 @@ function ParseEscapedChars(sText)
 }
 
 ///////////////////////////////////////////////////////////////////
+DEF theSkinInline Inline
+{
+	visible false
+	url "skin.xap"
+
+	function onLoad()
+	{
+	  theSkinInline.children[0].theSkin.GoTo();
+	}
+}
+
+function GoToSkin()
+{
+	if (theSkinInline.visible)
+	  theSkinInline.children[0].theSkin.GoTo();
+	else
+	  theSkinInline.visible = true;
+}
+
+////////////////////////////////////////////////////////////////////////////
+
 DEF theLauncherInline Inline
 {
 	visible false
@@ -477,7 +504,8 @@ function GoToLauncher()
 	else
 		theLauncherInline.visible = true;
 }
-////////////////////////////////////////////////////////////////////
+	
+////////////////////////////////////////////////////////////////////////////
 
 DEF theMusicInline Inline
 {
@@ -1484,7 +1512,7 @@ function MainMenuAttract()
 	c.main_pod.fade = a; 
 	c.select.visible = false;
 	
-	c.theMainMenuLevel.SetRotation(-1,-5.1,0,-1.570796);
+	c.theMainMenuLevel.SetRotation(-1,-5.1,0,3.141593);
 	c.theMainMenuLevel.SetTranslation(0,0,-400);
 	c.Rotating_Large_X.SetTranslation(-900,500,20);
 	c.ring.SetTranslation(400,0,-180);
@@ -1503,6 +1531,7 @@ function MainMenuAttract()
 	c.Rotating_Large_X.SetTranslation(0,0,0);
 	c.ring.SetTranslation(-57.980000,-13.690000,-84.760002);
 	c.main_pod.SetTranslation(-61.689999,-13.400000,0.337400);
+	bMainMenuAttractFinish = true;
 }
 
 DEF theMainMenu Level
@@ -1595,7 +1624,7 @@ DEF theMainMenu Level
 					c.Main_pod_backing01.visible = true;
 					c.Main_pod_backing02.visible = false;
 				}
-				if(bUseMainMenuAttract) MainMenuAttract();
+				if(bUseMainMenuAttract){ MainMenuAttract(); }
 				g_theMainMenuLoaded = true;
 			}
 		}
@@ -1750,11 +1779,7 @@ DEF theMainMenu Level
 				UpdateMainMenu();
 			}
 		}
-		function OnWhiteDown()
-		{
-			nTime = 2.4;
-			MainMenuAttract();
-		}
+		
 		function OnKeyVerified()
 		{
 			//theConfig.ToggleNoisyCamera();
@@ -1778,7 +1803,7 @@ DEF theMainMenu Level
 	{
 		sleep nTime;
 		nTime = 0.1;
-			
+		
 		if(bHDDInitialize)
 		{
 			BlockUser(Translate("INDEXING_PARTITION"));
@@ -1807,33 +1832,17 @@ DEF theMainMenu Level
 				theLauncherInline.children[0].LaunchItem(sLocation,sFolder);
 				bLaunchItem = false;
 			}
-			else if(bGetTitleList)
-			{
-				theLauncherInline.children[0].TempTitleList = FillMenuList(theLauncherInline.children[0].CurFillDir);
-				bGetTitleList = false;
-				bStartTitleList = true;
-			}
-			else if(bBuildRTList)
-			{
-				theUIXConfigInline.children[0].BuildRTList();
-				bBuildRTList = false;
-			}
 			bHDDInitializing = false;
 			bHDDInitialized = true;
 			CloseMessage();
-		}
-		else if(bStartTitleList & bHDDInitialized)
-		{
-			thePlayerPanelIn.Play();
-			theLauncherInline.children[0].StartTitleList();
-			bStartTitleList = false;
 		}
 		else if(bPartitionScanCompleted == false)
 		{
 			bHDDInitialize = true;
 		}
-		else if(theMainMenu.children[0].children[0].select.visible != true)
+		else if(bMainMenuAttractFinish)
 		{
+			bMainMenuAttractFinish = false;
 			theMainMenu.children[0].children[0].select.visible = true;
 			theMainMenu.children[0].children[0].Rotating_Large_X.fade = 0.25;
 		}
@@ -1852,6 +1861,7 @@ DEF theMainMenu Level
 	
 	function OnArrival()
 	{
+		theSkinBackground.isBound = true;
 		if( false == bAcceptedLegalInfo )
 		{
 			//
@@ -1908,7 +1918,9 @@ var theInLine;
 var currentControlType;
 var previousControlType;
 var ConfigFile;
+var CacheFile;
 var XlateFile;
+var IconFile;
 var thcorb;
 var ShowInsignia;
 var btHcScreenSaver;
@@ -1933,9 +1945,7 @@ var launchXbe;
 var sLocation;
 var sFolder;
 var bLaunchItem;
-var bStartTitleList;
-var bGetTitleList;
-var bBuildRTList;
+var bLaunchDelay;
 var bExecuteFile;
 var bHDDInitialize;
 var bHDDInitializing;
@@ -1945,6 +1955,8 @@ var bHasFdrive;
 var bHasGdrive;
 var bHasExtendedPartition;
 var bUseMainMenuAttract;
+var bMainMenuAttractFinish;
+var nSkinLoadSettings;
 var DriveLocations;
 var PartitionLocations;
 var sBuildDate;
@@ -1953,15 +1965,14 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "240809"; //Date of commit YYMMDD
+	sBuildDate = "240817"; //Date of commit YYMMDD
 	bLaunchItem = false;
-	bStartTitleList = false;
-	bGetTitleList = false;
-	bBuildRTList = false;
+	bLaunchDelay = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
 	bHDDInitializing = false;
 	bHDDInitialized = false;
+	nSkinLoadSettings = 0;
 	RightThumb = false;
 	LeftThumb = false;
 	LeftTrigger = false;
@@ -1976,6 +1987,7 @@ function initialize()
 	bShowInvalidDiscWithNav = false;
 	bShowNoDongleMessage = false;
 	bOutOfBoxFlow = false;
+	bMainMenuAttractFinish = false;
 	nMusicButton = 1;
 	nXOLineButton = 2;
 	nCurMainMenuItem = 1; // start with music selected
@@ -2003,26 +2015,34 @@ function initialize()
 	g_bLeaveDriveLocked = false;
 	g_bLeaveMemoryUnitsBlocked = false;
 	ConfigFile = new Settings;
-	ConfigFile.file = "Y:\\config.xbx";
+	CacheFile = new Settings;
 	XlateFile = new Settings;
-	XlateFile.file = "Y:\\xlate.xbx";
+	IconFile = new Settings;
+	ConfigFile.file = "Y:\\UIX Configs\\config.xbx";
+	CacheFile.file = "Y:\\UIX Configs\\Cache.xbx";
+	XlateFile.file = "Y:\\UIX Configs\\xlate.xbx";
+	IconFile.file = "Y:\\UIX Configs\\Icons.xbx";
 	
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
 	btHcScreenSaver = GetSavedBooleanValue("default","UsetHcScreenSaver");
 	bUseMainMenuAttract = GetSavedBooleanValue("default","UseMainMenuAttract");
-	if(bUseMainMenuAttract) nTime = 2.4; else nTime = 1.2;
+	if(bUseMainMenuAttract) nTime = 3.1; else nTime = 1.4;
 	
 	DriveLocations = new Array("Y:\\","C:\\");
 	PartitionLocations = new Array("\\Device\\Harddisk0\\Partition2\\","\\Device\\Harddisk0\\Partition1\\");
 	bPartitionScanCompleted = GetSavedBooleanValue("ExtendedPartitions","PartitionScanCompleted");
 	if(bPartitionScanCompleted)
 	{
-		bHasFdrive = GetSavedBooleanValue("ExtendedPartitions","HasFdrive");
-		bHasGdrive = GetSavedBooleanValue("ExtendedPartitions","HasGdrive");
-		bHasExtendedPartition = bHasFdrive | bHasGdrive;
-		if(bHasFdrive) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition6\\"; DriveLocations[DriveLocations.length] = "N:\\"; }
-		if(bHasGdrive) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition7\\"; DriveLocations[DriveLocations.length] = "O:\\"; }
+		bPartitionScanCompleted = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\Cache.xbx");
+		if(bPartitionScanCompleted)
+		{
+			bHasFdrive = GetSavedBooleanValue("ExtendedPartitions","HasFdrive");
+			bHasGdrive = GetSavedBooleanValue("ExtendedPartitions","HasGdrive");
+			bHasExtendedPartition = bHasFdrive | bHasGdrive;
+			if(bHasFdrive) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition6\\"; DriveLocations[DriveLocations.length] = "N:\\"; }
+			if(bHasGdrive) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition7\\"; DriveLocations[DriveLocations.length] = "O:\\"; }
+		}
 	}
 
 	theAmbientSound0.Play();
@@ -2054,7 +2074,8 @@ function initialize()
 		theDiscDrive.locked = true;
 		BlockMemoryUnitInsert();
 		EnableInput(true);
-		GoToSettings();
+		nSkinLoadSettings = 1;
+		GoToSkin();
 		return;
 	}
 	
@@ -2063,7 +2084,8 @@ function initialize()
 		theDiscDrive.locked = true;
 		g_bResetDiscDeferredNotification = true;
 		EnableInput(true);
-		theMainMenu.GoTo();
+		nSkinLoadSettings = 0;
+		GoToSkin();
 		EnableAmbientAudio();
 		return;
 	}
@@ -2074,10 +2096,12 @@ function initialize()
 function MainInitPart3()
 {
 	var reason = theConfig.GetLaunchReason();
+	if(reason.length() > 0) bUseMainMenuAttract = false;
 	if (reason == "Error")
 	{
 		EnableInput(true);
-		theMainMenu.GoTo();
+		nSkinLoadSettings = 0;
+		GoToSkin();
 		EnableAmbientAudio();
 		bShowErrorPanel = true;
 		DisplayWaitingMessage();
@@ -2093,7 +2117,8 @@ function MainInitPart3()
 		bBackToLauncher = true;
 		EnableInput(true);
 		EnableAmbientAudio();
-		GoToMemory();
+		nSkinLoadSettings = 3;
+		GoToSkin();
 		return;
 	}
 	else if (reason == "Settings")
@@ -2102,7 +2127,8 @@ function MainInitPart3()
 		nSettingArea = theConfig.GetLaunchParameter1();
 		EnableInput(true);
 		EnableAmbientAudio();
-		GoToSettings();
+		nSkinLoadSettings = 1;
+		GoToSkin();
 		return;
 	}
 	else if (reason == "Music")
@@ -2110,7 +2136,8 @@ function MainInitPart3()
 		bBackToLauncher = true;
 		EnableInput(true);
 		EnableAmbientAudio();
-		GoToMusic();
+		nSkinLoadSettings = 2;
+		GoToSkin();
 		return;
 	}
 	else if (reason == "FromOnlineDash")
@@ -2129,11 +2156,13 @@ function MainInitPart3()
 		if (theConfig.GetEthernetLinkStatus() == 0)
 		{
 			g_bLiveTodayFadeIn = true;
-			GoToAccountSelectionWithDefaultUser();
+			nSkinLoadSettings = 4;
+			GoToSkin();
 		}
 		else
 		{
-			EnterLiveToday(true);
+			nSkinLoadSettings = 5;
+			GoToSkin();
 		}
 		EnableAmbientAudio();
 		return;
@@ -2144,11 +2173,13 @@ function MainInitPart3()
 		if (theConfig.GetEthernetLinkStatus() == 0)
 		{
 			g_bLiveTodayFadeIn = true;
-			GoToAccountSelectionWithDefaultUser();
+			nSkinLoadSettings = 4;
+			GoToSkin();
 		}
 		else
 		{
-			EnterLiveToday(true);
+			nSkinLoadSettings = 5;
+			GoToSkin();
 		}
 		EnableAmbientAudio();
 		return;
@@ -2159,7 +2190,8 @@ function MainInitPart3()
 		nCurMainMenuItem = nXOLineButton;
 		// Go back to account selection and highlight appropriate user
 		g_bLiveTodayFadeIn = true;
-		GoToAccountSelectionWithDefaultUser();
+		nSkinLoadSettings = 4;
+		GoToSkin();
 		EnableAmbientAudio();
 		return;
 	}
@@ -2169,11 +2201,13 @@ function MainInitPart3()
 		if (theConfig.GetEthernetLinkStatus() == 0)
 		{
 			g_bLiveTodayFadeIn = true;
-			GoToAccountSelectionWithDefaultUser();
+			nSkinLoadSettings = 4;
+			GoToSkin();
 		}
 		else
 		{
-			EnterLiveToday(true);
+			nSkinLoadSettings = 5;
+			GoToSkin();
 		}
 		EnableAmbientAudio();
 		return;
@@ -2184,7 +2218,8 @@ function MainInitPart3()
 		nCurMainMenuItem = nXOLineButton;
 		// Go back to account selection and highlight appropriate user
 		g_bLiveTodayFadeIn = true;
-		GoToAccountSelectionWithDefaultUser();
+		nSkinLoadSettings = 4;
+		GoToSkin();
 		EnableAmbientAudio();
 		return;
 	}
@@ -2194,7 +2229,8 @@ function MainInitPart3()
 		nCurMainMenuItem = nXOLineButton;
 		// Go back to account selection and highlight appropriate user
 		g_bLiveTodayFadeIn = true;
-		GoToAccountSelectionWithDefaultUser();
+		nSkinLoadSettings = 4;
+		GoToSkin();
 		EnableAmbientAudio();
 		return;
 	}
@@ -2213,14 +2249,16 @@ function MainInitPart3()
 		{
 			// Set the focus to the proper menu item
 			nCurMainMenuItem = 4;
-			GoToSettings();
+			nSkinLoadSettings = 1;
+			GoToSkin();
 			theLiveAccounts.ClearLastLogonUser();
 		}
 		else
 		{
 			// Set the focus to the proper menu item
 			nCurMainMenuItem = nXOLineButton;
-			GoToAccountSelectionWithDefaultUser();
+			nSkinLoadSettings = 4;
+			GoToSkin();
 		}
 		
 		return;
@@ -2251,7 +2289,8 @@ function GoToFinalDestination()
 		EnableInput(true);
 		bShowInvalidDiscWithNav = true;
 		DisplayWaitingMessage();
-		theMainMenu.GoTo();
+		nSkinLoadSettings = 0;
+		GoToSkin();
 		EnableAmbientAudio();
 	}
 	else
@@ -2259,20 +2298,24 @@ function GoToFinalDestination()
 		EnableInput(true);
 		if (theConfig.GetLiveToday() == 0)
 		{
-			theMainMenu.GoTo();
+			nSkinLoadSettings = 0;
+			GoToSkin();
 		}
 		else if (theConfig.GetEthernetLinkStatus() == 0)
 		{
-			theMainMenu.GoTo();
+			nSkinLoadSettings = 2;
+			GoToSkin();
 		}
 		else if (theLiveAccounts.GetNumberOfAccounts())
 		{
 			g_bFirstSignIn = true;
-			EnterLiveToday(true);
+			nSkinLoadSettings = 5;
+			GoToSkin();
 		}
 		else
 		{
-			theMainMenu.GoTo();
+			nSkinLoadSettings = 1;
+			GoToSkin();
 		}
 		
 		EnableAmbientAudio();
@@ -3156,18 +3199,23 @@ function FillMenuList(x) // search Y:\, C:\, N:\ and O:\ for a relative path's c
 
 function GetAllTitles()
 {    
-	var TitleList = new Array(0);
+	var TitleList = new Array;
 	var cTitles = new Array;
 	for(var i = 0; i < 8; i = i + 1)
 	{
-		var cValue = GetSavedValue("LauncherMenu","Path" + i);
+		var cValue = GetSavedValue("LauncherMenu","Title" + i);
 		if(cValue != "")
 		{
-			cTitles = FillMenuList(cValue);
-			for(var cLoop = 0; cLoop < cTitles.length; cLoop = cLoop + 1)
+			var x = 1;
+			CacheFile.section = "Cache";
+			cTitles = Split(CacheFile.GetValue(cValue),"|");
+			while(cTitles.length == 25)
 			{
-				TitleList[TitleList.length] = cTitles[cLoop];
+				TitleList = TitleList.concat(cTitles);
+				cTitles = Split(CacheFile.GetValue(cValue + "-" + x),"|");
+				x = x + 1;
 			}
+			TitleList = TitleList.concat(cTitles);
 		}    
 	}
 	TitleList = TitleList.sort();
@@ -3192,8 +3240,8 @@ DEF theLaunchGameLevel Level
 	behavior
 	{
 		sleep 1.1;
-		
-		if (g_bAboutToLaunchGame)
+
+		if(g_bAboutToLaunchGame)
 		{
 			launch(launchXbe, launchPath);   
 		}
@@ -3254,7 +3302,7 @@ function ExecuteFile(sPath)
 	}
 	else if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
 	{
-		theMainMenu.children[0].children[0].theMainMenuLevel.visible = false;
+		theMainMenu.children[0].children[0].theMainMenuLevel.alpha = 0;
 		theLaunchGameLevel.GoTo();
 	}
 }
@@ -3324,6 +3372,71 @@ function ScanPartitions()
 	SetSavedBooleanValue("ExtendedPartitions","HasFdrive",bHasFdrive);
 	SetSavedBooleanValue("ExtendedPartitions","HasGdrive",bHasGdrive);
 	SetSavedBooleanValue("ExtendedPartitions","PartitionScanCompleted",bPartitionScanCompleted);
+	RefreshCache();
+}
+
+function RefreshCache()
+{
+	var arrMenuNames = new Array;
+	var arrMenuPaths = new Array;
+	var cTitles = new Array;
+	for (var i = 0; i < 8; i = i + 1)
+	{
+		var v = GetSavedValue("LauncherMenu", "Title" + i);
+		if(v != "") 
+		{
+			arrMenuNames[arrMenuNames.length] = v;
+			arrMenuPaths[arrMenuPaths.length] = GetSavedValue("LauncherMenu", "Path" + i);
+		}
+	}
+	for (var x = 0; x < arrMenuNames.length; x = x + 1)
+	{
+		CacheFile.section = "Cache";
+		// Clear previous segments if they exist.
+		var indx = 1;
+		while(CacheFile.GetValue(arrMenuNames[x] + "-" + indx) != "") 
+		{
+			CacheFile.SetValue(arrMenuNames[x] + "-" + indx, "");
+			indx = indx + 1;
+		}
+		var cache;
+		cTitles = FillMenuList(arrMenuPaths[x]);
+		// Segment Titles more than 25
+		if(cTitles.length > 25)
+		{
+			var indx = 1;
+			for(var ptr = 0; ptr < cTitles.length; ptr = ptr + 25)
+			{
+				var cnt = 25;
+				var Segment = new Array;
+				if(ptr + cnt > cTitles.length) cnt = cTitles.length - ptr;
+				Segment = cTitles.slice(ptr,ptr + cnt);
+				cache = Segment.join("|");
+				if(ptr == 0){ CacheFile.SetValue(arrMenuNames[x], cache); }
+				else { CacheFile.SetValue(arrMenuNames[x] + "-" + indx, cache); indx = indx + 1; }    
+			}
+		}
+		else
+		{
+			cache = cTitles.join("|");
+			CacheFile.SetValue(arrMenuNames[x], cache);
+		}
+	}
+	UpdateIconFile();
+}
+
+function UpdateIconFile()
+{
+	var cTitles = new Array;
+	cTitles = GetAllTitles();
+	IconFile.section = "default";
+	for(var i = 0; i < cTitles.length; i = i + 1)
+	{
+		if(IconFile.GetValue(cTitles[i]) == "")
+		{
+			IconFile.SetValue(cTitles[i],"Unknown");
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -3331,6 +3444,18 @@ DEF theReboot Recovery
 function Reboot()//scripted reboot - last stage of a recovery is to reboot - let's make the box think we just did a recovery and now it's time to reboot :)
 {
 	theReboot.FinishRecovery();
+}
+
+function Reload()
+{
+	if(theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xb0xdash.xbe"))
+	{
+		launch("xb0xdash.xbe","\\Device\\Harddisk0\\Partition2" );
+	}
+	else
+	{
+		launch("xboxdash.xbe","\\Device\\Harddisk0\\Partition2" );
+	}
 }
 
 function PowerOff()
@@ -3415,6 +3540,7 @@ function Modulo(x,y)
 function Split(str,Delimiter)
 {
 	var arrReturn = new Array;
+	if(str.length() == 0) return arrReturn;
 	var x = str;
 	var i = 0;
 	while( x.indexOf(Delimiter) >= 0 )

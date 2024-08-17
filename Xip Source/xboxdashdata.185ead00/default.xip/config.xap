@@ -329,7 +329,7 @@ function BuildRTList()
 		configSelect[x] = "configKeyb()";
 		x = x + 1;
 	}
-	
+
 	clearText();
 	updateText();
 	tabSlot(LV2Hold);
@@ -651,7 +651,7 @@ DEF theConfigPanel Level
 				var c = theConfigPanel.children[0].children[0];
 				c.theLeftSlots.children[0].children[0].appearance.name = "CellEgg/Partsz";
 				c.theBuildInfo.children[0].geometry.text = "Build: " + sBuildDate;
-				c.theConfigHeader.children[0].geometry.text = "UIX ULTRA LITE";
+				c.theConfigHeader.children[0].geometry.text = "UIX Lite";
 				var cValue = getConfigMenuValue("default-ConfigPanelIcon");
 				if(cValue.toLowerCase() == "globe") { c.GlobeIcon.visible = true; } else { c.ConsoleIcon.visible = true; }
 			}
@@ -761,15 +761,7 @@ DEF theConfigPanel Level
 				else if(configList[LV1Item] == "Change Displayed Name of Titles")
 				{
 					inChangeTitleMenu = true;
-					if(bHDDInitialized == false & bHasExtendedPartition)
-					{
-						bBuildRTList = true;
-						bHDDInitialize = true;
-					}
-					else
-					{
-						BuildRTList();
-					}
+					BuildRTList();
 					c.theConfigHeader.children[0].geometry.text = Translate("Change Title Names");
 				}                
 			}
@@ -816,13 +808,13 @@ DEF theConfigPanel Level
 				c.theDownArrow.visible = false;
 				c.theUpArrow.visible = false;
 				c.theLeftSlots.children[LV1Hold].children[0].appearance.name = "CellEgg/Partsz";
-				c.theConfigHeader.children[0].geometry.text = "UIX ULTRA LITE";
+				c.theConfigHeader.children[0].geometry.text = "UIX Lite";
 			}
 			else
 			{
 				if(settChanged == true)
 				{
-					AskQuestion(Translate("SETTINGS_CHANGED"), "Reboot()", "theUIXConfigInline.children[0].leaveConfig()", 1);
+					AskQuestion(Translate("SETTINGS_CHANGED"), "Reload()", "theUIXConfigInline.children[0].leaveConfig()", 1);
 				}
 				else if(settChanged == false)
 				{
@@ -833,9 +825,7 @@ DEF theConfigPanel Level
 		
 		function OnWhiteDown()
 		{
-			//toggleBacking();
-			//theConfig.DebugOutput( configList[LV1Item] );
-			//toggleIcon();
+			//theConfig.DebugOutput(configList[LV1Item] );
 		}
 	}
 	
