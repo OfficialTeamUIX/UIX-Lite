@@ -95,21 +95,21 @@ function UpdateTrackList()
 			
 			c.TrackNames.children[i].children[0].geometry.text = strName0;
 			c.TrackNumbers.children[i].children[0].geometry.text = strTime0;
-			
+
 			if (n == nPlayCursor0)
 			{
 				c.TrackNames.children[i].SetScale(0.14, 0.14, 0.14);
 				c.TrackNames.children[i].children[0].appearance.name = "CellEgg/Partsz";
 				c.TrackNumbers.children[i].children[0].appearance.name = "CellEgg/Partsz";
 				var Icon = IconFile.GetValue(TempTitleList[nPlayCursor0]);
-				if(Icon == "Unknown") Icon = DefaultIcon; else  Icon = Icon + ".xbx";
+				if(Icon == "Unknown" | Icon == "") Icon = DefaultIcon; else  Icon = Icon + ".xbx";
 				c.theIcons.children[0].children[0].appearance.texture.url = Icon; 
 			}
 			else
 			{               
-				c.TrackNames.children[i].SetScale(0.13, 0.13, 0.13);
-				c.TrackNames.children[i].children[0].appearance.name = "NavType";
-				c.TrackNumbers.children[i].children[0].appearance.name = "NavType";
+				c.TrackNames.children[i].SetScale(0.14, 0.14, 0.14);
+				c.TrackNames.children[i].children[0].appearance.name = "Material #1335";
+				c.TrackNumbers.children[i].children[0].appearance.name = "Material #1335";
 			}
 		}
 	}

@@ -412,6 +412,7 @@ function toggleIcon()
 		c.ConsoleIcon.visible = true;
 		cValue = "Console";
 	}
+	c.theRightSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
 	c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue);
 	setConfigMenuValue(configValues[LV2Item],cValue);
 }
@@ -424,6 +425,7 @@ function toggleLOI()
 	if(b == "None") { cValue = "Xbox"; } 
 	else if(b == "Xbox") { cValue = "UIX"; }
 	else { cValue = "None"; }
+	c.theRightSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
 	c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue);
 	setConfigMenuValue(configValues[LV2Item],cValue);
 }
@@ -434,6 +436,7 @@ function toggleAM()
 	if(bAdvancedMode) { bAdvancedMode = false; cValue = "false"; } else { bAdvancedMode = true; cValue = "true"; }
 	SetSavedBooleanValue("MainMenu","AdvancedMode",bAdvancedMode);
 	var c = theConfigPanel.children[0].children[0];
+	c.theRightSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
 	c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue);
 }
 
@@ -530,11 +533,13 @@ function refreshMenu(x)
 	
 	if(inChangeTitleMenu)
 	{
+		c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
 		c.theLeftSlots.children[LV2Hold].children[0].geometry.text = cValue;
 		if(configList[LV2Item] == cValue) { cValue = ""; }
 	}
 	else
 	{
+		c.theRightSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
 		if(cValue.length() > 20) { c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue.substr(0, 20) + "..."; }
 		else { c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue); }
 	}
@@ -546,15 +551,15 @@ function tabSlot(x)
 	var c = theConfigPanel.children[0].children[0];
 	var indentItemTrans = c.theLeftSlots.children[x].translation;
 	c.theLeftSlots.children[x].children[0].appearance.name = "CellEgg/Partsz";
-	c.theLeftSlots.children[x].SetTranslation(2.35, parseTrans(indentItemTrans,"Y"), parseTrans(indentItemTrans,"Z"));
+	//c.theLeftSlots.children[x].SetTranslation(2.35, parseTrans(indentItemTrans,"Y"), parseTrans(indentItemTrans,"Z"));
 }
 
 function unTabSlot(x)
 {
 	var c = theConfigPanel.children[0].children[0];
 	var indentItemTrans = c.theLeftSlots.children[x].translation;
-	c.theLeftSlots.children[x].children[0].appearance.name = "NavType";        
-	c.theLeftSlots.children[x].SetTranslation(2, parseTrans(indentItemTrans,"Y"), parseTrans(indentItemTrans,"Z"));
+	c.theLeftSlots.children[x].children[0].appearance.name = "Material #1335";        
+	//c.theLeftSlots.children[x].SetTranslation(2, parseTrans(indentItemTrans,"Y"), parseTrans(indentItemTrans,"Z"));
 }
 
 function clearText()
@@ -563,11 +568,10 @@ function clearText()
 	for(var i = 0; i < 12; i = i + 1)
 	{
 		c.theLeftSlots.children[i].children[0].geometry.text = "";
-		c.theLeftSlots.children[i].children[0].appearance.name = "NavType"; //NavType is selected
+		c.theLeftSlots.children[i].children[0].appearance.name = "Material #1335";
 		c.theLeftSlots.children[i].children[0].geometry.font = "Body";
 		
 		c.theRightSlots.children[i].children[0].geometry.text = "";
-		c.theRightSlots.children[i].children[0].appearance.name = "NavType"; //NavType is selected
 		c.theRightSlots.children[i].children[0].geometry.font = "Body";
 	}
 }
@@ -603,10 +607,12 @@ function updateText()
 				var cValue = getConfigMenuValue(configValues[i]);
 				if(inQuickLaunchMenu & (cValue.length() > MaxCharacters))
 				{
+					c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
 					c.theRightSlots.children[i].children[0].geometry.text = Translate(PathEllipsis(cValue));
 				}
 				else
 				{
+					c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
 					if(cValue.length() > 20) { c.theRightSlots.children[i].children[0].geometry.text = cValue.substr(0, 20) + "..."; }
 					else { c.theRightSlots.children[i].children[0].geometry.text =  Translate(cValue); }
 				}
@@ -651,6 +657,7 @@ DEF theConfigPanel Level
 				var c = theConfigPanel.children[0].children[0];
 				c.theLeftSlots.children[0].children[0].appearance.name = "CellEgg/Partsz";
 				c.theBuildInfo.children[0].geometry.text = "Build: " + sBuildDate;
+				c.theConfigHeader.children[0].appearance.name = "CellEgg/Partsz";
 				c.theConfigHeader.children[0].geometry.text = "UIX Lite";
 				var cValue = getConfigMenuValue("default-ConfigPanelIcon");
 				if(cValue.toLowerCase() == "globe") { c.GlobeIcon.visible = true; } else { c.ConsoleIcon.visible = true; }
@@ -896,6 +903,7 @@ function selectConfigDown()
 					c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 					if(inLV2 == true)
 					{
+						c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
 						c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[curItem + (i - 11)]));
 					}
 				}
@@ -968,6 +976,7 @@ function selectConfigUp()
 						c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 						if(inLV2 == true)
 						{
+							c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
 							c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[curItem + i]));
 						}
 					}
@@ -1060,6 +1069,7 @@ function scrollConfigDown()
 			c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 			if(inLV2 == true)
 			{
+				c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
 				c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[(curItem - curHold) + i]));
 			}
 		}
@@ -1140,6 +1150,7 @@ function scrollConfigUp()
 			c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 			if(inLV2 == true)
 			{
+				c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
 				c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[(curItem - curHold) + i]));
 			}
 		}

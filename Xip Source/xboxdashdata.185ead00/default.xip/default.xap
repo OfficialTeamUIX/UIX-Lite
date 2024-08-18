@@ -419,7 +419,7 @@ function Translate(text)
 	var MatchWord = text.toUpperCase();
 	if(theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\xlate.xbx"))
 	{
-		var Languages = new Array( "ENGLISH","JAPANESE","DEUTSCH","FRANÇAIS","ESPAÑOL","ITALIANO","KOREAN","CHINESE","PORTUGUÊS");
+		var Languages = new Array( "ENGLISH","JAPANESE","DEUTSCH","FRANï¿½AIS","ESPAï¿½OL","ITALIANO","KOREAN","CHINESE","PORTUGUï¿½S");
 		var index = Math.max(0,theConfig.GetLanguage() - 1);
 		XlateFile.section = Languages[index];
 		var xlate = XlateFile.GetValue(MatchWord);
@@ -2303,7 +2303,7 @@ function GoToFinalDestination()
 		}
 		else if (theConfig.GetEthernetLinkStatus() == 0)
 		{
-			nSkinLoadSettings = 2;
+			nSkinLoadSettings = 0;
 			GoToSkin();
 		}
 		else if (theLiveAccounts.GetNumberOfAccounts())
@@ -2314,7 +2314,7 @@ function GoToFinalDestination()
 		}
 		else
 		{
-			nSkinLoadSettings = 1;
+			nSkinLoadSettings = 0;
 			GoToSkin();
 		}
 		
@@ -3420,21 +3420,6 @@ function RefreshCache()
 		{
 			cache = cTitles.join("|");
 			CacheFile.SetValue(arrMenuNames[x], cache);
-		}
-	}
-	UpdateIconFile();
-}
-
-function UpdateIconFile()
-{
-	var cTitles = new Array;
-	cTitles = GetAllTitles();
-	IconFile.section = "default";
-	for(var i = 0; i < cTitles.length; i = i + 1)
-	{
-		if(IconFile.GetValue(cTitles[i]) == "")
-		{
-			IconFile.SetValue(cTitles[i],"Unknown");
 		}
 	}
 }

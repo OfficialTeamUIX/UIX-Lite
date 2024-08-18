@@ -1107,7 +1107,7 @@ DEF WholeMenu Transform
 											[
 												Shape
 												{
-													appearance MaxMaterial { name "ItemsType" }
+													appearance MaxMaterial { name "NavType" }
 													geometry DEF theConfigHeader-text Text { font "Heading" width -15 translate false text "UIX ULTRA LITE"}
 												}
 											]
@@ -1120,7 +1120,7 @@ DEF WholeMenu Transform
 											[
 												Shape
 												{
-													appearance MaxMaterial { name "ItemsType" }
+													appearance MaxMaterial { name "NavType" }
 													geometry DEF BuildInfo Text { font "Body" width -15 translate false text "Build: YYMMDD"}
 												}
 											]
@@ -1142,8 +1142,8 @@ DEF WholeMenu Transform
 															geometry DEF theL01Slot-text Text { font "Body" width -15 translate false text "Slot L01"}
 														}
 													]
-													scale 1 1 1
-													translation 2 -26 0
+													scale 1.05 1.05 1.05
+													translation 2 -25.4 0
 													
 												}
 												DEF theL02Slot Transform
@@ -1157,8 +1157,8 @@ DEF WholeMenu Transform
 															geometry DEF theL02Slot-text Text { font "Body" width -15 translate false text "Slot L02"}
 														}
 													]
-													scale 1 1 1
-													translation 2 -26.80454 0
+													scale 1.05 1.05 1.05
+													translation 2 -26.3 0
 													
 												}
 												DEF theL03Slot Transform
@@ -1172,8 +1172,8 @@ DEF WholeMenu Transform
 															geometry DEF theL03Slot-text Text { font "Body" width -15 translate false text "Slot L03"}
 														}
 													]
-													scale 1 1 1
-													translation 2 -27.60908 0
+													scale 1.05 1.05 1.05
+													translation 2 -27.2 0
 													
 												}
 												DEF theL04Slot Transform
@@ -1187,8 +1187,8 @@ DEF WholeMenu Transform
 															geometry DEF theL04Slot-text Text { font "Body" width -15 translate false text "Slot L04"}
 														}
 													]
-													scale 1 1 1
-													translation 2 -28.41363 0
+													scale 1.05 1.05 1.05
+													translation 2 -28.1 0
 													
 												}
 												DEF theL05Slot Transform
@@ -1202,8 +1202,8 @@ DEF WholeMenu Transform
 															geometry DEF theL05Slot-text Text { font "Body" width -15 translate false text "Slot L05"}
 														}
 													]
-													scale 1 1 1
-													translation 2 -29.21817 0
+													scale 1.05 1.05 1.05
+													translation 2 -29.0 0
 													
 												}
 												DEF theL06Slot Transform
@@ -1217,8 +1217,8 @@ DEF WholeMenu Transform
 															geometry DEF theL06Slot-text Text { font "Body" width -15 translate false text "Slot L06"}
 														}
 													]
-													scale 1 1 1
-													translation 2 -30.02271 0
+													scale 1.05 1.05 1.05
+													translation 2 -29.9 0
 													
 												}
 												DEF theL07Slot Transform
@@ -1232,8 +1232,8 @@ DEF WholeMenu Transform
 															geometry DEF theL07Slot-text Text { font "Body" width -15 translate false text "Slot L07"}
 														}
 													]
-													scale 1 1 1
-													translation 2 -30.82726 0
+													scale 1.05 1.05 1.05
+													translation 2 -30.8 0
 													
 												}
 												DEF theL08Slot Transform
@@ -1247,8 +1247,8 @@ DEF WholeMenu Transform
 															geometry DEF theL08Slot-text Text { font "Body" width -15 translate false text "Slot L08"}
 														}
 													]
-													scale 1 1 1
-													translation 2 -31.63180 0
+													scale 1.05 1.05 1.05
+													translation 2 -31.7 0
 													
 												}
 												DEF theL09Slot Transform
@@ -1262,8 +1262,8 @@ DEF WholeMenu Transform
 															geometry DEF theL09Slot-text Text { font "Body" width -15 translate false text "Slot L09"}
 														}
 													]
-													scale 1 1 1
-													translation 2 -32.43634 0
+													scale 1.05 1.05 1.05
+													translation 2 -32.6 0
 													
 												}
 												DEF theL10Slot Transform
@@ -1277,8 +1277,8 @@ DEF WholeMenu Transform
 															geometry DEF theL10Slot-text Text { font "Body" width -15 translate false text "Slot L10"}
 														}
 													]
-													scale 1 1 1
-													translation 2 -33.24089 0
+													scale 1.05 1.05 1.05
+													translation 2 -33.5 0
 													
 												}
 												DEF theL11Slot Transform
@@ -1292,8 +1292,8 @@ DEF WholeMenu Transform
 															geometry DEF theL11Slot-text Text { font "Body" width -15 translate false text "Slot L11"}
 														}
 													]
-													scale 1 1 1
-													translation 2 -34.04543 0
+													scale 1.05 1.05 1.05
+													translation 2 -34.4 0
 													
 												}
 												DEF theL12Slot Transform
@@ -1307,8 +1307,8 @@ DEF WholeMenu Transform
 															geometry DEF theL12Slot-text Text { font "Body" width -15 translate false text "Slot L11"}
 														}
 													]
-													scale 1 1 1
-													translation 2 -34.849979 0
+													scale 1.05 1.05 1.05
+													translation 2 -35.3 0
 													
 												}
 											]
@@ -1328,8 +1328,8 @@ DEF WholeMenu Transform
 															geometry DEF theR01Slot-text Text { font "Body" width -15 translate false text "Slot R01" justify "end"}
 														}
 													]
-													scale 1 1 1
-													translation 19 -26 0
+													scale 1.05 1.05 1.05
+													translation 19 -25.4 0
 													
 												}
 												DEF theR02Slot Transform
@@ -1343,8 +1343,8 @@ DEF WholeMenu Transform
 															geometry DEF theR02Slot-text Text { font "Body" width -15 translate false text "Slot R02" justify "end"}
 														}
 													]
-													scale 1 1 1
-													translation 19 -26.80454 0
+													scale 1.05 1.05 1.05
+													translation 19 -26.3 0
 													
 												}
 												DEF theR03Slot Transform
@@ -1358,8 +1358,8 @@ DEF WholeMenu Transform
 															geometry DEF theR03Slot-text Text { font "Body" width -15 translate false text "Slot R03" justify "end"}
 														}
 													]
-													scale 1 1 1
-													translation 19 -27.60908 0
+													scale 1.05 1.05 1.05
+													translation 19 -27.2 0
 													
 												}
 												DEF theR04Slot Transform
@@ -1373,8 +1373,8 @@ DEF WholeMenu Transform
 															geometry DEF theR04Slot-text Text { font "Body" width -15 translate false text "Slot R04" justify "end"}
 														}
 													]
-													scale 1 1 1
-													translation 19 -28.41363 0
+													scale 1.05 1.05 1.05
+													translation 19 -28.1 0
 													
 												}
 												DEF theR05Slot Transform
@@ -1388,8 +1388,8 @@ DEF WholeMenu Transform
 															geometry DEF theR05Slot-text Text { font "Body" width -15 translate false text "Slot R05" justify "end"}
 														}
 													]
-													scale 1 1 1
-													translation 19 -29.21817 0
+													scale 1.05 1.05 1.05
+													translation 19 -29.0 0
 													
 												}
 												DEF theR06Slot Transform
@@ -1403,8 +1403,8 @@ DEF WholeMenu Transform
 															geometry DEF theR06Slot-text Text { font "Body" width -15 translate false text "Slot R06" justify "end"}
 														}
 													]
-													scale 1 1 1
-													translation 19 -30.02271 0
+													scale 1.05 1.05 1.05
+													translation 19 -29.9 0
 													
 												}
 												DEF theR07Slot Transform
@@ -1418,8 +1418,8 @@ DEF WholeMenu Transform
 															geometry DEF theR07Slot-text Text { font "Body" width -15 translate false text "Slot R07" justify "end"}
 														}
 													]
-													scale 1 1 1
-													translation 19 -30.82726 0
+													scale 1.05 1.05 1.05
+													translation 19 -30.8 0
 													
 												}
 												DEF theR08Slot Transform
@@ -1433,8 +1433,8 @@ DEF WholeMenu Transform
 															geometry DEF theR08Slot-text Text { font "Body" width -15 translate false text "Slot R08" justify "end"}
 														}
 													]
-													scale 1 1 1
-													translation 19 -31.63180 0
+													scale 1.05 1.05 1.05
+													translation 19 -31.7 0
 													
 												}
 												DEF theR09Slot Transform
@@ -1448,8 +1448,8 @@ DEF WholeMenu Transform
 															geometry DEF theR09Slot-text Text { font "Body" width -15 translate false text "Slot R09" justify "end"}
 														}
 													]
-													scale 1 1 1
-													translation 19 -32.43634 0
+													scale 1.05 1.05 1.05
+													translation 19 -32.6 0
 													
 												}
 												DEF theR10Slot Transform
@@ -1463,8 +1463,8 @@ DEF WholeMenu Transform
 															geometry DEF theR10Slot-text Text { font "Body" width -15 translate false text "Slot R10" justify "end"}
 														}
 													]
-													scale 1 1 1
-													translation 19 -33.24089 0
+													scale 1.05 1.05 1.05
+													translation 19 -33.5 0
 													
 												}
 												DEF theR11Slot Transform
@@ -1478,8 +1478,8 @@ DEF WholeMenu Transform
 															geometry DEF theR11Slot-text Text { font "Body" width -15 translate false text "Slot R11" justify "end"}
 														}
 													]
-													scale 1 1 1
-													translation 19 -34.04543 0
+													scale 1.05 1.05 1.05
+													translation 19 -34.4 0
 													
 												}
 												DEF theR12Slot Transform
@@ -1493,8 +1493,8 @@ DEF WholeMenu Transform
 															geometry DEF theR12Slot-text Text { font "Body" width -15 translate false text "Slot R12" justify "end"}
 														}
 													]
-													scale 1 1 1
-													translation 19 -34.849979 0
+													scale 1.05 1.05 1.05
+													translation 19 -35.3 0
 													
 												}
 											]
