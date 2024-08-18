@@ -419,7 +419,7 @@ function Translate(text)
 	var MatchWord = text.toUpperCase();
 	if(theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\xlate.xbx"))
 	{
-		var Languages = new Array( "ENGLISH","JAPANESE","DEUTSCH","FRANï¿½AIS","ESPAï¿½OL","ITALIANO","KOREAN","CHINESE","PORTUGUï¿½S");
+		var Languages = new Array( "ENGLISH","JAPANESE","DEUTSCH","FRANÇAIS","ESPAÑOL","ITALIANO","KOREAN","CHINESE","PORTUGUÊS");
 		var index = Math.max(0,theConfig.GetLanguage() - 1);
 		XlateFile.section = Languages[index];
 		var xlate = XlateFile.GetValue(MatchWord);
@@ -1987,7 +1987,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "240817"; //Date of commit YYMMDD
+	sBuildDate = "240818"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bLaunchDelay = false;
 	bExecuteFile = false;
