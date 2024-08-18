@@ -433,7 +433,7 @@ function Translate(text)
 		else if(MatchWord == "LAUNCHER") { return "Launcher"; }
 		else if(MatchWord == "INSIGNIA") { return "Insignia"; }
 		else if(MatchWord == "CONFIGURATION") { return "UIX Settings"; }
-		else if(MatchWord == "INDEXING_PARTITION") { return "Loading your title from the harddisk's extended partition. This could take several seconds.\n\nPlease Wait..."; }
+		else if(MatchWord == "INDEXING_PARTITION") { return "Indexing the harddisk's extended partitions. This could take several seconds.\n\nPlease Wait..."; }
 		else if(MatchWord == "SETTINGS_CHANGED") { return "You will need to reload before the new settings will take effect.\n\nWould you like to reload now?"; }
 		else if(MatchWord == "POWER_OFF") { return "This will power off the Xbox.\n\nDo you wish to continue?"; }
 	}
@@ -1806,10 +1806,31 @@ DEF theMainMenu Level
 		
 		if(bHDDInitialize)
 		{
-			BlockUser(Translate("INDEXING_PARTITION"));
+			if(bLaunchItem | bExecuteFile)
+			{
+				if(bExecuteFile) 
+				{ 
+					theMainMenu.children[0].children[0].theMainMenuLevel.visible = false; 
+					theMainMenu.shell.alpha = 0;
+				}
+				else 
+				{ 
+					theLauncherInline.children[0].theLauncher.children[0].children[0].theWholeThing.visible = false;
+					theLauncherInline.children[0].theLauncher.shell.alpha = 0;
+				}
+				// Bind the proper background image
+				if( theConfig.GetVideoMode() == 2 )
+				{ theXboxLogo16x9Background.isBound = true; }
+				else { theXboxLogo4x3Background.isBound = true; }
+				nTime = 1.6;
+			}
+			else
+			{
+				BlockUser(Translate("INDEXING_PARTITION"));
+				nTime = 1.1;
+			}
 			bHDDInitialize = false;
 			bHDDInitializing = true;
-			nTime = 1.1;
 		}
 		else if(bHDDInitializing)
 		{
@@ -1821,9 +1842,10 @@ DEF theMainMenu Level
 			{
 				if (theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
 				{
-					theMainMenu.children[0].children[0].theMainMenuLevel.visible = false;
+					theMainMenu.children[0].children[0].theMainMenuLevel.alpha = 0;
 					theLaunchGameLevel.GoTo();
 				}
+				else {Reload();}
 				bExecuteFile = false;
 			}
 			else if(bLaunchItem)
@@ -1965,7 +1987,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "240818"; //Date of commit YYMMDD
+	sBuildDate = "240817"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bLaunchDelay = false;
 	bExecuteFile = false;
