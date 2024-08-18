@@ -419,7 +419,7 @@ function Translate(text)
 	var MatchWord = text.toUpperCase();
 	if(theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\xlate.xbx"))
 	{
-		var Languages = new Array( "ENGLISH","JAPANESE","DEUTSCH","FRANï¿½AIS","ESPAï¿½OL","ITALIANO","KOREAN","CHINESE","PORTUGUï¿½S");
+		var Languages = new Array( "ENGLISH","JAPANESE","DEUTSCH","FRANÇAIS","ESPAÑOL","ITALIANO","KOREAN","CHINESE","PORTUGUÊS");
 		var index = Math.max(0,theConfig.GetLanguage() - 1);
 		XlateFile.section = Languages[index];
 		var xlate = XlateFile.GetValue(MatchWord);
@@ -433,7 +433,7 @@ function Translate(text)
 		else if(MatchWord == "LAUNCHER") { return "Launcher"; }
 		else if(MatchWord == "INSIGNIA") { return "Insignia"; }
 		else if(MatchWord == "CONFIGURATION") { return "UIX Settings"; }
-		else if(MatchWord == "INDEXING_PARTITION") { return "Indexing the harddisk's extended partitions. This could take several seconds.\n\nPlease Wait..."; }
+		else if(MatchWord == "INDEXING_PARTITION") { return "Loading your title from the harddisk's extended partition. This could take several seconds.\n\nPlease Wait..."; }
 		else if(MatchWord == "SETTINGS_CHANGED") { return "You will need to reload before the new settings will take effect.\n\nWould you like to reload now?"; }
 		else if(MatchWord == "POWER_OFF") { return "This will power off the Xbox.\n\nDo you wish to continue?"; }
 	}
@@ -1965,7 +1965,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "240817"; //Date of commit YYMMDD
+	sBuildDate = "240818"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bLaunchDelay = false;
 	bExecuteFile = false;
