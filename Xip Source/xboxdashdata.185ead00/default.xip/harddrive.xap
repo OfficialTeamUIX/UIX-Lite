@@ -102,7 +102,7 @@ function UpdateTrackList()
 				c.TrackNames.children[i].children[0].appearance.name = "CellEgg/Partsz";
 				c.TrackNumbers.children[i].children[0].appearance.name = "CellEgg/Partsz";
 				var Icon = IconFile.GetValue(TempTitleList[nPlayCursor0]);
-				if(Icon == "Unknown" | Icon == "") Icon = DefaultIcon; else  Icon = Icon + ".xbx";
+				if(Icon == "Unknown" | Icon == "") Icon = DefaultIcon; else  Icon = Icon.toLowerCase() + ".xbx";
 				c.theIcons.children[0].children[0].appearance.texture.url = Icon; 
 			}
 			else
@@ -338,6 +338,8 @@ function LaunchItem(x,y)
 			}
 		}
 	}
+	//If we made it here the title was not found.
+	Reload();
 }
 
 function GetTitleList(mnuName)
