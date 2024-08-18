@@ -37,9 +37,10 @@ Some of these features include;
 * DO NOT DELETE YOUR ORIGINAL MS DASHBOARD FILES. SIMPLY REPLACE THE EXISTING FILES WITH THE MODIFIED FILES ONLY. KEEP ANY UNMODIFED FILES.
 * Download Visual XIP from the Tools page.
 * Copy the unmodified 5960 Dashboard files to a directory on your computer.
+* Create a folder in that directory called "UIX Configs" and place config.xbx and Icons.xbx inside.
 * Use Visual XIP or the Binary Patcher to patch the xboxdash.xbe to allow modified xips and to add F & G partition support.
-* Use Visual XIP or WinXip to modify the xips in your xboxdashdata.185ead00 with the updated source files from the github repository.
-* Copy your now "modified" 5960 Dashboard files via ftp, including config.xbx, to the root of the C partition on your Xbox.
+* Use Visual XIP or WinXip to modify the xips in your xboxdashdata.185ead00 directory with the updated source files from the github repository.
+* Copy your now "modified" 5960 Dashboard files via ftp to the root of the C partition on your Xbox.
 
 ## Configuration and Use
 
@@ -56,7 +57,7 @@ Some of these features include;
  
 ## Launguage Support
 
-* You can add German, French, Spanish, Italian, and Portuguese lauguage translations by placing the optional xlate.xbx into the root of the C partion.
+* You can add German, French, Spanish, Italian, and Portuguese lauguage translations by placing the optional xlate.xbx into the C:\UIX Configs\ folder.
 * Currently does not support CJK Characters.
 
 ## Example config.xbx
