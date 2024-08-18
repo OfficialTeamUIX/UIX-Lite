@@ -2303,7 +2303,7 @@ function GoToFinalDestination()
 		}
 		else if (theConfig.GetEthernetLinkStatus() == 0)
 		{
-			nSkinLoadSettings = 2;
+			nSkinLoadSettings = 0;
 			GoToSkin();
 		}
 		else if (theLiveAccounts.GetNumberOfAccounts())
@@ -2314,7 +2314,7 @@ function GoToFinalDestination()
 		}
 		else
 		{
-			nSkinLoadSettings = 1;
+			nSkinLoadSettings = 0;
 			GoToSkin();
 		}
 		
