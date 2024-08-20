@@ -2058,7 +2058,7 @@ function initialize()
 		bPartitionScanCompleted = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\Cache.xbx");
 		if(bPartitionScanCompleted)
 		{
-			nPartitions = GetSavedValue("ExtendedPartitions","Partition");
+			nPartitions = StringToNumber(GetSavedValue("ExtendedPartitions","Partitions"));
 			bHasExtendedPartition = nPartitions > 0;
 			if(nPartitions & 1) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition6\\"; DriveLocations[DriveLocations.length] = "N:\\"; }
 			if(nPartitions & 2) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition7\\"; DriveLocations[DriveLocations.length] = "O:\\"; }
