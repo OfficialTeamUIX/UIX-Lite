@@ -101,7 +101,7 @@ DEF theWholeThing Transform
 							{
 								material MaxMaterial
 								{
-									name "XBoxGreen2"
+									name "XBOXgreen"
 								}
 							}
 							geometry Text { font "Body" text "BACK" justify "end"}
@@ -235,7 +235,7 @@ DEF theWholeThing Transform
 							{
 								material MaxMaterial
 								{
-									name "XBoxGreen2"
+									name "XBOXgreen"
 								}
 							}
 							geometry Text { font "Body" text "SELECT" }

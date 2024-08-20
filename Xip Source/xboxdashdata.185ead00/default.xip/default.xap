@@ -1972,9 +1972,8 @@ var bExecuteFile;
 var bHDDInitialize;
 var bHDDInitializing;
 var bHDDInitialized;
+var nPartitions;
 var bPartitionScanCompleted;
-var bHasFdrive;
-var bHasGdrive;
 var bHasExtendedPartition;
 var bUseMainMenuAttract;
 var bMainMenuAttractFinish;
@@ -2059,11 +2058,12 @@ function initialize()
 		bPartitionScanCompleted = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\Cache.xbx");
 		if(bPartitionScanCompleted)
 		{
-			bHasFdrive = GetSavedBooleanValue("ExtendedPartitions","HasFdrive");
-			bHasGdrive = GetSavedBooleanValue("ExtendedPartitions","HasGdrive");
-			bHasExtendedPartition = bHasFdrive | bHasGdrive;
-			if(bHasFdrive) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition6\\"; DriveLocations[DriveLocations.length] = "N:\\"; }
-			if(bHasGdrive) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition7\\"; DriveLocations[DriveLocations.length] = "O:\\"; }
+			nPartitions = GetSavedValue("ExtendedPartitions","Partition");
+			bHasExtendedPartition = nPartitions > 0;
+			if(nPartitions & 1) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition6\\"; DriveLocations[DriveLocations.length] = "N:\\"; }
+			if(nPartitions & 2) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition7\\"; DriveLocations[DriveLocations.length] = "O:\\"; }
+			if(nPartitions & 4) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk1\\Partition6\\"; DriveLocations[DriveLocations.length] = "P:\\"; }
+			if(nPartitions & 8) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk1\\Partition7\\"; DriveLocations[DriveLocations.length] = "Q:\\"; }
 		}
 	}
 
@@ -3303,7 +3303,7 @@ function QuickLaunch(x)
 function ExecuteFile(sPath)
 {
 	var a = sPath;
-	var b = a.substr(0,1);
+	var b = a.substr(0,a.indexOf(":"));
 	var c = a.indexOf("\\");
 	var d = a.lastIndexOf("\\");
 	var e = a.substr(c , d - c);
@@ -3315,7 +3315,8 @@ function ExecuteFile(sPath)
 	else if(b.toUpperCase() == "E") { launchPath = "\\Device\\Harddisk0\\Partition1" + e; }
 	else if(b.toUpperCase() == "F") { launchPath = "\\Device\\Harddisk0\\Partition6" + e; ExtendedPartition = true; }
 	else if(b.toUpperCase() == "G") { launchPath = "\\Device\\Harddisk0\\Partition7" + e; ExtendedPartition = true; }
-	else return;
+	else if(b.toUpperCase() == "F2") { launchPath = "\\Device\\Harddisk1\\Partition6" + e; ExtendedPartition = true; }
+	else if(b.toUpperCase() == "G2") { launchPath = "\\Device\\Harddisk1\\Partition7" + e; ExtendedPartition = true; }    else return;
 	
 	if(ExtendedPartition & bHDDInitialized == false)
 	{
@@ -3340,59 +3341,45 @@ function RescanPartitions()
 
 function ScanPartitions()
 {
-	var N = new Folder;
-	var O = new Folder;
-	var TestFile = new Settings;
-	var nFolders;
-	var nFiles;
-	var nTotal;
-	
-	N.path = "N:";
-	nFolders = N.subFolders.length();
-	nFiles = N.files.length();
-	nTotal = nFolders + nFiles;
-	if(nTotal > 0)
+	var Drives = new Array("N:\\","O:\\","P:\\","Q:\\");
+	var Locations = new Array("\\Device\\Harddisk0\\Partition6\\","\\Device\\Harddisk0\\Partition7\\","\\Device\\Harddisk1\\Partition6\\","\\Device\\Harddisk1\\Partition7\\");
+	nPartitions = 0;
+	for(var i = 0; i < Drives.length; i = i + 1)
 	{
-		bHasFdrive = true;
-	}
-	else
-	{
-		TestFile.file = "N:\\-DeleteMe-";
-		TestFile.SetValue("Dummy","true");
-		bHasFdrive = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition6\\-DeleteMe-");
-	}
-	
-	O.path = "O:";
-	nFolders = O.subFolders.length();
-	nFiles = O.files.length();
-	nTotal = nFolders + nFiles;
-	if(nTotal > 0)
-	{
-		bHasGdrive = true;
-	}
-	else
-	{
-		TestFile.file = "O:\\-DeleteMe-";
-		TestFile.SetValue("Dummy","true");
-		bHasGdrive = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition7\\-DeleteMe-");
-	}
-	
-	if(bHasFdrive)
-	{
-		PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition6\\"; 
-		DriveLocations[DriveLocations.length] = "N:\\";
+		var Test = new Folder;
+		var TestFile = new Settings;
+		var nFolders;
+		var nFiles;
+		var nTotal;
+		var sDrive = Drives[i];
+		var Flag = 1 << i;
+		
+		Test.path = sDrive.indexOf("\\");
+		nFolders = Test.subFolders.length();
+		nFiles = Test.files.length();
+		nTotal = nFolders + nFiles;
+		if(nTotal > 0)
+		{
+			nPartitions = nPartitions | Flag;
+			DriveLocations[DriveLocations.length] = Drives[i];
+			PartitionLocations[PartitionLocations.length] = Locations[i];
+		}
+		else
+		{
+			TestFile.file = Drives[i] + "-DeleteMe-";
+			TestFile.SetValue("Dummy","true");
+			if(theConfig.NtFileExists(Locations[i] + "-DeleteMe-"))
+			{
+				nPartitions = nPartitions | Flag;
+				DriveLocations[DriveLocations.length] = Drives[i];
+				PartitionLocations[PartitionLocations.length] = Locations[i];
+			}
+		}
 	}
 	
-	if(bHasGdrive)
-	{
-		PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition7\\"; 
-		DriveLocations[DriveLocations.length] = "O:\\";
-	}
-	
-	bHasExtendedPartition = bHasFdrive | bHasGdrive;
-	bPartitionScanCompleted = true; 
-	SetSavedBooleanValue("ExtendedPartitions","HasFdrive",bHasFdrive);
-	SetSavedBooleanValue("ExtendedPartitions","HasGdrive",bHasGdrive);
+	bPartitionScanCompleted = true;
+	bHasExtendedPartition = nPartitions > 0;
+	SetSavedValue("ExtendedPartitions","Partitions",nPartitions);
 	SetSavedBooleanValue("ExtendedPartitions","PartitionScanCompleted",bPartitionScanCompleted);
 	RefreshCache();
 }
