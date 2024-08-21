@@ -1755,7 +1755,7 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName1 Text { font "Body" width -18 translate false text "1." }
+									geometry DEF TrackName1 Text { font "Body" width -16 translate false text "1." }
 								}
 								
 							]
@@ -1769,7 +1769,7 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName2 Text { font "Body" width -18 translate false text"2."}
+									geometry DEF TrackName2 Text { font "Body" width -16 translate false text"2."}
 								}
 								
 							]
@@ -1784,7 +1784,7 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName3 Text { font "Body" width -18 translate false text "3."}
+									geometry DEF TrackName3 Text { font "Body" width -16 translate false text "3."}
 								}
 								
 							]
@@ -1798,7 +1798,7 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName4 Text { font "Body" width -18 translate false text "4."}
+									geometry DEF TrackName4 Text { font "Body" width -16 translate false text "4."}
 								}
 								
 							]
@@ -1812,7 +1812,7 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName5 Text { font "Body" width -18 translate false text "5."}
+									geometry DEF TrackName5 Text { font "Body" width -16 translate false text "5."}
 								}
 								
 							]
@@ -1826,7 +1826,7 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName6 Text { font "Body" width -18 translate false text "6."}
+									geometry DEF TrackName6 Text { font "Body" width -16 translate false text "6."}
 								}
 								
 							]
@@ -1840,7 +1840,7 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName7 Text { font "Body" width -18 translate false text "7."}
+									geometry DEF TrackName7 Text { font "Body" width -16 translate false text "7."}
 								}
 								
 							]
@@ -1854,7 +1854,7 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName8 Text { font "Body" width -18 translate false text "8."}
+									geometry DEF TrackName8 Text { font "Body" width -16 translate false text "8."}
 								}
 								
 							]
@@ -1869,7 +1869,7 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName9 Text { font "Body" width -18 translate false text "9."}
+									geometry DEF TrackName9 Text { font "Body" width -16 translate false text "9."}
 								}
 								
 							]
