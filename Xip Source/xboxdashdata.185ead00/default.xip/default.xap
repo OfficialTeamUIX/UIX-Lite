@@ -1986,7 +1986,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "240819"; //Date of commit YYMMDD
+	sBuildDate = "240821"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bLaunchDelay = false;
 	bExecuteFile = false;
@@ -3402,11 +3402,11 @@ function RefreshCache()
 	{
 		CacheFile.section = "Cache";
 		// Clear previous segments if they exist.
-		var indx = 1;
-		while(CacheFile.GetValue(arrMenuNames[x] + "-" + indx) != "") 
+		var idx = 1;
+		while(CacheFile.GetValue(arrMenuNames[x] + "-" + idx) != "") 
 		{
-			CacheFile.SetValue(arrMenuNames[x] + "-" + indx, "");
-			indx = indx + 1;
+			CacheFile.SetValue(arrMenuNames[x] + "-" + idx, "");
+			idx = idx + 1;
 		}
 		var cache;
 		cTitles = FillMenuList(arrMenuPaths[x]);
