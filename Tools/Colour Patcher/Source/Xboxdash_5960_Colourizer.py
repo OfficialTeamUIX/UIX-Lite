@@ -728,10 +728,10 @@ password=xbox'''
 	ftp_password = settings.get('password', 'xbox')
 
 	# Check for xbe files
-	if os.path.isfile('xbe file\\xboxdash.xbe'):
-		file_path = 'xbe file\\xboxdash.xbe'
-	elif os.path.isfile('xbe file\\xb0xdash.xbe'):
-		file_path = 'xbe file\\xb0xdash.xbe'
+	if os.path.isfile(os.path.join('xbe file','xboxdash.xbe')):
+		file_path = os.path.join('xbe file','xboxdash.xbe')
+	elif os.path.isfile(os.path.join('xbe file','xb0xdash.xbe')):
+		file_path = os.path.join('xbe file','xb0xdash.xbe')
 	else:
 		show_error("\n Error: Cannot find valid xbe file:\n\n Looking for:\n  - xbe file\\xboxdash.xbe\n  - xbe file\\xb0xdash.xbe\n\n Please ensure the file exists and try again.")
 	
