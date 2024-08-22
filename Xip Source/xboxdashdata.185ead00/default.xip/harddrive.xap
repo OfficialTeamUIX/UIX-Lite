@@ -362,7 +362,6 @@ function GetTitleList(mnuName)
 DEF theLauncher Level
 {
 	archive "Music_PlayEdit2.xip"
-	unloadable false
 	children
 	[
 		Inline

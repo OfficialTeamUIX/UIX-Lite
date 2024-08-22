@@ -507,7 +507,6 @@ function UpdateScanText()
 DEF theDVDLevel Level
 {
 	archive "dvd.xip"
-	unloadable false
 	fade false
 
 	children

@@ -668,7 +668,6 @@ function StartClockSettings()
 DEF theSetClockMenu Level
 {
 	archive "Settings_Clock.xip"
-	unloadable false
 	children
 	[
 		Inline
@@ -1044,7 +1043,6 @@ function InitMenuValues()
 DEF theSetTimezoneMenu Level
 {
 	archive "Settings_Timezone.xip"
-	unloadable false
 	children
 	[
 		Inline
@@ -1570,7 +1568,6 @@ function UpdateListHighlight()
 DEF theChooseClockMenu Level
 {
 	archive "Settings_List.xip"
-	unloadable false
 	children
 	[
 		Inline
@@ -2124,7 +2121,6 @@ function DeletePassword()
 DEF theSetPanelMenu Level
 {
 	archive "Settings_Panel.xip"
-	unloadable false
 	children
 	[
 		Inline
@@ -2614,7 +2610,6 @@ function StartPCMenu()
 DEF theSetPCMenu Level
 {
 	archive "Settings_Parental.xip"
-	unloadable false
 	children
 	[
 		Inline
@@ -2903,7 +2898,6 @@ function StartLanguageMenu()
 DEF theSetLanguageMenu Level
 {
 	archive "Settings_Language.xip"
-	unloadable false
 	children
 	[
 		Inline
@@ -3204,7 +3198,6 @@ function StartModeMenu()
 DEF theSetModeMenu Level
 {
 	archive "Settings_Video.xip"
-	unloadable false
 	children
 	[
 		Inline
@@ -3799,7 +3792,6 @@ var g_bSettingsExtraLangs;   // Used to enable or disable extra languages based 
 DEF theSettingsMenu Level
 {
 	archive "Settings3.xip"
-	unloadable false
 	children
 	[
 		Inline

@@ -150,7 +150,6 @@ function CollectAccountPassword(ch)
 DEF theAccountPasscodeVerifier Level
 {
 	archive "PasscodeVerify.xip"
-	unloadable false
 	children
 	[
 		Inline
@@ -285,7 +284,6 @@ DEF theAccountPasscodeVerifier Level
 DEF theLiveTodayLevel Level
 {
 	archive "LiveToday.xip"
-	unloadable false
 	children
 	[
 		Inline

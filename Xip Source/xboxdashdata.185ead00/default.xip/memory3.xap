@@ -1012,7 +1012,6 @@ function ResetMemoryFocus()
 DEF theFilesMenu Level
 {
 	archive "Memory_Files2.xip"
-	unloadable false
 	children
 	[
 		Inline
@@ -1572,7 +1571,6 @@ function StartMemoryLevel()
 DEF theMemoryMenu Level
 {
 	archive "Memory2.xip"
-	unloadable false
 	children
 	[
 		Inline
