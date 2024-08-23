@@ -2,7 +2,7 @@
 
 ## What is this?
 
-The Xboxdash 5960 Colourizer is a tool (a Python script wrapped in an executable for simplicity) that patches the 5960 `xboxdash.xbe` (or `xb0xdash.xbe`) with custom color values specified via hex codes. You can override existing color values or completely customize all colors using a theme `.ini` file. This package includes six themes, with one replicating the stock dashboard values. The `source` folder contains the script's source files, allowing Linux and Mac users to run it easily. (requires Python 2.7 or 3)
+The Xboxdash 5960 Colourizer is a tool (a Python script wrapped in an executable for simplicity) that patches the 5960 `xboxdash.xbe` (or `xb0xdash.xbe`) with custom color values specified via hex codes. You can override existing color values or completely customize all colors using a skin `.ini` file. This package includes six skins, with one replicating the stock dashboard values. The `source` folder contains the script's source files, allowing Linux and Mac users to run it easily. (requires Python 2.7 or 3)
 
 ### How to use:
 
@@ -13,7 +13,7 @@ On the first run, the tool will create a `settings.ini` file, allowing you to en
 
 #### Examples:
 
-##### To use the sky theme:
+##### To use the sky skin:
 1. Open the tool, type **sky**, and hit enter.
 2. See **FTP'ing** below.
 
@@ -25,7 +25,7 @@ Yes, it's that simple!
 3. Enter **0.95** (if left blank it defaults to 1.0 for brightness).
 4. See **FTP support** below.
 
-##### If you want to export a theme ini:
+##### If you want to export a skin ini:
 1. Open the tool, enter `export` and hit enter.
 2. Enter a color value, let's use pink again, **f19cbb**, and hit enter.
 3. We will leave this blank for now, just hit enter.
@@ -45,3 +45,20 @@ If `FTP support` is set up, the tool will patch the `xbe` and send it to the Xbo
 
 **Note:**
 The `extended partition` patch won't be applied if the xbe is prepatched.
+
+#### Command Line Support
+You can run a `.bat` file with specific parameters if you want to set up specific configurations by just double-clicking the `.bat` file.
+
+**Example .bat file:**
+
+--colour_file is set to a space " " so that it skips the skin entry input.
+```batch
+@echo off
+"Xboxdash 5960 Colourizer.exe" --colour_file " " --target_color FF8855 --brightness_factor 0.95
+```
+
+#### Linux
+
+You will need to `chmod u+x "Xboxdash 5960 Colourizer.sh"` before it can be run.
+
+Mac I cannot test as I have no access to it.
