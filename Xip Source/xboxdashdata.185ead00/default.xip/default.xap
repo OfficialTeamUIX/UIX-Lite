@@ -465,6 +465,34 @@ function ParseEscapedChars(sText)
 }
 
 ///////////////////////////////////////////////////////////////////
+DEF theBGMesh Layer
+{
+    viewpoint Viewpoint
+    {
+        fieldOfView 1.2
+        position -500 0 0
+    }
+
+    children
+    [
+        DEF theBGMeshTransform Transform
+        {
+            children
+            [
+                DEF theBGMeshInline Inline
+                {
+                    preload true
+                    url "bg_mesh/CHAINS.xap"
+                    function onLoad()
+                    {
+                        LoadBGMeshValues();
+                    }
+                }
+            ]
+        }
+    ]
+}
+
 DEF theSkinInline Inline
 {
 	visible false
@@ -3627,3 +3655,89 @@ function SetSavedBooleanValue(x,y,z)
 		ConfigFile.SetValue(b,"false");
 	}
 }
+
+////////////////////////////////////////////////////////DNA///////////////////////////////////////////////////////////
+function LoadBGMeshValues()
+{
+    ConfigFile.section = "BGMesh";
+
+    var theDNA = ConfigFile.GetValue("BGMesh");
+    var DNAAlpha = ConfigFile.GetValue("Alpha");
+
+    ///dna spinner
+    var x = ConfigFile.GetValue("BGMesh1 rpm");
+    var y = ConfigFile.GetValue("BGMesh2 rpm");
+    var z = ConfigFile.GetValue("BGMesh3 rpm");
+
+    if((x == "") | (y == "") | (z == "")) { x = 2; y = 2; z = 2; }
+
+    var c = theBGMeshInline.children[0];
+    c.theDNA1.children[0].rpm = x;
+    c.theDNA3.children[0].rpm = y;
+    c.theDNA5.children[0].rpm = z;
+
+    if (theDNA == "chains")
+    {
+        c.DNA1_Mesh.url = "chain.xm";
+        c.DNA3_Mesh.url = "chain.xm";
+        c.DNA5_Mesh.url = "chain.xm";
+        c.theDNA1.SetTranslation(-5400, 0, -5100);
+        c.theDNA3.SetTranslation(0, 0, -5000);
+        c.theDNA5.SetTranslation(4000, 0, -5100);
+        c.theDNA1.SetAlpha(DNAAlpha);
+        c.theDNA3.SetAlpha(DNAAlpha);
+        c.theDNA5.SetAlpha(DNAAlpha);
+    }
+    else if (theDNA == "spirals")
+    {
+        c.DNA1_Mesh.url = "spirals.xm";
+        c.DNA3_Mesh.url = "spirals.xm";
+        c.DNA5_Mesh.url = "spirals.xm";
+        c.theDNA1.SetAlpha(DNAAlpha);
+        c.theDNA3.SetAlpha(DNAAlpha);
+        c.theDNA5.SetAlpha(DNAAlpha);
+    } 
+    else if (theDNA == "off")
+    {
+        c.DNA1_Mesh.url = "";
+        c.DNA3_Mesh.url = "";
+        c.DNA5_Mesh.url = "";
+        c.theDNA1.SetAlpha(0);
+        c.theDNA3.SetAlpha(0);
+        c.theDNA5.SetAlpha(0);
+    } 
+    else if (theDNA == "dna")
+    { 
+        c.DNA1_Mesh.url = "Backing_dna.xm";
+        c.DNA3_Mesh.url = "Backing_dna.xm";
+        c.DNA5_Mesh.url = "Backing_dna.xm";
+        c.DNAString1_Mesh.url = "Backing_dna_SIDES.xm";
+        c.DNAString3_Mesh.url = "Backing_dna_SIDES.xm";
+        c.DNAString5_Mesh.url = "Backing_dna_SIDES.xm";
+        c.theDNA1.SetAlpha(DNAAlpha);
+        c.theDNA3.SetAlpha(DNAAlpha);
+        c.theDNA5.SetAlpha(DNAAlpha);
+    }
+    else if (theDNA == "squigles")
+    { 
+        c.DNA1_Mesh.url = "Backing_squigles.xm";
+        c.DNA3_Mesh.url = "Backing_squigles.xm";
+        c.DNA5_Mesh.url = "Backing_squigles.xm";
+        c.DNAString1_Mesh.url = "Backing_squigles_sides.xm";
+        c.DNAString3_Mesh.url = "Backing_squigles_sides.xm";
+        c.DNAString5_Mesh.url = "Backing_squigles_sides.xm";
+        c.theDNA1.SetAlpha(DNAAlpha);
+        c.theDNA3.SetAlpha(DNAAlpha);
+        c.theDNA5.SetAlpha(DNAAlpha);
+    }
+    else if (theDNA == "corkscrews")
+    {
+        c.DNA1_Mesh.url = "corkscrews.xm";
+        c.DNA3_Mesh.url = "corkscrews.xm";
+        c.DNA5_Mesh.url = "corkscrews.xm";
+        c.theDNA1.SetAlpha(DNAAlpha);
+        c.theDNA3.SetAlpha(DNAAlpha);
+        c.theDNA5.SetAlpha(DNAAlpha);
+    }
+}
+////////////////////////////////////////////////////////DNA END////////////////////////////////////////////////////////

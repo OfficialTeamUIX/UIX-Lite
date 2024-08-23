@@ -85,6 +85,26 @@ function buildGSList() //just copy this function for more subsections
 	configValues[i] = "-blank-";
 	configSelect[i] = "ToggleNoisyCam()";
 	i = i + 1;
+	configList[i] = "BG Mesh:";
+	configValues[i] = "BGMesh-BGMesh";
+	configSelect[i] = "ToggleBGMesh()";
+	i = i + 1;
+	configList[i] = "BG Mesh Alpha:";
+	configValues[i] = "BGMesh-Alpha";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	configList[i] = "Mesh 1 Rpm:";
+	configValues[i] = "BGMesh-BGMesh1 rpm";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	configList[i] = "Mesh 2 Rpm:";
+	configValues[i] = "BGMesh-BGMesh2 rpm";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	configList[i] = "Mesh 3 Rpm:";
+	configValues[i] = "BGMesh-BGMesh3 rpm";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
 	configList[i] = "Rescan Partitions";
 	configValues[i] = "-blank-";
 	configSelect[i] = "RescanPartitions()";
@@ -393,6 +413,17 @@ function toggleMMB()
 	else if(b.toLowerCase() == "music") { refreshMenu("XONLINE"); }
 	else if(b.toLowerCase() == "xonline") { refreshMenu("LAUNCHER"); }
 	else { refreshMenu("MEMORY"); }
+}
+
+function ToggleBGMesh()
+{
+	var b = getConfigMenuValue(configValues[LV2Item]);
+	if(b.toLowerCase() == "squigles") { refreshMenu("corkscrews"); }
+	else if(b.toLowerCase() == "corkscrews") { refreshMenu("off"); }
+	else if(b.toLowerCase() == "off") { refreshMenu("dna"); }
+	else if(b.toLowerCase() == "dna") { refreshMenu("chains"); }
+	else if(b.toLowerCase() == "chains") { refreshMenu("spirals"); }
+	else if(b.toLowerCase() == "spirals") { refreshMenu("squigles"); }
 }
 
 function toggleIcon()

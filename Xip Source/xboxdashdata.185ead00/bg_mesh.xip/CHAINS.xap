@@ -1,0 +1,196 @@
+DEF theDNAwaver Transform
+{
+children
+ [
+
+
+ DEF theDNA1 Transform
+{
+
+children
+[
+Spinner
+                {
+                  rpm 0
+                  axis 0 1 0
+                  children
+                  [
+
+DEF DNA1 Transform
+                {
+                    children
+                    [
+                        Shape
+                        {
+                            appearance Appearance
+                            {
+                                material MaxMaterial
+                                {
+                                    name "MenuCell"
+                                }
+                            }
+                            geometry DEF DNA1_Mesh Mesh { url "chain.xm" }
+                        }
+                    ]
+
+translation 0 0 0
+                }
+
+DEF DNAString1 Transform
+                {
+                    children
+                    [
+                        Shape
+                        {
+                            appearance Appearance
+                            {
+                                material MaxMaterial
+                                {
+                                    name "FlatSrfc/PodParts"
+                                }
+                            }
+                            geometry DEF DNAString1_Mesh Mesh { url "" }
+                        }
+                    ]
+translation 0 0 0
+
+                }
+]
+}
+]
+scale 8 8 8
+rotation 0 0 .5 0.1745330
+translation -3900 0 -5100
+}
+
+
+DEF theDNA3 Transform
+{
+children
+[
+
+ Spinner
+                {
+                  rpm 0
+                  axis 0 1 0
+                  children
+                  [
+
+DEF DNA3 Transform
+                {
+                    children
+                    [
+                        Shape
+                        {
+                            appearance Appearance
+                            {
+                                material MaxMaterial
+                                {
+                                    name "MenuCell"
+                                }
+                            }
+                            geometry DEF DNA3_Mesh Mesh { url "chain.xm" }
+                        }
+                    ]
+
+translation 0 0 0
+                }
+
+DEF DNAString3 Transform
+                {
+                    children
+                    [
+
+
+                        Shape
+                        {
+                            appearance Appearance
+                            {
+                                material MaxMaterial
+                                {
+                                    name "FlatSrfc/PodParts"
+                                }
+                            }
+                            geometry DEF DNAString3_Mesh Mesh { url "" }
+                        }
+
+
+                    ]
+translation 0 0 0
+
+                }
+]
+                        }
+
+
+]
+scale 9 9 9
+rotation 0 0 1 -.523599
+translation 0 0 -5000
+}
+
+
+
+DEF theDNA5 Transform
+{
+children
+[
+Spinner
+                {
+                  rpm 0
+                  axis 0 1 0
+                  children
+                  [
+
+DEF DNA5 Transform
+                {
+                    children
+                    [
+                        Shape
+                        {
+                            appearance Appearance
+                            {
+                                material MaxMaterial
+                                {
+                                    name "MenuCell"
+                                }
+                            }
+                            geometry DEF DNA5_Mesh Mesh { url "chain.xm" }
+                        }
+                    ]
+
+translation 0 0 0
+                }
+
+DEF DNAString5 Transform
+                {
+                    children
+                    [
+                        Shape
+                        {
+                            appearance Appearance
+                            {
+                                material MaxMaterial
+                                {
+                                    name "FlatSrfc/PodParts"
+                                }
+                            }
+                            geometry DEF DNAString5_Mesh Mesh { url "" }
+                        }
+                    ]
+translation 0 0 0
+
+                }
+]
+}
+
+]
+scale 8 8 8
+rotation 0 0 .3 -0.1745330
+translation 3000 0 -5100
+}
+
+
+
+]
+}
