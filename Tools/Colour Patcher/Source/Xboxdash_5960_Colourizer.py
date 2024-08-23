@@ -186,13 +186,20 @@ def update_patches(patches, external):
 				external_patches.append(updated_patch)
 	return external_patches
 
-def set_window_size(title, color, width, height):
-	os.system('mode con: cols={} lines={}'.format(width, height))
-	os.system('title {}'.format(title))
-	os.system('color {}'.format(color))
+def set_window_size(title, color='00', width=100, height=100):
+	if os.name == 'nt':
+		os.system('mode con: cols={} lines={}'.format(width, height))
+		os.system('title {}'.format(title))
+		os.system('color {}'.format(color))
+	else:
+		os.system('echo "\033]0;{}\007"'.format(title))
 
 def show_error(error):
-	set_window_size('Error', '0B', 70, 11)
+	if os.name == 'nt':
+		set_window_size('Error', '0B', 70, 11)
+	else:
+		set_window_size('Error')
+	
 	print('{}'.format(error))
 	time.sleep(10)
 	sys.exit()
@@ -253,14 +260,12 @@ def upload_file(ftp_server, server_path, file_path, ftp_username='xbox', ftp_pas
 				sys.exit()
 
 fg_patches = [
+	# Updated 23rd August 2024 thanks BijJx and to the original patch creator, you know who you're.
 	# Description: F/G Support
 	{'apply': '1', 'address': 0x00000840, 'patch_type': '0', 'flip': '0', 'value': '07'},
-	{'apply': '1', 'address': 0x0001DCA2, 'patch_type': '0', 'flip': '0', 'value': 'BDC31B00E855FDFFFF31C0C3'},
-	# F, G HDD1 and HDD 2
-	{'apply': '1', 'address': 0x001C9000, 'patch_type': '0', 'flip': '0', 'value': '5589E583EC2C8B450C8A45080FBE45088D55E98D0DD09F1E00891424894C240489442408E8578FE8FF8D45E98D4DF0890C2489442404FF150C20010083EC088B450C8D4DE0890C2489442404FF150C20010083EC088D4DF08D45E0890C2489442404FF152420010083EC0883C42C5DC35C3F3F5C25633A005C4465766963655C486172646469736B305C506172746974696F6E360000000000005C4465766963655C486172646469736B305C506172746974696F6E37000000000000005C4465766963655C486172646469736B315C506172746974696F6E36000000000000005C4465766963655C486172646469736B315C506172746974696F6E37000000000000005589E568D89F1E006A4EE8EEFEFFFF83C4085D5589E568FA9F1E006A4FE8DBFEFFFF83C4085D5589E5681DA01E006A50E8C8FEFFFF83C4085D5589E56840A01E006A51E8B5FEFFFF83C4085D31C0C3'}
-	# F, G HDD1
-	# {'apply': '1', 'address': 0x0001DCA2, 'patch_type': '0', 'flip': '0', 'value': '77C31B00E855FDFFFF31C0C3'},
-	# {'apply': '1', 'address': 0x001C9000, 'patch_type': '0', 'flip': '0', 'value': '5589E583EC2C8B450C8A45080FBE45088D55E98D0DD09F1E00891424894C240489442408E8578FE8FF8D45E98D4DF0890C2489442404FF150C20010083EC088B450C8D4DE0890C2489442404FF150C20010083EC088D4DF08D45E0890C2489442404FF152420010083EC0883C42C5DC35C3F3F5C25633A005C4465766963655C486172646469736B305C506172746974696F6E360000000000005C4465766963655C486172646469736B305C506172746974696F6E37000000000000005589E568D89F1E006A4EE834FFFFFF83C4085D5589E568FA9F1E006A4FE821FFFFFF83C4085D31C0C3'}
+	{'apply': '1', 'address': 0x0001DCA2, 'patch_type': '0', 'flip': '0', 'value': '77C31B00E855FDFFFF31C0C3'},
+	# F, G HDD1 and HDD 2 
+	{'apply': '1', 'address': 0x001C9000, 'patch_type': '0', 'flip': '0', 'value': '5589E583EC2C8B450C8A45080FBE45088D55E98D0DD09F1E00891424894C240489442408E8578FE8FF8D45E98D4DF0890C2489442404FF150C20010083EC088B450C8D4DE0890C2489442404FF150C20010083EC088D4DF08D45E0890C2489442404FF152420010083EC0883C42C5DC35C3F3F5C25633A005C4465766963655C486172646469736B305C506172746974696F6E360000000000005C4465766963655C486172646469736B305C506172746974696F6E37000000000000005589E568D89F1E006A4EE834FFFFFF83C4085D5589E568FA9F1E006A4FE821FFFFFF83C4085D5589E5686CA01E006A50E80EFFFFFF83C4085D5589E5688FA01E006A51E8FBFEFFFF83C4085D31C0C35C4465766963655C486172646469736B315C506172746974696F6E36000000000000005C4465766963655C486172646469736B315C506172746974696F6E3700000000000000'}
 ]
 	
 other_patches = [
@@ -699,7 +704,12 @@ colour_patches = [
 ]
 
 if __name__ == '__main__':
-	set_window_size('Xboxdash Colourizer v1.0', '0B', 70, 11)
+	version = 1.1
+	if os.name == 'nt':
+		set_window_size('Xboxdash Colourizer v{}'.format(version), '0B', 70, 11)
+	else:
+		set_window_size('Xboxdash Colourizer v{}'.format(version))
+
 	global python_mode
 	python_mode = 3
 	if sys.version_info[0] < 3:
@@ -728,10 +738,14 @@ password=xbox'''
 	ftp_password = settings.get('password', 'xbox')
 
 	# Check for xbe files
-	if os.path.isfile('xbe file\\xboxdash.xbe'):
-		file_path = 'xbe file\\xboxdash.xbe'
-	elif os.path.isfile('xbe file\\xb0xdash.xbe'):
-		file_path = 'xbe file\\xb0xdash.xbe'
+	if not os.path.dir('xbe file'):
+		os.makedirs('xbe file')
+	xboxdash = os.path.join('xbe file','xboxdash.xbe')
+	xb0xdash = os.path.join('xbe file','xb0xdash.xbe')
+	if os.path.isfile(xboxdash):
+		file_path = xboxdash
+	elif os.path.isfile(xb0xdash):
+		file_path = xb0xdash
 	else:
 		show_error("\n Error: Cannot find valid xbe file:\n\n Looking for:\n  - xbe file\\xboxdash.xbe\n  - xbe file\\xb0xdash.xbe\n\n Please ensure the file exists and try again.")
 	
@@ -862,12 +876,15 @@ password=xbox'''
 		print('\n\n Colour {}\n Applied successfully\n'.format(colour))
 	
 	if ftp_enabled.lower() in ['1', 'yes', 'true']:
-		skin_xip = os.path.join(xbdash_folder, 'skin.xip')
 		if file_path:
 			print(' Uploading:')
 			upload_file(ftp_server, '/C/', file_path, ftp_username, ftp_password)
-			if skin_xip:
-				upload_file(ftp_server, '/C/xboxdashdata.185ead00/', skin_xip, ftp_username, ftp_password)
+			try:
+				skin_xip = os.path.join(xbdash_folder, 'skin.xip')
+				if skin_xip:
+					upload_file(ftp_server, '/C/xboxdashdata.185ead00/', skin_xip, ftp_username, ftp_password)
+			except:
+				pass
 		shutil.rmtree(tran_folder)
 
 time.sleep(2)
