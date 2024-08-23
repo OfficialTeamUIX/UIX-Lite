@@ -286,7 +286,7 @@ function BuildSSList()
 	configList[i] = "XONLINE:";
 	configValues[i] = "ShowInSettings-XOnline";
 	configSelect[i] = "toggleTF()";
-	i = i +1;
+	i = i + 1;
 	configList[i] = "Launcher:";
 	configValues[i] = "ShowInSettings-Launcher";
 	configSelect[i] = "toggleTF()";
@@ -298,7 +298,7 @@ function BuildSSList()
 	configList[i] = "Reboot:";
 	configValues[i] = "ShowInSettings-Reboot";
 	configSelect[i] = "toggleTF()";
-	i = i +1;
+	i = i + 1;
 	configList[i] = "Shutdown:";
 	configValues[i] = "ShowInSettings-Shutdown";
 	configSelect[i] = "toggleTF()";
