@@ -54,7 +54,7 @@ You can run a `.bat` file with specific parameters if you want to set up specifi
 --colour_file is set to a space " " so that it skips the skin entry input.
 ```batch
 @echo off
-"Xboxdash 5960 Colourizer.exe" --colour_file " " --target_color FF8855 --brightness_factor 0.95
+"Xboxdash 5960 Colourizer.exe" --colour_file " " --target_color FF8855 --brightness_factor 0.95```
 
 #### Linux
 
