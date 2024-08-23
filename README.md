@@ -55,9 +55,9 @@ Some of these features include;
  
  NOTE: The xbox onscreen keyboard is limited to 31 charaters. So, if you need more characters, just enter as much as you can and select Done. Then edit it again and some of the text will be moved into the title bar and you can add more text.
  
-## Launguage Support
+## Language Support
 
-* You can add German, French, Spanish, Italian, and Portuguese lauguage translations by placing the optional xlate.xbx into the C:\UIX Configs\ folder.
+* You can add German, French, Spanish, Italian, and Portuguese language translations by placing the optional xlate.xbx into the C:\UIX Configs\ folder.
 * Currently does not support CJK Characters.
 
 ## Example config.xbx
