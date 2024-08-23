@@ -417,7 +417,7 @@ DEF theTranslator Translator
 function Translate(text)
 {
 	var MatchWord = text.toUpperCase();
-	if(theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\xlate.xbx"))
+	if(theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\xlate.ini"))
 	{
 		var Languages = new Array( "ENGLISH","JAPANESE","DEUTSCH","FRANÇAIS","ESPAÑOL","ITALIANO","KOREAN","CHINESE","PORTUGUÊS");
 		var index = Math.max(0,theConfig.GetLanguage() - 1);
@@ -2040,10 +2040,10 @@ function initialize()
 	CacheFile = new Settings;
 	XlateFile = new Settings;
 	IconFile = new Settings;
-	ConfigFile.file = "Y:\\UIX Configs\\config.xbx";
-	CacheFile.file = "Y:\\UIX Configs\\Cache.xbx";
-	XlateFile.file = "Y:\\UIX Configs\\xlate.xbx";
-	IconFile.file = "Y:\\UIX Configs\\Icons.xbx";
+	ConfigFile.file = "Y:\\UIX Configs\\config.ini";
+	CacheFile.file = "Y:\\UIX Configs\\cache.ini";
+	XlateFile.file = "Y:\\UIX Configs\\xlate.ini";
+	IconFile.file = "Y:\\UIX Configs\\icons.ini";
 	
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
@@ -2056,7 +2056,7 @@ function initialize()
 	bPartitionScanCompleted = GetSavedBooleanValue("ExtendedPartitions","PartitionScanCompleted");
 	if(bPartitionScanCompleted)
 	{
-		bPartitionScanCompleted = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\Cache.xbx");
+		bPartitionScanCompleted = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\cache.ini");
 		if(bPartitionScanCompleted)
 		{
 			bHasFdrive = GetSavedBooleanValue("ExtendedPartitions","HasFdrive");
