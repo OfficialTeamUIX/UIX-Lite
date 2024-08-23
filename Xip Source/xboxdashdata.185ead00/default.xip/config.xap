@@ -643,6 +643,7 @@ function setConfigMenuValue(x,y)
 DEF theConfigPanel Level
 {
 	archive "settings3.xip"
+	unloadable false
 	children
 	[
 		Inline

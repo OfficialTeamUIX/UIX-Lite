@@ -1838,6 +1838,11 @@ DEF theMainMenu Level
 			{
 				ScanPartitions();
 			}
+			else if(bRefreshCache)
+			{
+				bRefreshCache = false;
+				RefreshCache();
+			}
 			else if(bExecuteFile)
 			{
 				if (theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
@@ -1974,6 +1979,7 @@ var bHDDInitializing;
 var bHDDInitialized;
 var nPartitions;
 var bPartitionScanCompleted;
+var bRefreshCache;
 var bHasExtendedPartition;
 var bUseMainMenuAttract;
 var bMainMenuAttractFinish;

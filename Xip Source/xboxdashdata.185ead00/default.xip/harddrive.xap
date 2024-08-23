@@ -518,7 +518,8 @@ DEF theLauncher Level
 		
 		function OnYDown()
 		{
-			
+			bRefreshCache = true;
+			bHDDInitialize = true;
 		}
 		
 		function OnBDown()
