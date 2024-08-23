@@ -417,7 +417,7 @@ DEF theTranslator Translator
 function Translate(text)
 {
 	var MatchWord = text.toUpperCase();
-	if(theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\xlate.xbx"))
+	if(theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\xlate.ini"))
 	{
 		var Languages = new Array( "ENGLISH","JAPANESE","DEUTSCH","FRANÇAIS","ESPAÑOL","ITALIANO","KOREAN","CHINESE","PORTUGUÊS");
 		var index = Math.max(0,theConfig.GetLanguage() - 1);
@@ -465,6 +465,34 @@ function ParseEscapedChars(sText)
 }
 
 ///////////////////////////////////////////////////////////////////
+DEF theBGMesh Layer
+{
+    viewpoint Viewpoint
+    {
+        fieldOfView 1.2
+        position -500 0 0
+    }
+
+    children
+    [
+        DEF theBGMeshTransform Transform
+        {
+            children
+            [
+                DEF theBGMeshInline Inline
+                {
+                    preload true
+                    url "bg_mesh/CHAINS.xap"
+                    function onLoad()
+                    {
+                        LoadBGMeshValues();
+                    }
+                }
+            ]
+        }
+    ]
+}
+
 DEF theSkinInline Inline
 {
 	visible false
@@ -1617,7 +1645,8 @@ DEF theMainMenu Level
 					c.MainPod_1_Spinner.rpm = 1.3;      // Main Podshell 09
 					c.MainPod_2_Spinner.rpm = -2.3;     // Main Podshell 10
 					c.MainPod_3_Spinner.rpm = -1.0;     // Main Podshell 11
-					//c.MainPod_4_Spinner.rpm = -1.0;     // Main Podarm 1-4 
+					//c.MainPod_4_Spinner.rpm = -1.0;     // Main Podarm 1-4
+					c.select.children[0].visible = false;
 				}
 				else
 				{
@@ -2040,10 +2069,10 @@ function initialize()
 	CacheFile = new Settings;
 	XlateFile = new Settings;
 	IconFile = new Settings;
-	ConfigFile.file = "Y:\\UIX Configs\\config.xbx";
-	CacheFile.file = "Y:\\UIX Configs\\Cache.xbx";
-	XlateFile.file = "Y:\\UIX Configs\\xlate.xbx";
-	IconFile.file = "Y:\\UIX Configs\\Icons.xbx";
+	ConfigFile.file = "Y:\\UIX Configs\\config.ini";
+	CacheFile.file = "Y:\\UIX Configs\\Cache.ini";
+	XlateFile.file = "Y:\\UIX Configs\\xlate.ini";
+	IconFile.file = "Y:\\UIX Configs\\Icons.ini";
 	
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
@@ -2056,7 +2085,7 @@ function initialize()
 	bPartitionScanCompleted = GetSavedBooleanValue("ExtendedPartitions","PartitionScanCompleted");
 	if(bPartitionScanCompleted)
 	{
-		bPartitionScanCompleted = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\Cache.xbx");
+		bPartitionScanCompleted = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\Cache.ini");
 		if(bPartitionScanCompleted)
 		{
 			bHasFdrive = GetSavedBooleanValue("ExtendedPartitions","HasFdrive");
@@ -3627,3 +3656,89 @@ function SetSavedBooleanValue(x,y,z)
 		ConfigFile.SetValue(b,"false");
 	}
 }
+
+////////////////////////////////////////////////////////DNA///////////////////////////////////////////////////////////
+function LoadBGMeshValues()
+{
+    ConfigFile.section = "BGMesh";
+
+    var theDNA = ConfigFile.GetValue("BGMesh");
+    var DNAAlpha = ConfigFile.GetValue("Alpha");
+
+    ///dna spinner
+    var x = ConfigFile.GetValue("BGMesh1 rpm");
+    var y = ConfigFile.GetValue("BGMesh2 rpm");
+    var z = ConfigFile.GetValue("BGMesh3 rpm");
+
+    if((x == "") | (y == "") | (z == "")) { x = 2; y = 2; z = 2; }
+
+    var c = theBGMeshInline.children[0];
+    c.theDNA1.children[0].rpm = x;
+    c.theDNA3.children[0].rpm = y;
+    c.theDNA5.children[0].rpm = z;
+
+    if (theDNA == "chains")
+    {
+        c.DNA1_Mesh.url = "chain.xm";
+        c.DNA3_Mesh.url = "chain.xm";
+        c.DNA5_Mesh.url = "chain.xm";
+        c.theDNA1.SetTranslation(-5400, 0, -5100);
+        c.theDNA3.SetTranslation(0, 0, -5000);
+        c.theDNA5.SetTranslation(4000, 0, -5100);
+        c.theDNA1.SetAlpha(DNAAlpha);
+        c.theDNA3.SetAlpha(DNAAlpha);
+        c.theDNA5.SetAlpha(DNAAlpha);
+    }
+    else if (theDNA == "spirals")
+    {
+        c.DNA1_Mesh.url = "spirals.xm";
+        c.DNA3_Mesh.url = "spirals.xm";
+        c.DNA5_Mesh.url = "spirals.xm";
+        c.theDNA1.SetAlpha(DNAAlpha);
+        c.theDNA3.SetAlpha(DNAAlpha);
+        c.theDNA5.SetAlpha(DNAAlpha);
+    } 
+    else if (theDNA == "off")
+    {
+        c.DNA1_Mesh.url = "";
+        c.DNA3_Mesh.url = "";
+        c.DNA5_Mesh.url = "";
+        c.theDNA1.SetAlpha(0);
+        c.theDNA3.SetAlpha(0);
+        c.theDNA5.SetAlpha(0);
+    } 
+    else if (theDNA == "dna")
+    { 
+        c.DNA1_Mesh.url = "Backing_dna.xm";
+        c.DNA3_Mesh.url = "Backing_dna.xm";
+        c.DNA5_Mesh.url = "Backing_dna.xm";
+        c.DNAString1_Mesh.url = "Backing_dna_SIDES.xm";
+        c.DNAString3_Mesh.url = "Backing_dna_SIDES.xm";
+        c.DNAString5_Mesh.url = "Backing_dna_SIDES.xm";
+        c.theDNA1.SetAlpha(DNAAlpha);
+        c.theDNA3.SetAlpha(DNAAlpha);
+        c.theDNA5.SetAlpha(DNAAlpha);
+    }
+    else if (theDNA == "squigles")
+    { 
+        c.DNA1_Mesh.url = "Backing_squigles.xm";
+        c.DNA3_Mesh.url = "Backing_squigles.xm";
+        c.DNA5_Mesh.url = "Backing_squigles.xm";
+        c.DNAString1_Mesh.url = "Backing_squigles_sides.xm";
+        c.DNAString3_Mesh.url = "Backing_squigles_sides.xm";
+        c.DNAString5_Mesh.url = "Backing_squigles_sides.xm";
+        c.theDNA1.SetAlpha(DNAAlpha);
+        c.theDNA3.SetAlpha(DNAAlpha);
+        c.theDNA5.SetAlpha(DNAAlpha);
+    }
+    else if (theDNA == "corkscrews")
+    {
+        c.DNA1_Mesh.url = "corkscrews.xm";
+        c.DNA3_Mesh.url = "corkscrews.xm";
+        c.DNA5_Mesh.url = "corkscrews.xm";
+        c.theDNA1.SetAlpha(DNAAlpha);
+        c.theDNA3.SetAlpha(DNAAlpha);
+        c.theDNA5.SetAlpha(DNAAlpha);
+    }
+}
+////////////////////////////////////////////////////////DNA END////////////////////////////////////////////////////////
