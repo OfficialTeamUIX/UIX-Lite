@@ -138,7 +138,6 @@ function UpdatePreselectedAccountSelection(nAccountToBeSelected)
 DEF theAccountSelectionLevel Level
 {
 	archive "AccountSelection.xip"
-	unloadable false
 	children
 	[
 		Inline

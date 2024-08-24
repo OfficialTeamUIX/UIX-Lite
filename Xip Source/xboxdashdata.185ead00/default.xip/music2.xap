@@ -295,7 +295,6 @@ function OnMusicCopyComplete()
 DEF theMusicCopyMenu Level
 {
 	archive "Music_Copy3.xip"
-	unloadable false
 	children
 	[
 		Inline
@@ -1802,7 +1801,6 @@ function HandlePlayerMenu()
 DEF theMusicPlayMenu Level
 {
 	archive "Music_PlayEdit2.xip"
-	unloadable false
 	children
 	[
 		Inline
@@ -2404,7 +2402,6 @@ function StartMusicLevel()
 DEF theMusicMenu Level
 {
 	archive "Music2.xip"
-	unloadable false
 	children
 	[
 		Inline
