@@ -260,7 +260,7 @@ def upload_file(ftp_server, server_path, file_path, ftp_username='xbox', ftp_pas
 				sys.exit()
 
 fg_patches = [
-	# Updated 23rd August 2024 thanks BijJx and to the original patch creator, you know who you're.
+	# Updated 23rd August 2024 thanks BigJx and to the original patch creator, you know who you're.
 	# Description: F/G Support
 	{'apply': '1', 'address': 0x00000840, 'patch_type': '0', 'flip': '0', 'value': '07'},
 	{'apply': '1', 'address': 0x0001DCA2, 'patch_type': '0', 'flip': '0', 'value': '77C31B00E855FDFFFF31C0C3'},
@@ -738,7 +738,7 @@ password=xbox'''
 	ftp_password = settings.get('password', 'xbox')
 
 	# Check for xbe files
-	if not os.path.dir('xbe file'):
+	if not os.path.isdir('xbe file'):
 		os.makedirs('xbe file')
 	xboxdash = os.path.join('xbe file','xboxdash.xbe')
 	xb0xdash = os.path.join('xbe file','xb0xdash.xbe')
