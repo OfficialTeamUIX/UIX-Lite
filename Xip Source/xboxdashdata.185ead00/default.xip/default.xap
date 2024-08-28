@@ -784,9 +784,9 @@ function DisplayWaitingMessage()
 	{
 		var e = theConfig.GetLaunchParameter1();
 		bShowErrorPanel = false;
-		if( e == 2 )
+		if( e == 1 | e == 2 )
 		{
-			TellUser("ERROR MESSAGE 2", "theMainMenu.GoTo()");
+			TellUser("ERROR MESSAGE " + e, "theMainMenu.GoTo()");
 		}
 		else
 		{
@@ -1505,7 +1505,7 @@ function MainMenuAttract()
 {
 	var a = 0;
 	var c = theMainMenu.children[0].children[0];
-	
+	//EnableInput(false);
 	c.theMainMenuLevel.fade = a;
 	c.Rotating_Large_X.fade = a;
 	c.ring.fade = a; 
@@ -1869,6 +1869,7 @@ DEF theMainMenu Level
 		}
 		else if(bMainMenuAttractFinish)
 		{
+			//EnableInput(true);
 			bMainMenuAttractFinish = false;
 			theMainMenu.children[0].children[0].select.visible = true;
 			theMainMenu.children[0].children[0].Rotating_Large_X.fade = 0.25;
@@ -1992,7 +1993,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "240821"; //Date of commit YYMMDD
+	sBuildDate = "240826"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bLaunchDelay = false;
 	bExecuteFile = false;

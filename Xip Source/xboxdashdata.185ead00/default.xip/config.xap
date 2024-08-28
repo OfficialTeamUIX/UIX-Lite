@@ -643,7 +643,6 @@ function setConfigMenuValue(x,y)
 DEF theConfigPanel Level
 {
 	archive "settings3.xip"
-	unloadable false
 	children
 	[
 		Inline
@@ -667,8 +666,8 @@ DEF theConfigPanel Level
 	
 	shell Transform
 	{
-		scale 7 7 7 //150
-		translation 108.8 1.022000 -223.050006
+		scale 12 12 12 //150
+		translation 109.8 1.622000 -223.050006
 		children
 		[
 			DEF theConfigWaver Waver
