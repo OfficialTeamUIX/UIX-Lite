@@ -76,7 +76,7 @@ Some of these features include;
 
 ## Tile Caching Support
 
-* As of UIX Lite v0.4 UIX Lite we ahve implemented title caching, which on first run will scan your partition for titles and add them to a cache. This is done so you don't have to rescan the partitions after every restart. As a consequence, if you add or remove any titles, the cache must be refreshed. This can be done by pressing Y while in the Launcher or by navigating to Setting>UIX Settings>General Settings>Rescan Partitions.
+* As of UIX Lite v0.4 UIX Lite we have implemented title caching, which on first run will scan your partition for titles and add them to a cache. This is done so you don't have to rescan the partitions after every restart. As a consequence, if you add or remove any titles, the cache must be refreshed. This can be done by pressing Y while in the Launcher or by navigating to Setting>UIX Settings>General Settings>Rescan Partitions.
 
 ## Example config.xbx
 ```
