@@ -101,7 +101,7 @@ DEF theWholeThing Transform
 							{
 								material MaxMaterial
 								{
-									name "XBoxGreen2"
+									name "XBOXgreen"
 								}
 							}
 							geometry Text { font "Body" text "BACK" justify "end"}
@@ -235,7 +235,7 @@ DEF theWholeThing Transform
 							{
 								material MaxMaterial
 								{
-									name "XBoxGreen2"
+									name "XBOXgreen"
 								}
 							}
 							geometry Text { font "Body" text "SELECT" }
@@ -1714,8 +1714,10 @@ DEF theWholeThing Transform
 					scaleOrientation 0.967300 -0.088020 -0.237800 -0.030810
 					translation 0.231400 0.787100 0.111400
 				}
+				// behind list panel
 				DEF MU_L3_panel_tracklist Transform
 				{
+					visible true
 					children
 					[
 						Shape
@@ -1725,22 +1727,20 @@ DEF theWholeThing Transform
 								material MaxMaterial
 								{
 									name "PanelBacking_03"
-									//name "PanelBacking_04"
 								}
 								texture ImageTexture
 								{
 									//url "harddrivebg.bmp"
 									url "panel-trans.xbx"
-									//url "tracklist_lines.tga"
 								}
 							}
 							geometry DEF MU_L3_panel_tracklist-FACES Mesh { url "MU_L3_panel_tracklist-FACES.xm" }
 						}
 					]
 					rotation 0.999900 -0.008726 -0.008501 -1.597000
-					scale 0.124700 0.124700 0.124700
+					scale 0.134700 0.504700 0.149700
 					scaleOrientation -0.568600 -0.001809 0.822600 -0.007800
-					translation -0.048920 0.573800 0.114600
+					translation -0.099920 0.563800 0.114600
 				}
 				// Track list of names
 				DEF TrackNames Transform
@@ -1754,12 +1754,12 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName1 Text { font "Body" width -14.5 translate false text "1." }
+									geometry DEF TrackName1 Text { font "Body" width -16 translate false text "1." }
 								}
 								
 							]
 							scale 0.13 0.13 0.13
-							translation -0.37 0.556 0.119100
+							translation -0.42 0.569 0.119100
 						}
 						Transform
 						{
@@ -1768,13 +1768,13 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName2 Text { font "Body" width -14.5 translate false text"2."}
+									geometry DEF TrackName2 Text { font "Body" width -16 translate false text"2."}
 								}
 								
 							]
 							scale 0.13 0.13 0.13
 							//translation -0.38 0.442 0.1
-							translation -0.37 0.405 0.119200
+							translation -0.42 0.407 0.119200
 						}
 						Transform
 						{
@@ -1783,12 +1783,12 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName3 Text { font "Body" width -14.5 translate false text "3."}
+									geometry DEF TrackName3 Text { font "Body" width -16 translate false text "3."}
 								}
 								
 							]
 							scale 0.13 0.13 0.13
-							translation -0.37 0.254 0.119300
+							translation -0.42 0.245 0.119300
 						}
 						Transform
 						{
@@ -1797,12 +1797,12 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName4 Text { font "Body" width -14.5 translate false text "4."}
+									geometry DEF TrackName4 Text { font "Body" width -16 translate false text "4."}
 								}
 								
 							]
 							scale 0.13 0.13 0.13
-							translation -0.37 0.098 0.119400
+							translation -0.42 0.083 0.119400
 						}
 						Transform
 						{
@@ -1811,12 +1811,12 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName5 Text { font "Body" width -14.5 translate false text "5."}
+									geometry DEF TrackName5 Text { font "Body" width -16 translate false text "5."}
 								}
 								
 							]
 							scale 0.13 0.13 0.13
-							translation -0.37 -0.057 0.119500
+							translation -0.42 -0.079 0.119500
 						}
 						Transform
 						{
@@ -1825,12 +1825,12 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName6 Text { font "Body" width -14.5 translate false text "6."}
+									geometry DEF TrackName6 Text { font "Body" width -16 translate false text "6."}
 								}
 								
 							]
 							scale 0.13 0.13 0.13
-							translation -0.37 -0.210 0.119600
+							translation -0.42 -0.241 0.119600
 						}
 						Transform
 						{
@@ -1839,12 +1839,12 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName7 Text { font "Body" width -14.5 translate false text "7."}
+									geometry DEF TrackName7 Text { font "Body" width -16 translate false text "7."}
 								}
 								
 							]
 							scale 0.13 0.13 0.13
-							translation -0.37 -0.364 0.119700
+							translation -0.42 -0.403 0.119700
 						}
 						Transform
 						{
@@ -1853,13 +1853,13 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName8 Text { font "Body" width -14.5 translate false text "8."}
+									geometry DEF TrackName8 Text { font "Body" width -16 translate false text "8."}
 								}
 								
 							]
 							scale 0.13 0.13 0.13
 							//translation -0.38 -0.482 0.1
-							translation -0.37 -0.523 0.119800
+							translation -0.42 -0.565 0.119800
 						}
 						Transform
 						{
@@ -1868,17 +1868,17 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName9 Text { font "Body" width -14.5 translate false text "9."}
+									geometry DEF TrackName9 Text { font "Body" width -16 translate false text "9."}
 								}
 								
 							]
 							scale 0.13 0.13 0.13
 							//translation -0.38 -0.58 0.1
-							translation -0.37 -0.686 0.119900
+							translation -0.42 -0.728 0.119900
 						}
 					]
 				}
-				// Track list of numbers
+				// Track list of numbers (not used)
 				DEF TrackNumbers Transform
 				{
 					children
@@ -2013,7 +2013,7 @@ DEF theWholeThing Transform
 				}
 				DEF MU_morearrow_up Transform
 				{
-					visible false
+					visible true
 					children
 					[
 						Shape
@@ -2029,13 +2029,13 @@ DEF theWholeThing Transform
 						}
 					]
 					rotation 0.001003 -0.697800 0.716300 -3.144000
-					scale 0.123300 0.123300 0.123300
+					scale 0.133300 0.123300 0.123300
 					scaleOrientation -1.000000 -0.001587 -0.003636 -0.315100
-					translation 1.561000 0.568100 0.129800
+					translation 1.700000 0.568100 0.129800
 				}
 				DEF MU_morearrow_down Transform
 				{
-					visible false
+					visible true
 					children
 					[
 						Shape
@@ -2051,12 +2051,14 @@ DEF theWholeThing Transform
 						}
 					]
 					rotation -1.000000 -0.001438 0.001476 -1.545000
-					scale 0.123300 0.123300 0.123300
+					scale 0.133300 0.123300 0.123300
 					scaleOrientation 1.000000 0.000329 -0.002145 -0.675500
-					translation 1.561000 -0.625100 0.161000
+					translation 1.700000 -0.675100 0.161000
 				}
+				// top panel (games etc...)
 				DEF MU_L3_panel_headerc Transform
 				{
+					visible true
 					children
 					[
 						Shape
@@ -2072,12 +2074,13 @@ DEF theWholeThing Transform
 						}
 					]
 					rotation -0.999900 -0.008726 0.008958 -1.545000
-					scale 0.124700 0.124700 0.124700
+					scale 0.134700 0.124700 0.124700
 					scaleOrientation 0.914100 -0.060250 -0.401100 -0.012380
-					translation 0.485200 0.775200 0.008949
+					translation 0.495200 0.775200 0.008949
 				}
 				DEF MU_L3_panel_headerb Transform
 				{
+					visible true
 					children
 					[
 						Shape
@@ -2093,12 +2096,13 @@ DEF theWholeThing Transform
 						}
 					]
 					rotation -0.999900 -0.008726 0.008958 -1.545000
-					scale 0.124700 0.124700 0.124700
+					scale 0.134700 0.124700 0.124700
 					scaleOrientation 0.914100 -0.060250 -0.401100 -0.012380
-					translation 0.485200 0.775200 0.009149
+					translation 0.495200 0.775200 0.009149
 				}
 				DEF MU_L3_panel_header Transform
 				{
+					visible true
 					children
 					[
 						Shape
@@ -2114,12 +2118,13 @@ DEF theWholeThing Transform
 						}
 					]
 					rotation -0.999900 -0.008726 0.008958 -1.545000
-					scale 0.124700 0.124700 0.124700
+					scale 0.134700 0.124700 0.124700
 					scaleOrientation 0.914100 -0.060250 -0.401100 -0.012380
-					translation 0.485200 0.775200 0.009549
+					translation 0.495200 0.775200 0.009549
 				}
 				DEF SubMenuHeaderText Transform
 				{
+					visible true
 					children
 					[
 						Shape
@@ -2131,15 +2136,16 @@ DEF theWholeThing Transform
 									name "NavType"
 								}
 							}
-							geometry DEF SubMenuHeaderText Text { font "heading" }
+							geometry DEF SubMenuHeaderText Text { font "heading" width -15 }
 						}
 					]
-					scale 0.134000 0.134000 0.134000 
-					//translation 0.229200 0.900200 0.009549
-					translation -0.386200 0.900200 0.009549
+					scale 0.144000 0.134000 0.134000 
+					translation -0.496200 0.880200 0.009549
 				}
+				// bottom panel (games etc...)
 				DEF MU_L3_panel_audiocontrolsc Transform
 				{
+					visible true
 					children
 					[
 						Shape
@@ -2155,12 +2161,13 @@ DEF theWholeThing Transform
 						}
 					]
 					rotation 0.006089 -0.697800 0.716300 -3.154000
-					scale 0.124700 0.124700 0.124700
+					scale 0.132000 0.124700 0.104700
 					scaleOrientation -0.999100 -0.033150 0.027670 -0.149200
-					translation 0.426600 -0.804300 0.050210
+					translation 0.470000 -0.844300 0.050210
 				}
 				DEF MU_L3_panel_audiocontrolsb Transform
 				{
+					visible true
 					children
 					[
 						Shape
@@ -2176,12 +2183,13 @@ DEF theWholeThing Transform
 						}
 					]
 					rotation 0.006089 -0.697800 0.716300 -3.154000
-					scale 0.124700 0.124700 0.124700
+					scale 0.132000 0.124700 0.104700
 					scaleOrientation -0.999100 -0.033150 0.027670 -0.149200
-					translation 0.426600 -0.804300 0.050410
+					translation 0.470000 -0.844300 0.050410
 				}
 				DEF MU_L3_panel_audiocontrols Transform
 				{
+					visible true
 					children
 					[
 						Shape
@@ -2197,12 +2205,13 @@ DEF theWholeThing Transform
 						}
 					]
 					rotation 0.006089 -0.697800 0.716300 -3.154000
-					scale 0.124700 0.124700 0.124700
+					scale 0.132000 0.124700 0.104700
 					scaleOrientation -0.999100 -0.033150 0.027670 -0.149200
-					translation 0.426600 -0.804300 0.050710
+					translation 0.470000 -0.844300 0.050710
 				}
 				DEF LowerPanelText Transform
 				{
+					visible true
 					children
 					[
 						Shape
@@ -2214,15 +2223,16 @@ DEF theWholeThing Transform
 									name "NavType"
 								}
 							}
-							geometry DEF LowerPanelText Text { font "heading" justify "end" }
+							geometry DEF LowerPanelText Text { font "heading" width -16 justify "end" }
 						}
 					]
-					scale 0.224700 0.224700 0.224700 
-					translation 1.840000 -0.994300 0.050710
-					//translation 0.426600 -0.854300 0.050710
+					scale 0.152000 0.224700 0.224700
+					translation 1.900000 -1.034300 0.050710
 				}
+				// far left panel (small) hidden
 				DEF MU_L3_arm01_06 Transform
 				{
+					visible false
 					children
 					[
 						Shape
@@ -2238,12 +2248,13 @@ DEF theWholeThing Transform
 						}
 					]
 					rotation 0.002964 -0.697800 0.716300 -3.160000
-					scale 0.035640 0.035640 0.035640
+					scale 0.045640 0.035640 0.035640
 					scaleOrientation 0.930700 0.365500 -0.011250 -0.027360
-					translation -0.675400 0.475700 0.150700
+					translation -0.685400 0.475700 0.150700
 				}
 				DEF MU_L3_panel_support_02c Transform
 				{
+					visible false
 					children
 					[
 						Shape
@@ -2259,12 +2270,13 @@ DEF theWholeThing Transform
 						}
 					]
 					rotation 0.000000 -0.697800 0.716300 -3.142000
-					scale 0.124700 0.124700 0.124700
+					scale 0.134700 0.124700 0.124700
 					scaleOrientation -0.999900 0.001096 -0.013850 -0.614900
-					translation -0.302200 -0.769500 0.056640
+					translation -0.312200 -0.769500 0.056640
 				}
 				DEF MU_L3_panel_support_02b Transform
 				{
+					visible false
 					children
 					[
 						Shape
@@ -2280,12 +2292,13 @@ DEF theWholeThing Transform
 						}
 					]
 					rotation 0.000000 -0.697800 0.716300 -3.142000
-					scale 0.124700 0.124700 0.124700
+					scale 0.134700 0.124700 0.124700
 					scaleOrientation -0.999900 0.001096 -0.013850 -0.614900
-					translation -0.302200 -0.769500 0.056840
+					translation -0.312200 -0.769500 0.056840
 				}
 				DEF MU_L3_panel_support_02 Transform
 				{
+					visible false
 					children
 					[
 						Shape
@@ -2301,12 +2314,14 @@ DEF theWholeThing Transform
 						}
 					]
 					rotation 0.000000 -0.697800 0.716300 -3.142000
-					scale 0.124700 0.124700 0.124700
+					scale 0.134700 0.124700 0.124700
 					scaleOrientation -0.999900 0.001096 -0.013850 -0.614900
-					translation -0.302200 -0.769500 0.057240
+					translation -0.312200 -0.769500 0.057240
 				}
+				// left panel (large)
 				DEF MU_L3_panel_support_01c Transform
 				{
+					visible true
 					children
 					[
 						Shape
@@ -2322,12 +2337,13 @@ DEF theWholeThing Transform
 						}
 					]
 					rotation -0.575700 -0.590700 -0.565400 -2.089000
-					scale 0.124700 0.124700 0.124700
+					scale 0.134700 0.124700 0.124700
 					scaleOrientation -0.930500 -0.364900 -0.031150 -0.188400
-					translation -0.542700 -0.071710 0.050270
+					translation -0.552700 -0.071710 0.050270
 				}
 				DEF MU_L3_panel_support_01b Transform
 				{
+					visible true
 					children
 					[
 						Shape
@@ -2343,12 +2359,13 @@ DEF theWholeThing Transform
 						}
 					]
 					rotation -0.575700 -0.590700 -0.565400 -2.089000
-					scale 0.124700 0.124700 0.124700
+					scale 0.134700 0.124700 0.124700
 					scaleOrientation -0.930500 -0.364900 -0.031150 -0.188400
-					translation -0.542700 -0.071710 0.049670
+					translation -0.552700 -0.071710 0.049670
 				}
 				DEF MU_L3_panel_support_01 Transform
 				{
+					visible true
 					children
 					[
 						Shape
@@ -2364,12 +2381,13 @@ DEF theWholeThing Transform
 						}
 					]
 					rotation -0.575700 -0.590700 -0.565400 -2.089000
-					scale 0.124700 0.124700 0.124700
+					scale 0.134700 0.124700 0.124700
 					scaleOrientation -0.930500 -0.364900 -0.031150 -0.188400
-					translation -0.542700 -0.071710 0.049870
+					translation -0.552700 -0.071710 0.049870
 				}
 				DEF MU_L3_text_custom Transform
 				{
+					visible true
 					children
 					[
 						Transform
@@ -2393,9 +2411,9 @@ DEF theWholeThing Transform
 						}
 					]
 					//rotation -0.999900 -0.008726 0.008958 -1.545000
-					scale 0.124700 0.124700 0.124700
+					scale 0.134700 0.124700 0.124700
 					scaleOrientation 0.198600 0.025940 -0.979700 -0.006882
-					translation 47.130001 -58.169998 204.0999941
+					translation 47.140001 -58.169998 204.0999941
 				}
 			]
 			rotation -1.000000 0.000000 0.000000 -3.168000

@@ -55,10 +55,28 @@ Some of these features include;
  
  NOTE: The xbox onscreen keyboard is limited to 31 charaters. So, if you need more characters, just enter as much as you can and select Done. Then edit it again and some of the text will be moved into the title bar and you can add more text.
  
-## Launguage Support
+## Language Support
 
-* You can add German, French, Spanish, Italian, and Portuguese lauguage translations by placing the optional xlate.xbx into the C:\UIX Configs\ folder.
+* You can add German, French, Spanish, Italian, and Portuguese language translations by placing the optional xlate.xbx into the C:\UIX Configs\ folder.
 * Currently does not support CJK Characters.
+
+## Skinning Support
+
+* As of UIX Lite v0.4 you are now able to apply custom skins to UIX Lite. Simply replace the skin.xip and xboxdash.xbe with ones from a prebuilt skin or use the tools created by Rocky5, and provided here, such as the [Xboxdash 5960 Colourizer](https://github.com/OfficialTeamUIX/UIX-Lite/tree/main/Tools/Colour%20Patcher) to patch the colors in the xboxdash.xbe or the [UIX Lite Skins Maker](https://github.com/OfficialTeamUIX/UIX-Lite/tree/main/Tools/Xip%20Skin%20maker) to create your own custom skin.
+
+## Launcher Icon Support
+
+* As of UIX Lite v0.4 you can now see the icon of your title as you browse thought the list in the Launcher. For this feature to work you must edit the Icons.xbx located in C:\UIX Configs\ to indicate to UIX Lite the TitleID for each of your titles. The format is [TitleName]=[TitleID].xbx where TitleName is the name of the directory that contain the title. Then you must obtain the icon to use (usually located in E:\TDATA\[TitleID]\TitleImage.xbx), rename it to [TitleID].xbx, and add it to the default.xip.
+* Several tools are available to add the icon files to the default.xip such as WinXip, VisualXIP, and XIP. (The current versions of VisualXIP and XIP are available under Assets in the [Tools](https://github.com/OfficialTeamUIX/UIX-Lite/releases/tag/Tools) release.)
+
+ NOTE: Ensure you have the "Tools>Options>Merge Mesh Files" option checked in VisualXIP or use the -m switch in XIP when using them to add files to your xips.
+
+* MobCat has created an awesome tool called [Iconinator](https://github.com/MobCat/UIXinator/releases) in [UIXinator](https://github.com/MobCat/UIXinator) that fully automates this process. It will load your config.xbx to get your content paths, then scan all the paths and collect your TitleNames, get their TitleIDs, obtain the icons (attemping to download ones that are missing), create the Icons.xbx, and add the icons to the default.xip.
+	- If you have python and want to run Iconinator from source you must first add the dependencies using "pip install -r requirements.txt" before running "python Iconinator.py".
+
+## Tile Caching Support
+
+* As of UIX Lite v0.4 UIX Lite we have implemented title caching, which on first run will scan your partition for titles and add them to a cache. This is done so you don't have to rescan the partitions after every restart. As a consequence, if you add or remove any titles, the cache must be refreshed. This can be done by pressing Y while in the Launcher or by navigating to Setting>UIX Settings>General Settings>Rescan Partitions.
 
 ## Example config.xbx
 ```

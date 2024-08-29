@@ -362,7 +362,6 @@ function GetTitleList(mnuName)
 DEF theLauncher Level
 {
 	archive "Music_PlayEdit2.xip"
-	unloadable false
 	children
 	[
 		Inline
@@ -519,7 +518,8 @@ DEF theLauncher Level
 		
 		function OnYDown()
 		{
-			
+			bRefreshCache = true;
+			bHDDInitialize = true;
 		}
 		
 		function OnBDown()

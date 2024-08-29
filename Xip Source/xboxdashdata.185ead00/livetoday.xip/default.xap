@@ -1,0 +1,979 @@
+DEF panel Transform
+{
+	children
+	[
+		DEF tube_01 Transform
+		{
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "Tubes"
+						}
+					}
+					geometry DEF tube_01-FACES Mesh { url "tube_01-FACES.xm" }
+				}
+			]
+			scale 0.181100 0.181100 0.181100
+			translation 4.444000 2.335000 -1.211000
+		}
+		DEF tube_02 Transform
+		{
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "Tubes"
+						}
+					}
+					geometry DEF tube_02-FACES Mesh { url "tube_02-FACES.xm" }
+				}
+			]
+			scale 0.181100 0.181100 0.181100
+			translation 2.178000 -2.523000 -1.039000
+		}
+		DEF top_grill Transform
+		{
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "grill grey"
+						}
+					}
+					geometry DEF top_grill-FACES Mesh { url "top_grill-FACES.xm" }
+				}
+			]
+			rotation -0.779200 -0.626700 -0.006760 -3.153000
+			scale 1.257000 0.990100 0.990100
+			scaleOrientation 0.034700 0.130800 0.990800 -0.130000
+			translation -1.475000 2.852000 -1.025000
+		}
+		DEF lower_grill Transform
+		{
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "grill grey"
+						}
+					}
+					geometry DEF lower_grill-FACES Mesh { url "lower_grill-FACES.xm" }
+				}
+			]
+			rotation -0.019320 -0.016600 0.999700 -1.495000
+			scale 1.257000 0.990100 0.990100
+			scaleOrientation -0.008932 0.133700 0.991000 -0.129900
+			translation -1.539000 -2.823000 -1.025000
+		}
+		DEF Line07 Transform
+		{
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "LiveChrome"
+						}
+						texture ImageTexture
+						{
+							url "LiveChrome.tga"
+						}
+					}
+					geometry DEF Line07-FACES Mesh { url "Line07-FACES.xm" }
+				}
+			]
+			rotation -1.000000 0.000000 0.000000 -1.571000
+			translation -3.126000 2.068000 -0.899200
+		}
+		DEF Line05 Transform
+		{
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "grey"
+						}
+					}
+					geometry DEF Line05-FACES Mesh { url "Line05-FACES.xm" }
+				}
+			]
+			rotation -1.000000 0.000000 0.000000 -1.571000
+			translation 1.234000 -0.624200 -0.750700
+		}
+		DEF Line06 Transform
+		{
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "grill grey"
+						}
+					}
+					geometry DEF Line06-FACES Mesh { url "Line06-FACES.xm" }
+				}
+			]
+			rotation -1.000000 0.000000 0.000000 -1.571000
+			scale 1.020000 1.020000 1.020000
+			translation -0.437000 -1.370000 -0.815400
+		}
+		DEF mainpanel Transform
+		{
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "dark green panels"
+						}
+					}
+					geometry DEF mainpanel-FACES Mesh { url "mainpanel-FACES.xm" }
+				}
+			]
+			rotation -1.000000 0.000000 0.000000 -1.571000
+			translation -0.213600 -0.764100 -0.616000
+		}
+		DEF top_panel Transform
+		{
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "dark green panels falloff"
+						}
+					}
+					geometry DEF top_panel-FACES Mesh { url "top_panel-FACES.xm" }
+				}
+			]
+			rotation -1.000000 0.000000 0.000000 -1.571000
+			translation 0.401900 1.985000 -0.591400
+		}
+		DEF footer Transform
+		{
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "footer"
+						}
+						texture ImageTexture
+						{
+							url "footer.tga"
+						}
+					}
+					geometry DEF footer-FACES Mesh { url "footer-FACES.xm" }
+				}
+			]
+			rotation -1.000000 0.000000 0.000000 -1.571000
+			translation -0.007278 -2.361000 -0.628400
+		}
+		DEF header Transform
+		{
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "live header"
+						}
+						texture ImageTexture
+						{
+							url "Live_header.tga"
+						}
+					}
+					geometry DEF header-FACES Mesh { url "header-FACES.xm" }
+				}
+			]
+			rotation -1.000000 0.000000 0.000000 -1.571000
+			scale 1.000000 0.187300 1.000000
+			translation 0.100700 2.321000 -0.368100
+		}
+		DEF Cylinder02 Transform
+		{
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "orangeEggGlow"
+						}
+						texture ImageTexture
+						{
+							url "Pulse1.tga"
+						}
+					}
+					geometry DEF Cylinder02-FACES Mesh { url "Cylinder02-FACES.xm" }
+				}
+			]
+			rotation -0.577400 -0.577400 0.577400 -2.094000
+			scale 1.270000 1.270000 1.270000
+			translation -3.899000 1.894000 -0.350800
+		}
+	]
+	translation 100.900002 3.892000 -226.199997
+}
+DEF select Transform
+{
+	children
+	[
+		DEF S_Lang_select_pod_inner01 Transform
+		{
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "CellEgg/Parts"
+						}
+					}
+					geometry DEF S_Lang_select_pod_inner01-FACES Mesh { url "S_Lang_select_pod_inner01-FACES.xm" }
+				}
+			]
+			rotation 0.000000 -1.000000 0.000000 -0.087270
+			scale 0.181100 0.181100 0.181100
+			scaleOrientation 0.963300 0.000000 -0.268400 -0.077920
+			translation 0.972000 -4.161000 0.765900
+		}
+		DEF S_Lang_select_text_a01 Transform
+		{
+			children
+			[
+				Transform
+				{
+					rotation 1.0 0.0 0.0 -1.571
+					scale 1.8 1.8 1.8
+					translation -0.1 0 0.1
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "NavType"
+								}
+							}
+							geometry Text { font "Heading" justify "middle" text "A" translate false }
+						}
+					]
+				}
+			]
+			rotation -0.998100 -0.043580 0.043580 -1.573000
+			scale 0.149700 0.149700 0.149700
+			scaleOrientation 0.000000 -0.510100 -0.860100 -0.004128
+			translation 0.040420 0.793700 -0.557400
+		}
+		DEF S_Lang_select_pod_outer01 Transform
+		{
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "CellEgg/Parts"
+						}
+					}
+					geometry DEF S_Lang_select_pod_outer01-FACES Mesh { url "S_Lang_select_pod_outer01-FACES.xm" }
+				}
+			]
+			rotation 0.000000 -1.000000 0.000000 -0.087270
+			scale 0.181100 0.181100 0.181100
+			scaleOrientation 0.963300 0.000000 -0.268400 -0.077920
+			translation 0.972000 -4.161000 0.765900
+		}
+		DEF S_Lang_select_text_select01 Transform
+		{
+			children
+			[
+				Transform
+				{
+					rotation 1.0 0.0 0.0 -1.571
+					scale 1.4 1.4 1.4
+					translation 1.5 0 0.3
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "XBOXgreen"
+								}
+							}
+							geometry Text { font "Body" justify "end" text "SELECT" }
+						}
+					]
+				}
+			]
+			rotation -0.945900 -0.218200 0.240200 -1.722000
+			scale 0.181100 0.181100 0.181100
+			scaleOrientation 0.307600 0.943200 -0.125400 -0.268500
+			translation -0.495600 0.845500 -0.272600
+		}
+	]
+	rotation 0.217900 0.974400 -0.055330 -0.509900
+	scale 0.964800 0.964800 0.964800
+	scaleOrientation -0.995100 0.000000 0.098970 -0.116300
+	translation 104.000000 0.801800 -226.000000
+}
+DEF gamepic Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				material MaxMaterial
+				{
+					name "MotdIcon"
+				}
+			}
+			geometry DEF gamepic-FACES Mesh { url "gamepic-FACES.xm" }
+		}
+	]
+	rotation 0.000000 0.707100 0.707100 -3.142000
+	scale 0.25 0.25 0.25
+	scaleOrientation 1.000000 0.000000 0.000000 0.000000
+	translation 101.900002 4.872000 -226.699997
+}
+DEF back Transform
+{
+	children
+	[
+		DEF S_Lang_select_pod_inner02 Transform
+		{
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "CellEgg/Parts"
+						}
+					}
+					geometry DEF S_Lang_select_pod_inner02-FACES Mesh { url "S_Lang_select_pod_inner02-FACES.xm" }
+				}
+			]
+			rotation 0.000000 -1.000000 0.000000 -0.087270
+			scale 0.181100 0.181100 0.181100
+			scaleOrientation 0.963300 0.000000 -0.268400 -0.077920
+			translation 0.972000 -4.161000 0.765900
+		}
+		DEF S_Lang_select_text_a02 Transform
+		{
+			children
+			[
+				Transform
+				{
+					rotation 1.0 0.0 0.0 -1.571
+					scale 2 2 2
+					translation -0.1 0 0.1
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "NavType"
+								}
+							}
+							geometry Text { font "Heading" translate false text "B" justify "middle" }
+						}
+					]
+				}
+			]
+			rotation -0.998100 -0.043580 0.043580 -1.573000
+			scale 0.149700 0.149700 0.149700
+			scaleOrientation 0.000000 -0.510100 -0.860100 -0.004128
+			translation 0.040420 0.793700 -0.557400
+		}
+		DEF S_Lang_select_pod_outer02 Transform
+		{
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "CellEgg/Parts"
+						}
+					}
+					geometry DEF S_Lang_select_pod_outer02-FACES Mesh { url "S_Lang_select_pod_outer02-FACES.xm" }
+				}
+			]
+			rotation 0.000000 -1.000000 0.000000 -0.087270
+			scale 0.181100 0.181100 0.181100
+			scaleOrientation 0.963300 0.000000 -0.268400 -0.077920
+			translation 0.972000 -4.161000 0.765900
+		}
+		DEF S_Lang_select_text_select02 Transform
+		{
+			children
+			[
+				Transform
+				{
+					rotation 1.0 0.0 0.0 -1.571
+					scale 1.5 1.5 1.5
+					translation -1 0 0.3
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "XBOXgreen"
+								}
+							}
+							geometry Text { font "Body" text "BACK" }
+						}
+					]
+				}
+			]
+			rotation -0.946400 -0.212400 0.243400 -1.737000
+			scale 0.181100 0.181100 0.181100
+			scaleOrientation 0.144300 0.979300 -0.142200 -0.284000
+			translation 0.513500 0.817900 -0.813400
+		}
+	]
+	rotation 0.217900 0.974400 -0.055330 -0.509900
+	scale 0.964800 0.964800 0.964800
+	scaleOrientation -0.995100 0.000000 0.098970 -0.116300
+	translation 97.779999 0.709900 -226.000000
+}
+DEF Highlight_05 Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				material MaxMaterial
+				{
+					name "highlight"
+				}
+				texture ImageTexture
+				{
+					url "highlight.tga"
+				}
+			}
+			geometry DEF Highlight_05-FACES Mesh { url "Highlight_05-FACES.xm" }
+		}
+	]
+	rotation -1.000000 0.000000 0.000000 -1.571000
+	scale 1.164000 1.164000 1.164000
+	translation 99.580002 4.731000 -226.800003
+}
+DEF Highlight_06 Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				material MaxMaterial
+				{
+					name "button"
+				}
+				texture ImageTexture
+				{
+					url "button.tga"
+				}
+			}
+			geometry DEF Highlight_06-FACES Mesh { url "Highlight_06-FACES.xm" }
+		}
+	]
+	rotation -1.000000 0.000000 0.000000 -1.571000
+	scale 1.164000 1.164000 1.164000
+	translation 99.580002 5.244000 -226.800003
+}
+DEF Highlight_07 Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				material MaxMaterial
+				{
+					name "button"
+				}
+				texture ImageTexture
+				{
+					url "button.tga"
+				}
+			}
+			geometry DEF Highlight_07-FACES Mesh { url "Highlight_07-FACES.xm" }
+		}
+	]
+	rotation -1.000000 0.000000 0.000000 -1.571000
+	scale 1.164000 1.164000 1.164000
+	translation 99.580002 4.217000 -226.800003
+}
+DEF Highlight_08 Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				material MaxMaterial
+				{
+					name "button"
+				}
+				texture ImageTexture
+				{
+					url "button.tga"
+				}
+			}
+			geometry DEF Highlight_08-FACES Mesh { url "Highlight_08-FACES.xm" }
+		}
+	]
+	rotation -1.000000 0.000000 0.000000 -1.571000
+	scale 1.164000 1.164000 1.164000
+	translation 99.580002 3.704000 -226.800003
+}
+DEF Icon_02 Transform
+{
+	children
+	[
+		DEF Shape11 Transform
+		{
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "NavType"
+						}
+					}
+					geometry DEF Shape11-FACES Mesh { url "Shape11-FACES.xm" }
+				}
+			]
+			rotation -1.000000 0.000000 0.000000 -1.571000
+			translation -0.021650 0.007375 -0.000014
+		}
+		DEF Shape10 Transform
+		{
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "NavType"
+						}
+					}
+					geometry DEF Shape10-FACES Mesh { url "Shape10-FACES.xm" }
+				}
+			]
+			rotation -1.000000 0.000000 0.000000 -1.571000
+			translation -0.021640 0.007375 -0.000014
+		}
+	]
+	scale 0.744500 0.744500 0.744500
+	translation 97.769997 2.670000 -226.600006
+}
+DEF message_Text_01 Transform
+{
+	children
+	[
+		Transform
+		{
+			rotation 1.0 0.0 0.0 -1.571
+			scale 0.13 0.13 0.13
+			translation -0.97 0 0.025
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "NavType"
+						}
+					}
+					geometry Text { font "Body" width 10.5 height 8.5 indentWidth 4.3 indentHeight 3.8 translate false }
+				}
+			]
+		}
+	]
+	rotation -1.000000 -0.002227 0.000831 -1.572000
+	scale 2.114000 2.114000 2.114000
+	scaleOrientation 0.578100 0.335400 -0.743800 -0.459000
+	translation 103.599998 4.791000 -226.699997
+}
+DEF Icon_01 Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				material MaxMaterial
+				{
+					name "NavType"
+				}
+			}
+			geometry DEF Icon_01-FACES Mesh { url "Icon_01-FACES.xm" }
+		}
+	]
+	rotation -0.911000 0.291600 0.291600 -1.664000
+	scale 0.600400 0.600400 0.600400
+	scaleOrientation -0.271600 0.922800 0.273300 -0.831400
+	translation 97.769997 3.147000 -226.600006
+}
+DEF Icon_03 Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				material MaxMaterial
+				{
+					name "NavType"
+				}
+			}
+			geometry DEF Icon_03-FACES Mesh { url "Icon_03-FACES.xm" }
+		}
+	]
+	rotation -1.000000 0.000000 0.000000 -1.571000
+	scale 0.600400 0.600400 0.600400
+	translation 97.769997 2.209000 -226.600006
+}
+DEF Text_DATE Transform
+{
+	children
+	[
+		Transform
+		{
+			rotation 1.0 0.0 0.0 -1.571
+			scale 0.1 0.1 0.1
+			translation 0.14 0 0
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "NavType"
+						}
+					}
+					geometry Text { font "Body" justify "end" text "<date>" }
+				}
+			]
+		}
+	]
+	rotation -1.000000 -0.002227 0.000831 -1.572000
+	scale 2.579000 2.579000 2.579000
+	scaleOrientation 0.346600 0.191800 -0.918200 -0.553500
+	translation 103.900002 5.501000 -226.500000
+}
+DEF Text_FRIENDS_01 Transform
+{
+	children
+	[
+		Transform
+		{
+			rotation 1.0 0.0 0.0 -1.571
+			scale 0.17 0.17 0.17
+			translation -0.6 0 0.03
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "NavType"
+						}
+					}
+					geometry Text { font "Body" text "LIVE TODAY FRIEND STATUS INVITATIONS" }
+				}
+			]
+		}
+	]
+	rotation -1.000000 -0.000244 -0.000244 -1.571000
+	scale 1.468000 1.468000 1.468000
+	translation 99.050003 3.093000 -226.699997
+}
+DEF Text_FRIENDS_03 Transform
+{
+	children
+	[
+		Transform
+		{
+			rotation 1.0 0.0 0.0 -1.571
+			scale 0.17 0.17 0.17
+			translation -0.65 0 0.3
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "NavType"
+						}
+					}
+					geometry Text { font "Body" text "LIVE TODAY FRIEND STATUS FRIEND REQUESTS" }
+				}
+			]
+		}
+	]
+	rotation -1.000000 -0.000244 -0.000244 -1.571000
+	scale 1.468000 1.468000 1.468000
+	translation 99.129997 2.548000 -226.699997
+}
+DEF Text_FRIENDS_02 Transform
+{
+	children
+	[
+		Transform
+		{
+			rotation 1.0 0.0 0.0 -1.571
+			scale 0.17 0.17 0.17
+			translation -0.685 0 0.32
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "NavType"
+						}
+					}
+					geometry Text { font "Body" text "LIVE TODAY FRIEND STATUS FRIENDS ONLINE" }
+				}
+			]
+		}
+	]
+	rotation -1.000000 -0.000244 -0.000244 -1.571000
+	scale 1.468000 1.468000 1.468000
+	translation 99.180000 3.046000 -226.699997
+}
+DEF text_gamertag Transform
+{
+	children
+	[
+		Transform
+		{
+			rotation 1.0 0.0 0.0 -1.571
+			scale 0.9 0.9 0.9
+			translation 3.9 0 0
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "NavType"
+						}
+					}
+					geometry Text { font "Body" translate false justify "end" }
+				}
+			]
+		}
+	]
+	rotation -1.000000 0.000000 0.000000 -1.571000
+	scale 0.282500 0.282500 0.282500
+	translation 103.099998 5.825000 -226.300003
+}
+DEF text_menu_01 Transform
+{
+	children
+	[
+		Transform
+		{
+			rotation 1.0 0.0 0.0 -1.571
+			scale 0.20 0.20 0.20
+			translation -0.33 0 0
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "OrangeNavType"
+						}
+					}
+					geometry Text { font "Body" text "LIVE TODAY FRIENDS MENU" }
+				}
+			]
+		}
+	]
+	rotation -1.000000 -0.000244 -0.000244 -1.571000
+	scale 1.330000 1.330000 1.330000
+	translation 98.120003 5.150000 -226.600006
+}
+DEF text_menu_03 Transform
+{
+	children
+	[
+		Transform
+		{
+			rotation 1.0 0.0 0.0 -1.571
+			scale 0.2 0.2 0.2
+			translation -0.99 0 0.4
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "OrangeNavType"
+						}
+					}
+					geometry Text { font "Body" text "LIVE TODAY ACCOUNT MANAGEMENT MENU" }
+				}
+			]
+		}
+	]
+	rotation -1.000000 -0.000244 -0.000244 -1.571000
+	scale 1.330000 1.330000 1.330000
+	translation 98.980003 4.668000 -226.600006
+}
+DEF text_menu_02 Transform
+{
+	children
+	[
+		Transform
+		{
+			rotation 1.0 0.0 0.0 -1.571
+			scale 0.2 0.2 0.2
+			translation -0.47 0 0.4
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "white"
+						}
+					}
+					geometry Text { font "Body" text "LIVE TODAY VOICE CHAT MENU" }
+				}
+			]
+		}
+	]
+	rotation -1.000000 -0.000244 -0.000244 -1.571000
+	scale 1.330000 1.330000 1.330000
+	translation 98.309998 5.175000 -226.600006
+}
+DEF text_menu_04 Transform
+{
+	children
+	[
+		Transform
+		{
+			rotation 1.0 0.0 0.0 -1.571
+			scale 0.2 0.2 0.2
+			translation -0.47 0 0.4
+			children
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "OrangeNavType"
+						}
+					}
+					geometry Text { font "Body" text "LIVE TODAY MAIN MENU" }
+				}
+			]
+		}
+	]
+	rotation -1.000000 -0.000244 -0.000244 -1.571000
+	scale 1.330000 1.330000 1.330000
+	translation 98.279999 4.156000 -226.600006
+}
+

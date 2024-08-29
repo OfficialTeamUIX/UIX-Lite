@@ -1,7 +1,7 @@
 DEF theSkin Level
 {
 	archive "Skin.xip"
-
+	unloadable false
 	children
 	[
 		DEF theIconsPath Inline

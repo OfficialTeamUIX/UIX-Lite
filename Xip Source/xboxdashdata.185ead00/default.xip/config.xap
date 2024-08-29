@@ -657,7 +657,7 @@ DEF theConfigPanel Level
 				var c = theConfigPanel.children[0].children[0];
 				c.theLeftSlots.children[0].children[0].appearance.name = "CellEgg/Partsz";
 				c.theBuildInfo.children[0].geometry.text = "Build: " + sBuildDate;
-				c.theConfigHeader.children[0].appearance.name = "CellEgg/Partsz";
+				c.theConfigHeader.children[0].appearance.name = "NavType";
 				c.theConfigHeader.children[0].geometry.text = "UIX Lite";
 				var cValue = getConfigMenuValue("default-ConfigPanelIcon");
 				if(cValue.toLowerCase() == "globe") { c.GlobeIcon.visible = true; } else { c.ConsoleIcon.visible = true; }
