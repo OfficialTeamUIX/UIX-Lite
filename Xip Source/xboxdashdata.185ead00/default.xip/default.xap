@@ -1973,7 +1973,7 @@ var launchXbe;
 var sLocation;
 var sFolder;
 var bLaunchItem;
-var bLaunchDelay;
+var bUseUnderlay;
 var bExecuteFile;
 var bHDDInitialize;
 var bHDDInitializing;
@@ -1993,9 +1993,8 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "240826"; //Date of commit YYMMDD
+	sBuildDate = "240829"; //Date of commit YYMMDD
 	bLaunchItem = false;
-	bLaunchDelay = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
 	bHDDInitializing = false;
@@ -2055,6 +2054,7 @@ function initialize()
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
 	btHcScreenSaver = GetSavedBooleanValue("default","UsetHcScreenSaver");
 	bUseMainMenuAttract = GetSavedBooleanValue("default","UseMainMenuAttract");
+	bUseUnderlay = GetSavedBooleanValue("default","UseListUnderlay");
 	if(bUseMainMenuAttract) nTime = 3.1; else nTime = 1.4;
 	
 	DriveLocations = new Array("Y:\\","C:\\");

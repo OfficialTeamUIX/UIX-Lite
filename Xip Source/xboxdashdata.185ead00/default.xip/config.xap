@@ -81,6 +81,10 @@ function buildGSList() //just copy this function for more subsections
 	configValues[i] = "default-LauncherOrbIcon";
 	configSelect[i] = "toggleLOI()";
 	i = i + 1;
+	configList[i] = "Use List Underlay:";
+	configValues[i] = "default-UseListUnderlay";
+	configSelect[i] = "toggleTF()";
+	i = i + 1;
 	configList[i] = "Toggle Noisy Camera";
 	configValues[i] = "-blank-";
 	configSelect[i] = "ToggleNoisyCam()";
@@ -442,6 +446,7 @@ function toggleAM()
 
 function PathEllipsis(x)
 {
+	if(x.indexOf("\\") < 0) return x.substr(0, MaxCharacters) + "...";
 	var size = x.length();
 	var diff = Math.ceil((size - MaxCharacters) / 2);
 	var half = Math.floor(size/2);
@@ -658,6 +663,7 @@ DEF theConfigPanel Level
 				c.theBuildInfo.children[0].geometry.text = "Build: " + sBuildDate;
 				c.theConfigHeader.children[0].appearance.name = "NavType";
 				c.theConfigHeader.children[0].geometry.text = "UIX Lite";
+				c.MU_L3_panel_tracklist_overlay.visible = bUseUnderlay;
 				var cValue = getConfigMenuValue("default-ConfigPanelIcon");
 				if(cValue.toLowerCase() == "globe") { c.GlobeIcon.visible = true; } else { c.ConsoleIcon.visible = true; }
 			}
@@ -903,7 +909,12 @@ function selectConfigDown()
 					if(inLV2 == true)
 					{
 						c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
-						c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[curItem + (i - 8)]));
+						var cValue = Translate(getConfigMenuValue(configValues[curItem + (i - 8)]));
+						if(cValue.length() > 20) { 
+							if(inQuickLaunchMenu) { cValue = PathEllipsis(cValue); }
+							else { cValue = cValue.substr(0, 20) + "..."; }
+						}
+						c.theRightSlots.children[i].children[0].geometry.text = cValue;
 					}
 				}
 			}
@@ -976,7 +987,12 @@ function selectConfigUp()
 						if(inLV2 == true)
 						{
 							c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
-							c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[curItem + i]));
+							var cValue = Translate(getConfigMenuValue(configValues[curItem + i]));
+							if(cValue.length() > 20) { 
+								if(inQuickLaunchMenu) { cValue = PathEllipsis(cValue); }
+								else { cValue = cValue.substr(0, 20) + "..."; }
+							}
+							c.theRightSlots.children[i].children[0].geometry.text = cValue;
 						}
 					}
 				}
@@ -1043,7 +1059,8 @@ function scrollConfigDown()
 	else if(curItem + 9 > configList.length - 1)
 	{
 		unTabSlot(curHold);
-		loop = Modulo(configList.length,9); 
+		loop = Modulo(configList.length,9);
+		if(loop == 0) loop = 9;
 		curItem = configList.length - 1;
 		curHold = loop - 1;
 		c.theDownArrow.visible = false;
@@ -1069,7 +1086,13 @@ function scrollConfigDown()
 			if(inLV2 == true)
 			{
 				c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
-				c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[(curItem - curHold) + i]));
+				var cValue = Translate(getConfigMenuValue(configValues[(curItem - curHold) + i]));
+				if(cValue.length() > 20) { 
+					if(inQuickLaunchMenu) { cValue = PathEllipsis(cValue); }
+					else { cValue = cValue.substr(0, 20) + "..."; }
+				}
+				c.theRightSlots.children[i].children[0].geometry.text = cValue;
+
 			}
 		}
 	}
@@ -1150,7 +1173,12 @@ function scrollConfigUp()
 			if(inLV2 == true)
 			{
 				c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
-				c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[(curItem - curHold) + i]));
+				var cValue = Translate(getConfigMenuValue(configValues[(curItem - curHold) + i]));
+				if(cValue.length() > 20) { 
+					if(inQuickLaunchMenu) { cValue = PathEllipsis(cValue); }
+					else { cValue = cValue.substr(0, 20) + "..."; }
+				}
+				c.theRightSlots.children[i].children[0].geometry.text = cValue;
 			}
 		}
 	}
