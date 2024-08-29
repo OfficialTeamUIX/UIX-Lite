@@ -178,6 +178,184 @@ DEF theWholeThing Transform
 			scale 0.282300 0.282300 0.282300
 			translation -48.990000 52.450001 -205.000000
 		}
+		
+		DEF refresh Transform
+		{
+			visible false
+			fade 0.5
+			children
+			[
+				DEF MU_back_probearm Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "FlatSurfaces"
+								}
+							}
+							geometry DEF MU_back_probearm-FACES Mesh { url "MU_back_probearm-FACES.xm" }
+						}
+					]
+					rotation 0.753300 0.386200 -0.532400 -1.747000
+					scale 0.465000 0.465000 0.465000
+					scaleOrientation 0.995500 -0.037260 0.087360 -0.624100
+					translation 20.680000 14.960000 6.071000
+				}
+				DEF MU_back_probe Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "FlatSurfaces"
+								}
+							}
+							geometry DEF MU_back_probe-FACES Mesh { url "MU_back_probe-FACES.xm" }
+						}
+					]
+					rotation 0.753300 0.386200 -0.532400 -1.747000
+					scale 0.465000 0.465000 0.465000
+					scaleOrientation 0.995500 -0.037260 0.087360 -0.624100
+					translation 19.790001 14.110000 6.235000
+				}
+				DEF MU_back_pod_inner Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "CellEgg/Parts"
+								}
+							}
+							geometry DEF MU_back_pod_inner-FACES Mesh { url "MU_back_pod_inner-FACES.xm" }
+						}
+					]
+					rotation -1.000000 0.000000 0.000000 -3.142000
+					scale 0.465000 0.465000 0.465000
+					translation 11.010000 -11.290000 3.150000
+				}
+				DEF MU_Text_b Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "NavType"
+								}
+							}
+							geometry Text { font "heading" justify "middle" translate false text "Y" }
+						}
+					]
+					//rotation -1.000000 0.000000 0.000000 -1.571000
+					scale 0.625000 0.625000 0.465000
+					//scaleOrientation 0.000000 0.000000 1.000000 -0.003505
+					translation 1.889000 2.422000 -0.409300
+				}
+				DEF MU_Text_back Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "XBOXgreen"
+								}
+							}
+							geometry Text { font "Body" text "REFRESH" justify "end"}
+						}
+					]
+					//rotation -1.000000 0.000000 0.000000 -1.571000
+					scale 0.405000 0.445000 0.465000
+					//scaleOrientation 0.000000 0.000000 1.000000 -0.003505
+					translation 1.163300 2.095000 -0.409200
+				}
+				DEF MU_back_pod_outer Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "CellEgg/Parts"
+								}
+							}
+							geometry DEF MU_back_pod_outer-FACES Mesh { url "MU_back_pod_outer-FACES.xm" }
+						}
+					]
+					rotation -1.000000 0.000000 0.000000 -3.142000
+					scale 0.465000 0.465000 0.465000
+					translation 11.010000 -11.290000 3.150000
+				}
+				DEF MU_back_tube Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "TubesFade"
+								}
+							}
+							geometry DEF MU_back_tube-FACES Mesh { url "MU_back_tube-FACES.xm" }
+						}
+					]
+					rotation 0.990900 -0.095410 -0.095410 -1.580000
+					scale 0.465000 0.465000 0.465000
+					scaleOrientation 0.014160 -0.275900 0.961100 -0.070460
+					translation -22.030001 -27.750000 9.817000
+				}
+				DEF MU_back_pod_HL Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "EggGlow"
+								}
+							}
+							geometry DEF MU_back_pod_HL-FACES Mesh { url "MU_back_pod_HL-FACES.xm" }
+						}
+					]
+					rotation -1.000000 0.000000 0.000000 -3.142000
+					scale 0.465000 0.465000 0.465000
+					translation 11.010000 -11.290000 3.150000
+				}
+			]
+			rotation 0.000000 1.000000 0.000000 -0.130900
+			scale 0.282300 0.282300 0.282300
+			translation -49.790000 51.700001 -205.800000
+		}
+		
 		DEF select1 Transform
 		{
 			fade 0.5
@@ -350,6 +528,181 @@ DEF theWholeThing Transform
 			scale 0.282300 0.282300 0.282300
 			translation -45.280000 52.339999 -204.000000
 		}
+		
+		DEF recent Transform
+		{
+			visible false
+			fade 0.5
+			children
+			[
+				DEF MU_Text_a Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "NavType"
+								}
+							}
+							geometry Text { font "heading" justify "middle" translate false text "X" }
+						}
+					]
+					//rotation -1.000000 0.000000 0.000000 -1.571000
+					scale 0.625000 0.625000 0.465000
+					//scaleOrientation 0.000000 0.000000 -1.000000 -0.016150
+					translation -1.909000 2.391000 -0.443200
+				}
+				DEF MU_select_probearm Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "FlatSurfaces"
+								}
+							}
+							geometry DEF MU_select_probearm-FACES Mesh { url "MU_select_probearm-FACES.xm" }
+						}
+					]
+					rotation -0.786500 0.499900 0.362600 -1.910000
+					scale 0.465000 0.465000 0.465000
+					scaleOrientation -0.382800 0.000000 -0.923800 -0.250900
+					translation -9.489000 15.920000 6.071000
+				}
+				DEF MU_text_select Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "XBOXgreen"
+								}
+							}
+							geometry Text { font "Body" text "RECENT" }
+						}
+					]
+					//rotation -1.000000 0.000000 0.000000 -1.571000
+					scale 0.405000 0.445000 0.465000
+					//scaleOrientation 0.000000 0.000000 -1.000000 -0.032780
+					translation -1.138900 2.056000 -0.409300
+				}
+				DEF MU_select_probe Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "FlatSurfaces"
+								}
+							}
+							geometry DEF MU_select_probe-FACES Mesh { url "MU_select_probe-FACES.xm" }
+						}
+					]
+					rotation -0.786500 0.499900 0.362600 -1.910000
+					scale 0.465000 0.465000 0.465000
+					scaleOrientation -0.382800 0.000000 -0.923800 -0.250900
+					translation -8.603000 15.060000 6.235000
+				}
+				DEF MU_select_pod_inner Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "CellEgg/Parts"
+								}
+							}
+							geometry DEF MU_select_pod_inner-FACES Mesh { url "MU_select_pod_inner-FACES.xm" }
+						}
+					]
+					scale 0.465000 0.465000 0.465000
+					translation 0.178000 -10.330000 3.150000
+				}
+				DEF MU_select_pod_outer Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "CellEgg/Parts"
+								}
+							}
+							geometry DEF MU_select_pod_outer-FACES Mesh { url "MU_select_pod_outer-FACES.xm" }
+						}
+					]
+					scale 0.465000 0.465000 0.465000
+					translation 0.178000 -10.330000 3.150000
+				}
+				DEF MU_select_tube Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "TubesFade"
+								}
+							}
+							geometry DEF MU_select_tube-FACES Mesh { url "MU_select_tube-FACES.xm" }
+						}
+					]
+					rotation -0.990900 0.095410 -0.095410 -1.580000
+					scale 0.465000 0.465000 0.465000
+					scaleOrientation -0.030180 0.281500 0.959100 -0.084500
+					translation 33.220001 -26.790001 9.817000
+				}
+				DEF MU_select_pod_HL Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "EggGlow"
+								}
+							}
+							geometry DEF MU_select_pod_HL-FACES Mesh { url "MU_select_pod_HL-FACES.xm" }
+						}
+					]
+					scale 0.465000 0.465000 0.465000
+					translation 0.178000 -10.330000 3.150000
+				}
+			]
+			rotation 0.000000 1.000000 0.000000 -0.497400
+			scale 0.282300 0.282300 0.282300
+			translation -44.480000 51.529999 -204.300000
+		}
+		
 		DEF MU_L3_arm01_00 Transform
 		{
 			children
@@ -1740,8 +2093,35 @@ DEF theWholeThing Transform
 					rotation 0.999900 -0.008726 -0.008501 -1.597000
 					scale 0.134700 0.504700 0.149700
 					scaleOrientation -0.568600 -0.001809 0.822600 -0.007800
-					translation -0.099920 0.563800 0.114600
+					translation -0.099920 0.563800 0.118600
 				}
+				DEF MU_L3_panel_tracklist_overlay Transform
+				{
+					visible true
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "PanelBacking_04"
+								}
+								texture ImageTexture
+								{
+									url "tracklist_lines.xbx"
+								}
+							}
+							geometry DEF MU_L3_panel_tracklist-FACES Mesh { url "MU_L3_panel_tracklist-FACES.xm" }
+						}
+					]
+					rotation 0.999900 -0.008726 -0.008501 -1.597000
+					scale 0.136 0.13 0.13
+					scaleOrientation -0.568600 -0.001809 0.822600 -0.007800
+					translation -0.048920 0.576 0.114600
+				}
+
 				// Track list of names
 				DEF TrackNames Transform
 				{
@@ -1754,12 +2134,13 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName1 Text { font "Body" width -16 translate false text "1." }
+									geometry DEF TrackName1 Text { font "Body" width -19 translate false text "1." }
 								}
 								
 							]
+							rotation 1.0 1.0 0.0 0.025
 							scale 0.13 0.13 0.13
-							translation -0.42 0.569 0.119100
+							translation -0.41 0.569 0.119100
 						}
 						Transform
 						{
@@ -1768,13 +2149,14 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName2 Text { font "Body" width -16 translate false text"2."}
+									geometry DEF TrackName2 Text { font "Body" width -19 translate false text"2."}
 								}
 								
 							]
+							rotation 1.0 1.0 0.0 0.025
 							scale 0.13 0.13 0.13
 							//translation -0.38 0.442 0.1
-							translation -0.42 0.407 0.119200
+							translation -0.41 0.407 0.119200
 						}
 						Transform
 						{
@@ -1783,12 +2165,13 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName3 Text { font "Body" width -16 translate false text "3."}
+									geometry DEF TrackName3 Text { font "Body" width -19 translate false text "3."}
 								}
 								
 							]
+							rotation 1.0 1.0 0.0 0.025
 							scale 0.13 0.13 0.13
-							translation -0.42 0.245 0.119300
+							translation -0.41 0.245 0.119300
 						}
 						Transform
 						{
@@ -1797,12 +2180,13 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName4 Text { font "Body" width -16 translate false text "4."}
+									geometry DEF TrackName4 Text { font "Body" width -19 translate false text "4."}
 								}
 								
 							]
+							rotation 1.0 1.0 0.0 0.025
 							scale 0.13 0.13 0.13
-							translation -0.42 0.083 0.119400
+							translation -0.41 0.083 0.119400
 						}
 						Transform
 						{
@@ -1811,12 +2195,13 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName5 Text { font "Body" width -16 translate false text "5."}
+									geometry DEF TrackName5 Text { font "Body" width -19 translate false text "5."}
 								}
 								
 							]
+							rotation 1.0 1.0 0.0 0.025
 							scale 0.13 0.13 0.13
-							translation -0.42 -0.079 0.119500
+							translation -0.41 -0.079 0.119500
 						}
 						Transform
 						{
@@ -1825,12 +2210,13 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName6 Text { font "Body" width -16 translate false text "6."}
+									geometry DEF TrackName6 Text { font "Body" width -19 translate false text "6."}
 								}
 								
 							]
+							rotation 1.0 1.0 0.0 0.025
 							scale 0.13 0.13 0.13
-							translation -0.42 -0.241 0.119600
+							translation -0.41 -0.241 0.119600
 						}
 						Transform
 						{
@@ -1839,12 +2225,13 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName7 Text { font "Body" width -16 translate false text "7."}
+									geometry DEF TrackName7 Text { font "Body" width -19 translate false text "7."}
 								}
 								
 							]
+							rotation 1.0 1.0 0.0 0.025
 							scale 0.13 0.13 0.13
-							translation -0.42 -0.403 0.119700
+							translation -0.41 -0.403 0.119700
 						}
 						Transform
 						{
@@ -1853,13 +2240,14 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName8 Text { font "Body" width -16 translate false text "8."}
+									geometry DEF TrackName8 Text { font "Body" width -19 translate false text "8."}
 								}
 								
 							]
+							rotation 1.0 1.0 0.0 0.025
 							scale 0.13 0.13 0.13
 							//translation -0.38 -0.482 0.1
-							translation -0.42 -0.565 0.119800
+							translation -0.41 -0.565 0.119800
 						}
 						Transform
 						{
@@ -1868,146 +2256,14 @@ DEF theWholeThing Transform
 								Shape
 								{
 									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackName9 Text { font "Body" width -16 translate false text "9."}
+									geometry DEF TrackName9 Text { font "Body" width -19 translate false text "9."}
 								}
 								
 							]
+							rotation 1.0 1.0 0.0 0.025
 							scale 0.13 0.13 0.13
 							//translation -0.38 -0.58 0.1
-							translation -0.42 -0.728 0.119900
-						}
-					]
-				}
-				// Track list of numbers (not used)
-				DEF TrackNumbers Transform
-				{
-					children
-					[
-						Transform
-						{
-							children
-							[
-								Shape
-								{
-									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackNum1 Text { font "Body" width 3 translate false text "1." justify "end"}
-								}
-								
-							]
-							scale 0.13 0.13 0.13
-							translation 1.48 0.559100 0.119000
-						}
-						Transform
-						{
-							children
-							[
-								Shape
-								{
-									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackNum2 Text { font "Body" width 3 translate false text"2." justify "end"}
-								}
-								
-							]
-							scale 0.13 0.13 0.13
-							translation 1.48 0.401 0.119200
-						}
-						Transform
-						{
-							children
-							[
-								Shape
-								{
-									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackNum3 Text { font "Body" width 3 translate false text "3." justify "end"}
-								}
-								
-							]
-							scale 0.13 0.13 0.13
-							translation 1.48 0.244 0.119300
-						}
-						Transform
-						{
-							children
-							[
-								Shape
-								{
-									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackNum4 Text { font "Body" width 3 translate false text "4." justify "end"}
-								}
-								
-							]
-							scale 0.13 0.13 0.13
-							translation 1.48 0.091 0.119400
-						}
-						Transform
-						{
-							children
-							[
-								Shape
-								{
-									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackNum5 Text { font "Body" width 3 translate false text "5." justify "end"}
-								}
-								
-							]
-							scale 0.13 0.13 0.13
-							translation 1.48 -0.062 0.119500
-						}
-						Transform
-						{
-							children
-							[
-								Shape
-								{
-									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackNum6 Text { font "Body" width 3 translate false text "6." justify "end"}
-								}
-								
-							]
-							scale 0.13 0.13 0.13
-							translation 1.48 -0.212 0.119600
-						}
-						Transform
-						{
-							children
-							[
-								Shape
-								{
-									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackNum7 Text { font "Body" width 3 translate false text "7." justify "end"}
-								}
-								
-							]
-							scale 0.13 0.13 0.13
-							translation 1.48 -0.369 0.119700
-						}
-						Transform
-						{
-							children
-							[
-								Shape
-								{
-									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackNum8 Text { font "Body" width 3 translate false text "8." justify "end"}
-								}
-								
-							]
-							scale 0.13 0.13 0.13
-							translation 1.48 -0.527 0.119800
-						}
-						Transform
-						{
-							children
-							[
-								Shape
-								{
-									appearance MaxMaterial { name "CellEgg/Partsz" }
-									geometry DEF TrackNum9 Text { font "Body" width 3 translate false text "9." justify "end"}
-								}
-								
-							]
-							scale 0.13 0.13 0.13
-							translation 1.48 -0.689 0.119900
+							translation -0.41 -0.728 0.119900
 						}
 					]
 				}
@@ -2223,7 +2479,7 @@ DEF theWholeThing Transform
 									name "NavType"
 								}
 							}
-							geometry DEF LowerPanelText Text { font "heading" width -16 justify "end" }
+							geometry DEF LowerPanelText Text { font "heading" width -17 justify "end" }
 						}
 					]
 					scale 0.152000 0.224700 0.224700
@@ -2337,7 +2593,7 @@ DEF theWholeThing Transform
 						}
 					]
 					rotation -0.575700 -0.590700 -0.565400 -2.089000
-					scale 0.134700 0.124700 0.124700
+					scale 0.134700 0.122700 0.122700
 					scaleOrientation -0.930500 -0.364900 -0.031150 -0.188400
 					translation -0.552700 -0.071710 0.050270
 				}
@@ -2359,7 +2615,7 @@ DEF theWholeThing Transform
 						}
 					]
 					rotation -0.575700 -0.590700 -0.565400 -2.089000
-					scale 0.134700 0.124700 0.124700
+					scale 0.134700 0.122700 0.122700
 					scaleOrientation -0.930500 -0.364900 -0.031150 -0.188400
 					translation -0.552700 -0.071710 0.049670
 				}
@@ -2381,39 +2637,9 @@ DEF theWholeThing Transform
 						}
 					]
 					rotation -0.575700 -0.590700 -0.565400 -2.089000
-					scale 0.134700 0.124700 0.124700
+					scale 0.134700 0.122700 0.122700
 					scaleOrientation -0.930500 -0.364900 -0.031150 -0.188400
 					translation -0.552700 -0.071710 0.049870
-				}
-				DEF MU_L3_text_custom Transform
-				{
-					visible true
-					children
-					[
-						Transform
-						{
-							scale 0.8 0.8 0
-							translation -0.2 -0.1 -0.2
-							children
-							[
-								Shape
-								{
-									appearance Appearance
-									{
-										material MaxMaterial
-										{
-											name "NavType"
-										}
-									}
-									geometry Text { translate true font "Body" text "RANDOM" justify "middle"}
-								}
-							]
-						}
-					]
-					//rotation -0.999900 -0.008726 0.008958 -1.545000
-					scale 0.134700 0.124700 0.124700
-					scaleOrientation 0.198600 0.025940 -0.979700 -0.006882
-					translation 47.140001 -58.169998 204.0999941
 				}
 			]
 			rotation -1.000000 0.000000 0.000000 -3.168000

@@ -82,7 +82,6 @@ function UpdateTrackList()
 		if (n >= nTracks0)
 		{
 			c.TrackNames.children[i].children[0].geometry.text = "";
-			c.TrackNumbers.children[i].children[0].geometry.text = "";
 		}
 		else
 		{
@@ -93,23 +92,20 @@ function UpdateTrackList()
 			if(strName0.length() > 36) strName0 = strName0.substr(0,36) + "...";
 			strTime0 = "";
 			
-			c.TrackNames.children[i].children[0].geometry.text = strName0;
-			c.TrackNumbers.children[i].children[0].geometry.text = strTime0;
+			c.TrackNames.children[i].children[0].geometry.text = strName0.toUpperCase();
 
 			if (n == nPlayCursor0)
 			{
-				c.TrackNames.children[i].SetScale(0.14, 0.14, 0.14);
-				c.TrackNames.children[i].children[0].appearance.name = "CellEgg/Partsz";
-				c.TrackNumbers.children[i].children[0].appearance.name = "CellEgg/Partsz";
+				c.TrackNames.children[i].SetScale(0.12, 0.12, 0.12);
+				c.TrackNames.children[i].children[0].appearance.name = "GameHilite";
 				var Icon = IconFile.GetValue(TempTitleList[nPlayCursor0]);
 				if(Icon == "Unknown" | Icon == "") Icon = DefaultIcon; else  Icon = Icon.toLowerCase() + ".xbx";
 				c.theIcons.children[0].children[0].appearance.texture.url = Icon; 
 			}
 			else
 			{               
-				c.TrackNames.children[i].SetScale(0.14, 0.14, 0.14);
+				c.TrackNames.children[i].SetScale(0.12, 0.12, 0.12);
 				c.TrackNames.children[i].children[0].appearance.name = "Material #1335";
-				c.TrackNumbers.children[i].children[0].appearance.name = "Material #1335";
 			}
 		}
 	}

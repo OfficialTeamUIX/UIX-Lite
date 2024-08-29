@@ -69,7 +69,7 @@ function buildGSList() //just copy this function for more subsections
 	configValues[i] = "default-UseMainMenuAttract";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
-	configList[i] = "Always Use tHc ScreenSaver:";
+	configList[i] = "Use tHc ScreenSaver:";
 	configValues[i] = "default-UsetHcScreenSaver";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
@@ -412,7 +412,7 @@ function toggleIcon()
 		c.ConsoleIcon.visible = true;
 		cValue = "Console";
 	}
-	c.theRightSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
+	c.theRightSlots.children[LV2Hold].children[0].appearance.name = "GameHilite";
 	c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue);
 	setConfigMenuValue(configValues[LV2Item],cValue);
 }
@@ -425,7 +425,7 @@ function toggleLOI()
 	if(b == "None") { cValue = "Xbox"; } 
 	else if(b == "Xbox") { cValue = "UIX"; }
 	else { cValue = "None"; }
-	c.theRightSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
+	c.theRightSlots.children[LV2Hold].children[0].appearance.name = "GameHilite";
 	c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue);
 	setConfigMenuValue(configValues[LV2Item],cValue);
 }
@@ -436,7 +436,7 @@ function toggleAM()
 	if(bAdvancedMode) { bAdvancedMode = false; cValue = "false"; } else { bAdvancedMode = true; cValue = "true"; }
 	SetSavedBooleanValue("MainMenu","AdvancedMode",bAdvancedMode);
 	var c = theConfigPanel.children[0].children[0];
-	c.theRightSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
+	c.theRightSlots.children[LV2Hold].children[0].appearance.name = "GameHilite";
 	c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue);
 }
 
@@ -533,13 +533,13 @@ function refreshMenu(x)
 	
 	if(inChangeTitleMenu)
 	{
-		c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
+		c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "GameHilite";
 		c.theLeftSlots.children[LV2Hold].children[0].geometry.text = cValue;
 		if(configList[LV2Item] == cValue) { cValue = ""; }
 	}
 	else
 	{
-		c.theRightSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
+		c.theRightSlots.children[LV2Hold].children[0].appearance.name = "GameHilite";
 		if(cValue.length() > 20) { c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue.substr(0, 20) + "..."; }
 		else { c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue); }
 	}
@@ -550,7 +550,7 @@ function tabSlot(x)
 {
 	var c = theConfigPanel.children[0].children[0];
 	var indentItemTrans = c.theLeftSlots.children[x].translation;
-	c.theLeftSlots.children[x].children[0].appearance.name = "CellEgg/Partsz";
+	c.theLeftSlots.children[x].children[0].appearance.name = "GameHilite";
 	//c.theLeftSlots.children[x].SetTranslation(2.35, parseTrans(indentItemTrans,"Y"), parseTrans(indentItemTrans,"Z"));
 }
 
@@ -565,7 +565,7 @@ function unTabSlot(x)
 function clearText()
 {
 	var c = theConfigPanel.children[0].children[0];
-	for(var i = 0; i < 12; i = i + 1)
+	for(var i = 0; i < 9; i = i + 1)
 	{
 		c.theLeftSlots.children[i].children[0].geometry.text = "";
 		c.theLeftSlots.children[i].children[0].appearance.name = "Material #1335";
@@ -580,7 +580,7 @@ function updateText()
 {
 	var c = theConfigPanel.children[0].children[0];
 	var loopLength = configList.length;
-	if(loopLength > 11) loopLength = 12;
+	if(loopLength > 8) loopLength = 9;
 	for(var i = 0; i < loopLength; i = i + 1)
 	{
 		//left slots
@@ -607,19 +607,19 @@ function updateText()
 				var cValue = getConfigMenuValue(configValues[i]);
 				if(inQuickLaunchMenu & (cValue.length() > MaxCharacters))
 				{
-					c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
+					c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
 					c.theRightSlots.children[i].children[0].geometry.text = Translate(PathEllipsis(cValue));
 				}
 				else
 				{
-					c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
+					c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
 					if(cValue.length() > 20) { c.theRightSlots.children[i].children[0].geometry.text = cValue.substr(0, 20) + "..."; }
 					else { c.theRightSlots.children[i].children[0].geometry.text =  Translate(cValue); }
 				}
 			}
 		}
 	}
-	if(configList.length > 12) { c.theDownArrow.visible = true; }
+	if(configList.length > 9) { c.theDownArrow.visible = true; }
 }
 
 function getConfigMenuValue(x)
@@ -654,7 +654,7 @@ DEF theConfigPanel Level
 				buildconfigList();
 				tabSlot(0);
 				var c = theConfigPanel.children[0].children[0];
-				c.theLeftSlots.children[0].children[0].appearance.name = "CellEgg/Partsz";
+				c.theLeftSlots.children[0].children[0].appearance.name = "GameHilite";
 				c.theBuildInfo.children[0].geometry.text = "Build: " + sBuildDate;
 				c.theConfigHeader.children[0].appearance.name = "NavType";
 				c.theConfigHeader.children[0].geometry.text = "UIX Lite";
@@ -813,7 +813,7 @@ DEF theConfigPanel Level
 				tabSlot(LV1Hold);
 				c.theDownArrow.visible = false;
 				c.theUpArrow.visible = false;
-				c.theLeftSlots.children[LV1Hold].children[0].appearance.name = "CellEgg/Partsz";
+				c.theLeftSlots.children[LV1Hold].children[0].appearance.name = "GameHilite";
 				c.theConfigHeader.children[0].geometry.text = "UIX Lite";
 			}
 			else
@@ -880,36 +880,36 @@ function selectConfigDown()
 	if(curItem + 1 == configList.length) { return; } //end of list
 	
 	PlaySoundMenuChange();
-	if(curHold == 11) //SCROLL MENU DOWN
+	if(curHold == 8) //SCROLL MENU DOWN
 	{
 		c.theUpArrow.visible = true;        
 		if(configList.length > curItem + 1)
 		{
 			curItem = curItem + 1;
-			for(var i = 0; i < 12; i = i + 1)
+			for(var i = 0; i < 9; i = i + 1)
 			{
 				if(inChangeTitleMenu)
 				{
-					var tValue = getConfigMenuValue(configValues[curItem + (i - 11)]);
-					if(tValue == "") { tValue = configList[curItem + (i - 11)]; }
+					var tValue = getConfigMenuValue(configValues[curItem + (i - 8)]);
+					if(tValue == "") { tValue = configList[curItem + (i - 8)]; }
 					c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 				}
 				else
 				{
-					var tValue = configList[curItem + (i - 11)];
+					var tValue = configList[curItem + (i - 8)];
 					if(tValue.charAt(tValue.length() - 1) == ":") tValue = Translate(tValue.substr(0,tValue.length() - 1)) + ":";
 					else tValue = Translate(tValue);
 					c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 					if(inLV2 == true)
 					{
-						c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
-						c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[curItem + (i - 11)]));
+						c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
+						c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[curItem + (i - 8)]));
 					}
 				}
 			}
 		}
 	}   
-	else if(curHold < 11)
+	else if(curHold < 8)
 	{
 		unTabSlot(curHold);
 		curItem = curItem + 1;
@@ -954,11 +954,11 @@ function selectConfigUp()
 	{
 		if(curHold == 0)
 		{
-			if(configList.length - curItem > 11) c.theDownArrow.visible = true;
+			if(configList.length - curItem > 8) c.theDownArrow.visible = true;
 			if(curItem != 0)
 			{
 				curItem = curItem - 1;
-				if(configList.length - curItem < 12) loop = configList.length - curItem; else loop = 12;
+				if(configList.length - curItem < 9) loop = configList.length - curItem; else loop = 9;
 				for(var i = 0; i < loop; i = i + 1)
 				{
 					if(inChangeTitleMenu)
@@ -975,7 +975,7 @@ function selectConfigUp()
 						c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 						if(inLV2 == true)
 						{
-							c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
+							c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
 							c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[curItem + i]));
 						}
 					}
@@ -1022,12 +1022,12 @@ function scrollConfigDown()
 		curHold = LV2Hold;
 	}
 	
-	if(curItem + 12 <= configList.length - 1)
+	if(curItem + 9 <= configList.length - 1)
 	{
-		curItem = curItem + 12;
-		if(curItem - curHold + 12 < configList.length) 
+		curItem = curItem + 9;
+		if(curItem - curHold + 9 < configList.length) 
 		{ 
-			loop = 12;
+			loop = 9;
 		}
 		else
 		{
@@ -1040,16 +1040,16 @@ function scrollConfigDown()
 		c.theDownArrow.visible = false;
 		return;
 	}
-	else if(curItem + 12 > configList.length - 1)
+	else if(curItem + 9 > configList.length - 1)
 	{
 		unTabSlot(curHold);
-		loop = Modulo(configList.length,12); 
+		loop = Modulo(configList.length,9); 
 		curItem = configList.length - 1;
 		curHold = loop - 1;
 		c.theDownArrow.visible = false;
 	}
 	
-	if (curItem - curHold > 11) c.theUpArrow.visible = true;
+	if (curItem - curHold > 8) c.theUpArrow.visible = true;
 	PlaySoundMenuChange();
 	clearText();    
 	for(var i = 0; i < loop; i = i + 1)
@@ -1068,7 +1068,7 @@ function scrollConfigDown()
 			c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 			if(inLV2 == true)
 			{
-				c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
+				c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
 				c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[(curItem - curHold) + i]));
 			}
 		}
@@ -1106,12 +1106,12 @@ function scrollConfigUp()
 		curHold = LV2Hold;
 	}
 	
-	if(configList.length < 12) { loop = configList.length;} else { loop = 12; }
+	if(configList.length < 9) { loop = configList.length;} else { loop = 9; }
 	
-	if(curItem - 12 >= 0)
+	if(curItem - 9 >= 0)
 	{
-		curItem = curItem - 12;
-		if(curItem < 12) 
+		curItem = curItem - 9;
+		if(curItem < 9) 
 		{ 
 			unTabSlot(curHold); 
 			curHold = curItem;
@@ -1123,7 +1123,7 @@ function scrollConfigUp()
 	{
 		return;
 	}
-	else if(curItem - 12 < 0)
+	else if(curItem - 9 < 0)
 	{
 		c.theUpArrow.visible = false;
 		curItem = 0;
@@ -1149,7 +1149,7 @@ function scrollConfigUp()
 			c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 			if(inLV2 == true)
 			{
-				c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
+				c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
 				c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[(curItem - curHold) + i]));
 			}
 		}
