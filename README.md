@@ -9,7 +9,7 @@ Our ultimate goal is to provide a legal, open-source, and distributable patch se
 
 Please note that a modified console is required to run this project. However, we will leverage two decades of modification techniques to simplify the process for end users as much as possible.
 
-For more information and community support, join us on [Discord](https://discord.gg/xbox-scene).
+For more information and community support, join us in #teamuix on [Discord](https://discord.gg/xbox-scene).
 
 ## What is UIX Lite
 As stated in the title above UIX Lite is a collection of patches and XIP edits that adds some of the features of UIX to the stock 5960 MS Dash. 
@@ -66,13 +66,13 @@ Some of these features include;
 
 ## Launcher Icon Support
 
-* As of UIX Lite v0.4 you can now see the icon of your title as you browse thought the list in the Launcher. For this feature to work you must edit the Icons.xbx located in C:\UIX Configs\ to indicate to UIX Lite the TitleID for each of your titles. The format is [TitleName]=[TitleID].xbx where TitleName is the name of the directory that contain the title. Then you must obtain the icon to use (usually located in E:\TDATA\[TitleID]\TitleImage.xbx), rename it to [TitleID].xbx, and add it to the default.xip.
+* As of UIX Lite v0.4 you can now see the icon of your title as you browse through the list in the Launcher. For this feature to work you must edit the Icons.xbx located in C:\UIX Configs\ to indicate to UIX Lite the TitleID for each of your titles. The format is [TitleName]=[TitleID].xbx where TitleName is the name of the directory that contain the title. Then you must obtain the icon to use (usually located in E:\TDATA\[TitleID]\TitleImage.xbx), rename it to [TitleID].xbx, and add it to the default.xip.
 * Several tools are available to add the icon files to the default.xip such as WinXip, VisualXIP, and XIP. (The current versions of VisualXIP and XIP are available under Assets in the [Tools](https://github.com/OfficialTeamUIX/UIX-Lite/releases/tag/Tools) release.)
 
  NOTE: Ensure you have the "Tools>Options>Merge Mesh Files" option checked in VisualXIP or use the -m switch in XIP when using them to add files to your xips.
 
-* MobCat has created an awesome tool called [Iconinator](https://github.com/MobCat/UIXinator/releases) in [UIXinator](https://github.com/MobCat/UIXinator) that fully automates this process. It will load your config.xbx to get your content paths, then scan all the paths and collect your TitleNames, get their TitleIDs, obtain the icons (attemping to download ones that are missing), create the Icons.xbx, and add the icons to the default.xip.
-	- If you have python and want to run Iconinator from source you must first add the dependencies using "pip install -r requirements.txt" before running "python Iconinator.py".
+* MobCat has created an awesome tool called [Iconinator](https://github.com/MobCat/UIXinator/releases) in [UIXinator](https://github.com/MobCat/UIXinator) that fully automates this process. It will load your config.xbx to get your content paths, then scan all the paths and collect your TitleNames, get their TitleIDs, obtain the icons (attempting to download ones that are missing), create the Icons.xbx, and add the icons to the default.xip.
+	- If you have python and want to run Iconinator from source you must first add xip.exe to the lib folder and then add the dependencies using "pip install -r requirements.txt" before running "python Iconinator.py".
 
 ## Tile Caching Support
 
