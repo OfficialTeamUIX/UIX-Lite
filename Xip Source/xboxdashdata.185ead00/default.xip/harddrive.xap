@@ -556,7 +556,7 @@ DEF theLauncher Level
 				thePlayerPanelOut.Play();
 			}
 		}
-		
+		function OnRightDown() { OnMoveRight(); }
 		function OnMoveRight()  
 		{ 
 			if (bLauncherVisible0 == false)
@@ -579,7 +579,7 @@ DEF theLauncher Level
 				UpdateTrackList();
 			}
 		}
-		
+		function OnLeftDown() { OnMoveLeft(); }
 		function OnMoveLeft()  
 		{  
 			if (bLauncherVisible0 == false)

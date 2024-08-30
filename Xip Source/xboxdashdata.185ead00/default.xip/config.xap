@@ -782,12 +782,12 @@ DEF theConfigPanel Level
 				eval(configSelect[LV2Item]);
 			}
 		}
-		
+		function OnRightDown() { OnMoveRight(); }
 		function OnMoveRight()
 		{
 			scrollConfigDown();
 		}
-		
+		function OnLeftDown() { OnMoveLeft(); }
 		function OnMoveLeft()
 		{
 			scrollConfigUp();

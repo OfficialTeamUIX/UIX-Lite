@@ -4098,7 +4098,7 @@ DEF theSettingsMenu Level
 				theSettingsMenuOut.Play();
 			}
 		}
-		
+		function OnLeftDown() { OnMoveLeft(); }
 		function OnMoveLeft()  
 		{  
 			if (nCurSettingsMenuItem - nNumSettingsMenuItems >= 0)
@@ -4120,7 +4120,7 @@ DEF theSettingsMenu Level
 			PlaySoundMenuChange();
 			UpdateSettingsMenu();
 		}
-		
+		function OnRightDown() { OnMoveRight(); }
 		function OnMoveRight()  
 		{ 
 			var a = (nSettingsItemCount - 1);
