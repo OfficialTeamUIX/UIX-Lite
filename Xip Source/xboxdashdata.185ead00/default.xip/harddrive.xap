@@ -56,6 +56,7 @@ function UpdateTrackList()
 	{
 		nPlayScroll0 = nPlayCursor0;
 	}
+	
 	nPreviousPlayCursor0 = nPlayCursor0;
 	
 	if (nPlayScroll0 > 0)
@@ -92,7 +93,7 @@ function UpdateTrackList()
 			if(strName0.length() > 36) strName0 = strName0.substr(0,36) + "...";
 			strTime0 = "";
 			
-			c.TrackNames.children[i].children[0].geometry.text = strName0.toUpperCase();
+			c.TrackNames.children[i].children[0].geometry.text = strName0;
 
 			if (n == nPlayCursor0)
 			{

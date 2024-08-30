@@ -1505,7 +1505,7 @@ function MainMenuAttract()
 {
 	var a = 0;
 	var c = theMainMenu.children[0].children[0];
-	//EnableInput(false);
+	EnableInput(false);
 	c.theMainMenuLevel.fade = a;
 	c.Rotating_Large_X.fade = a;
 	c.ring.fade = a; 
@@ -1869,7 +1869,7 @@ DEF theMainMenu Level
 		}
 		else if(bMainMenuAttractFinish)
 		{
-			//EnableInput(true);
+			EnableInput(true);
 			bMainMenuAttractFinish = false;
 			theMainMenu.children[0].children[0].select.visible = true;
 			theMainMenu.children[0].children[0].Rotating_Large_X.fade = 0.25;
@@ -1993,7 +1993,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "240829"; //Date of commit YYMMDD
+	sBuildDate = "240830"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
