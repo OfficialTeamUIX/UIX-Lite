@@ -539,8 +539,9 @@ function refreshMenu(x)
 	if(inChangeTitleMenu)
 	{
 		c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "GameHilite";
-		if(cValue.length() > 36) { cValue = cValue.substr(0, 36) + "..."; }
-		c.theLeftSlots.children[LV2Hold].children[0].geometry.text = cValue;
+		var tValue = cValue;
+		if(tValue.length() > 36) { tValue = tValue.substr(0, 36) + "..."; }
+		c.theLeftSlots.children[LV2Hold].children[0].geometry.text = tValue;
 		if(configList[LV2Item] == cValue) { cValue = ""; }
 	}
 	else
