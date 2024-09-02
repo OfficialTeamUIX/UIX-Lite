@@ -56,7 +56,7 @@ function UpdateTrackList()
 	{
 		nPlayScroll0 = nPlayCursor0;
 	}
-	
+
 	nPreviousPlayCursor0 = nPlayCursor0;
 	
 	if (nPlayScroll0 > 0)
@@ -228,14 +228,20 @@ function LoadRecentTitles()
 	arrRecentNames = new Array;
 	arrRecentPaths = new Array;
 	MaxRecentTitles = 9;
+	var AllTitles = GetAllTitles();
+	var sAllTitles = AllTitles.join("\n");
+
 	for (var i = 0; i < MaxRecentTitles; i = i + 1)
 	{
 		var v = GetSavedValue("RecentTitles", "Title" + i);
 		if(v != "") 
 		{
 			var arrTemp = Split(v,"|");
-			arrRecentPaths[i] = arrTemp[0];
-			arrRecentNames[i] = arrTemp[1];
+			if(sAllTitles.indexOf(arrTemp[1]) >= 0)
+			{  //If this title is in the cache then add it to the Recent Titles list.
+				arrRecentPaths[arrRecentPaths.length] = arrTemp[0];
+				arrRecentNames[arrRecentNames.length] = arrTemp[1];
+			}
 		}
 	}
 }
@@ -319,7 +325,7 @@ function LaunchItem(x,y)
 		{
 			launchPath = PartitionLocations[i] + RelativePath[ix] + "\\" + FolderName;
 			launchXbe = "default.xbe";
-			if(i > 1 & bHDDInitialized == false)
+			if(i > 1 & bHDDInitialized == false) 
 			{
 				sLocation = x;
 				sFolder = y;
@@ -336,7 +342,7 @@ function LaunchItem(x,y)
 			}
 		}
 	}
-	//If we made it here the title was not found.
+	//If we made it here the title was not found. 
 	Reload();
 }
 

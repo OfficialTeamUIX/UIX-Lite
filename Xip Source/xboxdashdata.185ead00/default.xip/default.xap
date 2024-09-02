@@ -417,7 +417,7 @@ DEF theTranslator Translator
 function Translate(text)
 {
 	var MatchWord = text.toUpperCase();
-	if(theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\xlate.xbx"))
+	if(theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\xlate.ini"))
 	{
 		var Languages = new Array( "ENGLISH","JAPANESE","DEUTSCH","FRANÇAIS","ESPAÑOL","ITALIANO","KOREAN","CHINESE","PORTUGUÊS");
 		var index = Math.max(0,theConfig.GetLanguage() - 1);
@@ -2045,10 +2045,10 @@ function initialize()
 	CacheFile = new Settings;
 	XlateFile = new Settings;
 	IconFile = new Settings;
-	ConfigFile.file = "Y:\\UIX Configs\\config.xbx";
-	CacheFile.file = "Y:\\UIX Configs\\Cache.xbx";
-	XlateFile.file = "Y:\\UIX Configs\\xlate.xbx";
-	IconFile.file = "Y:\\UIX Configs\\Icons.xbx";
+	ConfigFile.file = "Y:\\UIX Configs\\config.ini";
+	CacheFile.file = "Y:\\UIX Configs\\cache.ini";
+	XlateFile.file = "Y:\\UIX Configs\\xlate.ini";
+	IconFile.file = "Y:\\UIX Configs\\icons.ini";
 	
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
@@ -2062,7 +2062,7 @@ function initialize()
 	bPartitionScanCompleted = GetSavedBooleanValue("ExtendedPartitions","PartitionScanCompleted");
 	if(bPartitionScanCompleted)
 	{
-		bPartitionScanCompleted = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\Cache.xbx");
+		bPartitionScanCompleted = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\Cache.ini");
 		if(bPartitionScanCompleted)
 		{
 			nPartitions = StringToNumber(GetSavedValue("ExtendedPartitions","Partitions"));
@@ -2071,6 +2071,7 @@ function initialize()
 			if(nPartitions & 2) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk0\\Partition7\\"; DriveLocations[DriveLocations.length] = "O:\\"; }
 			if(nPartitions & 4) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk1\\Partition6\\"; DriveLocations[DriveLocations.length] = "P:\\"; }
 			if(nPartitions & 8) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk1\\Partition7\\"; DriveLocations[DriveLocations.length] = "Q:\\"; }
+			if(nPartitions & 16) { PartitionLocations[PartitionLocations.length] = "\\Device\\Harddisk1\\Partition1\\"; DriveLocations[DriveLocations.length] = "R:\\"; }
 		}
 	}
 
@@ -3217,7 +3218,12 @@ function FillMenuList(x) // search Y:\, C:\, N:\ and O:\ for a relative path's c
 			{
 				for(var cLoop = 0; cLoop < cSize; cLoop = cLoop + 1)
 				{
-					TitleList[TitleList.length] = c.subFolders[cLoop].name;
+					launchPath = PartitionLocations[i] + RelativePath[ix] + "\\" + c.subFolders[cLoop].name;
+					launchXbe = "default.xbe";
+					if(theConfig.NtFileExists(launchPath + "\\" + launchXbe))
+					{
+						TitleList[TitleList.length] = c.subFolders[cLoop].name;
+					}                
 				}
 			}
 		}  
@@ -3322,6 +3328,7 @@ function ExecuteFile(sPath)
 	else if(b.toUpperCase() == "E") { launchPath = "\\Device\\Harddisk0\\Partition1" + e; }
 	else if(b.toUpperCase() == "F") { launchPath = "\\Device\\Harddisk0\\Partition6" + e; ExtendedPartition = true; }
 	else if(b.toUpperCase() == "G") { launchPath = "\\Device\\Harddisk0\\Partition7" + e; ExtendedPartition = true; }
+	else if(b.toUpperCase() == "E2") { launchPath = "\\Device\\Harddisk1\\Partition1" + e; ExtendedPartition = true; }
 	else if(b.toUpperCase() == "F2") { launchPath = "\\Device\\Harddisk1\\Partition6" + e; ExtendedPartition = true; }
 	else if(b.toUpperCase() == "G2") { launchPath = "\\Device\\Harddisk1\\Partition7" + e; ExtendedPartition = true; }    else return;
 	
@@ -3348,8 +3355,8 @@ function RescanPartitions()
 
 function ScanPartitions()
 {
-	var Drives = new Array("N:\\","O:\\","P:\\","Q:\\");
-	var Locations = new Array("\\Device\\Harddisk0\\Partition6\\","\\Device\\Harddisk0\\Partition7\\","\\Device\\Harddisk1\\Partition6\\","\\Device\\Harddisk1\\Partition7\\");
+	var Drives = new Array("N:\\","O:\\","P:\\","Q:\\","R:\\");
+	var Locations = new Array("\\Device\\Harddisk0\\Partition6\\","\\Device\\Harddisk0\\Partition7\\","\\Device\\Harddisk1\\Partition6\\","\\Device\\Harddisk1\\Partition7\\","\\Device\\Harddisk1\\Partition1\\");
 	nPartitions = 0;
 	for(var i = 0; i < Drives.length; i = i + 1)
 	{
