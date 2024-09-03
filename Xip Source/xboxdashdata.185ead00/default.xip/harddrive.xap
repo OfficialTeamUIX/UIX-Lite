@@ -23,6 +23,7 @@ var arrMenuPaths;
 var TotalSections;
 var LastTitleLaunched;
 var DefaultIcon;
+var bNeedUpdate;
 
 function initialize()
 {
@@ -225,6 +226,7 @@ function LoadMenuItems()
 
 function LoadRecentTitles()
 {
+	bNeedUpdate = false;
 	arrRecentNames = new Array;
 	arrRecentPaths = new Array;
 	MaxRecentTitles = 9;
@@ -241,7 +243,7 @@ function LoadRecentTitles()
 			{  //If this title is in the cache then add it to the Recent Titles list.
 				arrRecentPaths[arrRecentPaths.length] = arrTemp[0];
 				arrRecentNames[arrRecentNames.length] = arrTemp[1];
-			}
+			} 
 		}
 	}
 }
@@ -251,13 +253,17 @@ function UpdateRecentTitles(x,y)
 	SetSavedValue("RecentTitles", "Title0", x + "|" + y );
 	var index = 1;
 	for (var i = 0; i < arrRecentNames.length; i = i + 1)
-	{
+	{ 
 		if(arrRecentNames[i] != y)
 		{
 			SetSavedValue("RecentTitles", "Title" + index, arrRecentPaths[i] + "|" + arrRecentNames[i] );
 			index = index + 1;
 			if(index == MaxRecentTitles) return;
 		}
+	}
+	for (var x = index; x < MaxRecentTitles; x = x + 1)
+	{  //Ensure the rest of the list is clear
+		SetSavedValue("RecentTitles","Title" + x,"");
 	}
 }
 
@@ -326,7 +332,7 @@ function LaunchItem(x,y)
 			launchPath = PartitionLocations[i] + RelativePath[ix] + "\\" + FolderName;
 			launchXbe = "default.xbe";
 			if(i > 1 & bHDDInitialized == false) 
-			{
+			{  //The title was not found on C or E so set the background before continuing.
 				sLocation = x;
 				sFolder = y;
 				bLaunchItem = true;
@@ -334,7 +340,7 @@ function LaunchItem(x,y)
 				return;
 			}
 			else if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
-			{
+			{  //We,ve found the title so fade the Launcher, update the RecentTitles , and goto theLaunchGameLevel
 				theLauncher.children[0].children[0].theWholeThing.alpha = 0;
 				UpdateRecentTitles(x,y);
 				theLaunchGameLevel.GoTo();
@@ -342,7 +348,9 @@ function LaunchItem(x,y)
 			}
 		}
 	}
-	//If we made it here the title was not found. 
+	//If we've made it here the title was not found. 
+	//This could be due to a stale cache. So, let's refresh the cache and then reload the dash.
+	RefreshCache();
 	Reload();
 }
 
@@ -502,6 +510,7 @@ DEF theLauncher Level
 			PlaySoundA();
 			subTitle1 = subTitle0;
 			subTitle0 = Translate("Recent Titles");
+			if(bNeedUpdate) LoadRecentTitles();
 			TempTitleList = arrRecentNames;
 			if(bLauncherVisible0) 
 			{
@@ -522,6 +531,7 @@ DEF theLauncher Level
 		
 		function OnYDown()
 		{
+			bNeedUpdate = true;
 			bRefreshCache = true;
 			bHDDInitialize = true;
 		}
