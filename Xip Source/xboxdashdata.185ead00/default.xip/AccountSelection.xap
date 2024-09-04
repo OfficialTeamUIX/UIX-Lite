@@ -73,22 +73,22 @@ function UpdateAccountSelectionMenuHilite()
 	if (nCurrentAccountSelectionMenu == 0)
 	{
 		c.menubutton_01.children[0].appearance.texture.url = "GameHilite_01.bmp";
-		c.text01.appearance.name = "Material #133";
+		c.text01.appearance.name = "HilightedType";
 	}
 	else if (nCurrentAccountSelectionMenu == 1)
 	{
 		c.menubutton_02.children[0].appearance.texture.url = "GameHilite_01.bmp";
-		c.text02.appearance.name = "Material #133";
+		c.text02.appearance.name = "HilightedType";
 	}
 	else if (nCurrentAccountSelectionMenu == 2)
 	{
 		c.menubutton_03.children[0].appearance.texture.url = "GameHilite_01.bmp";
-		c.text03.appearance.name = "Material #133";
+		c.text03.appearance.name = "HilightedType";
 	}
 	else
 	{
 		c.menubutton_04.children[0].appearance.texture.url = "GameHilite_01.bmp";
-		c.text04.appearance.name = "Material #133";
+		c.text04.appearance.name = "HilightedType";
 	}
 
 	// Update array visibility
@@ -98,7 +98,7 @@ function UpdateAccountSelectionMenuHilite()
 	if (c.arrow_up.visible)
 	{
 		if (nCurrentAccountSelectionMenu == 0)
-			c.arrow_up.children[0].appearance.material.name = "Material #133";
+			c.arrow_up.children[0].appearance.material.name = "HilightedType";
 		else
 			c.arrow_up.children[0].appearance.material.name = "XBoxGreen";
 	}
@@ -106,7 +106,7 @@ function UpdateAccountSelectionMenuHilite()
 	if (c.arrow_down.visible)
 	{
 		if (nCurrentAccountSelectionMenu == 3)
-			c.arrow_down.children[0].appearance.material.name = "Material #133";
+			c.arrow_down.children[0].appearance.material.name = "HilightedType";
 		else
 			c.arrow_down.children[0].appearance.material.name = "XBoxGreen";
 	}

@@ -45,22 +45,22 @@ function UpdateLiveTodayMenuHilite()
 	if (nCurrentLiveTodayMenu == 0)
 	{
 		c.Highlight_06.children[0].appearance.texture.url = "highlight.tga";
-		c.text_menu_01.children[0].children[0].appearance.material.name = "Black";
+		c.text_menu_01.children[0].children[0].appearance.material.name = "HilightedType";
 	}
 	else if (nCurrentLiveTodayMenu == 1)
 	{
 		c.Highlight_05.children[0].appearance.texture.url = "highlight.tga";
-		c.text_menu_02.children[0].children[0].appearance.material.name = "Black";
+		c.text_menu_02.children[0].children[0].appearance.material.name = "HilightedType";
 	}
 	else if (nCurrentLiveTodayMenu == 2)
 	{
 		c.Highlight_07.children[0].appearance.texture.url = "highlight.tga";
-		c.text_menu_03.children[0].children[0].appearance.material.name = "Black";
+		c.text_menu_03.children[0].children[0].appearance.material.name = "HilightedType";
 	}
 	else
 	{
 		c.Highlight_08.children[0].appearance.texture.url = "highlight.tga";
-		c.text_menu_04.children[0].children[0].appearance.material.name = "Black";
+		c.text_menu_04.children[0].children[0].appearance.material.name = "HilightedType";
 	}
 }
 

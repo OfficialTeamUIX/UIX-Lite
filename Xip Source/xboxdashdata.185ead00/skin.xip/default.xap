@@ -250,6 +250,24 @@ DEF harddrivebg Transform
     ]
     translation 0 0 300
 }
+DEF continuous Transform
+{
+    children
+    [
+        Shape
+        {
+            appearance Appearance
+            {
+                texture ImageTexture
+                {
+                    url "continuous.bmp"
+                }
+            }
+            geometry Mesh { url "skin.xm" }
+        }
+    ]
+    translation 0 0 300
+}
 DEF play Transform
 {
     children
@@ -358,24 +376,6 @@ DEF repeat Transform
     ]
     translation 0 0 300
 }
-DEF continuous Transform
-{
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "continuous.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
-}
 DEF AudioPlayerBG Transform
 {
     children
@@ -387,6 +387,150 @@ DEF AudioPlayerBG Transform
                 texture ImageTexture
                 {
                     url "AudioPlayerBG.bmp"
+                }
+            }
+            geometry Mesh { url "skin.xm" }
+        }
+    ]
+    translation 0 0 300
+}
+DEF Line07 Transform
+{
+    children
+    [
+        Shape
+        {
+            appearance Appearance
+            {
+                texture ImageTexture
+                {
+                    url "LiveChrome.tga"
+                }
+            }
+            geometry Mesh { url "skin.xm" }
+        }
+    ]
+    translation 0 0 300
+}
+DEF footer Transform
+{
+    children
+    [
+        Shape
+        {
+            appearance Appearance
+            {
+                texture ImageTexture
+                {
+                    url "footer.tga"
+                }
+            }
+            geometry Mesh { url "skin.xm" }
+        }
+    ]
+    translation 0 0 300
+}
+DEF header Transform
+{
+    children
+    [
+        Shape
+        {
+            appearance Appearance
+            {
+                texture ImageTexture
+                {
+                    url "Live_header.tga"
+                }
+            }
+            geometry Mesh { url "skin.xm" }
+        }
+    ]
+    translation 0 0 300
+}
+DEF Highlight_05 Transform
+{
+    children
+    [
+        Shape
+        {
+            appearance Appearance
+            {
+                texture ImageTexture
+                {
+                    url "highlight.tga"
+                }
+            }
+            geometry Mesh { url "skin.xm" }
+        }
+    ]
+    translation 0 0 300
+}
+DEF Highlight_06 Transform
+{
+    children
+    [
+        Shape
+        {
+            appearance Appearance
+            {
+                texture ImageTexture
+                {
+                    url "button.tga"
+                }
+            }
+            geometry Mesh { url "skin.xm" }
+        }
+    ]
+    translation 0 0 300
+}
+DEF Highlight_07 Transform
+{
+    children
+    [
+        Shape
+        {
+            appearance Appearance
+            {
+                texture ImageTexture
+                {
+                    url "button.tga"
+                }
+            }
+            geometry Mesh { url "skin.xm" }
+        }
+    ]
+    translation 0 0 300
+}
+DEF Highlight_08 Transform
+{
+    children
+    [
+        Shape
+        {
+            appearance Appearance
+            {
+                texture ImageTexture
+                {
+                    url "button.tga"
+                }
+            }
+            geometry Mesh { url "skin.xm" }
+        }
+    ]
+    translation 0 0 300
+}
+DEF Cylinder02 Transform
+{
+    children
+    [
+        Shape
+        {
+            appearance Appearance
+            {
+                texture ImageTexture
+                {
+                    url "Pulse1.tga"
                 }
             }
             geometry Mesh { url "skin.xm" }

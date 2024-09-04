@@ -91,7 +91,7 @@ function UpdateTrackList()
 			strName0 = TempTitleList[n];
 			var strAltName = GetSavedValue("AltTitleName",strName0);
 			if (strAltName != "") strName0 = strAltName;
-			if(strName0.length() > 36) strName0 = strName0.substr(0,36) + "...";
+			// if(strName0.length() > 36) strName0 = strName0.substr(0,36) + "...";
 			strTime0 = "";
 			
 			c.TrackNames.children[i].children[0].geometry.text = strName0;
