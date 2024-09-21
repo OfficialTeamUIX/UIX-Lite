@@ -153,10 +153,14 @@ function ShowLauncherMenu()
 	c.theMenuArm.SetRotation(0, 1, 0, 0);
 	c.audio_panel.SetRotation(-1, 0, 0, -3.246000);
 	c.audio_panel.SetTranslation(-45.549999, 57.18, -203.800003);
-	c.back1.SetTranslation(-48.990000, 52.450001, -205.000000); 
+	c.back1.SetTranslation(-48.990000, 52.450000, -205.000000); 
 	c.back1.SetRotation(0.000000, 1.000000, 0.000000, -0.130900);
+	c.refresh.SetTranslation(-49.490000, 51.650000, -205.800000);   
+	c.refresh.SetRotation(0.000000, 1.000000, 0.000000, -0.130900);
 	c.select1.SetTranslation(-45.280000, 52.339999, -204.000000);   
 	c.select1.SetRotation(0.000000, 1.000000, 0.000000, -0.497400);
+	c.recent.SetTranslation(-44.480000, 51.579999, -204.300000); 
+	c.recent.SetRotation(0.000000, 1.000000, 0.000000, -0.497400);
 	UpdateLauncherMenu();
 	LauncherViewpoint.isBound = true;
 	bLauncherVisible0 = true;
@@ -170,10 +174,14 @@ function StartTitleList()
 	var c = theLauncher.children[0].children[0];
 	c.MU_L3_text_tracklist01.visible = false;
 	c.MU_L3_panel_tracklist_overlay.visible = bUseUnderlay;
-	c.back1.SetTranslation(-47.340000, 52.809999, -204.300003); 
+	c.back1.SetTranslation(-47.340000, 52.810000, -204.300003); 
 	c.back1.SetRotation(0.000000, -1.000000, 0.000000, -0.340300);
+	c.refresh.SetTranslation(-47.690000, 52.380000, -204.300003); 
+	c.refresh.SetRotation(0.000000, -1.000000, 0.000000, -0.340300);
 	c.select1.SetTranslation(-43.539999, 52.740002, -204.800003);   
 	c.select1.SetRotation(-0.014820, 0.970100, -0.242300, -0.143900);
+	c.recent.SetTranslation(-43.250000, 52.340002, -204.800003);   
+	c.recent.SetRotation(-0.014820, 0.970100, -0.242300, -0.143900);
 	c.theMenuArm.SetRotation(0, 1, 0, 2);
 	c.audio_panel.SetRotation(1, 0, 0, -0.02618);
 	c.audio_panel.SetTranslation(-45.549999, 55.07, -204.5);
@@ -197,6 +205,8 @@ function EnterLauncherMenu()
 	nCurLauncherScroll0 = 0;
 	nCurLauncherItem0 = 0;
 	c.TitleText1.text = theTranslator.Translate("Xbox Hard Disk");      //menu title
+	c.MU_Text_refresh.children[0].geometry.text = Translate("REFRESH");
+	c.MU_text_recent.children[0].geometry.text = Translate("RECENT");
 	LoadMenuItems();
 	ShowLauncherMenu();
 	CurrentViewpoint = LauncherViewpoint;
@@ -475,7 +485,6 @@ DEF theLauncher Level
 		function OnADown()
 		{
 			theLauncher.children[0].children[0].MU_select_pod_HL.children[0].appearance.material.param = 1;
-			
 			PlaySoundA();
 			
 			if (bLauncherVisible0)
@@ -507,7 +516,9 @@ DEF theLauncher Level
 		function OnXDown()
 		{
 			if(bInRecentTitles) return;
+			theLauncher.children[0].children[0].MU_recent_pod_HL.children[0].appearance.material.param = 1;
 			PlaySoundA();
+			
 			subTitle1 = subTitle0;
 			subTitle0 = Translate("Recent Titles");
 			if(bNeedUpdate) LoadRecentTitles();
@@ -531,6 +542,9 @@ DEF theLauncher Level
 		
 		function OnYDown()
 		{
+			theLauncher.children[0].children[0].MU_refresh_pod_HL.children[0].appearance.material.param = 1;
+			PlaySoundA();
+			
 			bNeedUpdate = true;
 			bRefreshCache = true;
 			bHDDInitialize = true;
@@ -538,11 +552,11 @@ DEF theLauncher Level
 		
 		function OnBDown()
 		{
+			theLauncher.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
 			PlaySoundB();
 			
 			if (bLauncherVisible0)
 			{
-				theLauncher.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
 				if(bBackToSettings)
 				{
 					bBackToSettings = false;
@@ -567,7 +581,6 @@ DEF theLauncher Level
 			}
 			else
 			{
-				theLauncher.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
 				CurrentViewpoint = LauncherViewpoint;
 				ShowLauncherMenu();
 				thePlayerPanelOut.Play();

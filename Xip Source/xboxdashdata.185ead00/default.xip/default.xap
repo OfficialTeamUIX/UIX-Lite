@@ -1993,7 +1993,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "240903"; //Date of commit YYMMDD
+	sBuildDate = "240920"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2384,6 +2384,8 @@ function StartScreenSaverView()
 		var c = theLauncherInline.children[0].theLauncher.children[0].children[0];
 		c.back1.SetAlpha(0);
 		c.select1.SetAlpha(0);
+		c.refresh.SetAlpha(0);
+		c.recent.SetAlpha(0);
 		//c.GM_L2_Arm01_03.SetAlpha(0);     //Hides Menu panel
 		//c.audio_panel.SetAlpha(0);        //Hides TitleList panel
 		theScreen.brightness = 0.8;
@@ -2411,6 +2413,8 @@ function StopScreenSaverView()
 		var c = theLauncherInline.children[0].theLauncher.children[0].children[0];
 		c.back1.SetAlpha(1);
 		c.select1.SetAlpha(1);
+		c.refresh.SetAlpha(1);
+		c.recent.SetAlpha(1);
 		c.GM_L2_Arm01_03.SetAlpha(1);
 		c.audio_panel.SetAlpha(1);        
 		DisableCurrentAlternateViewpoint();

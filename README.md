@@ -66,7 +66,7 @@ Some of these features include;
 
 ## Launcher Icon Support
 
-* As of UIX Lite v0.4 you can now see the icon of your title as you browse through the list in the Launcher. For this feature to work you must edit the Icons.ini located in C:\UIX Configs\ to indicate to UIX Lite the TitleID for each of your titles. The format is [TitleName]=[TitleID].xbx where TitleName is the name of the directory that contain the title. Then you must obtain the icon to use (usually located in E:\TDATA\[TitleID]\TitleImage.xbx), rename it to [TitleID].xbx, and add it to the default.xip.
+* As of UIX Lite v0.4 you can now see the icon of your title as you browse through the list in the Launcher. For this feature to work you must edit the Icons.ini located in ```C:\UIX Configs\``` to indicate to UIX Lite the TitleID for each of your titles. The format is [TitleName]=[TitleID].xbx where TitleName is the name of the directory that contain the title. Then you must obtain the icon to use (usually located at ```E:\TDATA\[TitleID]\TitleImage.xbx```), rename it to [TitleID].xbx, and then add it to the default.xip.
 * Several tools are available to add the icon files to the default.xip such as WinXip, VisualXIP, and XIP. (The current versions of VisualXIP and XIP are available under Assets in the [Tools](https://github.com/OfficialTeamUIX/UIX-Lite/releases/tag/Tools) release.)
 
  NOTE: Ensure you have the "Tools>Options>Merge Mesh Files" option checked in VisualXIP or use the -m switch in XIP when using them to add files to your xips.
