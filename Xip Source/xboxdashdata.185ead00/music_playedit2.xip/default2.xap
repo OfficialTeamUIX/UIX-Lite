@@ -2134,7 +2134,30 @@ DEF theWholeThing Transform
 									appearance MaxMaterial { name "CellEgg/Partsz" }
 									geometry DEF TrackName1 Text { font "Body" width -19 translate false text "1." }
 								}
-								
+								Transform
+								{
+									visible false
+									children
+									[
+										Shape
+										{
+											appearance Appearance
+											{
+												material Material
+												{
+													
+												}
+												texture ImageTexture
+												{
+													url "folder.xbx"
+												}
+											}
+											geometry Box
+										}
+									]
+									scale 0.9 0.9 0
+									translation -0.500000 0.350000 0.000000
+								}
 							]
 							rotation 1.0 1.0 0.0 0.025
 							scale 0.13 0.13 0.13
@@ -2149,11 +2172,33 @@ DEF theWholeThing Transform
 									appearance MaxMaterial { name "CellEgg/Partsz" }
 									geometry DEF TrackName2 Text { font "Body" width -19 translate false text"2."}
 								}
-								
+								Transform
+								{
+									visible false
+									children
+									[
+										Shape
+										{
+											appearance Appearance
+											{
+												material Material
+												{
+													
+												}
+												texture ImageTexture
+												{
+													url "folder.xbx"
+												}
+											}
+											geometry Box
+										}
+									]
+									scale 0.9 0.9 0
+									translation -0.500000 0.350000 0.000000
+								}
 							]
 							rotation 1.0 1.0 0.0 0.025
 							scale 0.13 0.13 0.13
-							//translation -0.38 0.442 0.1
 							translation -0.41 0.407 0.119200
 						}
 						Transform
@@ -2165,7 +2210,30 @@ DEF theWholeThing Transform
 									appearance MaxMaterial { name "CellEgg/Partsz" }
 									geometry DEF TrackName3 Text { font "Body" width -19 translate false text "3."}
 								}
-								
+								Transform
+								{
+									visible false
+									children
+									[
+										Shape
+										{
+											appearance Appearance
+											{
+												material Material
+												{
+													
+												}
+												texture ImageTexture
+												{
+													url "folder.xbx"
+												}
+											}
+											geometry Box
+										}
+									]
+									scale 0.9 0.9 0
+									translation -0.500000 0.350000 0.000000
+								}
 							]
 							rotation 1.0 1.0 0.0 0.025
 							scale 0.13 0.13 0.13
@@ -2180,7 +2248,30 @@ DEF theWholeThing Transform
 									appearance MaxMaterial { name "CellEgg/Partsz" }
 									geometry DEF TrackName4 Text { font "Body" width -19 translate false text "4."}
 								}
-								
+								Transform
+								{
+									visible false
+									children
+									[
+										Shape
+										{
+											appearance Appearance
+											{
+												material Material
+												{
+													
+												}
+												texture ImageTexture
+												{
+													url "folder.xbx"
+												}
+											}
+											geometry Box
+										}
+									]
+									scale 0.9 0.9 0
+									translation -0.500000 0.350000 0.000000
+								}
 							]
 							rotation 1.0 1.0 0.0 0.025
 							scale 0.13 0.13 0.13
@@ -2195,7 +2286,30 @@ DEF theWholeThing Transform
 									appearance MaxMaterial { name "CellEgg/Partsz" }
 									geometry DEF TrackName5 Text { font "Body" width -19 translate false text "5."}
 								}
-								
+								Transform
+								{
+									visible false
+									children
+									[
+										Shape
+										{
+											appearance Appearance
+											{
+												material Material
+												{
+													
+												}
+												texture ImageTexture
+												{
+													url "folder.xbx"
+												}
+											}
+											geometry Box
+										}
+									]
+									scale 0.9 0.9 0
+									translation -0.500000 0.350000 0.000000
+								}
 							]
 							rotation 1.0 1.0 0.0 0.025
 							scale 0.13 0.13 0.13
@@ -2210,7 +2324,30 @@ DEF theWholeThing Transform
 									appearance MaxMaterial { name "CellEgg/Partsz" }
 									geometry DEF TrackName6 Text { font "Body" width -19 translate false text "6."}
 								}
-								
+								Transform
+								{
+									visible false
+									children
+									[
+										Shape
+										{
+											appearance Appearance
+											{
+												material Material
+												{
+													
+												}
+												texture ImageTexture
+												{
+													url "folder.xbx"
+												}
+											}
+											geometry Box
+										}
+									]
+									scale 0.9 0.9 0
+									translation -0.500000 0.350000 0.000000
+								}
 							]
 							rotation 1.0 1.0 0.0 0.025
 							scale 0.13 0.13 0.13
@@ -2225,7 +2362,30 @@ DEF theWholeThing Transform
 									appearance MaxMaterial { name "CellEgg/Partsz" }
 									geometry DEF TrackName7 Text { font "Body" width -19 translate false text "7."}
 								}
-								
+								Transform
+								{
+									visible false
+									children
+									[
+										Shape
+										{
+											appearance Appearance
+											{
+												material Material
+												{
+													
+												}
+												texture ImageTexture
+												{
+													url "folder.xbx"
+												}
+											}
+											geometry Box
+										}
+									]
+									scale 0.9 0.9 0
+									translation -0.500000 0.350000 0.000000
+								}
 							]
 							rotation 1.0 1.0 0.0 0.025
 							scale 0.13 0.13 0.13
@@ -2240,11 +2400,33 @@ DEF theWholeThing Transform
 									appearance MaxMaterial { name "CellEgg/Partsz" }
 									geometry DEF TrackName8 Text { font "Body" width -19 translate false text "8."}
 								}
-								
+								Transform
+								{
+									visible false
+									children
+									[
+										Shape
+										{
+											appearance Appearance
+											{
+												material Material
+												{
+													
+												}
+												texture ImageTexture
+												{
+													url "folder.xbx"
+												}
+											}
+											geometry Box
+										}
+									]
+									scale 0.9 0.9 0
+									translation -0.500000 0.350000 0.000000
+								}
 							]
 							rotation 1.0 1.0 0.0 0.025
 							scale 0.13 0.13 0.13
-							//translation -0.38 -0.482 0.1
 							translation -0.41 -0.565 0.119800
 						}
 						Transform
@@ -2256,11 +2438,33 @@ DEF theWholeThing Transform
 									appearance MaxMaterial { name "CellEgg/Partsz" }
 									geometry DEF TrackName9 Text { font "Body" width -19 translate false text "9."}
 								}
-								
+								Transform
+								{
+									visible false
+									children
+									[
+										Shape
+										{
+											appearance Appearance
+											{
+												material Material
+												{
+													
+												}
+												texture ImageTexture
+												{
+													url "folder.xbx"
+												}
+											}
+											geometry Box
+										}
+									]
+									scale 0.9 0.9 0
+									translation -0.500000 0.350000 0.000000
+								}
 							]
 							rotation 1.0 1.0 0.0 0.025
 							scale 0.13 0.13 0.13
-							//translation -0.38 -0.58 0.1
 							translation -0.41 -0.728 0.119900
 						}
 					]
@@ -2376,7 +2580,7 @@ DEF theWholeThing Transform
 					scaleOrientation 0.914100 -0.060250 -0.401100 -0.012380
 					translation 0.495200 0.775200 0.009549
 				}
-				DEF SubMenuHeaderText Transform
+				DEF SubMenuHeader Transform
 				{
 					visible true
 					children

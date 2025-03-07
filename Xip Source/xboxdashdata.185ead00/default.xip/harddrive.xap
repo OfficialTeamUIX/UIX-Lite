@@ -23,7 +23,6 @@ var arrMenuPaths;
 var TotalSections;
 var LastTitleLaunched;
 var DefaultIcon;
-var bNeedUpdate;
 
 function initialize()
 {
@@ -80,6 +79,7 @@ function UpdateTrackList()
 	
 	for (var i = 0; i < nPlayVisible0; i = i + 1)
 	{
+		c.TrackNames.children[i].children[1].visible = false; //Browser Icon
 		var n = nPlayScroll0 + i;
 		if (n >= nTracks0)
 		{
@@ -87,21 +87,37 @@ function UpdateTrackList()
 		}
 		else
 		{
-			var strName0, strTime0;
-			strName0 = TempTitleList[n];
-			var strAltName = GetSavedValue("AltTitleName",strName0);
-			if (strAltName != "") strName0 = strAltName;
-			// if(strName0.length() > 36) strName0 = strName0.substr(0,36) + "...";
-			strTime0 = "";
-			
+			var strCacheItem = Split(TempTitleList[n],";");
+			var strName0 = strCacheItem[0];
+			var Trans = c.TrackNames.children[i].translation;
+			if(bInBrowser == false | bRecentToggled)
+			{
+				if(parseTrans(Trans,"X") != -0.41) c.TrackNames.children[i].SetTranslation(-0.42, parseTrans(Trans,"Y"), parseTrans(Trans,"Z"));
+				var strAltName = GetSavedValue("AltTitleName",strName0);
+				if (strAltName != "") strName0 = strAltName;
+				if(strName0.length() > 42) strName0 = strName0.substr(0,40) + "...";
+			}
+			else
+			{
+				c.TrackNames.children[i].SetTranslation(-0.34, parseTrans(Trans,"Y"), parseTrans(Trans,"Z"));
+				c.TrackNames.children[i].children[1].visible = true;
+				if(sFileType[n] == "folder" | bInRoot)
+				{ 
+					c.TrackNames.children[i].children[1].children[0].appearance.texture.url = "folder.xbx";
+				}
+				else
+				{
+					c.TrackNames.children[i].children[1].children[0].appearance.texture.url = "file.xbx";
+				}
+			}
 			c.TrackNames.children[i].children[0].geometry.text = strName0;
 
 			if (n == nPlayCursor0)
 			{
 				c.TrackNames.children[i].SetScale(0.12, 0.12, 0.12);
 				c.TrackNames.children[i].children[0].appearance.name = "GameHilite";
-				var Icon = IconFile.GetValue(TempTitleList[nPlayCursor0]);
-				if(Icon == "Unknown" | Icon == "") Icon = DefaultIcon; else  Icon = Icon.toLowerCase() + ".xbx";
+				var Icon = IconFile.GetValue(strCacheItem[0]);
+				if(Icon == "Unknown" | Icon == "" | (bInBrowser & (bRecentToggled == false))) Icon = DefaultIcon; else  Icon = Icon.toLowerCase() + ".xbx";
 				c.theIcons.children[0].children[0].appearance.texture.url = Icon; 
 			}
 			else
@@ -111,14 +127,35 @@ function UpdateTrackList()
 			}
 		}
 	}
-	 
-	if (nTracks0 == 1)
-	{    
-		c.SubMenuHeaderText.text = nTracks0 + " " + Translate("Title");
+
+	if(bInBrowser & (bRecentToggled == false))
+	{
+		var sPath = arrMenuPaths[TotalSections - 1];
+		if(sPath.length() > 20)
+		{
+			if(sPath.length() > 27) sPath = PathEllipsis(sPath,27);
+			c.SubMenuHeader.SetScale(0.110000, 0.100000,0.100000);
+			c.SubMenuHeaderText.width = -22;
+		}
+		else
+		{
+			c.SubMenuHeader.SetScale(0.144000, 0.134000,0.134000);
+			c.SubMenuHeaderText.width = -15;
+		}
+		c.SubMenuHeaderText.text = sPath;
 	}
 	else
 	{
-		c.SubMenuHeaderText.text = nTracks0 + " " + Translate("Titles");
+		c.SubMenuHeader.SetScale(0.144000, 0.134000,0.134000);
+		c.SubMenuHeaderText.width = -15;    
+		if (nTracks0 == 1)
+		{    
+			c.SubMenuHeaderText.text = nTracks0 + " " + Translate("Title");
+		}
+		else
+		{
+			c.SubMenuHeaderText.text = nTracks0 + " " + Translate("Titles");
+		}
 	}
 }
 
@@ -166,6 +203,7 @@ function ShowLauncherMenu()
 	bLauncherVisible0 = true;
 	bInRecentTitles = false;
 	bRecentToggled = false;
+	bInBrowser = false;
 	if(c.theIcons.visible) c.theIcons.children[0].children[0].appearance.texture.url = DefaultIcon;
 }
 
@@ -198,7 +236,7 @@ function EnterLauncherMenu()
 	var c = theLauncher.children[0].children[0];
 	c.theIcons.visible = true;
 	var Icon = GetSavedValue("default","LauncherOrbIcon");
-	if (Icon == "Xbox") { DefaultIcon = "xboxlogo.bmp"; }
+	if (Icon == "Xbox") { DefaultIcon = "xboxicon.bmp"; }
 	else if (Icon == "UIX") { DefaultIcon =  "uixlogo.xbx"; }
 	else { DefaultIcon =  ""; c.theIcons.visible = false; }
 	nPlayScroll0 = 0;
@@ -212,6 +250,7 @@ function EnterLauncherMenu()
 	CurrentViewpoint = LauncherViewpoint;
 	CurrentAltViewpoint = theLauncherAlternateViewpoint;
 	LoadRecentTitles();
+	LoadRootContents();
 }
 
 function LoadMenuItems()
@@ -231,12 +270,14 @@ function LoadMenuItems()
 			TotalSections = TotalSections + 1;
 		}
 	}
+	arrMenuNames[TotalSections] = Translate("File Browser");
+	arrMenuPaths[TotalSections] = Translate("Xbox Root");
+	TotalSections = TotalSections + 1;
 	if(TotalSections >= 3) { nCurLauncherVisible0 = Math.min(5, TotalSections); } else { nCurLauncherVisible0 = 2; }
 }
 
 function LoadRecentTitles()
 {
-	bNeedUpdate = false;
 	arrRecentNames = new Array;
 	arrRecentPaths = new Array;
 	MaxRecentTitles = 9;
@@ -333,35 +374,45 @@ function UpdateLauncherMenu()
 function LaunchItem(x,y)
 {
 	var RelativePath = Split(x,";");
-	var FolderName = y;
-	
-	for(var i = 0; i < PartitionLocations.length; i = i + 1)
-	{
-		for(var ix = 0; ix < RelativePath.length; ix = ix + 1)
-		{
-			launchPath = PartitionLocations[i] + RelativePath[ix] + "\\" + FolderName;
-			launchXbe = "default.xbe";
-			if(i > 1 & bHDDInitialized == false) 
-			{  //The title was not found on C or E so set the background before continuing.
-				sLocation = x;
-				sFolder = y;
-				bLaunchItem = true;
-				bHDDInitialize = true;
-				return;
-			}
-			else if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
-			{  //We,ve found the title so fade the Launcher, update the RecentTitles , and goto theLaunchGameLevel
-				theLauncher.children[0].children[0].theWholeThing.alpha = 0;
-				UpdateRecentTitles(x,y);
-				theLaunchGameLevel.GoTo();
-				return;
-			}
-		}
+	var TitleLocation = Split(y,";");
+	var FolderName = TitleLocation[0];
+	if((StringToNumber(TitleLocation[1]) & 15) > 1 & bHDDInitialized == false) 
+	{  //The title is not on C or E so set the background before continuing.
+		sLocation = x;
+		sFolder = y;
+		bLaunchItem = true;
+		bHDDInitialize = true;
+		return;
 	}
+	
+	launchPath = PartitionLocations[StringToNumber(TitleLocation[1])] + RelativePath[StringToNumber(TitleLocation[2])] + "\\" + FolderName;
+	launchXbe = "default.xbe";
+	
+	if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
+	{  //We,ve found the title so fade the Launcher, update the RecentTitles , and goto theLaunchGameLevel
+		theLauncher.children[0].children[0].theWholeThing.visible = false;
+		UpdateRecentTitles(x,y);
+		theLaunchGameLevel.GoTo();
+		return;
+	}
+	
 	//If we've made it here the title was not found. 
-	//This could be due to a stale cache. So, let's refresh the cache and then reload the dash.
+	//This could be due to a stale cache. So, let's refresh the cache and then reload the list.
+	if(theLauncher.children[0].children[0].theWholeThing.visible == false)
+	{
+		theBackground.isBound = true;
+		theLauncher.children[0].children[0].theWholeThing.visible = true;
+		theLauncher.shell.alpha = 1;
+	}
+	RefreshTitleList();
+}
+
+function RefreshTitleList()
+{
 	RefreshCache();
-	Reload();
+	LoadRecentTitles();
+	TempTitleList = GetTitleList(arrMenuPaths[nCurLauncherItem0]);
+	if (bLauncherVisible0 == false){ UpdateTrackList(); }
 }
 
 function GetTitleList(mnuName)
@@ -494,6 +545,22 @@ DEF theLauncher Level
 				{
 					return;
 				}
+				else if(mnuName == Translate("File Browser"))
+				{
+					bInBrowser = true;
+					subTitle0 = mnuName;
+					if(bInRoot)
+					{
+						TempTitleList = RootDirectory;
+						sFileType = new Array(RootDirectory.length);
+					}
+					else
+					{
+						TempTitleList = GetDirectoryContents(arrMenuPaths[TotalSections - 1]);
+					}
+					thePlayerPanelIn.Play();
+					StartTitleList();
+				}
 				else
 				{
 					CurFillDir = arrMenuPaths[nCurLauncherItem0];
@@ -507,6 +574,33 @@ DEF theLauncher Level
 			{
 				LaunchItem(arrRecentPaths[nPlayCursor0],TempTitleList[nPlayCursor0]);
 			}
+			else if(bInBrowser)
+			{
+				if(sFileType[nPlayCursor0] == "folder" | bInRoot)
+				{
+					if(TempTitleList[nPlayCursor0] == "..")
+					{
+						GoBackDirectory();
+					}
+					else
+					{
+						ChangeDirectory(TempTitleList[nPlayCursor0]);
+					}
+				}
+				else if(sFileType[nPlayCursor0] == "xbe")
+				{
+					if(LeftTrigger & RightTrigger)
+					{
+						var sPath = arrMenuPaths[TotalSections - 1] + "\\" + TempTitleList[nPlayCursor0];
+						SetSavedValue("QuickLaunch","QuickLaunchA",sPath);
+						TellUser(Translate("Selected item assigned to QuickLaunch") + "A","");
+					}
+					else
+					{
+						ExecuteFile(arrMenuPaths[TotalSections - 1] + "\\" + TempTitleList[nPlayCursor0]);
+					}
+				}
+			}
 			else
 			{
 				LaunchItem(CurFillDir,TempTitleList[nPlayCursor0]);
@@ -518,10 +612,21 @@ DEF theLauncher Level
 			if(bInRecentTitles) return;
 			theLauncher.children[0].children[0].MU_recent_pod_HL.children[0].appearance.material.param = 1;
 			PlaySoundA();
-			
+			if(bInBrowser)
+			{
+				if(sFileType[nPlayCursor0] == "xbe")
+				{
+					if(LeftTrigger & RightTrigger)
+					{
+						var sPath = arrMenuPaths[TotalSections - 1] + "\\" + TempTitleList[nPlayCursor0];
+						SetSavedValue("QuickLaunch","QuickLaunchX",sPath);
+						TellUser(Translate("Selected item assigned to QuickLaunch") + "X","");
+						return;
+					}
+				} 
+			}            
 			subTitle1 = subTitle0;
 			subTitle0 = Translate("Recent Titles");
-			if(bNeedUpdate) LoadRecentTitles();
 			TempTitleList = arrRecentNames;
 			if(bLauncherVisible0) 
 			{
@@ -544,8 +649,19 @@ DEF theLauncher Level
 		{
 			theLauncher.children[0].children[0].MU_refresh_pod_HL.children[0].appearance.material.param = 1;
 			PlaySoundA();
-			
-			bNeedUpdate = true;
+			if(bInBrowser)
+			{
+				if(sFileType[nPlayCursor0] == "xbe")
+				{
+					if(LeftTrigger & RightTrigger)
+					{
+						var sPath = arrMenuPaths[TotalSections - 1] + "\\" + TempTitleList[nPlayCursor0];
+						SetSavedValue("QuickLaunch","QuickLaunchY",sPath);
+						TellUser(Translate("Selected item assigned to QuickLaunch") + "Y","");
+						return;
+					}
+				} 
+			} 
 			bRefreshCache = true;
 			bHDDInitialize = true;
 		}
@@ -554,7 +670,19 @@ DEF theLauncher Level
 		{
 			theLauncher.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
 			PlaySoundB();
-			
+			if(bInBrowser)
+			{
+				if(sFileType[nPlayCursor0] == "xbe")
+				{
+					if(LeftTrigger & RightTrigger)
+					{
+						var sPath = arrMenuPaths[TotalSections - 1] + "\\" + TempTitleList[nPlayCursor0];
+						SetSavedValue("QuickLaunch","QuickLaunchB",sPath);
+						TellUser(Translate("Selected item assigned to QuickLaunch") + "B","");
+						return;
+					}
+				} 
+			}
 			if (bLauncherVisible0)
 			{
 				if(bBackToSettings)
@@ -571,7 +699,22 @@ DEF theLauncher Level
 			}
 			else if(bRecentToggled)
 			{
-				TempTitleList = GetTitleList(arrMenuNames[nCurLauncherItem0]);
+								if(bInBrowser)
+				{
+					if(bInRoot)
+					{
+						TempTitleList = RootDirectory;
+						sFileType = new Array(RootDirectory.length);
+					}
+					else
+					{
+						TempTitleList = GetDirectoryContents(arrMenuPaths[TotalSections - 1]);
+					}
+				}
+				else
+				{
+					TempTitleList = GetTitleList(arrMenuNames[nCurLauncherItem0]);
+				}
 				nPlayScroll0 = nPlayScroll1;
 				nPlayCursor0 = nPlayCursor1;
 				subTitle0 = subTitle1;
@@ -586,7 +729,8 @@ DEF theLauncher Level
 				thePlayerPanelOut.Play();
 			}
 		}
-		function OnRightDown() { OnMoveRight(); }
+		function OnRightDown() { RightTrigger = true; if(bInBrowser == false) OnMoveRight(); }
+		function OnRightUp() { RightTrigger = false; }
 		function OnMoveRight()  
 		{ 
 			if (bLauncherVisible0 == false)
@@ -609,7 +753,8 @@ DEF theLauncher Level
 				UpdateTrackList();
 			}
 		}
-		function OnLeftDown() { OnMoveLeft(); }
+		function OnLeftDown() { LeftTrigger = true; if(bInBrowser == false) OnMoveLeft(); }
+		function OnLeftUp() { LeftTrigger = false; }
 		function OnMoveLeft()  
 		{  
 			if (bLauncherVisible0 == false)
@@ -699,4 +844,151 @@ DEF theLauncher Level
 			EnterLauncherMenu();
 		}
 	}
+}
+
+///// File Browser Functions \\\\\
+var bInBrowser;
+var bInRoot;
+var sFileType;
+var RootDirectory;
+var sDirectory;
+
+function LoadDir()
+{
+	TempTitleList = GetDirectoryContents(sDirectory);
+	UpdateTrackList();
+}
+
+function LoadRootContents()
+{
+	bInRoot = true;
+	sFileType = new Array;
+	RootDirectory = new Array;
+	RootDirectory[RootDirectory.length] = "C";
+	RootDirectory[RootDirectory.length] = "E";
+	var nPartitions = StringToNumber(GetSavedValue("ExtendedPartitions","Partitions"));
+	if(nPartitions & 1) RootDirectory[RootDirectory.length] = "F";
+	if(nPartitions & 2) RootDirectory[RootDirectory.length] = "G";
+	if(nPartitions & 16) RootDirectory[RootDirectory.length] = "E2";
+	if(nPartitions & 4) RootDirectory[RootDirectory.length] = "F2";
+	if(nPartitions & 8) RootDirectory[RootDirectory.length] = "G2";
+}
+
+function ChangeDirectory(x)
+{
+	if(bInRoot)
+	{
+		arrMenuPaths[TotalSections - 1] = x + ":";
+		bInRoot = false;
+	}
+	else
+	{
+		arrMenuPaths[TotalSections - 1] = arrMenuPaths[TotalSections - 1] + "\\" + x;
+	}
+	TempTitleList = GetDirectoryContents(arrMenuPaths[TotalSections - 1]);
+	if(TempTitleList.length >= 0) UpdateTrackList();
+}
+
+function GoBackDirectory()
+{
+	var CurPath = arrMenuPaths[TotalSections - 1];
+	if(CurPath.lastIndexOf("\\") < 0)
+	{
+		nPlayScroll0 = 0;
+		nPlayCursor0 = 0;
+		bInRoot = true;
+		arrMenuPaths[TotalSections - 1] = Translate("Xbox Root");
+		TempTitleList = RootDirectory;
+	}
+	else
+	{
+		arrMenuPaths[TotalSections - 1] = CurPath.substr(0,CurPath.lastIndexOf("\\"));
+		TempTitleList = GetDirectoryContents(arrMenuPaths[TotalSections - 1]);
+	}
+	UpdateTrackList();
+}
+
+function GetDirectoryContents(x)
+{
+	nPlayScroll0 = 0;
+	nPlayCursor0 = 0;
+	var CurFiles = new Array;
+	var CurDirectoryContents = new Array;
+	var sPath = x.substr(x.indexOf(":"));
+	var sDrive = x.substr(0,x.indexOf(":"));
+	if(bHDDInitialized == false)
+	{
+		if(sDrive.charAt(0) == "F" | sDrive.charAt(0) == "G")
+		{
+			sDirectory = x;
+			bLoadDir = true;
+			bHDDInitialize = true;
+			return;
+		}
+	}
+	var c = new Folder;
+	c.path = GetDrive(sDrive) + sPath;
+	sFileType = new Array;
+	CurDirectoryContents[CurDirectoryContents.length] = "..";
+	sFileType[sFileType.length] = "folder";
+	if(c.subFolders.length() > 0)                   //Add folders if any
+	{
+		for(var i = 0; i < c.subFolders.length(); i = i + 1)
+		{
+			CurDirectoryContents[CurDirectoryContents.length] = c.subFolders[i].name;
+			sFileType[sFileType.length] = "folder";
+		}
+		CurDirectoryContents = CurDirectoryContents.sort();
+	}
+	
+	if(c.files.length() > 0)                        //Get files if any
+	{
+		for(var i = 0; i < c.files.length(); i = i + 1)
+		{
+			CurFiles[CurFiles.length] = c.files[i].name + "." + c.files[i].type;
+		}
+		CurFiles = CurFiles.sort();
+	}
+	for(var i = 0; i < CurFiles.length; i = i + 1)  //Add files to folders
+	{
+		var tempFile = CurFiles[i];
+		CurDirectoryContents[CurDirectoryContents.length] = tempFile;
+		if(tempFile.lastIndexOf(".") < 0)
+		{
+			sFileType[sFileType.length] = "unk";
+		}
+		else
+		{
+			sFileType[sFileType.length] = tempFile.substr(tempFile.lastIndexOf(".") + 1).toLowerCase();
+		}
+	}
+	return CurDirectoryContents;
+}
+
+function GetDrive(x)
+{
+	if(x == "C") return "Y";
+	if(x == "E") return "C";
+	if(x == "F") return "N";
+	if(x == "G") return "O";
+	if(x == "E2") return "R";
+	if(x == "F2") return "P";
+	if(x == "G2") return "Q";
+}
+
+function PathEllipsis(x,MaxCharacters)
+{
+	var sPath, arrPath, center, a, b, c; 
+	sPath = x;
+	c = sPath.length();
+	while(c > MaxCharacters)
+	{
+		arrPath = Split(sPath,"\\");
+		center = Math.ceil(arrPath.length / 2);
+		a = arrPath.slice(0,center - 1);
+		b = arrPath.slice(center,arrPath.length);
+		sPath = a.join("\\") + "\\" + b.join("\\");
+		c = sPath.length();
+	}
+	return a.join("\\") + "\\...\\" + b.join("\\");
 }

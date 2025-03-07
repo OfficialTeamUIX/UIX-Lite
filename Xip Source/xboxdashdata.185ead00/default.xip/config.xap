@@ -329,6 +329,8 @@ function BuildRTList()
 	var x = 0;
 	for(var i = 0; i < configList.length; i = i + 1)
 	{
+		var cTitle = Split(configList[x],";");
+		configList[x] = cTitle[0];
 		configValues[x] = "AltTitleName-" + configList[x];
 		configSelect[x] = "configKeyb()";
 		x = x + 1;
@@ -416,7 +418,6 @@ function toggleIcon()
 		c.ConsoleIcon.visible = true;
 		cValue = "Console";
 	}
-	c.theRightSlots.children[LV2Hold].children[0].appearance.name = "GameHilite";
 	c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue);
 	setConfigMenuValue(configValues[LV2Item],cValue);
 }
@@ -429,7 +430,6 @@ function toggleLOI()
 	if(b == "None") { cValue = "Xbox"; } 
 	else if(b == "Xbox") { cValue = "UIX"; }
 	else { cValue = "None"; }
-	c.theRightSlots.children[LV2Hold].children[0].appearance.name = "GameHilite";
 	c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue);
 	setConfigMenuValue(configValues[LV2Item],cValue);
 }
@@ -440,21 +440,24 @@ function toggleAM()
 	if(bAdvancedMode) { bAdvancedMode = false; cValue = "false"; } else { bAdvancedMode = true; cValue = "true"; }
 	SetSavedBooleanValue("MainMenu","AdvancedMode",bAdvancedMode);
 	var c = theConfigPanel.children[0].children[0];
-	c.theRightSlots.children[LV2Hold].children[0].appearance.name = "GameHilite";
 	c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue);
 }
 
 function PathEllipsis(x)
 {
-	if(x.indexOf("\\") < 0) return x.substr(0, MaxCharacters) + "...";
-	var size = x.length();
-	var diff = Math.ceil((size - MaxCharacters) / 2);
-	var half = Math.floor(size/2);
-	var a = x.substr(0,half - diff);
-	var b = x.substr(half + diff);
-	var c = a.substr(0,a.lastIndexOf("\\") + 1);
-	var d = b.substr(b.indexOf("\\"));
-	return c + "..." + d;
+	var sPath, arrPath, center, a, b, c; 
+	sPath = x;
+	c = sPath.length();
+	while(c > MaxCharacters)
+	{
+		arrPath = Split(sPath,"\\");
+		center = Math.ceil(arrPath.length / 2);
+		a = arrPath.slice(0,center - 1);
+		b = arrPath.slice(center,arrPath.length);
+		sPath = a.join("\\") + "\\" + b.join("\\");
+		c = sPath.length();
+	}
+	return a.join("\\") + "\\...\\" + b.join("\\");
 }
 
 function configKeyb()
@@ -538,7 +541,6 @@ function refreshMenu(x)
 	
 	if(inChangeTitleMenu)
 	{
-		c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "GameHilite";
 		var tValue = cValue;
 		if(tValue.length() > 36) { tValue = tValue.substr(0, 36) + "..."; }
 		c.theLeftSlots.children[LV2Hold].children[0].geometry.text = tValue;
@@ -546,7 +548,6 @@ function refreshMenu(x)
 	}
 	else
 	{
-		c.theRightSlots.children[LV2Hold].children[0].appearance.name = "GameHilite";
 		if(cValue.length() > 20) { c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue.substr(0, 20) + "..."; }
 		else { c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue); }
 	}
@@ -579,6 +580,7 @@ function clearText()
 		c.theLeftSlots.children[i].children[0].geometry.font = "Body";
 		
 		c.theRightSlots.children[i].children[0].geometry.text = "";
+		c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
 		c.theRightSlots.children[i].children[0].geometry.font = "Body";
 	}
 }
@@ -664,7 +666,6 @@ DEF theConfigPanel Level
 				var c = theConfigPanel.children[0].children[0];
 				c.theLeftSlots.children[0].children[0].appearance.name = "GameHilite";
 				c.theBuildInfo.children[0].geometry.text = "Build: " + sBuildDate;
-				c.theConfigHeader.children[0].appearance.name = "NavType";
 				c.theConfigHeader.children[0].geometry.text = "UIX Lite";
 				c.MU_L3_panel_tracklist_overlay.visible = bUseUnderlay;
 				var cValue = getConfigMenuValue("default-ConfigPanelIcon");
