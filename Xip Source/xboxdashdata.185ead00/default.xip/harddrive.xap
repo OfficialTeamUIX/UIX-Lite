@@ -376,7 +376,8 @@ function LaunchItem(x,y)
 	var RelativePath = Split(x,";");
 	var TitleLocation = Split(y,";");
 	var FolderName = TitleLocation[0];
-	if((StringToNumber(TitleLocation[1]) & 15) > 1 & bHDDInitialized == false) 
+	var sDrive = DriveLocations[StringToNumber(TitleLocation[1])];
+	if((sDrive != "Y:\\" &  sDrive != "C:\\" &  sDrive != "R:\\") & bHDDInitialized == false) 
 	{  //The title is not on C or E so set the background before continuing.
 		sLocation = x;
 		sFolder = y;
@@ -593,7 +594,7 @@ DEF theLauncher Level
 					{
 						var sPath = arrMenuPaths[TotalSections - 1] + "\\" + TempTitleList[nPlayCursor0];
 						SetSavedValue("QuickLaunch","QuickLaunchA",sPath);
-						TellUser(Translate("Selected item assigned to QuickLaunch") + "A","");
+						TellUser(Translate("ASSIGNED_QUICKLAUNCH") + "A","");
 					}
 					else
 					{
@@ -620,7 +621,7 @@ DEF theLauncher Level
 					{
 						var sPath = arrMenuPaths[TotalSections - 1] + "\\" + TempTitleList[nPlayCursor0];
 						SetSavedValue("QuickLaunch","QuickLaunchX",sPath);
-						TellUser(Translate("Selected item assigned to QuickLaunch") + "X","");
+						TellUser(Translate("ASSIGNED_QUICKLAUNCH") + "X","");
 						return;
 					}
 				} 
@@ -657,7 +658,7 @@ DEF theLauncher Level
 					{
 						var sPath = arrMenuPaths[TotalSections - 1] + "\\" + TempTitleList[nPlayCursor0];
 						SetSavedValue("QuickLaunch","QuickLaunchY",sPath);
-						TellUser(Translate("Selected item assigned to QuickLaunch") + "Y","");
+						TellUser(Translate("ASSIGNED_QUICKLAUNCH") + "Y","");
 						return;
 					}
 				} 
@@ -678,7 +679,7 @@ DEF theLauncher Level
 					{
 						var sPath = arrMenuPaths[TotalSections - 1] + "\\" + TempTitleList[nPlayCursor0];
 						SetSavedValue("QuickLaunch","QuickLaunchB",sPath);
-						TellUser(Translate("Selected item assigned to QuickLaunch") + "B","");
+						TellUser(Translate("ASSIGNED_QUICKLAUNCH") + "B","");
 						return;
 					}
 				} 
