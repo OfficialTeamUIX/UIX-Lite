@@ -66,13 +66,14 @@ Some of these features include;
 
 ## Launcher Icon Support
 
-* As of UIX Lite v0.4 you can now see the icon of your title as you browse through the list in the Launcher. For this feature to work you must edit the Icons.ini located in ```C:\UIX Configs\``` to indicate to UIX Lite the TitleID for each of your titles. The format is ```<TitleName>=<TitleID>.xbx``` where ```<TitleName>``` is the name of the directory that contain the title. Then you must obtain the icon to use (usually located at ```E:\TDATA\<TitleID>\TitleImage.xbx```), rename it to ```<TitleID>.xbx```, and then add it to the default.xip.
+* As of UIX Lite v0.4 you can now see the icon of your title as you browse through the list in the Launcher. For this feature to work you must edit the Icons.ini located in ```C:\UIX Configs\``` to indicate to UIX Lite the TitleID for each of your titles. The format is ```<TitleName>=<TitleID>.xbx``` where ```<TitleName>``` is the name of the directory that contains the title. Then you must obtain the icon to use (usually located at ```E:\TDATA\<TitleID>\TitleImage.xbx```), rename it to ```<TitleID>.xbx```, and then add it to the default.xip.
 * Several tools are available to add the icon files to the default.xip such as WinXip, VisualXIP, XIP, and UIX Icon Installer. (The current versions of VisualXIP, XIP, and UIX Icon Installer are available under Assets in the [Tools](https://github.com/OfficialTeamUIX/UIX-Lite/releases/tag/Tools) release.)
 
  NOTE: Ensure you have the "Tools>Options>Merge Mesh Files" option checked in VisualXIP or use the -m switch in XIP when using them to add files to your xips.
 
-* MobCat has also created an awesome tool called [Iconinator](https://github.com/MobCat/UIXinator/releases) in [UIXinator](https://github.com/MobCat/UIXinator) that fully automates this process. It will load your config.ini to get your content paths, then scan all the paths and collect your TitleNames, get their TitleIDs, obtain the icons (attempting to download ones that are missing), create the Icons.ini, and add the icons to the default.xip.
+* MobCat has also created a tool called [Iconinator](https://github.com/MobCat/UIXinator/releases) in [UIXinator](https://github.com/MobCat/UIXinator) that fully automates this process. It will load your config.ini to get your content paths, then scan all the paths and collect your TitleNames, get their TitleIDs, obtain the icons (attempting to download ones that are missing), create the Icons.ini, and add the icons to the default.xip.
 	- If you have python and want to run Iconinator from source you must first add xip.exe to the lib folder and then add the dependencies using "pip install -r requirements.txt" before running "python Iconinator.py".
+* You can also use the "UIX Icon Installer" from the Tools release which is a Windows executable similar to MobCat's Iconinator and also fully automates this process.
 
 ## Title Caching Support
 
