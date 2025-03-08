@@ -51,9 +51,9 @@ Some of these features include;
 * To re-launch a recently launched title, simply press the X button while in the Launcher menu.
 * You can assign a QuickLaunch path to each of the A, B, X, and Y buttons. To active the QuickLaunch feature, while in the Main Menu hold both triggers and press the assigned button.
 
- NOTE: The Xbox onscreen keyboard does not allow you to enter an empty text string. Therefore, to delete an entry just enter a single "x" and select DONE.
+ NOTE: The Xbox onscreen keyboard does not allow you to enter an empty text string. Therefore, to delete an entry just enter a single "x" and select "DONE".
  
- NOTE: The Xbox onscreen keyboard is limited to 31 characters. So, if you need more characters, just enter as much as you can and select "Done". Then edit it again and some of the text will be moved into the title bar and you can add more text.
+ NOTE: The Xbox onscreen keyboard is limited to 31 characters. So, if you need more characters, just enter as much as you can and select "DONE". Then edit it again and some of the text will be moved into the title bar and you can add more text.
  
 ## Language Support
 
@@ -66,7 +66,7 @@ Some of these features include;
 
 ## Launcher Icon Support
 
-* As of UIX Lite v0.4 you can now see the icon of your title as you browse through the list in the Launcher. For this feature to work you must edit the Icons.ini located in ```C:\UIX Configs\``` to indicate to UIX Lite the TitleID for each of your titles. The format is <TitleName>=<TitleID>.xbx where TitleName is the name of the directory that contain the title. Then you must obtain the icon to use (usually located at ```E:\TDATA\<TitleID>\TitleImage.xbx```), rename it to ```<TitleID>.xbx```, and then add it to the default.xip.
+* As of UIX Lite v0.4 you can now see the icon of your title as you browse through the list in the Launcher. For this feature to work you must edit the Icons.ini located in ```C:\UIX Configs\``` to indicate to UIX Lite the TitleID for each of your titles. The format is ```<TitleName>=<TitleID>.xbx``` where ```<TitleName>``` is the name of the directory that contain the title. Then you must obtain the icon to use (usually located at ```E:\TDATA\<TitleID>\TitleImage.xbx```), rename it to ```<TitleID>.xbx```, and then add it to the default.xip.
 * Several tools are available to add the icon files to the default.xip such as WinXip, VisualXIP, XIP, and UIX Icon Installer. (The current versions of VisualXIP, XIP, and UIX Icon Installer are available under Assets in the [Tools](https://github.com/OfficialTeamUIX/UIX-Lite/releases/tag/Tools) release.)
 
  NOTE: Ensure you have the "Tools>Options>Merge Mesh Files" option checked in VisualXIP or use the -m switch in XIP when using them to add files to your xips.
