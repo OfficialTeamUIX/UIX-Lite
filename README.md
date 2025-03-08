@@ -51,7 +51,7 @@ Some of these features include;
 * To re-launch a recently launched title, simply press the X button while in the Launcher menu.
 * You can assign a QuickLaunch path to each of the A, B, X, and Y buttons. To active the QuickLaunch feature, while in the Main Menu hold both triggers and press the assigned button.
 
- NOTE: The Xbox onscreen keyboard does not allow you to enter an empty text string. Therefore, to delete an entry just enter a single "x" and select Done.
+ NOTE: The Xbox onscreen keyboard does not allow you to enter an empty text string. Therefore, to delete an entry just enter a single "x" and select DONE.
  
  NOTE: The Xbox onscreen keyboard is limited to 31 characters. So, if you need more characters, just enter as much as you can and select "Done". Then edit it again and some of the text will be moved into the title bar and you can add more text.
  
