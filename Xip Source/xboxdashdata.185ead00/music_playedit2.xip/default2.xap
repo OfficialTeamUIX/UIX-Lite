@@ -2597,6 +2597,7 @@ DEF theWholeThing Transform
 							geometry DEF SubMenuHeaderText Text { font "heading" width -15 }
 						}
 					]
+					rotation 1.0 1.0 0.0 0.025
 					scale 0.144000 0.134000 0.134000 
 					translation -0.496200 0.880200 0.009549
 				}
