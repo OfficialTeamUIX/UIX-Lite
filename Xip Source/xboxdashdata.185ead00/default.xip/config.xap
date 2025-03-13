@@ -69,6 +69,10 @@ function buildGSList() //just copy this function for more subsections
 	configValues[i] = "default-UseMainMenuAttract";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
+	configList[i] = "AutoLaunch Media:";
+	configValues[i] = "default-AutoLaunchMedia";
+	configSelect[i] = "toggleTF()";
+	i = i + 1;
 	configList[i] = "Use tHc ScreenSaver:";
 	configValues[i] = "default-UsetHcScreenSaver";
 	configSelect[i] = "toggleTF()";
@@ -615,6 +619,19 @@ function updateText()
 			if(inLV2 == true) 
 			{
 				var cValue = getConfigMenuValue(configValues[i]);
+				if(cValue == "") //Set default values
+				{
+					if(configSelect[i] == "toggleTF()")
+					{
+						cValue = "false";
+						setConfigMenuValue(configValues[i],cValue);
+					}
+					else if(configSelect[i] == "toggle34()" | configSelect[i] == "toggle345()")
+					{
+						cValue = "3";
+						setConfigMenuValue(configValues[i],cValue);
+					}
+				}
 				if(inQuickLaunchMenu & (cValue.length() > MaxCharacters))
 				{
 					c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";

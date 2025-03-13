@@ -327,6 +327,35 @@ DEF theDiscDrive DiscDrive
 	
 	function OnDiscInserted()
 	{
+		var a = GetSavedBooleanValue("default","AutoLaunchMedia");
+		if(a == true)
+		{
+			AutoLaunch();
+		}
+		else
+		{
+			var stra;
+			if(theDiscDrive.discType == "Audio")
+			{
+				stra = Translate("\nAn Audio CD has been detected.\n\nDo you wish to hear it?");
+			}
+			else if(theDiscDrive.discType == "Video")
+			{
+				stra = Translate("\nAn DVD movie has been detected.\n\nDo you wish to watch it?");
+			}
+			else if(theDiscDrive.discType == "Title")
+			{
+				stra = Translate("\nAn Xbox Game has been detected.\n\nDo you wish to play it?");
+			}
+			else if(theDiscDrive.discType == "unknown")
+			{
+				stra = Translate("\nAn Unknown disk type has been detected.\n\nDo you wish to try to launch it?");
+			}
+			AskQuestion(stra,"AutoLaunch()","",1);
+		}
+	}
+	function AutoLaunch()
+	{
 		if (discType == "Audio")
 		{
 			LogOff();   // PS Bug #33608 You are still seen as Online when playing an Audio CD
