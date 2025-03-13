@@ -351,9 +351,10 @@ DEF theDiscDrive DiscDrive
 			{
 				stra = Translate("\nAn Unknown disk type has been detected.\n\nDo you wish to try to launch it?");
 			}
-			AskQuestion(stra,"AutoLaunch()","",1);
+			AskQuestion(stra,"theDiscDrive.AutoLaunch()","",1);
 		}
 	}
+	
 	function AutoLaunch()
 	{
 		if (discType == "Audio")
@@ -2030,7 +2031,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "250307"; //Date of commit YYMMDD
+	sBuildDate = "250313"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
