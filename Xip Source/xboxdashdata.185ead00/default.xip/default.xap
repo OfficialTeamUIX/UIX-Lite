@@ -212,6 +212,8 @@ DEF theScreenSaver ScreenSaver
 			StopScreenSaverView();
 		}
 	}
+	function OnDelay2() {StartScreenSaverView();}
+	function OnDelay3() {StartScreenSaverView();}
 }
 
 NavigationInfo
@@ -337,19 +339,19 @@ DEF theDiscDrive DiscDrive
 			var stra;
 			if(theDiscDrive.discType == "Audio")
 			{
-				stra = Translate("\nAn Audio CD has been detected.\n\nDo you wish to hear it?");
+				stra = Translate("AUTOLAUNCH_AUDIO_ASK");
 			}
 			else if(theDiscDrive.discType == "Video")
 			{
-				stra = Translate("\nAn DVD movie has been detected.\n\nDo you wish to watch it?");
+				stra = Translate("AUTOLAUNCH_VIDEO_ASK");
 			}
 			else if(theDiscDrive.discType == "Title")
 			{
-				stra = Translate("\nAn Xbox Game has been detected.\n\nDo you wish to play it?");
+				stra = Translate("AUTOLAUNCH_TITLE_ASK");
 			}
 			else if(theDiscDrive.discType == "unknown")
 			{
-				stra = Translate("\nAn Unknown disk type has been detected.\n\nDo you wish to try to launch it?");
+				stra = Translate("AUTOLAUNCH_UNKN_ASK");
 			}
 			AskQuestion(stra,"theDiscDrive.AutoLaunch()","",1);
 		}
@@ -463,6 +465,10 @@ function Translate(text)
 		else if(MatchWord == "LAUNCHER") { return "Launcher"; }
 		else if(MatchWord == "INSIGNIA") { return "Insignia"; }
 		else if(MatchWord == "CONFIGURATION") { return "UIX Settings"; }
+		else if(MatchWord == "AUTOLAUNCH_AUDIO_ASK") { return "\nAn Audio CD has been inserted.\n\nDo you wish to play it?"; }
+		else if(MatchWord == "AUTOLAUNCH_VIDEO_ASK") { return "\nA DVD movie has been inserted.\n\nDo you wish to watch it?"; }
+		else if(MatchWord == "AUTOLAUNCH_TITLE_ASK") { return "\nAn Xbox title has been inserted.\n\nDo you wish to launch it?"; }
+		else if(MatchWord == "AUTOLAUNCH_UNKN_ASK") { return "\nAn Unknown disk type has been inserted.\n\nDo you wish to try to launch it and see what happens??"; }
 		else if(MatchWord == "ASSIGNED_QUICKLAUNCH") { return "Selected item assigned to QuickLaunch"; }
 		else if(MatchWord == "INDEXING_PARTITION") { return "Indexing the harddisk's extended partitions. This could take several seconds.\n\nPlease Wait..."; }
 		else if(MatchWord == "SETTINGS_CHANGED") { return "You will need to reload before the new settings will take effect.\n\nWould you like to reload now?"; }
@@ -3373,7 +3379,7 @@ function ExecuteFile(sPath)
 	}
 	else if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
 	{
-		theMainMenu.children[0].children[0].theMainMenuLevel.alpha = 0;
+		theMainMenu.children[0].children[0].theMainMenuLevel.visible = false;
 		theLaunchGameLevel.GoTo();
 	}
 }

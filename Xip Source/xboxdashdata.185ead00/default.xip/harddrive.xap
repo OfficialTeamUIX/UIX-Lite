@@ -211,7 +211,6 @@ function StartTitleList()
 {
 	var c = theLauncher.children[0].children[0];
 	c.MU_L3_text_tracklist01.visible = false;
-	c.MU_L3_panel_tracklist_overlay.visible = bUseUnderlay;
 	c.back1.SetTranslation(-47.340000, 52.810000, -204.300003); 
 	c.back1.SetRotation(0.000000, -1.000000, 0.000000, -0.340300);
 	c.refresh.SetTranslation(-47.690000, 52.380000, -204.300003); 
@@ -447,6 +446,7 @@ DEF theLauncher Level
 				
 				var c = theLauncher.children[0].children[0];
 				
+				c.MU_L3_panel_tracklist_overlay.visible = bUseUnderlay;
 				if( thcorb == true ) 
 				{
 					c.MU_L3_musicpod.visible = false;
@@ -465,7 +465,36 @@ DEF theLauncher Level
 					c.Spinning_Support3.children[0].rpm = 0;
 					c.Spinning_Support4.children[0].rpm = 0;
 				}
-				
+				var YStart;
+				var YStep;
+				var Y = 0;
+				if(bUseUnderlay)
+				{
+					nPlayVisible0 = 9;
+					YStart = .569;
+					YStep = .162;
+				}
+				else
+				{
+					nPlayVisible0 = 12;
+					YStart = .569;
+					YStep = .118;
+				}
+				for(var i = 0; i < 12; i = i + 1)
+				{
+					var Trans = c.TrackNames.children[i].translation;
+					if(i < nPlayVisible0)
+					{
+						Y = YStart - (i * YStep);
+						c.TrackNames.children[i].SetTranslation(parseTrans(Trans,"X"), Y, parseTrans(Trans,"Z"));
+						c.TrackNames.children[i].visible = true;
+					}
+					else
+					{
+						c.TrackNames.children[i].visible = false;
+						c.TrackNames.children[i].SetTranslation(parseTrans(Trans,"X"), Y, parseTrans(Trans,"Z"));
+					}
+				}
 				EnterLauncherMenu();
 			}
 		}
@@ -700,7 +729,7 @@ DEF theLauncher Level
 			}
 			else if(bRecentToggled)
 			{
-								if(bInBrowser)
+				if(bInBrowser)
 				{
 					if(bInRoot)
 					{

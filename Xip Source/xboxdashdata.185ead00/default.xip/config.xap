@@ -13,6 +13,7 @@ var inQuickLaunchMenu;
 var inChangeTitleMenu;
 var MaxCharacters;
 var bAdvancedMode;
+var nMaxMenuItems;
 
 function initialize()
 {
@@ -24,6 +25,7 @@ function initialize()
 	inLV2 = false;
 	settChanged = false;
 	MaxCharacters = 28;
+	nMaxMenuItems = 9;
 	inQuickLaunchMenu = false;
 	inChangeTitleMenu = false;
 	AddKeyboardTitle = false;
@@ -69,7 +71,7 @@ function buildGSList() //just copy this function for more subsections
 	configValues[i] = "default-UseMainMenuAttract";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
-	configList[i] = "AutoLaunch Media:";
+	configList[i] = "Auto-Launch Media:";
 	configValues[i] = "default-AutoLaunchMedia";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
@@ -577,7 +579,7 @@ function unTabSlot(x)
 function clearText()
 {
 	var c = theConfigPanel.children[0].children[0];
-	for(var i = 0; i < 9; i = i + 1)
+	for(var i = 0; i < nMaxMenuItems; i = i + 1)
 	{
 		c.theLeftSlots.children[i].children[0].geometry.text = "";
 		c.theLeftSlots.children[i].children[0].appearance.name = "Material #1335";
@@ -593,7 +595,7 @@ function updateText()
 {
 	var c = theConfigPanel.children[0].children[0];
 	var loopLength = configList.length;
-	if(loopLength > 8) loopLength = 9;
+	if(loopLength > nMaxMenuItems - 1) loopLength = nMaxMenuItems;
 	for(var i = 0; i < loopLength; i = i + 1)
 	{
 		//left slots
@@ -678,15 +680,50 @@ DEF theConfigPanel Level
 			function onLoad()
 			{   
 				initialize();
-				buildconfigList();
-				tabSlot(0);
 				var c = theConfigPanel.children[0].children[0];
 				c.theLeftSlots.children[0].children[0].appearance.name = "GameHilite";
 				c.theBuildInfo.children[0].geometry.text = "Build: " + sBuildDate;
 				c.theConfigHeader.children[0].geometry.text = "UIX Lite";
 				c.MU_L3_panel_tracklist_overlay.visible = bUseUnderlay;
+				var YStart;
+				var YStep;
+				var Y = 0;
+				if(bUseUnderlay)
+				{
+					nMaxMenuItems = 9;
+					YStart = -25.55;
+					YStep = 1.18;
+				}
+				else
+				{
+					nMaxMenuItems = 12;
+					YStart = -26.00;
+					YStep = .804;
+				}
+				for(var i = 0; i < 12; i = i + 1)
+				{
+					var TransLS = c.theLeftSlots.children[i].translation;
+					var TransRS = c.theRightSlots.children[i].translation;
+					if(i < nMaxMenuItems)
+					{
+						Y = YStart - (i * YStep);
+						c.theLeftSlots.children[i].SetTranslation(parseTrans(TransLS,"X"), Y, parseTrans(TransLS,"Z"));
+						c.theLeftSlots.children[i].visible = true;
+						c.theRightSlots.children[i].SetTranslation(parseTrans(TransRS,"X"), Y, parseTrans(TransRS,"Z"));
+						c.theRightSlots.children[i].visible = true;
+					}
+					else
+					{
+						c.theLeftSlots.children[i].visible = false;
+						c.theLeftSlots.children[i].SetTranslation(parseTrans(TransLS,"X"), Y, parseTrans(TransLS,"Z"));
+						c.theRightSlots.children[i].visible = false;
+						c.theRightSlots.children[i].SetTranslation(parseTrans(TransRS,"X"), Y, parseTrans(TransRS,"Z"));
+					}
+				}
 				var cValue = getConfigMenuValue("default-ConfigPanelIcon");
 				if(cValue.toLowerCase() == "globe") { c.GlobeIcon.visible = true; } else { c.ConsoleIcon.visible = true; }
+				buildconfigList();
+				tabSlot(0);
 			}
 		}
 	]
@@ -907,13 +944,13 @@ function selectConfigDown()
 	if(curItem + 1 == configList.length) { return; } //end of list
 	
 	PlaySoundMenuChange();
-	if(curHold == 8) //SCROLL MENU DOWN
+	if(curHold == nMaxMenuItems - 1) //SCROLL MENU DOWN
 	{
 		c.theUpArrow.visible = true;        
 		if(configList.length > curItem + 1)
 		{
 			curItem = curItem + 1;
-			for(var i = 0; i < 9; i = i + 1)
+			for(var i = 0; i < nMaxMenuItems; i = i + 1)
 			{
 				if(inChangeTitleMenu)
 				{
@@ -942,7 +979,7 @@ function selectConfigDown()
 			}
 		}
 	}   
-	else if(curHold < 8)
+	else if(curHold < nMaxMenuItems - 1)
 	{
 		unTabSlot(curHold);
 		curItem = curItem + 1;
@@ -987,11 +1024,11 @@ function selectConfigUp()
 	{
 		if(curHold == 0)
 		{
-			if(configList.length - curItem > 8) c.theDownArrow.visible = true;
+			if(configList.length - curItem > nMaxMenuItems - 1) c.theDownArrow.visible = true;
 			if(curItem != 0)
 			{
 				curItem = curItem - 1;
-				if(configList.length - curItem < 9) loop = configList.length - curItem; else loop = 9;
+				if(configList.length - curItem < nMaxMenuItems) loop = configList.length - curItem; else loop = 9;
 				for(var i = 0; i < loop; i = i + 1)
 				{
 					if(inChangeTitleMenu)
@@ -1061,12 +1098,12 @@ function scrollConfigDown()
 		curHold = LV2Hold;
 	}
 	
-	if(curItem + 9 <= configList.length - 1)
+	if(curItem + nMaxMenuItems <= configList.length - 1)
 	{
-		curItem = curItem + 9;
-		if(curItem - curHold + 9 < configList.length) 
+		curItem = curItem + nMaxMenuItems;
+		if(curItem - curHold + nMaxMenuItems < configList.length) 
 		{ 
-			loop = 9;
+			loop = nMaxMenuItems;
 		}
 		else
 		{
@@ -1079,17 +1116,17 @@ function scrollConfigDown()
 		c.theDownArrow.visible = false;
 		return;
 	}
-	else if(curItem + 9 > configList.length - 1)
+	else if(curItem + nMaxMenuItems > configList.length - 1)
 	{
 		unTabSlot(curHold);
-		loop = Modulo(configList.length,9);
-		if(loop == 0) loop = 9;
+		loop = Modulo(configList.length,nMaxMenuItems);
+		if(loop == 0) loop = nMaxMenuItems;
 		curItem = configList.length - 1;
 		curHold = loop - 1;
 		c.theDownArrow.visible = false;
 	}
 	
-	if (curItem - curHold > 8) c.theUpArrow.visible = true;
+	if (curItem - curHold > nMaxMenuItems - 1) c.theUpArrow.visible = true;
 	PlaySoundMenuChange();
 	clearText();    
 	for(var i = 0; i < loop; i = i + 1)
@@ -1153,12 +1190,12 @@ function scrollConfigUp()
 		curHold = LV2Hold;
 	}
 	
-	if(configList.length < 9) { loop = configList.length;} else { loop = 9; }
+	if(configList.length < nMaxMenuItems) { loop = configList.length;} else { loop = 9; }
 	
-	if(curItem - 9 >= 0)
+	if(curItem - nMaxMenuItems >= 0)
 	{
-		curItem = curItem - 9;
-		if(curItem < 9) 
+		curItem = curItem - nMaxMenuItems;
+		if(curItem < nMaxMenuItems) 
 		{ 
 			unTabSlot(curHold); 
 			curHold = curItem;
@@ -1170,7 +1207,7 @@ function scrollConfigUp()
 	{
 		return;
 	}
-	else if(curItem - 9 < 0)
+	else if(curItem - nMaxMenuItems < 0)
 	{
 		c.theUpArrow.visible = false;
 		curItem = 0;
