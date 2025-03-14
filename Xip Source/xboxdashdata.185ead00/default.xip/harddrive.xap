@@ -10,6 +10,7 @@ var nPlayVisible0;
 var nCurLauncherItem0;
 var nCurLauncherScroll0;
 var nCurLauncherVisible0;
+var nMaxLauncherMenuItems;
 var subTitle0;
 var subTitle1;
 var CurrentSection;
@@ -255,10 +256,11 @@ function EnterLauncherMenu()
 function LoadMenuItems()
 {
 	var c = theLauncher.children[0].children[0];
+	if(nMaxLauncherMenuItems == 0){ nMaxLauncherMenuItems = 8;SetSavedValue("LauncherMenu","MaxLauncherMenuItems",nMaxLaunchMenuItems);}
 	TotalSections = 0;
 	arrMenuNames = new Array;
 	arrMenuPaths = new Array;
-	for (var i = 0; i < 8; i = i + 1)
+	for (var i = 0; i < nMaxLauncherMenuItems; i = i + 1)
 	{
 		if(i < 5) c.theMenuButtons.children[i].visible = false;
 		var v = GetSavedValue("LauncherMenu", "Title" + i);
@@ -447,6 +449,7 @@ DEF theLauncher Level
 				var c = theLauncher.children[0].children[0];
 				
 				c.MU_L3_panel_tracklist_overlay.visible = bUseUnderlay;
+				nMaxLauncherMenuItems = StringToNumber(GetSavedValue("LauncherMenu","MaxLauncherMenuItems"));
 				if( thcorb == true ) 
 				{
 					c.MU_L3_musicpod.visible = false;

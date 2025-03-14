@@ -169,89 +169,24 @@ function buildMMList()
 
 function buildHDList()
 {
-	var i = 0;
 	configList = new Array;
 	configValues = new Array;
 	configSelect = new Array;
+	var nMaxLauncherMenuItems = StringToNumber(GetSavedValue("LauncherMenu","MaxLauncherMenuItems"));
+	if(nMaxLauncherMenuItems == 0){ nMaxLauncherMenuItems = 8;SetSavedValue("LauncherMenu","MaxLauncherMenuItems",nMaxLauncherMenuItems);}
+	configList[0] = "Max Launcher Menu Items:";
+	configValues[0] = "LauncherMenu-MaxLauncherMenuItems";
+	configSelect[0] = "configKeyb()";
 	
-	configList[i] = "Item 1 Title:";
-	configValues[i] = "LauncherMenu-Title0";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 1 Path:";
-	configValues[i] = "LauncherMenu-Path0";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 2 Title:";
-	configValues[i] = "LauncherMenu-Title1";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 2 Path:";
-	configValues[i] = "LauncherMenu-Path1";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 3 Title:";
-	configValues[i] = "LauncherMenu-Title2";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 3 Path:";
-	configValues[i] = "LauncherMenu-Path2";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 4 Title:";
-	configValues[i] = "LauncherMenu-Title3";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 4 Path:";
-	configValues[i] = "LauncherMenu-Path3";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 5 Title:";
-	configValues[i] = "LauncherMenu-Title4";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 5 Path:";
-	configValues[i] = "LauncherMenu-Path4";
-	configSelect[i] = "configKeyb()";  
-	i = i + 1;
-  
-	configList[i] = "Item 6 Title:";
-	configValues[i] = "LauncherMenu-Title5";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 6 Path:";
-	configValues[i] = "LauncherMenu-Path5";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 7 Title:";
-	configValues[i] = "LauncherMenu-Title6";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 7 Path:";
-	configValues[i] = "LauncherMenu-Path6";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 8 Title:";
-	configValues[i] = "LauncherMenu-Title7";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 8 Path:";
-	configValues[i] = "LauncherMenu-Path7";
-	configSelect[i] = "configKeyb()";
+	for(var i = 0; i < nMaxLauncherMenuItems; i = i + 1)
+	{
+		configList[configList.length] = "Item "+ (i + 1) + " Title:";
+		configValues[configValues.length] = "LauncherMenu-Title" + i;
+		configSelect[configSelect.length] = "configKeyb()";
+		configList[configList.length] = "Item "+ (i + 1) + " Path:";
+		configValues[configValues.length] = "LauncherMenu-Path" + i;
+		configSelect[configSelect.length] = "configKeyb()";
+	}
 	
 	clearText();
 	updateText();
@@ -557,6 +492,11 @@ function refreshMenu(x)
 		else { c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue); }
 	}
 	setConfigMenuValue(configValues[LV2Item],cValue);
+	if(configValues[LV2Item] == "LauncherMenu-MaxLauncherMenuItems")
+	{
+		buildHDList();
+		tabSlot(LV2Hold);
+	}
 }
 
 function tabSlot(x)
