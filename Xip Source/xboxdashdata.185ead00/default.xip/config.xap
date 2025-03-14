@@ -671,12 +671,12 @@ function setConfigMenuValue(x,y)
 
 DEF theConfigPanel Level
 {
-	archive "settings3.xip"
+	archive "uix_settings.xip"
 	children
 	[
 		Inline
 		{
-			url "settings3/default2.xap"        
+			url "uix_settings/default.xap"        
 			function onLoad()
 			{   
 				initialize();
@@ -954,21 +954,21 @@ function selectConfigDown()
 			{
 				if(inChangeTitleMenu)
 				{
-					var tValue = getConfigMenuValue(configValues[curItem + (i - 8)]);
-					if(tValue == "") { tValue = configList[curItem + (i - 8)]; }
+					var tValue = getConfigMenuValue(configValues[curItem + (i - (nMaxMenuItems - 1))]);
+					if(tValue == "") { tValue = configList[curItem + (i - (nMaxMenuItems - 1))]; }
 					if(tValue.length() > 36) { tValue = tValue.substr(0, 36) + "..."; }
 					c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 				}
 				else
 				{
-					var tValue = configList[curItem + (i - 8)];
+					var tValue = configList[curItem + (i - (nMaxMenuItems - 1))];
 					if(tValue.charAt(tValue.length() - 1) == ":") tValue = Translate(tValue.substr(0,tValue.length() - 1)) + ":";
 					else tValue = Translate(tValue);
 					c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 					if(inLV2 == true)
 					{
 						c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
-						var cValue = Translate(getConfigMenuValue(configValues[curItem + (i - 8)]));
+						var cValue = Translate(getConfigMenuValue(configValues[curItem + (i - nMaxMenuItems - 1)]));
 						if(cValue.length() > 20) { 
 							if(inQuickLaunchMenu) { cValue = PathEllipsis(cValue); }
 							else { cValue = cValue.substr(0, 20) + "..."; }
@@ -1028,7 +1028,7 @@ function selectConfigUp()
 			if(curItem != 0)
 			{
 				curItem = curItem - 1;
-				if(configList.length - curItem < nMaxMenuItems) loop = configList.length - curItem; else loop = 9;
+				if(configList.length - curItem < nMaxMenuItems) loop = configList.length - curItem; else loop = nMaxMenuItems;
 				for(var i = 0; i < loop; i = i + 1)
 				{
 					if(inChangeTitleMenu)
@@ -1190,7 +1190,7 @@ function scrollConfigUp()
 		curHold = LV2Hold;
 	}
 	
-	if(configList.length < nMaxMenuItems) { loop = configList.length;} else { loop = 9; }
+	if(configList.length < nMaxMenuItems) { loop = configList.length;} else { loop = nMaxMenuItems; }
 	
 	if(curItem - nMaxMenuItems >= 0)
 	{
