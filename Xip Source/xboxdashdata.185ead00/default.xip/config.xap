@@ -25,7 +25,6 @@ function initialize()
 	inLV2 = false;
 	settChanged = false;
 	MaxCharacters = 28;
-	nMaxMenuItems = 9;
 	inQuickLaunchMenu = false;
 	inChangeTitleMenu = false;
 	AddKeyboardTitle = false;
@@ -648,7 +647,7 @@ function updateText()
 			}
 		}
 	}
-	if(configList.length > 9) { c.theDownArrow.visible = true; }
+	if(configList.length > nMaxMenuItems) { c.theDownArrow.visible = true; }
 }
 
 function getConfigMenuValue(x)
@@ -679,7 +678,6 @@ DEF theConfigPanel Level
 			url "uix_settings/default.xap"        
 			function onLoad()
 			{   
-				initialize();
 				var c = theConfigPanel.children[0].children[0];
 				c.theLeftSlots.children[0].children[0].appearance.name = "GameHilite";
 				c.theBuildInfo.children[0].geometry.text = "Build: " + sBuildDate;
@@ -968,7 +966,7 @@ function selectConfigDown()
 					if(inLV2 == true)
 					{
 						c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
-						var cValue = Translate(getConfigMenuValue(configValues[curItem + (i - nMaxMenuItems - 1)]));
+						var cValue = Translate(getConfigMenuValue(configValues[curItem + (i - (nMaxMenuItems - 1))]));
 						if(cValue.length() > 20) { 
 							if(inQuickLaunchMenu) { cValue = PathEllipsis(cValue); }
 							else { cValue = cValue.substr(0, 20) + "..."; }
