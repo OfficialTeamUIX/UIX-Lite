@@ -3368,9 +3368,10 @@ function ExecuteFile(sPath)
 	else if(b.toUpperCase() == "E") { launchPath = "\\Device\\Harddisk0\\Partition1" + e; }
 	else if(b.toUpperCase() == "F") { launchPath = "\\Device\\Harddisk0\\Partition6" + e; ExtendedPartition = true; }
 	else if(b.toUpperCase() == "G") { launchPath = "\\Device\\Harddisk0\\Partition7" + e; ExtendedPartition = true; }
-	else if(b.toUpperCase() == "E2") { launchPath = "\\Device\\Harddisk1\\Partition1" + e; ExtendedPartition = true; }
+	else if(b.toUpperCase() == "E2") { launchPath = "\\Device\\Harddisk1\\Partition1" + e; }
 	else if(b.toUpperCase() == "F2") { launchPath = "\\Device\\Harddisk1\\Partition6" + e; ExtendedPartition = true; }
-	else if(b.toUpperCase() == "G2") { launchPath = "\\Device\\Harddisk1\\Partition7" + e; ExtendedPartition = true; }    else return;
+	else if(b.toUpperCase() == "G2") { launchPath = "\\Device\\Harddisk1\\Partition7" + e; ExtendedPartition = true; }
+	else return;
 	
 	if(ExtendedPartition & bHDDInitialized == false)
 	{

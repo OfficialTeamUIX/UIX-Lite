@@ -256,13 +256,16 @@ function EnterLauncherMenu()
 function LoadMenuItems()
 {
 	var c = theLauncher.children[0].children[0];
-	if(nMaxLauncherMenuItems == 0){ nMaxLauncherMenuItems = 8;SetSavedValue("LauncherMenu","MaxLauncherMenuItems",nMaxLaunchMenuItems);}
+	if(nMaxLauncherMenuItems == 0){ nMaxLauncherMenuItems = 8;SetSavedValue("LauncherMenu","MaxLauncherMenuItems",nMaxLauncherMenuItems);}
 	TotalSections = 0;
 	arrMenuNames = new Array;
 	arrMenuPaths = new Array;
+	for (var x = 0; x < 5; x = x + 1)
+	{
+		c.theMenuButtons.children[x].visible = false;
+	}
 	for (var i = 0; i < nMaxLauncherMenuItems; i = i + 1)
 	{
-		if(i < 5) c.theMenuButtons.children[i].visible = false;
 		var v = GetSavedValue("LauncherMenu", "Title" + i);
 		if(v != "") 
 		{
@@ -304,7 +307,7 @@ function UpdateRecentTitles(x,y)
 {
 	SetSavedValue("RecentTitles", "Title0", x + "|" + y );
 	var index = 1;
-	for (var i = 0; i < arrRecentNames.length; i = i + 1)
+	for(var i = 0; i < arrRecentNames.length; i = i + 1)
 	{ 
 		if(arrRecentNames[i] != y)
 		{
@@ -313,9 +316,10 @@ function UpdateRecentTitles(x,y)
 			if(index == MaxRecentTitles) return;
 		}
 	}
-	for (var x = index; x < MaxRecentTitles; x = x + 1)
-	{  //Ensure the rest of the list is clear
-		SetSavedValue("RecentTitles","Title" + x,"");
+	while(index < MaxRecentTitles)
+	{   //Ensure the rest of the list is clear
+		SetSavedValue("RecentTitles", "Title" + index, "");
+		index = index + 1;
 	}
 }
 
@@ -378,7 +382,7 @@ function LaunchItem(x,y)
 	var TitleLocation = Split(y,";");
 	var FolderName = TitleLocation[0];
 	var sDrive = DriveLocations[StringToNumber(TitleLocation[1])];
-	if((sDrive != "Y:\\" &  sDrive != "C:\\" &  sDrive != "R:\\") & bHDDInitialized == false) 
+	if((sDrive != "Y:\\" & sDrive != "C:\\" & sDrive != "R:\\") & bHDDInitialized == false) 
 	{  //The title is not on C or E so set the background before continuing.
 		sLocation = x;
 		sFolder = y;
