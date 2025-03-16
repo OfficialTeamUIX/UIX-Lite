@@ -1,6 +1,8 @@
 # UIX-Ultra-Lite
 Modern/Re-Implemented Patches and Scripts for the Xbox Dashboard #5960
 
+**Warning: The information below is obsolete as of Release v0.3 and is no longer applicable to UIX Lite**
+
 ## How-To: Make shortcuts to titles on the F: and/or G: drives for UIX Ultra Lite.
 
 - Download and extract the Shortcut.zip which contains 2 files: default.xbe and default.cfg

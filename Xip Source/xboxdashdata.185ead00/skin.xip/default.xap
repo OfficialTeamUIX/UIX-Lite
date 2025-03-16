@@ -1,396 +1,558 @@
 DEF xbox4 Transform
 {
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "xbox4.tga"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "xbox4.tga"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
 }
 DEF GameHilite Transform
 {
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "GameHilite_01.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "GameHilite_01.bmp"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
 }
 DEF Background Transform
 {
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "background.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "background.bmp"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
 }
 DEF Outline Transform
 {
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "outline.tga"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "outline.tga"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
 }
 DEF CellWall Transform
 {
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "cellwall.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "cellwall.bmp"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
 }
 DEF DVD_Button Transform
 {
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "dvd_button.tga"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "dvd_button.tga"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
 }
 DEF Dvd_Panel Transform
 {
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "DVD_paneltex.tga"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "DVD_paneltex.tga"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
 }
 DEF dvdstop Transform
 {
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "dvdstop.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "dvdstop.bmp"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
 }
 DEF dvdstop2 Transform
 {
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "dvdstopw.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "dvdstopw.bmp"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
 }
 DEF xboxlogo Transform
 {
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "xboxlogo64.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "xboxlogo64.bmp"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
 }
 DEF xboxlogo2 Transform
 {
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "xboxlogo128.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "xboxlogo128.bmp"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
 }
 DEF xboxlogo3 Transform
 {
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "xboxlogo.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "xboxlogo.bmp"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
 }
 DEF xboxlogo4 Transform
 {
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "xboxlogow.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "xboxlogow.bmp"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
 }
 DEF harddrivebg Transform
 {
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "harddrivebg.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
-}
-DEF play Transform
-{
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "play.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
-}
-DEF rew Transform
-{
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "rew.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
-}
-DEF stop Transform
-{
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "stop.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
-}
-DEF ffw Transform
-{
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "ffw.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
-}
-DEF random Transform
-{
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "random.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
-}
-DEF repeat Transform
-{
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "repeat.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "harddrivebg.bmp"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
 }
 DEF continuous Transform
 {
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "continuous.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "continuous.bmp"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
+}
+DEF play Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "play.bmp"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
+}
+DEF rew Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "rew.bmp"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
+}
+DEF stop Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "stop.bmp"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
+}
+DEF ffw Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "ffw.bmp"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
+}
+DEF random Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "random.bmp"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
+}
+DEF repeat Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "repeat.bmp"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
 }
 DEF AudioPlayerBG Transform
 {
-    children
-    [
-        Shape
-        {
-            appearance Appearance
-            {
-                texture ImageTexture
-                {
-                    url "AudioPlayerBG.bmp"
-                }
-            }
-            geometry Mesh { url "skin.xm" }
-        }
-    ]
-    translation 0 0 300
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "AudioPlayerBG.bmp"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
+}
+DEF Line07 Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "LiveChrome.tga"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
+}
+DEF footer Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "footer.tga"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
+}
+DEF header Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "Live_header.tga"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
+}
+DEF header2 Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "Insignia_header.tga"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
+}
+DEF Highlight_05 Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "highlight.tga"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
+}
+DEF Highlight_06 Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "button.tga"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
+}
+DEF Highlight_07 Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "button.tga"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
+}
+DEF Highlight_08 Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "button.tga"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
+}
+DEF Cylinder02 Transform
+{
+	children
+	[
+		Shape
+		{
+			appearance Appearance
+			{
+				texture ImageTexture
+				{
+					url "Pulse1.tga"
+				}
+			}
+			geometry Mesh { url "skin.xm" }
+		}
+	]
+	translation 0 0 300
 }

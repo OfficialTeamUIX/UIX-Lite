@@ -226,6 +226,7 @@ def read_settings(file_path):
 	return settings
 
 def upload_file(ftp_server, server_path, file_path, ftp_username='xbox', ftp_password='xbox'):
+	global ftp
 	max_retries = 4
 	wait_time = 5
 	for attempt in range(max_retries):
@@ -240,7 +241,6 @@ def upload_file(ftp_server, server_path, file_path, ftp_username='xbox', ftp_pas
 			with open(file_path, 'rb') as file:
 				ftp.storbinary('STOR {}'.format(filename), file)
 			print("  - {} uploaded successfully.".format(filename))
-			ftp.quit()
 			break
 		except:
 			clear_screen()
@@ -260,12 +260,12 @@ def upload_file(ftp_server, server_path, file_path, ftp_username='xbox', ftp_pas
 				sys.exit()
 
 fg_patches = [
-	# Updated 23rd August 2024 thanks BijJx and to the original patch creator, you know who you're.
+	# Updated 3rd September 2024 thanks BigJx and to the original patch creator, you know who you're.
 	# Description: F/G Support
 	{'apply': '1', 'address': 0x00000840, 'patch_type': '0', 'flip': '0', 'value': '07'},
 	{'apply': '1', 'address': 0x0001DCA2, 'patch_type': '0', 'flip': '0', 'value': '77C31B00E855FDFFFF31C0C3'},
-	# F, G HDD1 and HDD 2 
-	{'apply': '1', 'address': 0x001C9000, 'patch_type': '0', 'flip': '0', 'value': '5589E583EC2C8B450C8A45080FBE45088D55E98D0DD09F1E00891424894C240489442408E8578FE8FF8D45E98D4DF0890C2489442404FF150C20010083EC088B450C8D4DE0890C2489442404FF150C20010083EC088D4DF08D45E0890C2489442404FF152420010083EC0883C42C5DC35C3F3F5C25633A005C4465766963655C486172646469736B305C506172746974696F6E360000000000005C4465766963655C486172646469736B305C506172746974696F6E37000000000000005589E568D89F1E006A4EE834FFFFFF83C4085D5589E568FA9F1E006A4FE821FFFFFF83C4085D5589E5686CA01E006A50E80EFFFFFF83C4085D5589E5688FA01E006A51E8FBFEFFFF83C4085D31C0C35C4465766963655C486172646469736B315C506172746974696F6E36000000000000005C4465766963655C486172646469736B315C506172746974696F6E3700000000000000'}
+	# F & G HDD0 - E, F, G HDD1
+	{'apply': '1', 'address': 0x001C9000, 'patch_type': '0', 'flip': '0', 'value': '5589E583EC2C8B450C8A45080FBE45088D55E98D0DD09F1E00891424894C240489442408E8578FE8FF8D45E98D4DF0890C2489442404FF150C20010083EC088B450C8D4DE0890C2489442404FF150C20010083EC088D4DF08D45E0890C2489442404FF152420010083EC0883C42C5DC35C3F3F5C25633A005C4465766963655C486172646469736B305C506172746974696F6E360000000000005C4465766963655C486172646469736B305C506172746974696F6E37000000000000005589E568D89F1E006A4EE834FFFFFF83C4085D5589E568FA9F1E006A4FE821FFFFFF83C4085D5589E5686CA01E006A50E80EFFFFFF83C4085D5589E5688FA01E006A51E8FBFEFFFF83C4085DEB47C35C4465766963655C486172646469736B315C506172746974696F6E36000000000000005C4465766963655C486172646469736B315C506172746974696F6E37000000000000005589E568C8A01E006A52E89FFEFFFF83C4085D31C0C35C4465766963655C486172646469736B315C506172746974696F6E3100000000000000'}
 ]
 	
 other_patches = [
@@ -279,7 +279,7 @@ other_patches = [
 	{'apply': '1', 'address': 0x0002EB13, 'patch_type': '0', 'flip': '0', 'value': 'EB'},
 	{'apply': '1', 'address': 0x0002EBE7, 'patch_type': '0', 'flip': '0', 'value': 'E98400'},
 	{'apply': '1', 'address': 0x0002EC54, 'patch_type': '0', 'flip': '0', 'value': 'EB'},
-	# No dvd region patch (by sylver)
+	# No DVD region patch (by sylver) still requires the DVD dongle
 	{'apply': '1', 'address': 0x000567F7, 'patch_type': '0', 'flip': '0', 'value': 'EB'},
 	{'apply': '1', 'address': 0x00056833, 'patch_type': '0', 'flip': '0', 'value': 'C64424120133C98B87440100008A4C241233D2B20149D2E2F6D2526A4450E802FC12008B8F440100008DB748010000566A4451E857FB12008BD081E20000008081FA00000080894424187527FE442412807C24120676B090909090909090909090909090909090909090909090909090909090'}
 ]
@@ -313,14 +313,14 @@ colour_patches = [
 	# Description: Keyboard button no focus highlight
 	# Colour type: ARGB
 	# Original Bytes: 6BFFF3FF
-	{'name': 'kb_button_no_focus_highlight', 'apply': '1', 'address': 0x000471F6, 'patch_type': '0', 'flip': '1', 'value': 'FFF3FF6B'},
+	{'name': 'kb_button_large_no_focus_highlight', 'apply': '1', 'address': 0x000471F6, 'patch_type': '0', 'flip': '1', 'value': 'FFF3FF6B'},
 
 	# Description: Keyboard left side left no focus buttons
 	# Colour type: RGB
 	# Original Bytes: 00E119
-	{'name': 'kb_side_left_no_focus_buttons', 'apply': '1', 'address': 0x000471FD, 'patch_type': '0', 'flip': '1', 'value': '19E100'},
+	{'name': 'kb_button_large_no_focus', 'apply': '1', 'address': 0x000471FD, 'patch_type': '0', 'flip': '1', 'value': '19E100'},
 
-	# Description: Keyboard button no focus highlight
+	# Description: Keyboard button left no focus highlight
 	# Colour type: ARGB
 	# Original Bytes: 6BFFF3DE
 	{'name': 'kb_button_no_focus_highlight', 'apply': '1', 'address': 0x00047206, 'patch_type': '0', 'flip': '1', 'value': 'DEF3FF6B'},
@@ -328,12 +328,12 @@ colour_patches = [
 	# Description: Keyboard no focus button back
 	# Colour type: RGB
 	# Original Bytes: 00C014
-	{'name': 'kb_no_focus_button_back', 'apply': '1', 'address': 0x0004720D, 'patch_type': '0', 'flip': '1', 'value': '14C000'},
+	{'name': 'kb_button_no_focus', 'apply': '1', 'address': 0x0004720D, 'patch_type': '0', 'flip': '1', 'value': '14C000'},
 
 	# Description: Keyboard no focus letters
 	# Colour type: RGB
 	# Original Bytes: 5EFABE
-	{'name': 'kb_no_focus_letters', 'apply': '1', 'address': 0x00047278, 'patch_type': '0', 'flip': '1', 'value': 'BEFA5E'},
+	{'name': 'kb_letters_no_focus', 'apply': '1', 'address': 0x00047278, 'patch_type': '0', 'flip': '1', 'value': 'BEFA5E'},
 
 	# Description: InnerWall_01 (transition)
 	# Colour type: ARGB
@@ -553,7 +553,7 @@ colour_patches = [
 	# Original Bytes: 22C67D
 	{'name': 'wireframe_3', 'apply': '1', 'address': 0x0004916A, 'patch_type': '0', 'flip': '1', 'value': '7DC622'},
 
-	# Description: Tubes (behing button tubes)
+	# Description: Tubes (behind button tubes)
 	# Colour type: ARGB
 	# Original Bytes: 99FAF2D7
 	{'name': 'tubes_1', 'apply': '1', 'address': 0x0004917E, 'patch_type': '0', 'flip': '1', 'value': 'D7F2FA99'},
@@ -704,7 +704,7 @@ colour_patches = [
 ]
 
 if __name__ == '__main__':
-	version = 1.1
+	version = 1.2
 	if os.name == 'nt':
 		set_window_size('Xboxdash Colourizer v{}'.format(version), '0B', 70, 11)
 	else:
@@ -738,7 +738,7 @@ password=xbox'''
 	ftp_password = settings.get('password', 'xbox')
 
 	# Check for xbe files
-	if not os.path.dir('xbe file'):
+	if not os.path.isdir('xbe file'):
 		os.makedirs('xbe file')
 	xboxdash = os.path.join('xbe file','xboxdash.xbe')
 	xb0xdash = os.path.join('xbe file','xb0xdash.xbe')
@@ -832,11 +832,13 @@ password=xbox'''
 	# Set new file path
 	file_path = os.path.join(tran_folder, os.path.basename(file_path))
 	
-	# Check if xbe is clean & patch extended parition support.
+	# Check if xbe is clean & patch extended partitions support.
 	if calculate_md5(file_path) == '08d3a6f99184679aa13008d6397bacce':
 		patch_file(file_path, fg_patches, '', '', 1)
-	# Patchout xip stuff
+	
+	# Patch out xip stuff
 	patch_file(file_path, other_patches, '', '', 1)
+	
 	# Patch colours.
 	patch_file(file_path, colour_patches, target_color, brightness_factor, 0)
 	
@@ -885,6 +887,8 @@ password=xbox'''
 					upload_file(ftp_server, '/C/xboxdashdata.185ead00/', skin_xip, ftp_username, ftp_password)
 			except:
 				pass
+		ftp.quit()
+		print(" Done.")
 		shutil.rmtree(tran_folder)
 
 time.sleep(2)

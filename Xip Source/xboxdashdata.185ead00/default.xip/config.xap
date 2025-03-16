@@ -13,6 +13,7 @@ var inQuickLaunchMenu;
 var inChangeTitleMenu;
 var MaxCharacters;
 var bAdvancedMode;
+var nMaxMenuItems;
 
 function initialize()
 {
@@ -69,7 +70,11 @@ function buildGSList() //just copy this function for more subsections
 	configValues[i] = "default-UseMainMenuAttract";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
-	configList[i] = "Always Use tHc ScreenSaver:";
+	configList[i] = "Auto-Launch Media:";
+	configValues[i] = "default-AutoLaunchMedia";
+	configSelect[i] = "toggleTF()";
+	i = i + 1;
+	configList[i] = "Use tHc ScreenSaver:";
 	configValues[i] = "default-UsetHcScreenSaver";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
@@ -80,6 +85,10 @@ function buildGSList() //just copy this function for more subsections
 	configList[i] = "Launcher Orb Icon:";
 	configValues[i] = "default-LauncherOrbIcon";
 	configSelect[i] = "toggleLOI()";
+	i = i + 1;
+	configList[i] = "Use List Underlay:";
+	configValues[i] = "default-UseListUnderlay";
+	configSelect[i] = "toggleTF()";
 	i = i + 1;
 	configList[i] = "Toggle Noisy Camera";
 	configValues[i] = "-blank-";
@@ -160,89 +169,24 @@ function buildMMList()
 
 function buildHDList()
 {
-	var i = 0;
 	configList = new Array;
 	configValues = new Array;
 	configSelect = new Array;
+	var nMaxLauncherMenuItems = StringToNumber(GetSavedValue("LauncherMenu","MaxLauncherMenuItems"));
+	if(nMaxLauncherMenuItems == 0){ nMaxLauncherMenuItems = 8;SetSavedValue("LauncherMenu","MaxLauncherMenuItems",nMaxLauncherMenuItems);}
+	configList[0] = "Max Launcher Menu Items:";
+	configValues[0] = "LauncherMenu-MaxLauncherMenuItems";
+	configSelect[0] = "configKeyb()";
 	
-	configList[i] = "Item 1 Title:";
-	configValues[i] = "LauncherMenu-Title0";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 1 Path:";
-	configValues[i] = "LauncherMenu-Path0";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 2 Title:";
-	configValues[i] = "LauncherMenu-Title1";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 2 Path:";
-	configValues[i] = "LauncherMenu-Path1";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 3 Title:";
-	configValues[i] = "LauncherMenu-Title2";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 3 Path:";
-	configValues[i] = "LauncherMenu-Path2";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 4 Title:";
-	configValues[i] = "LauncherMenu-Title3";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 4 Path:";
-	configValues[i] = "LauncherMenu-Path3";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 5 Title:";
-	configValues[i] = "LauncherMenu-Title4";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 5 Path:";
-	configValues[i] = "LauncherMenu-Path4";
-	configSelect[i] = "configKeyb()";  
-	i = i + 1;
-  
-	configList[i] = "Item 6 Title:";
-	configValues[i] = "LauncherMenu-Title5";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 6 Path:";
-	configValues[i] = "LauncherMenu-Path5";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 7 Title:";
-	configValues[i] = "LauncherMenu-Title6";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 7 Path:";
-	configValues[i] = "LauncherMenu-Path6";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 8 Title:";
-	configValues[i] = "LauncherMenu-Title7";
-	configSelect[i] = "configKeyb()";
-	i = i + 1;
-	
-	configList[i] = "Item 8 Path:";
-	configValues[i] = "LauncherMenu-Path7";
-	configSelect[i] = "configKeyb()";
+	for(var i = 0; i < nMaxLauncherMenuItems; i = i + 1)
+	{
+		configList[configList.length] = "Item "+ (i + 1) + " Title:";
+		configValues[configValues.length] = "LauncherMenu-Title" + i;
+		configSelect[configSelect.length] = "configKeyb()";
+		configList[configList.length] = "Item "+ (i + 1) + " Path:";
+		configValues[configValues.length] = "LauncherMenu-Path" + i;
+		configSelect[configSelect.length] = "configKeyb()";
+	}
 	
 	clearText();
 	updateText();
@@ -325,6 +269,8 @@ function BuildRTList()
 	var x = 0;
 	for(var i = 0; i < configList.length; i = i + 1)
 	{
+		var cTitle = Split(configList[x],";");
+		configList[x] = cTitle[0];
 		configValues[x] = "AltTitleName-" + configList[x];
 		configSelect[x] = "configKeyb()";
 		x = x + 1;
@@ -412,7 +358,6 @@ function toggleIcon()
 		c.ConsoleIcon.visible = true;
 		cValue = "Console";
 	}
-	c.theRightSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
 	c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue);
 	setConfigMenuValue(configValues[LV2Item],cValue);
 }
@@ -425,7 +370,6 @@ function toggleLOI()
 	if(b == "None") { cValue = "Xbox"; } 
 	else if(b == "Xbox") { cValue = "UIX"; }
 	else { cValue = "None"; }
-	c.theRightSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
 	c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue);
 	setConfigMenuValue(configValues[LV2Item],cValue);
 }
@@ -436,20 +380,24 @@ function toggleAM()
 	if(bAdvancedMode) { bAdvancedMode = false; cValue = "false"; } else { bAdvancedMode = true; cValue = "true"; }
 	SetSavedBooleanValue("MainMenu","AdvancedMode",bAdvancedMode);
 	var c = theConfigPanel.children[0].children[0];
-	c.theRightSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
 	c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue);
 }
 
 function PathEllipsis(x)
 {
-	var size = x.length();
-	var diff = Math.ceil((size - MaxCharacters) / 2);
-	var half = Math.floor(size/2);
-	var a = x.substr(0,half - diff);
-	var b = x.substr(half + diff);
-	var c = a.substr(0,a.lastIndexOf("\\") + 1);
-	var d = b.substr(b.indexOf("\\"));
-	return c + "..." + d;
+	var sPath, arrPath, center, a, b, c; 
+	sPath = x;
+	c = sPath.length();
+	while(c > MaxCharacters)
+	{
+		arrPath = Split(sPath,"\\");
+		center = Math.ceil(arrPath.length / 2);
+		a = arrPath.slice(0,center - 1);
+		b = arrPath.slice(center,arrPath.length);
+		sPath = a.join("\\") + "\\" + b.join("\\");
+		c = sPath.length();
+	}
+	return a.join("\\") + "\\...\\" + b.join("\\");
 }
 
 function configKeyb()
@@ -533,24 +481,29 @@ function refreshMenu(x)
 	
 	if(inChangeTitleMenu)
 	{
-		c.theLeftSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
-		c.theLeftSlots.children[LV2Hold].children[0].geometry.text = cValue;
+		var tValue = cValue;
+		if(tValue.length() > 36) { tValue = tValue.substr(0, 36) + "..."; }
+		c.theLeftSlots.children[LV2Hold].children[0].geometry.text = tValue;
 		if(configList[LV2Item] == cValue) { cValue = ""; }
 	}
 	else
 	{
-		c.theRightSlots.children[LV2Hold].children[0].appearance.name = "CellEgg/Partsz";
 		if(cValue.length() > 20) { c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue.substr(0, 20) + "..."; }
 		else { c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue); }
 	}
 	setConfigMenuValue(configValues[LV2Item],cValue);
+	if(configValues[LV2Item] == "LauncherMenu-MaxLauncherMenuItems")
+	{
+		buildHDList();
+		tabSlot(LV2Hold);
+	}
 }
 
 function tabSlot(x)
 {
 	var c = theConfigPanel.children[0].children[0];
 	var indentItemTrans = c.theLeftSlots.children[x].translation;
-	c.theLeftSlots.children[x].children[0].appearance.name = "CellEgg/Partsz";
+	c.theLeftSlots.children[x].children[0].appearance.name = "GameHilite";
 	//c.theLeftSlots.children[x].SetTranslation(2.35, parseTrans(indentItemTrans,"Y"), parseTrans(indentItemTrans,"Z"));
 }
 
@@ -565,13 +518,14 @@ function unTabSlot(x)
 function clearText()
 {
 	var c = theConfigPanel.children[0].children[0];
-	for(var i = 0; i < 12; i = i + 1)
+	for(var i = 0; i < nMaxMenuItems; i = i + 1)
 	{
 		c.theLeftSlots.children[i].children[0].geometry.text = "";
 		c.theLeftSlots.children[i].children[0].appearance.name = "Material #1335";
 		c.theLeftSlots.children[i].children[0].geometry.font = "Body";
 		
 		c.theRightSlots.children[i].children[0].geometry.text = "";
+		c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
 		c.theRightSlots.children[i].children[0].geometry.font = "Body";
 	}
 }
@@ -580,7 +534,7 @@ function updateText()
 {
 	var c = theConfigPanel.children[0].children[0];
 	var loopLength = configList.length;
-	if(loopLength > 11) loopLength = 12;
+	if(loopLength > nMaxMenuItems - 1) loopLength = nMaxMenuItems;
 	for(var i = 0; i < loopLength; i = i + 1)
 	{
 		//left slots
@@ -588,6 +542,7 @@ function updateText()
 		{
 			var tValue = getConfigMenuValue(configValues[i]);
 			if(tValue == "") { tValue = configList[i]; }
+			if(tValue.length() > 36) { tValue = tValue.substr(0, 36) + "..."; }
 			c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 		}
 		else
@@ -605,21 +560,34 @@ function updateText()
 			if(inLV2 == true) 
 			{
 				var cValue = getConfigMenuValue(configValues[i]);
+				if(cValue == "") //Set default values
+				{
+					if(configSelect[i] == "toggleTF()")
+					{
+						cValue = "false";
+						setConfigMenuValue(configValues[i],cValue);
+					}
+					else if(configSelect[i] == "toggle34()" | configSelect[i] == "toggle345()")
+					{
+						cValue = "3";
+						setConfigMenuValue(configValues[i],cValue);
+					}
+				}
 				if(inQuickLaunchMenu & (cValue.length() > MaxCharacters))
 				{
-					c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
+					c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
 					c.theRightSlots.children[i].children[0].geometry.text = Translate(PathEllipsis(cValue));
 				}
 				else
 				{
-					c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
+					c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
 					if(cValue.length() > 20) { c.theRightSlots.children[i].children[0].geometry.text = cValue.substr(0, 20) + "..."; }
 					else { c.theRightSlots.children[i].children[0].geometry.text =  Translate(cValue); }
 				}
 			}
 		}
 	}
-	if(configList.length > 12) { c.theDownArrow.visible = true; }
+	if(configList.length > nMaxMenuItems) { c.theDownArrow.visible = true; }
 }
 
 function getConfigMenuValue(x)
@@ -642,33 +610,66 @@ function setConfigMenuValue(x,y)
 
 DEF theConfigPanel Level
 {
-	archive "settings3.xip"
-	unloadable false
+	archive "uix_settings.xip"
 	children
 	[
 		Inline
 		{
-			url "settings3/default2.xap"        
+			url "uix_settings/default.xap"        
 			function onLoad()
 			{   
-				initialize();
-				buildconfigList();
-				tabSlot(0);
 				var c = theConfigPanel.children[0].children[0];
-				c.theLeftSlots.children[0].children[0].appearance.name = "CellEgg/Partsz";
+				c.theLeftSlots.children[0].children[0].appearance.name = "GameHilite";
 				c.theBuildInfo.children[0].geometry.text = "Build: " + sBuildDate;
-				c.theConfigHeader.children[0].appearance.name = "NavType";
 				c.theConfigHeader.children[0].geometry.text = "UIX Lite";
+				c.MU_L3_panel_tracklist_overlay.visible = bUseUnderlay;
+				var YStart;
+				var YStep;
+				var Y = 0;
+				if(bUseUnderlay)
+				{
+					nMaxMenuItems = 9;
+					YStart = -25.55;
+					YStep = 1.18;
+				}
+				else
+				{
+					nMaxMenuItems = 12;
+					YStart = -26.00;
+					YStep = .804;
+				}
+				for(var i = 0; i < 12; i = i + 1)
+				{
+					var TransLS = c.theLeftSlots.children[i].translation;
+					var TransRS = c.theRightSlots.children[i].translation;
+					if(i < nMaxMenuItems)
+					{
+						Y = YStart - (i * YStep);
+						c.theLeftSlots.children[i].SetTranslation(parseTrans(TransLS,"X"), Y, parseTrans(TransLS,"Z"));
+						c.theLeftSlots.children[i].visible = true;
+						c.theRightSlots.children[i].SetTranslation(parseTrans(TransRS,"X"), Y, parseTrans(TransRS,"Z"));
+						c.theRightSlots.children[i].visible = true;
+					}
+					else
+					{
+						c.theLeftSlots.children[i].visible = false;
+						c.theLeftSlots.children[i].SetTranslation(parseTrans(TransLS,"X"), Y, parseTrans(TransLS,"Z"));
+						c.theRightSlots.children[i].visible = false;
+						c.theRightSlots.children[i].SetTranslation(parseTrans(TransRS,"X"), Y, parseTrans(TransRS,"Z"));
+					}
+				}
 				var cValue = getConfigMenuValue("default-ConfigPanelIcon");
 				if(cValue.toLowerCase() == "globe") { c.GlobeIcon.visible = true; } else { c.ConsoleIcon.visible = true; }
+				buildconfigList();
+				tabSlot(0);
 			}
 		}
 	]
 	
 	shell Transform
 	{
-		scale 7 7 7 //150
-		translation 108.8 1.022000 -223.050006
+		scale 12 12 12 //150
+		translation 109.8 1.622000 -223.050006
 		children
 		[
 			DEF theConfigWaver Waver
@@ -777,12 +778,12 @@ DEF theConfigPanel Level
 				eval(configSelect[LV2Item]);
 			}
 		}
-		
+		function OnRightDown() { OnMoveRight(); }
 		function OnMoveRight()
 		{
 			scrollConfigDown();
 		}
-		
+		function OnLeftDown() { OnMoveLeft(); }
 		function OnMoveLeft()
 		{
 			scrollConfigUp();
@@ -814,7 +815,7 @@ DEF theConfigPanel Level
 				tabSlot(LV1Hold);
 				c.theDownArrow.visible = false;
 				c.theUpArrow.visible = false;
-				c.theLeftSlots.children[LV1Hold].children[0].appearance.name = "CellEgg/Partsz";
+				c.theLeftSlots.children[LV1Hold].children[0].appearance.name = "GameHilite";
 				c.theConfigHeader.children[0].geometry.text = "UIX Lite";
 			}
 			else
@@ -881,36 +882,42 @@ function selectConfigDown()
 	if(curItem + 1 == configList.length) { return; } //end of list
 	
 	PlaySoundMenuChange();
-	if(curHold == 11) //SCROLL MENU DOWN
+	if(curHold == nMaxMenuItems - 1) //SCROLL MENU DOWN
 	{
 		c.theUpArrow.visible = true;        
 		if(configList.length > curItem + 1)
 		{
 			curItem = curItem + 1;
-			for(var i = 0; i < 12; i = i + 1)
+			for(var i = 0; i < nMaxMenuItems; i = i + 1)
 			{
 				if(inChangeTitleMenu)
 				{
-					var tValue = getConfigMenuValue(configValues[curItem + (i - 11)]);
-					if(tValue == "") { tValue = configList[curItem + (i - 11)]; }
+					var tValue = getConfigMenuValue(configValues[curItem + (i - (nMaxMenuItems - 1))]);
+					if(tValue == "") { tValue = configList[curItem + (i - (nMaxMenuItems - 1))]; }
+					if(tValue.length() > 36) { tValue = tValue.substr(0, 36) + "..."; }
 					c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 				}
 				else
 				{
-					var tValue = configList[curItem + (i - 11)];
+					var tValue = configList[curItem + (i - (nMaxMenuItems - 1))];
 					if(tValue.charAt(tValue.length() - 1) == ":") tValue = Translate(tValue.substr(0,tValue.length() - 1)) + ":";
 					else tValue = Translate(tValue);
 					c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 					if(inLV2 == true)
 					{
-						c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
-						c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[curItem + (i - 11)]));
+						c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
+						var cValue = Translate(getConfigMenuValue(configValues[curItem + (i - (nMaxMenuItems - 1))]));
+						if(cValue.length() > 20) { 
+							if(inQuickLaunchMenu) { cValue = PathEllipsis(cValue); }
+							else { cValue = cValue.substr(0, 20) + "..."; }
+						}
+						c.theRightSlots.children[i].children[0].geometry.text = cValue;
 					}
 				}
 			}
 		}
 	}   
-	else if(curHold < 11)
+	else if(curHold < nMaxMenuItems - 1)
 	{
 		unTabSlot(curHold);
 		curItem = curItem + 1;
@@ -955,17 +962,18 @@ function selectConfigUp()
 	{
 		if(curHold == 0)
 		{
-			if(configList.length - curItem > 11) c.theDownArrow.visible = true;
+			if(configList.length - curItem > nMaxMenuItems - 1) c.theDownArrow.visible = true;
 			if(curItem != 0)
 			{
 				curItem = curItem - 1;
-				if(configList.length - curItem < 12) loop = configList.length - curItem; else loop = 12;
+				if(configList.length - curItem < nMaxMenuItems) loop = configList.length - curItem; else loop = nMaxMenuItems;
 				for(var i = 0; i < loop; i = i + 1)
 				{
 					if(inChangeTitleMenu)
 					{
 						var tValue = getConfigMenuValue(configValues[curItem + i]);
 						if(tValue == "") { tValue = configList[curItem + i]; }
+						if(tValue.length() > 36) { tValue = tValue.substr(0, 36) + "..."; }
 						c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 					}
 					else
@@ -976,8 +984,13 @@ function selectConfigUp()
 						c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 						if(inLV2 == true)
 						{
-							c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
-							c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[curItem + i]));
+							c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
+							var cValue = Translate(getConfigMenuValue(configValues[curItem + i]));
+							if(cValue.length() > 20) { 
+								if(inQuickLaunchMenu) { cValue = PathEllipsis(cValue); }
+								else { cValue = cValue.substr(0, 20) + "..."; }
+							}
+							c.theRightSlots.children[i].children[0].geometry.text = cValue;
 						}
 					}
 				}
@@ -1023,12 +1036,12 @@ function scrollConfigDown()
 		curHold = LV2Hold;
 	}
 	
-	if(curItem + 12 <= configList.length - 1)
+	if(curItem + nMaxMenuItems <= configList.length - 1)
 	{
-		curItem = curItem + 12;
-		if(curItem - curHold + 12 < configList.length) 
+		curItem = curItem + nMaxMenuItems;
+		if(curItem - curHold + nMaxMenuItems < configList.length) 
 		{ 
-			loop = 12;
+			loop = nMaxMenuItems;
 		}
 		else
 		{
@@ -1041,16 +1054,17 @@ function scrollConfigDown()
 		c.theDownArrow.visible = false;
 		return;
 	}
-	else if(curItem + 12 > configList.length - 1)
+	else if(curItem + nMaxMenuItems > configList.length - 1)
 	{
 		unTabSlot(curHold);
-		loop = Modulo(configList.length,12); 
+		loop = Modulo(configList.length,nMaxMenuItems);
+		if(loop == 0) loop = nMaxMenuItems;
 		curItem = configList.length - 1;
 		curHold = loop - 1;
 		c.theDownArrow.visible = false;
 	}
 	
-	if (curItem - curHold > 11) c.theUpArrow.visible = true;
+	if (curItem - curHold > nMaxMenuItems - 1) c.theUpArrow.visible = true;
 	PlaySoundMenuChange();
 	clearText();    
 	for(var i = 0; i < loop; i = i + 1)
@@ -1059,6 +1073,7 @@ function scrollConfigDown()
 		{
 			var tValue = getConfigMenuValue(configValues[(curItem - curHold) + i]);
 			if(tValue == "") { tValue = configList[(curItem - curHold) + i]; }
+			if(tValue.length() > 36) { tValue = tValue.substr(0, 36) + "..."; }
 			c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 		}
 		else
@@ -1069,8 +1084,14 @@ function scrollConfigDown()
 			c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 			if(inLV2 == true)
 			{
-				c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
-				c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[(curItem - curHold) + i]));
+				c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
+				var cValue = Translate(getConfigMenuValue(configValues[(curItem - curHold) + i]));
+				if(cValue.length() > 20) { 
+					if(inQuickLaunchMenu) { cValue = PathEllipsis(cValue); }
+					else { cValue = cValue.substr(0, 20) + "..."; }
+				}
+				c.theRightSlots.children[i].children[0].geometry.text = cValue;
+
 			}
 		}
 	}
@@ -1107,12 +1128,12 @@ function scrollConfigUp()
 		curHold = LV2Hold;
 	}
 	
-	if(configList.length < 12) { loop = configList.length;} else { loop = 12; }
+	if(configList.length < nMaxMenuItems) { loop = configList.length;} else { loop = nMaxMenuItems; }
 	
-	if(curItem - 12 >= 0)
+	if(curItem - nMaxMenuItems >= 0)
 	{
-		curItem = curItem - 12;
-		if(curItem < 12) 
+		curItem = curItem - nMaxMenuItems;
+		if(curItem < nMaxMenuItems) 
 		{ 
 			unTabSlot(curHold); 
 			curHold = curItem;
@@ -1124,7 +1145,7 @@ function scrollConfigUp()
 	{
 		return;
 	}
-	else if(curItem - 12 < 0)
+	else if(curItem - nMaxMenuItems < 0)
 	{
 		c.theUpArrow.visible = false;
 		curItem = 0;
@@ -1140,6 +1161,7 @@ function scrollConfigUp()
 		{
 			var tValue = getConfigMenuValue(configValues[(curItem - curHold) + i]);
 			if(tValue == "") { tValue = configList[(curItem - curHold) + i]; }
+			if(tValue.length() > 36) { tValue = tValue.substr(0, 36) + "..."; }
 			c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 		}
 		else
@@ -1150,8 +1172,13 @@ function scrollConfigUp()
 			c.theLeftSlots.children[i].children[0].geometry.text = tValue;
 			if(inLV2 == true)
 			{
-				c.theRightSlots.children[i].children[0].appearance.name = "CellEgg/Partsz";
-				c.theRightSlots.children[i].children[0].geometry.text = Translate(getConfigMenuValue(configValues[(curItem - curHold) + i]));
+				c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
+				var cValue = Translate(getConfigMenuValue(configValues[(curItem - curHold) + i]));
+				if(cValue.length() > 20) { 
+					if(inQuickLaunchMenu) { cValue = PathEllipsis(cValue); }
+					else { cValue = cValue.substr(0, 20) + "..."; }
+				}
+				c.theRightSlots.children[i].children[0].geometry.text = cValue;
 			}
 		}
 	}
