@@ -1542,7 +1542,7 @@ function MainMenuAttract()
 {
 	var a = 0;
 	var c = theMainMenu.children[0].children[0];
-	//EnableInput(false);
+	EnableInput(false);
 	c.theMainMenuLevel.fade = a;
 	c.Rotating_Large_X.fade = a;
 	c.ring.fade = a; 
@@ -1910,7 +1910,7 @@ DEF theMainMenu Level
 		{
 			bHDDInitialize = true;
 		}
-		else if(bMainMenuAttractFinish)
+		else if(bMainMenuAttractFinish & theMainMenu.children[0].children[0].theMainMenuLevel.moving == false)
 		{
 			EnableInput(true);
 			bMainMenuAttractFinish = false;
@@ -1992,6 +1992,7 @@ var ConfigFile;
 var CacheFile;
 var XlateFile;
 var IconFile;
+var TitleNamesFile;
 var thcorb;
 var ShowInsignia;
 var btHcScreenSaver;
@@ -2037,7 +2038,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "250314"; //Date of commit YYMMDD
+	sBuildDate = "250329"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2089,17 +2090,19 @@ function initialize()
 	CacheFile = new Settings;
 	XlateFile = new Settings;
 	IconFile = new Settings;
+	TitleNamesFile = new Settings;
 	ConfigFile.file = "Y:\\UIX Configs\\config.ini";
 	CacheFile.file = "Y:\\UIX Configs\\cache.ini";
 	XlateFile.file = "Y:\\UIX Configs\\xlate.ini";
 	IconFile.file = "Y:\\UIX Configs\\icons.ini";
+	TitleNamesFile.file = "Y:\\UIX Configs\\TitleNames.ini";
 	
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
 	btHcScreenSaver = GetSavedBooleanValue("default","UsetHcScreenSaver");
 	bUseMainMenuAttract = GetSavedBooleanValue("default","UseMainMenuAttract");
 	bUseUnderlay = GetSavedBooleanValue("default","UseListUnderlay");
-	if(bUseMainMenuAttract) nTime = 3.1; else nTime = 1.4;
+	nTime = 1.4;
 	
 	DriveLocations = new Array("Y:\\","C:\\");
 	PartitionLocations = new Array("\\Device\\Harddisk0\\Partition2\\","\\Device\\Harddisk0\\Partition1\\");
@@ -2123,9 +2126,6 @@ function initialize()
 	theAmbientSound1.Play();
 	theAmbientSound2.Play();
 	
-	// Figure out if we need to display 3, 4, or 5 items on the main menu
-	g_TotalMenuItems = GetSavedValue("MainMenu","MainMenuItems");
-	
 	var nLanguage = theConfig.GetLanguage();
 	if (nLanguage != 0) nLanguage = nLanguage - 1;
 	theTranslator.SetLanguage(nLanguage);
@@ -2134,12 +2134,19 @@ function initialize()
 	bForceSetLanguage = theConfig.ForceSetLanguage();
 	bForceSetTimeZone = theConfig.ForceSetTimeZone();
 	bForceSetClock = theConfig.ForceSetClock();
+	
+	// Figure out if we need to display 3, 4, or 5 items on the main menu
+	g_TotalMenuItems = GetSavedValue("MainMenu","MainMenuItems");
 	GetMainMenuButtons();
 	
-	if(theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00\\Skin.xip"))
-	{GoToSkin();}
+	if(nLanguage == 0 & theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00\\Skin.xip"))
+	{
+		GoToSkin();
+	}
 	else
-	{MainInitPart2();}    
+	{
+		MainInitPart2();
+	} 
 }
 
 function MainInitPart2()
@@ -3618,6 +3625,21 @@ DEF theMainMenuAlternateViewpoint Viewpoint
 	orientation -0.177400 -1.983500 -0.036250 -0.045440
 	position -15.180000 -112.299999 174.300003
 	jump false
+}
+
+function GetTitleName(x)
+{
+	var a = x;
+	TitleNamesFile.section = "default";
+	return TitleNamesFile.GetValue(a);
+}
+
+function SetTitleName(x,y)
+{
+	var a = x;
+	var b = y;
+	TitleNamesFile.section = "default";
+	return TitleNamesFile.SetValue(a,b);
 }
 
 function GetSavedValue(x,y) 

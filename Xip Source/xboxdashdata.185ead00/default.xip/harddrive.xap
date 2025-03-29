@@ -24,6 +24,7 @@ var arrMenuPaths;
 var TotalSections;
 var LastTitleLaunched;
 var DefaultIcon;
+var TitleCount;
 
 function initialize()
 {
@@ -94,7 +95,7 @@ function UpdateTrackList()
 			if(bInBrowser == false | bRecentToggled)
 			{
 				if(parseTrans(Trans,"X") != -0.41) c.TrackNames.children[i].SetTranslation(-0.42, parseTrans(Trans,"Y"), parseTrans(Trans,"Z"));
-				var strAltName = GetSavedValue("AltTitleName",strName0);
+				var strAltName = GetTitleName(strName0);
 				if (strAltName != "") strName0 = strAltName;
 				if(strName0.length() > 42) strName0 = strName0.substr(0,40) + "...";
 			}
@@ -117,9 +118,26 @@ function UpdateTrackList()
 			{
 				c.TrackNames.children[i].SetScale(0.12, 0.12, 0.12);
 				c.TrackNames.children[i].children[0].appearance.name = "GameHilite";
+				c.theIcons.children[0].children[0].appearance.material.name = "MainMenuOrb";
 				var Icon = IconFile.GetValue(strCacheItem[0]);
-				if(Icon == "Unknown" | Icon == "" | (bInBrowser & (bRecentToggled == false))) Icon = DefaultIcon; else  Icon = Icon.toLowerCase() + ".xbx";
-				c.theIcons.children[0].children[0].appearance.texture.url = Icon; 
+				if(Icon == "Unknown" | Icon == "" | (bInBrowser & (bRecentToggled == false))) 
+				{
+					c.theIcons.children[0].children[0].appearance.texture.url = DefaultIcon; 
+				}
+				else
+				{
+					for(var x = 0; x < TitleCount; x = x + 1)
+					{
+						if(c.theIconSelector.GetTitleID(x) == Icon) 
+						{
+							c.theIcons.children[0].children[0].appearance.material.name = "SelectedIcon";
+							c.theIconSelector.curTitle = x;
+							c.theIconSelector.setSelImage();
+							break;
+						}
+
+					}
+				}
 			}
 			else
 			{               
@@ -205,6 +223,7 @@ function ShowLauncherMenu()
 	bInRecentTitles = false;
 	bRecentToggled = false;
 	bInBrowser = false;
+	c.theIcons.children[0].children[0].appearance.material.name = "MainMenuOrb";
 	if(c.theIcons.visible) c.theIcons.children[0].children[0].appearance.texture.url = DefaultIcon;
 }
 
@@ -235,6 +254,13 @@ function EnterLauncherMenu()
 {
 	var c = theLauncher.children[0].children[0];
 	c.theIcons.visible = true;
+	theMemoryMonitor.curDevUnit = 8;
+	theMemoryMonitor.enumerationOn = true;
+	c.theIconSelector.curDevUnit = theMemoryMonitor.curDevUnit;
+	c.theIconSelector.isActive = true;
+	if (c.theIconSelector.IsDevUnitReady(theMemoryMonitor.curDevUnit) == false)
+		return;
+	TitleCount = c.theIconSelector.GetTitleCount();
 	var Icon = GetSavedValue("default","LauncherOrbIcon");
 	if (Icon == "Xbox") { DefaultIcon = "xboxicon.bmp"; }
 	else if (Icon == "UIX") { DefaultIcon =  "uixlogo.xbx"; }
@@ -417,8 +443,18 @@ function RefreshTitleList()
 {
 	RefreshCache();
 	LoadRecentTitles();
-	TempTitleList = GetTitleList(arrMenuPaths[nCurLauncherItem0]);
-	if (bLauncherVisible0 == false){ UpdateTrackList(); }
+	if (bLauncherVisible0 == false & bInBrowser == false)
+	{
+	   if(bInRecentTitles)
+	   {
+		   TempTitleList = arrRecentNames;
+	   }
+	   else
+	   {
+		   TempTitleList = GetTitleList(arrMenuNames[nCurLauncherItem0]);
+	   }
+	   UpdateTrackList(); 
+	}
 }
 
 function GetTitleList(mnuName)
@@ -722,6 +758,7 @@ DEF theLauncher Level
 			}
 			if (bLauncherVisible0)
 			{
+				theMemoryMonitor.enumerationOn = false;
 				if(bBackToSettings)
 				{
 					bBackToSettings = false;
