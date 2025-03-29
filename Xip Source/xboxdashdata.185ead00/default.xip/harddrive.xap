@@ -255,7 +255,6 @@ function EnterLauncherMenu()
 	var c = theLauncher.children[0].children[0];
 	c.theIcons.visible = true;
 	theMemoryMonitor.curDevUnit = 8;
-	theMemoryMonitor.enumerationOn = true;
 	c.theIconSelector.curDevUnit = theMemoryMonitor.curDevUnit;
 	c.theIconSelector.isActive = true;
 	if (c.theIconSelector.IsDevUnitReady(theMemoryMonitor.curDevUnit) == false)
@@ -758,7 +757,6 @@ DEF theLauncher Level
 			}
 			if (bLauncherVisible0)
 			{
-				theMemoryMonitor.enumerationOn = false;
 				if(bBackToSettings)
 				{
 					bBackToSettings = false;
