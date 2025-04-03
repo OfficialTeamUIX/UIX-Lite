@@ -119,7 +119,7 @@ function UpdateTrackList()
 				c.TrackNames.children[i].SetScale(0.12, 0.12, 0.12);
 				c.TrackNames.children[i].children[0].appearance.name = "GameHilite";
 				c.theIcons.children[0].children[0].appearance.material.name = "MainMenuOrb";
-				var Icon = IconFile.GetValue(strCacheItem[0]);
+				var Icon = IconFile.GetValue(strCacheItem[0]).toLowerCase();
 				if(Icon == "Unknown" | Icon == "" | (bInBrowser & (bRecentToggled == false))) 
 				{
 					c.theIcons.children[0].children[0].appearance.texture.url = DefaultIcon; 
@@ -128,7 +128,7 @@ function UpdateTrackList()
 				{
 					for(var x = 0; x < TitleCount; x = x + 1)
 					{
-						if(c.theIconSelector.GetTitleID(x) == Icon) 
+						if(c.theIconSelector.GetTitleID(x).toLowerCase() == Icon) 
 						{
 							c.theIcons.children[0].children[0].appearance.material.name = "SelectedIcon";
 							c.theIconSelector.curTitle = x;

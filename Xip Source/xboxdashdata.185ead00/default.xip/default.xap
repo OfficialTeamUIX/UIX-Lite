@@ -477,9 +477,10 @@ function Translate(text)
 	return theTranslator.Translate(text);
 }
 
+var unicode;
 function ParseEscapedChars(sText)
 {
-	var Chars = new Array("\\n","\\t");
+	var Chars = new Array("\\n","\\t","\\u");
 	for(var x = 0; x < Chars.length; x = x + 1)
 	{
 		if(sText.indexOf(Chars[x]) >= 0)
@@ -493,6 +494,12 @@ function ParseEscapedChars(sText)
 				{
 					if(x == 0) { sRet = sRet + "\n" + arrTemp[i];}
 					else if(x == 1) { sRet = sRet + "\t" + arrTemp[i]; }
+					else if(x == 2) 
+					{
+						var tmp = "\\u" + arrTemp[i].substr(0,4);
+						eval("unicode = \"" + tmp + "\"");
+						sRet = sRet + unicode + arrTemp[i].substr(4);
+					}
 				}
 				return sRet;
 			}
@@ -2038,7 +2045,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "250329"; //Date of commit YYMMDD
+	sBuildDate = "250402"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
