@@ -916,6 +916,11 @@ DEF theLauncher Level
 			EnterLauncherMenu();
 		}
 	}
+	
+	function OnDeactivate()
+	{
+		theLauncher.children[0].children[0].theIconSelector.isActive = false;
+	}
 }
 
 ///// File Browser Functions \\\\\
