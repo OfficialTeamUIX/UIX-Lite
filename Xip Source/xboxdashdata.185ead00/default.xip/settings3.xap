@@ -2976,7 +2976,7 @@ DEF theSetLanguageMenu Level
 			}
 			else
 			{
-				theSettingsMenu.GoTo();
+				theSettingsMenu.GoBackTo();
 				theSettingsSubMenuOut.Play();
 			}
 		}
