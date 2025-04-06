@@ -2036,22 +2036,21 @@ var bRefreshCache;
 var bHasExtendedPartition;
 var bUseMainMenuAttract;
 var bMainMenuAttractFinish;
-var nSkinLoadSettings;
 var DriveLocations;
 var PartitionLocations;
 var sBuildDate;
+var bSkinExists;
 
 var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "250402"; //Date of commit YYMMDD
+	sBuildDate = "250406"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
 	bHDDInitializing = false;
 	bHDDInitialized = false;
-	nSkinLoadSettings = 0;
 	RightThumb = false;
 	LeftThumb = false;
 	LeftTrigger = false;
@@ -2103,12 +2102,13 @@ function initialize()
 	XlateFile.file = "Y:\\UIX Configs\\xlate.ini";
 	IconFile.file = "Y:\\UIX Configs\\icons.ini";
 	TitleNamesFile.file = "Y:\\UIX Configs\\TitleNames.ini";
-	
+
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
 	btHcScreenSaver = GetSavedBooleanValue("default","UsetHcScreenSaver");
 	bUseMainMenuAttract = GetSavedBooleanValue("default","UseMainMenuAttract");
 	bUseUnderlay = GetSavedBooleanValue("default","UseListUnderlay");
+	bSkinExists = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00\\Skin.xip");
 	nTime = 1.4;
 	
 	DriveLocations = new Array("Y:\\","C:\\");
@@ -2146,8 +2146,9 @@ function initialize()
 	g_TotalMenuItems = GetSavedValue("MainMenu","MainMenuItems");
 	GetMainMenuButtons();
 	
-	if(nLanguage == 0 & theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00\\Skin.xip"))
+	if(bSkinExists)
 	{
+		theTranslator.SetLanguage(0); //Bootloop if language is not English when loading skin.
 		GoToSkin();
 	}
 	else
@@ -2158,6 +2159,10 @@ function initialize()
 
 function MainInitPart2()
 {
+	var nLanguage = theConfig.GetLanguage();
+	if (nLanguage != 0) nLanguage = nLanguage - 1;
+	theTranslator.SetLanguage(nLanguage);
+	
 	if ((bForceSetLanguage + bForceSetTimeZone + bForceSetClock) != false)
 	{
 		//
@@ -2194,8 +2199,7 @@ function MainInitPart3()
 	if (reason == "Error")
 	{
 		EnableInput(true);
-		nSkinLoadSettings = 0;
-		GoToSkin();
+		theMainMenu.GoTo();
 		EnableAmbientAudio();
 		bShowErrorPanel = true;
 		DisplayWaitingMessage();
@@ -2277,7 +2281,6 @@ function MainInitPart3()
 		nCurMainMenuItem = nXOLineButton;
 		// Go back to account selection and highlight appropriate user
 		g_bLiveTodayFadeIn = true;
-		nSkinLoadSettings = 4;
 		GoToAccountSelectionWithDefaultUser();
 		return;
 	}
