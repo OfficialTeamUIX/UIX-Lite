@@ -2137,15 +2137,6 @@ function initialize()
 	if (nLanguage != 0) nLanguage = nLanguage - 1;
 	theTranslator.SetLanguage(nLanguage);
 	
-	bAcceptedLegalInfo = theConfig.GetAcceptedLegalInfo();
-	bForceSetLanguage = theConfig.ForceSetLanguage();
-	bForceSetTimeZone = theConfig.ForceSetTimeZone();
-	bForceSetClock = theConfig.ForceSetClock();
-	
-	// Figure out if we need to display 3, 4, or 5 items on the main menu
-	g_TotalMenuItems = GetSavedValue("MainMenu","MainMenuItems");
-	GetMainMenuButtons();
-	
 	if(bSkinExists)
 	{
 		theTranslator.SetLanguage(0); //Bootloop if language is not English when loading skin.
@@ -2162,6 +2153,15 @@ function MainInitPart2()
 	var nLanguage = theConfig.GetLanguage();
 	if (nLanguage != 0) nLanguage = nLanguage - 1;
 	theTranslator.SetLanguage(nLanguage);
+	
+	// Figure out if we need to display 3, 4, or 5 items on the main menu
+	g_TotalMenuItems = GetSavedValue("MainMenu","MainMenuItems");
+	GetMainMenuButtons();
+	
+	bAcceptedLegalInfo = theConfig.GetAcceptedLegalInfo();
+	bForceSetLanguage = theConfig.ForceSetLanguage();
+	bForceSetTimeZone = theConfig.ForceSetTimeZone();
+	bForceSetClock = theConfig.ForceSetClock();
 	
 	if ((bForceSetLanguage + bForceSetTimeZone + bForceSetClock) != false)
 	{

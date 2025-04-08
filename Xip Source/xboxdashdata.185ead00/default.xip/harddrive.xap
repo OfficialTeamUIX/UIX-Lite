@@ -291,7 +291,7 @@ function LoadMenuItems()
 	}
 	for (var i = 0; i < nMaxLauncherMenuItems; i = i + 1)
 	{
-		var v = GetSavedValue("LauncherMenu", "Title" + i);
+		var v = Translate(GetSavedValue("LauncherMenu", "Title" + i));
 		if(v != "") 
 		{
 			arrMenuNames[TotalSections] = v;
