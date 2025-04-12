@@ -2040,12 +2040,21 @@ var DriveLocations;
 var PartitionLocations;
 var sBuildDate;
 var bSkinExists;
+//Settings Options
+var ShowMemoryInSettings;
+var ShowMusicInSettings;
+var ShowXOnlineInSettings;
+var ShowLauncherInSettings;
+var ShowConfigInSettings;
+var ShowStartFTPInSettings;
+var ShowRebootInSettings;
+var ShowShutdownInSettings;
 
 var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "250406"; //Date of commit YYMMDD
+	sBuildDate = "2504012"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2077,6 +2086,7 @@ function initialize()
 	bShowDVDStopBackground = true;
 	bCleanupSpecifiedDrive = false;
 	nSettingArea = 0;
+	nTime = 1.4;
 	g_nRec = 0;
 	strMessageYesFunction = "";
 	strMessageNoFunction = "";
@@ -2109,7 +2119,18 @@ function initialize()
 	bUseMainMenuAttract = GetSavedBooleanValue("default","UseMainMenuAttract");
 	bUseUnderlay = GetSavedBooleanValue("default","UseListUnderlay");
 	bSkinExists = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00\\Skin.xip");
-	nTime = 1.4;
+	if(GetSavedValue("ShowInSettings","Configuration") == "") SetSavedBooleanValue("ShowInSettings","Configuration",true);
+	if(GetSavedValue("ShowInSettings","StartFTP") == "") SetSavedBooleanValue("ShowInSettings","StartFTP",false);
+	if(GetSavedValue("ShowInSettings","Reboot") == "") SetSavedBooleanValue("ShowInSettings","Reboot",true);
+	if(GetSavedValue("ShowInSettings","Shutdown") == "") SetSavedBooleanValue("ShowInSettings","Shutdown",true);
+	ShowMemoryInSettings = GetSavedBooleanValue("ShowInSettings","Memory");
+	ShowMusicInSettings = GetSavedBooleanValue("ShowInSettings","Music");
+	ShowXOnlineInSettings = GetSavedBooleanValue("ShowInSettings","XOnline");
+	ShowLauncherInSettings = GetSavedBooleanValue("ShowInSettings","Launcher");
+	ShowConfigInSettings = GetSavedBooleanValue("ShowInSettings","Configuration");
+	ShowStartFTPInSettings = GetSavedBooleanValue("ShowInSettings","StartFTP");
+	ShowRebootInSettings = GetSavedBooleanValue("ShowInSettings","Reboot");
+	ShowShutdownInSettings = GetSavedBooleanValue("ShowInSettings","Shutdown");
 	
 	DriveLocations = new Array("Y:\\","C:\\");
 	PartitionLocations = new Array("\\Device\\Harddisk0\\Partition2\\","\\Device\\Harddisk0\\Partition1\\");

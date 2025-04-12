@@ -219,6 +219,10 @@ function BuildSSList()
 	configValues[i] = "ShowInSettings-Configuration";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
+	configList[i] = "Start FTP Server:";
+	configValues[i] = "ShowInSettings-StartFTP";
+	configSelect[i] = "toggleTF()";
+	i = i +1;
 	configList[i] = "Reboot:";
 	configValues[i] = "ShowInSettings-Reboot";
 	configSelect[i] = "toggleTF()";
