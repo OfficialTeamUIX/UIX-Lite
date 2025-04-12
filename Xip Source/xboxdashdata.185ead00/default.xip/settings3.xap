@@ -3651,6 +3651,10 @@ function MenuIcon()
 	{
 		ShowIcon(c.network_icon);
 	}
+	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Start FTP Settings"))
+	{
+		ShowIcon(c.network_icon);
+	}
 	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("AUTO OFF"))
 	{
 		ShowIcon(c.AutoOffIcon);
@@ -3762,6 +3766,10 @@ function UpdateRootMeta()
 	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("NETWORK"))
 	{
 		metaString = theTranslator.Translate("NETWORK");
+	}
+	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Start FTP Server"))
+	{
+		metaString = theTranslator.Translate("Start FTP Server");
 	}
 	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("AUTO OFF"))
 	{
