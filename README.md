@@ -66,7 +66,7 @@ Some of these features include;
 
 ## Launcher Icon Support
 
-* As of UIX Lite v0.4 you can now see the icon of your title as you browse through the list in the Launcher. For this feature to work you must have the Icons.ini located in ```C:\UIX Configs\``` to indicate to UIX Lite the TitleID for each of your titles. The format is ```<FolderName>=<TitleID>.xbx``` where ```<FolderName>``` is the name of the directory that contains the title. 
+* As of UIX Lite v0.4 you can now see the icon of your title as you browse through the list in the Launcher. For this feature to work you must have the Icons.ini located in ```C:\UIX Configs\``` to indicate to UIX Lite the TitleID for each of your titles. The format is ```<FolderName>=<TitleID>``` where ```<FolderName>``` is the name of the directory that contains the title. 
 
  NOTE: As of Release v0.5, the icon files are no longer required to be inserted into the the default.xip and will be loaded directly from UDATA. 
 
