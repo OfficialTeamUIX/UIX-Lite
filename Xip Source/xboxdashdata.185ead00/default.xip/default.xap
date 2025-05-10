@@ -1840,7 +1840,7 @@ DEF theMainMenu Level
 				}
 				eval(ButtonYXAction);
 			}
-		}        
+		}
 	}
 	
 	behavior
@@ -2054,7 +2054,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "2504012"; //Date of commit YYMMDD
+	sBuildDate = "250509"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;

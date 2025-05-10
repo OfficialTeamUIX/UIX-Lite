@@ -669,9 +669,9 @@ DEF theLauncher Level
 						ChangeDirectory(TempTitleList[nPlayCursor0]);
 					}
 				}
-				else if(LeftTrigger & RightTrigger & bInRoot == false)
+				else if(sFileType[nPlayCursor0] == "xbe")
 				{
-					if(sFileType[nPlayCursor0] == "xbe")
+					if(LeftTrigger & RightTrigger & bInRoot == false)
 					{
 						var sPath = arrMenuPaths[nCurLauncherItem0] + "\\" + TempTitleList[nPlayCursor0];
 						SetSavedValue("QuickLaunch","QuickLaunchA",sPath);

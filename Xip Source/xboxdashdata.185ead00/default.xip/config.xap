@@ -479,9 +479,13 @@ function refreshMenu(x)
 		if(cValue.length() > MaxCharacters) 
 		{   //Add ellipsis to long paths and return
 			c.theRightSlots.children[LV2Hold].children[0].geometry.text = PathEllipsis(cValue);
-			setConfigMenuValue(configValues[LV2Item],cValue);
-			return;
-		}    
+		}
+		else
+		{
+			c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue;
+		}
+		setConfigMenuValue(configValues[LV2Item],cValue);
+		return;
 	}
 	
 	if(inChangeTitleMenu)
@@ -579,15 +583,21 @@ function updateText()
 						setConfigMenuValue(configValues[i],cValue);
 					}
 				}
-				if(inQuickLaunchMenu & (cValue.length() > MaxCharacters))
+				c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
+				if(inQuickLaunchMenu)
 				{
-					c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
-					c.theRightSlots.children[i].children[0].geometry.text = Translate(PathEllipsis(cValue));
+					if(cValue.length() > MaxCharacters)
+					{
+						c.theRightSlots.children[i].children[0].geometry.text = PathEllipsis(cValue);
+					}
+					else
+					{
+						c.theRightSlots.children[i].children[0].geometry.text = cValue;
+					}
 				}
 				else
 				{
-					c.theRightSlots.children[i].children[0].appearance.name = "GameHilite";
-					if(cValue.length() > 20) { c.theRightSlots.children[i].children[0].geometry.text = cValue.substr(0, 20) + "..."; }
+					if(cValue.length() > 20 & inQuickLaunchMenu == false) { c.theRightSlots.children[i].children[0].geometry.text = cValue.substr(0, 20) + "..."; }
 					else { c.theRightSlots.children[i].children[0].geometry.text =  Translate(cValue); }
 				}
 			}

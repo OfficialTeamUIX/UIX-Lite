@@ -33,7 +33,7 @@ Some of these features include;
 
 ## How-To (Manual)
 
-* DO NOT USE ON AN UNMODIFIED XBOX. It won’t work, and you'll brick your Xbox. Make sure you have a modchip or softmod installed that doesnt rely on the dashboard files to boot.
+* DO NOT USE ON AN UNMODIFIED XBOX. It won’t work, and you'll brick your Xbox. Make sure you have a modchip or softmod installed that doesn't rely on the dashboard files to boot.
 * DO NOT DELETE YOUR ORIGINAL MS DASHBOARD FILES. SIMPLY REPLACE THE EXISTING FILES WITH THE MODIFIED FILES ONLY. KEEP ANY UNMODIFED FILES.
 * Download VisualXIP from the Tools page.
 * Copy the unmodified 5960 Dashboard files to a directory on your computer.
@@ -46,7 +46,7 @@ Some of these features include;
 
 * You can customize the Main Menu, Launcher Menu, and other settings in-dash by navigating to Settings>UIX Settings.
 * When configuring the Main Menu, advanced users can enable Advanced Mode. When this is enabled, selecting a setting will bring up the Xbox onscreen keyboard for custom input instead of using the built-in toggles.
-* When configuring the Launcher, you may define both the “Title” for a content type and the relative “Path(s)” to the content for up to eight launcher menu items. The Launcher will scan the relative paths provided on each partition and compile a list of the subdirectories found. The name of these subdirectories should correspond to the name of the title and contain the title's default.xbe. Use a semicolon as a separator when defining multiple relative paths to like content.
+* When configuring the Launcher, you may define both the “Title” for a content type and the relative “Path(s)” to the content for any number (eight is the default) of launcher menu items. The Launcher will scan the relative paths provided on each partition and compile a list of the subdirectories found. The name of these subdirectories should correspond to the name of the title and contain the title's default.xbe. Use a semicolon as a separator when defining multiple relative paths to like content.
 * You can fast scroll most menus by pressing Left/Right on the directional pad to PageUp/PageDown.
 * To re-launch a recently launched title, simply press the X button while in the Launcher menu.
 * You can assign a QuickLaunch path to each of the A, B, X, and Y buttons. To active the QuickLaunch feature, while in the Main Menu hold both triggers and press the assigned button.
