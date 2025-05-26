@@ -1949,6 +1949,10 @@ DEF theMainMenu Level
 			bShowLegalInfo = true;
 			DisplayWaitingMessage();
 		}
+		if (g_bPanelDisplayed == true)
+		{
+			theMessageJoystick.isBound = true;
+		}
 	}
 }
 
@@ -2040,6 +2044,12 @@ var DriveLocations;
 var PartitionLocations;
 var sBuildDate;
 var bSkinExists;
+
+// Discord Presence
+var Discord;
+var bPresence;
+var bPresenceEnabled;
+
 //Settings Options
 var ShowMemoryInSettings;
 var ShowMusicInSettings;
@@ -2054,7 +2064,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "250509"; //Date of commit YYMMDD
+	sBuildDate = "250526"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2119,6 +2129,20 @@ function initialize()
 	bUseMainMenuAttract = GetSavedBooleanValue("default","UseMainMenuAttract");
 	bUseUnderlay = GetSavedBooleanValue("default","UseListUnderlay");
 	bSkinExists = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00\\Skin.xip");
+	bPresence = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\Discord Presence\\Discord.xbe");
+	if(bPresence){
+		if(GetSavedValue("DiscordPresence","PresenceEnabled") == "") SetSavedBooleanValue("DiscordPresence","PresenceEnabled",false);
+		bPresenceEnabled = GetSavedBooleanValue("DiscordPresence","PresenceEnabled");
+		Discord = new Settings;
+		Discord.file = "Y:\\Discord Presence\\shortcut.ini";
+		Discord.section = "Shortcut";
+		var currentPath = Discord.GetValue("Path");
+		if(bPresenceEnabled & currentPath.toLowerCase() != "c:\\xboxdash.xbe") 
+		{
+			Discord.SetValue("Path","C:\\xboxdash.xbe"); 
+			launch("Discord.xbe","\\Device\\Harddisk0\\Partition2\\Discord Presence"); 
+		}
+	}
 	if(GetSavedValue("ShowInSettings","Configuration") == "") SetSavedBooleanValue("ShowInSettings","Configuration",true);
 	if(GetSavedValue("ShowInSettings","StartFTP") == "") SetSavedBooleanValue("ShowInSettings","StartFTP",false);
 	if(GetSavedValue("ShowInSettings","Reboot") == "") SetSavedBooleanValue("ShowInSettings","Reboot",true);
@@ -3356,7 +3380,20 @@ DEF theLaunchGameLevel Level
 
 		if(g_bAboutToLaunchGame)
 		{
-			launch(launchXbe, launchPath);   
+			if(bPresence & bPresenceEnabled) 
+			{
+				var PathArray = new Array;
+				var Slice = new Array;
+				PathArray = Split(launchPath,"\\");
+				Slice = PathArray.slice(4,PathArray.length);
+				Discord.SetValue("Path",GetDrivePath(PathArray[2],PathArray[3]) + Slice.join("\\") + "\\" + launchXbe);
+				launch("Discord.xbe", "\\Device\\Harddisk0\\Partition2\\Discord Presence");
+			}
+			else
+			{
+				launch(launchXbe, launchPath);
+			}
+			
 		}
 	}    
 	function OnActivate()
@@ -3721,4 +3758,14 @@ function SetSavedBooleanValue(x,y,z)
 	{
 		ConfigFile.SetValue(b,"false");
 	}
+}
+function GetDrivePath(x,y)
+{
+	if(x == "Harddisk0" & y == "Partition2") return "C:\\";
+	if(x == "Harddisk0" & y == "Partition1") return "E:\\";
+	if(x == "Harddisk0" & y == "Partition6") return "F:\\";
+	if(x == "Harddisk0" & y == "Partition7") return "G:\\";
+	if(x == "Harddisk1" & y == "Partition1") return "E2:\\";
+	if(x == "Harddisk1" & y == "Partition6") return "F2:\\";
+	if(x == "Harddisk1" & y == "Partition7") return "G2:\\";
 }
