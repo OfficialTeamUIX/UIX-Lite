@@ -2064,7 +2064,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "250526"; //Date of commit YYMMDD
+	sBuildDate = "250527"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2130,9 +2130,9 @@ function initialize()
 	bUseUnderlay = GetSavedBooleanValue("default","UseListUnderlay");
 	bSkinExists = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00\\Skin.xip");
 	bPresence = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\Discord Presence\\Discord.xbe");
+	bPresenceEnabled = GetSavedBooleanValue("DiscordPresence","PresenceEnabled");
 	if(bPresence){
 		if(GetSavedValue("DiscordPresence","PresenceEnabled") == "") SetSavedBooleanValue("DiscordPresence","PresenceEnabled",false);
-		bPresenceEnabled = GetSavedBooleanValue("DiscordPresence","PresenceEnabled");
 		Discord = new Settings;
 		Discord.file = "Y:\\Discord Presence\\shortcut.ini";
 		Discord.section = "Shortcut";
@@ -3401,7 +3401,7 @@ DEF theLaunchGameLevel Level
 		DisableAmbientAudio();
 		BlockMemoryUnitEnumeration();
 		ClosePopup();
-		EnableInput(false);
+		//EnableInput(false);
 		
 		//theScreenSaver.enabled = true;
 		if( theConfig.GetVideoMode() == 2 )
