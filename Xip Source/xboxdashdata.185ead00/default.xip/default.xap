@@ -1999,6 +1999,7 @@ var CurrentAltViewpoint;
 var theInLine;
 var currentControlType;
 var previousControlType;
+var version;
 var ConfigFile;
 var CacheFile;
 var XlateFile;
@@ -2064,7 +2065,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "250527"; //Date of commit YYMMDD
+	sBuildDate = "250529"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2112,11 +2113,14 @@ function initialize()
 	g_bResetDiscDeferredNotification = false;
 	g_bLeaveDriveLocked = false;
 	g_bLeaveMemoryUnitsBlocked = false;
+	version = new Settings;
 	ConfigFile = new Settings;
 	CacheFile = new Settings;
 	XlateFile = new Settings;
 	IconFile = new Settings;
 	TitleNamesFile = new Settings;
+	version.file = "T:\\version";
+	version.SetValue("version","0.5." + sBuildDate);
 	ConfigFile.file = "Y:\\UIX Configs\\config.ini";
 	CacheFile.file = "Y:\\UIX Configs\\cache.ini";
 	XlateFile.file = "Y:\\UIX Configs\\xlate.ini";
