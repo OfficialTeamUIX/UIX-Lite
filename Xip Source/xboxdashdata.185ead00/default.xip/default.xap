@@ -2065,7 +2065,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "250529"; //Date of commit YYMMDD
+	sBuildDate = "250531"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2141,9 +2141,11 @@ function initialize()
 		Discord.file = "Y:\\Discord Presence\\shortcut.ini";
 		Discord.section = "Shortcut";
 		var currentPath = Discord.GetValue("Path");
-		if(bPresenceEnabled & currentPath.toLowerCase() != "c:\\xboxdash.xbe") 
+		var sDashboard = "c:\\xboxdash.xbe";
+		if (theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xb0xdash.xbe")) sDashboard = "c:\\xb0xdash.xbe";
+		if(bPresenceEnabled & currentPath.toLowerCase() != sDashboard) 
 		{
-			Discord.SetValue("Path","C:\\xboxdash.xbe"); 
+			Discord.SetValue("Path",sDashboard); 
 			launch("Discord.xbe","\\Device\\Harddisk0\\Partition2\\Discord Presence"); 
 		}
 	}
