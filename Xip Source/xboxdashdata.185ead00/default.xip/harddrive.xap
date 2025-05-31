@@ -304,7 +304,7 @@ function LoadMenuItems()
 	TotalSections = TotalSections + 1;
 	if(GetSavedBooleanValue("ShowInSettings","StartFTP") != true)
 	{
-		arrMenuNames[TotalSections] = Translate("Start FTP Server");
+		arrMenuNames[TotalSections] = Translate("Start UIX Toolbox");
 		arrMenuPaths[TotalSections] = Translate("");
 		TotalSections = TotalSections + 1;
 	}
@@ -639,9 +639,9 @@ DEF theLauncher Level
 					thePlayerPanelIn.Play();
 					StartTitleList();
 				}
-				else if(mnuName == Translate("Start FTP Server"))
+				else if(mnuName == Translate("Start UIX Toolbox"))
 				{
-					launch("UIXLiteFTP.xip","\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00");
+					launch("Toolbox.xip","\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00");
 				}
 				else
 				{
@@ -865,13 +865,20 @@ DEF theLauncher Level
 		{
 			if (bLauncherVisible0)
 			{
-				if (nCurLauncherItem0 > 0)
+				if (nCurLauncherItem0 <= 0)
 				{
 					PlaySoundMenuChange();
+					nCurLauncherItem0 = TotalSections - 1;
+					if(TotalSections > 5) nCurLauncherScroll0 = TotalSections - 5; 
+				}
+				else
+				{
 					nCurLauncherItem0 = nCurLauncherItem0 - 1;
 					if(nCurLauncherItem0 < nCurLauncherScroll0) nCurLauncherScroll0 = nCurLauncherItem0; 
-					UpdateLauncherMenu();
+					
 				}
+				PlaySoundMenuChange();
+				UpdateLauncherMenu();
 			}
 			else
 			{
@@ -894,13 +901,18 @@ DEF theLauncher Level
 		{
 			if (bLauncherVisible0)
 			{
-				if (nCurLauncherItem0 < TotalSections - 1)
+				if (nCurLauncherItem0 == TotalSections - 1)
 				{
-					PlaySoundMenuChange();
+					nCurLauncherScroll0 = 0;
+					nCurLauncherItem0 = 0;
+				}
+				else
+				{
 					nCurLauncherItem0 = nCurLauncherItem0 + 1; 
 					if(nCurLauncherItem0 - nCurLauncherScroll0 >= nCurLauncherVisible0) nCurLauncherScroll0 = nCurLauncherScroll0 + 1; 
-					UpdateLauncherMenu();
 				}
+				PlaySoundMenuChange();
+				UpdateLauncherMenu();
 			}
 			else
 			{
