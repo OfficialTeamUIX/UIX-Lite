@@ -223,7 +223,7 @@ function BuildSSList()
 	configValues[i] = "ShowInSettings-Configuration";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
-	configList[i] = "Start FTP Server:";
+	configList[i] = "Start UIX Toolbox:";
 	configValues[i] = "ShowInSettings-StartFTP";
 	configSelect[i] = "toggleTF()";
 	i = i +1;
@@ -420,6 +420,7 @@ function toggleDP()
 	SetSavedBooleanValue("DiscordPresence","PresenceEnabled",bPresenceEnabled);
 	var c = theConfigPanel.children[0].children[0];
 	c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue);
+	settChanged = true;
 }
 
 function togglePorts()
@@ -432,6 +433,7 @@ function togglePorts()
 	else { cValue = "1101"; }
 	c.theRightSlots.children[LV2Hold].children[0].geometry.text = cValue;
 	setConfigMenuValue(configValues[LV2Item],cValue);
+	settChanged = true;
 }
 
 function PathEllipsis(x)

@@ -3508,7 +3508,7 @@ function StartSettingsMenu()
 	
 	if(ShowStartFTPInSettings)
 	{
-		sSettingsMenu[index] = Translate("Start FTP Server");
+		sSettingsMenu[index] = Translate("Start UIX Toolbox");
 		index = index + 1;
 	}
 	
@@ -3651,7 +3651,7 @@ function MenuIcon()
 	{
 		ShowIcon(c.network_icon);
 	}
-	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Start FTP Settings"))
+	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Start UIX Toolbox"))
 	{
 		ShowIcon(c.network_icon);
 	}
@@ -3767,9 +3767,9 @@ function UpdateRootMeta()
 	{
 		metaString = theTranslator.Translate("NETWORK");
 	}
-	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Start FTP Server"))
+	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Start UIX Toolbox"))
 	{
-		metaString = theTranslator.Translate("Start FTP Server");
+		metaString = theTranslator.Translate("Start UIX Toolbox");
 	}
 	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("AUTO OFF"))
 	{
@@ -4051,10 +4051,10 @@ DEF theSettingsMenu Level
 				theLiveAccounts.PersistUser(-1);
 				GoToXoDashEntryPoint(0, 0, "TROUBLE SHOOTER");
 			}
-			if (sSettingsElements[nCurSettingsMenuItem] == Translate("Start FTP Server"))
+			if (sSettingsElements[nCurSettingsMenuItem] == Translate("Start UIX Toolbox"))
 			{
-				strCurMenu = "START FTP";
-				launch("UIXLiteFTP.xip","\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00");
+				strCurMenu = "START TOOLBOX";
+				launch("Toolbox.xip","\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00");
 			}
 			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("AUTO OFF"))
 			{

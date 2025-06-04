@@ -2065,7 +2065,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "250531"; //Date of commit YYMMDD
+	sBuildDate = "250603"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
