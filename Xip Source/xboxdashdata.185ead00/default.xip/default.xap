@@ -477,9 +477,10 @@ function Translate(text)
 	return theTranslator.Translate(text);
 }
 
+var unicode;
 function ParseEscapedChars(sText)
 {
-	var Chars = new Array("\\n","\\t");
+	var Chars = new Array("\\n","\\t","\\u");
 	for(var x = 0; x < Chars.length; x = x + 1)
 	{
 		if(sText.indexOf(Chars[x]) >= 0)
@@ -493,6 +494,12 @@ function ParseEscapedChars(sText)
 				{
 					if(x == 0) { sRet = sRet + "\n" + arrTemp[i];}
 					else if(x == 1) { sRet = sRet + "\t" + arrTemp[i]; }
+					else if(x == 2) 
+					{
+						var tmp = "\\u" + arrTemp[i].substr(0,4);
+						eval("unicode = \"" + tmp + "\"");
+						sRet = sRet + unicode + arrTemp[i].substr(4);
+					}
 				}
 				return sRet;
 			}
@@ -1542,7 +1549,7 @@ function MainMenuAttract()
 {
 	var a = 0;
 	var c = theMainMenu.children[0].children[0];
-	//EnableInput(false);
+	EnableInput(false);
 	c.theMainMenuLevel.fade = a;
 	c.Rotating_Large_X.fade = a;
 	c.ring.fade = a; 
@@ -1833,7 +1840,7 @@ DEF theMainMenu Level
 				}
 				eval(ButtonYXAction);
 			}
-		}        
+		}
 	}
 	
 	behavior
@@ -1910,7 +1917,7 @@ DEF theMainMenu Level
 		{
 			bHDDInitialize = true;
 		}
-		else if(bMainMenuAttractFinish)
+		else if(bMainMenuAttractFinish & theMainMenu.children[0].children[0].theMainMenuLevel.moving == false)
 		{
 			EnableInput(true);
 			bMainMenuAttractFinish = false;
@@ -1941,6 +1948,10 @@ DEF theMainMenu Level
 			
 			bShowLegalInfo = true;
 			DisplayWaitingMessage();
+		}
+		if (g_bPanelDisplayed == true)
+		{
+			theMessageJoystick.isBound = true;
 		}
 	}
 }
@@ -1988,10 +1999,12 @@ var CurrentAltViewpoint;
 var theInLine;
 var currentControlType;
 var previousControlType;
+var version;
 var ConfigFile;
 var CacheFile;
 var XlateFile;
 var IconFile;
+var TitleNamesFile;
 var thcorb;
 var ShowInsignia;
 var btHcScreenSaver;
@@ -2028,22 +2041,36 @@ var bRefreshCache;
 var bHasExtendedPartition;
 var bUseMainMenuAttract;
 var bMainMenuAttractFinish;
-var nSkinLoadSettings;
 var DriveLocations;
 var PartitionLocations;
 var sBuildDate;
+var bSkinExists;
+
+// Discord Presence
+var Discord;
+var bPresence;
+var bPresenceEnabled;
+
+//Settings Options
+var ShowMemoryInSettings;
+var ShowMusicInSettings;
+var ShowXOnlineInSettings;
+var ShowLauncherInSettings;
+var ShowConfigInSettings;
+var ShowStartFTPInSettings;
+var ShowRebootInSettings;
+var ShowShutdownInSettings;
 
 var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "250314"; //Date of commit YYMMDD
+	sBuildDate = "250603"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
 	bHDDInitializing = false;
 	bHDDInitialized = false;
-	nSkinLoadSettings = 0;
 	RightThumb = false;
 	LeftThumb = false;
 	LeftTrigger = false;
@@ -2070,6 +2097,7 @@ function initialize()
 	bShowDVDStopBackground = true;
 	bCleanupSpecifiedDrive = false;
 	nSettingArea = 0;
+	nTime = 1.4;
 	g_nRec = 0;
 	strMessageYesFunction = "";
 	strMessageNoFunction = "";
@@ -2085,21 +2113,54 @@ function initialize()
 	g_bResetDiscDeferredNotification = false;
 	g_bLeaveDriveLocked = false;
 	g_bLeaveMemoryUnitsBlocked = false;
+	version = new Settings;
 	ConfigFile = new Settings;
 	CacheFile = new Settings;
 	XlateFile = new Settings;
 	IconFile = new Settings;
+	TitleNamesFile = new Settings;
+	version.file = "T:\\version";
+	version.SetValue("version","0.5." + sBuildDate);
 	ConfigFile.file = "Y:\\UIX Configs\\config.ini";
 	CacheFile.file = "Y:\\UIX Configs\\cache.ini";
 	XlateFile.file = "Y:\\UIX Configs\\xlate.ini";
 	IconFile.file = "Y:\\UIX Configs\\icons.ini";
-	
+	TitleNamesFile.file = "Y:\\UIX Configs\\TitleNames.ini";
+
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
 	btHcScreenSaver = GetSavedBooleanValue("default","UsetHcScreenSaver");
 	bUseMainMenuAttract = GetSavedBooleanValue("default","UseMainMenuAttract");
 	bUseUnderlay = GetSavedBooleanValue("default","UseListUnderlay");
-	if(bUseMainMenuAttract) nTime = 3.1; else nTime = 1.4;
+	bSkinExists = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00\\Skin.xip");
+	bPresence = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\Discord Presence\\Discord.xbe");
+	bPresenceEnabled = GetSavedBooleanValue("DiscordPresence","PresenceEnabled");
+	if(bPresence){
+		if(GetSavedValue("DiscordPresence","PresenceEnabled") == "") SetSavedBooleanValue("DiscordPresence","PresenceEnabled",false);
+		Discord = new Settings;
+		Discord.file = "Y:\\Discord Presence\\shortcut.ini";
+		Discord.section = "Shortcut";
+		var currentPath = Discord.GetValue("Path");
+		var sDashboard = "c:\\xboxdash.xbe";
+		if (theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xb0xdash.xbe")) sDashboard = "c:\\xb0xdash.xbe";
+		if(bPresenceEnabled & currentPath.toLowerCase() != sDashboard) 
+		{
+			Discord.SetValue("Path",sDashboard); 
+			launch("Discord.xbe","\\Device\\Harddisk0\\Partition2\\Discord Presence"); 
+		}
+	}
+	if(GetSavedValue("ShowInSettings","Configuration") == "") SetSavedBooleanValue("ShowInSettings","Configuration",true);
+	if(GetSavedValue("ShowInSettings","StartFTP") == "") SetSavedBooleanValue("ShowInSettings","StartFTP",false);
+	if(GetSavedValue("ShowInSettings","Reboot") == "") SetSavedBooleanValue("ShowInSettings","Reboot",true);
+	if(GetSavedValue("ShowInSettings","Shutdown") == "") SetSavedBooleanValue("ShowInSettings","Shutdown",true);
+	ShowMemoryInSettings = GetSavedBooleanValue("ShowInSettings","Memory");
+	ShowMusicInSettings = GetSavedBooleanValue("ShowInSettings","Music");
+	ShowXOnlineInSettings = GetSavedBooleanValue("ShowInSettings","XOnline");
+	ShowLauncherInSettings = GetSavedBooleanValue("ShowInSettings","Launcher");
+	ShowConfigInSettings = GetSavedBooleanValue("ShowInSettings","Configuration");
+	ShowStartFTPInSettings = GetSavedBooleanValue("ShowInSettings","StartFTP");
+	ShowRebootInSettings = GetSavedBooleanValue("ShowInSettings","Reboot");
+	ShowShutdownInSettings = GetSavedBooleanValue("ShowInSettings","Shutdown");
 	
 	DriveLocations = new Array("Y:\\","C:\\");
 	PartitionLocations = new Array("\\Device\\Harddisk0\\Partition2\\","\\Device\\Harddisk0\\Partition1\\");
@@ -2123,27 +2184,36 @@ function initialize()
 	theAmbientSound1.Play();
 	theAmbientSound2.Play();
 	
-	// Figure out if we need to display 3, 4, or 5 items on the main menu
-	g_TotalMenuItems = GetSavedValue("MainMenu","MainMenuItems");
-	
 	var nLanguage = theConfig.GetLanguage();
 	if (nLanguage != 0) nLanguage = nLanguage - 1;
 	theTranslator.SetLanguage(nLanguage);
+	
+	if(bSkinExists)
+	{
+		theTranslator.SetLanguage(0); //Bootloop if language is not English when loading skin.
+		GoToSkin();
+	}
+	else
+	{
+		MainInitPart2();
+	} 
+}
+
+function MainInitPart2()
+{
+	var nLanguage = theConfig.GetLanguage();
+	if (nLanguage != 0) nLanguage = nLanguage - 1;
+	theTranslator.SetLanguage(nLanguage);
+	
+	// Figure out if we need to display 3, 4, or 5 items on the main menu
+	g_TotalMenuItems = GetSavedValue("MainMenu","MainMenuItems");
+	GetMainMenuButtons();
 	
 	bAcceptedLegalInfo = theConfig.GetAcceptedLegalInfo();
 	bForceSetLanguage = theConfig.ForceSetLanguage();
 	bForceSetTimeZone = theConfig.ForceSetTimeZone();
 	bForceSetClock = theConfig.ForceSetClock();
-	GetMainMenuButtons();
 	
-	if(theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00\\Skin.xip"))
-	{GoToSkin();}
-	else
-	{MainInitPart2();}    
-}
-
-function MainInitPart2()
-{
 	if ((bForceSetLanguage + bForceSetTimeZone + bForceSetClock) != false)
 	{
 		//
@@ -2180,8 +2250,7 @@ function MainInitPart3()
 	if (reason == "Error")
 	{
 		EnableInput(true);
-		nSkinLoadSettings = 0;
-		GoToSkin();
+		theMainMenu.GoTo();
 		EnableAmbientAudio();
 		bShowErrorPanel = true;
 		DisplayWaitingMessage();
@@ -2263,7 +2332,6 @@ function MainInitPart3()
 		nCurMainMenuItem = nXOLineButton;
 		// Go back to account selection and highlight appropriate user
 		g_bLiveTodayFadeIn = true;
-		nSkinLoadSettings = 4;
 		GoToAccountSelectionWithDefaultUser();
 		return;
 	}
@@ -3318,7 +3386,20 @@ DEF theLaunchGameLevel Level
 
 		if(g_bAboutToLaunchGame)
 		{
-			launch(launchXbe, launchPath);   
+			if(bPresence & bPresenceEnabled) 
+			{
+				var PathArray = new Array;
+				var Slice = new Array;
+				PathArray = Split(launchPath,"\\");
+				Slice = PathArray.slice(4,PathArray.length);
+				Discord.SetValue("Path",GetDrivePath(PathArray[2],PathArray[3]) + Slice.join("\\") + "\\" + launchXbe);
+				launch("Discord.xbe", "\\Device\\Harddisk0\\Partition2\\Discord Presence");
+			}
+			else
+			{
+				launch(launchXbe, launchPath);
+			}
+			
 		}
 	}    
 	function OnActivate()
@@ -3326,7 +3407,7 @@ DEF theLaunchGameLevel Level
 		DisableAmbientAudio();
 		BlockMemoryUnitEnumeration();
 		ClosePopup();
-		EnableInput(false);
+		//EnableInput(false);
 		
 		//theScreenSaver.enabled = true;
 		if( theConfig.GetVideoMode() == 2 )
@@ -3620,6 +3701,21 @@ DEF theMainMenuAlternateViewpoint Viewpoint
 	jump false
 }
 
+function GetTitleName(x)
+{
+	var a = x;
+	TitleNamesFile.section = "default";
+	return TitleNamesFile.GetValue(a);
+}
+
+function SetTitleName(x,y)
+{
+	var a = x;
+	var b = y;
+	TitleNamesFile.section = "default";
+	return TitleNamesFile.SetValue(a,b);
+}
+
 function GetSavedValue(x,y) 
 {
 	var a = x;
@@ -3668,4 +3764,14 @@ function SetSavedBooleanValue(x,y,z)
 	{
 		ConfigFile.SetValue(b,"false");
 	}
+}
+function GetDrivePath(x,y)
+{
+	if(x == "Harddisk0" & y == "Partition2") return "C:\\";
+	if(x == "Harddisk0" & y == "Partition1") return "E:\\";
+	if(x == "Harddisk0" & y == "Partition6") return "F:\\";
+	if(x == "Harddisk0" & y == "Partition7") return "G:\\";
+	if(x == "Harddisk1" & y == "Partition1") return "E2:\\";
+	if(x == "Harddisk1" & y == "Partition6") return "F2:\\";
+	if(x == "Harddisk1" & y == "Partition7") return "G2:\\";
 }

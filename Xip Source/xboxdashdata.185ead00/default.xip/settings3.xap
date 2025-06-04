@@ -15,14 +15,6 @@ var nCurVideoItem;
 var nCurAudioItem;
 var nCurLockItem;
 var nNetworkItem;
-//New Options
-var ShowMemoryInSettings;
-var ShowMusicInSettings;
-var ShowXOnlineInSettings;
-var ShowLauncherInSettings;
-var ShowConfigInSettings;
-var ShowRebootInSettings;
-var ShowShutdownInSettings;
 
 function initialize()
 {
@@ -3513,6 +3505,13 @@ function StartSettingsMenu()
 	sSettingsMenu[index] = theTranslator.Translate("NETWORK");
 	nNetworkItem = index;
 	index = index + 1;
+	
+	if(ShowStartFTPInSettings)
+	{
+		sSettingsMenu[index] = Translate("Start UIX Toolbox");
+		index = index + 1;
+	}
+	
 	sSettingsMenu[index] = theTranslator.Translate("LIVE TODAY");
 	index = index + 1;
 
@@ -3652,6 +3651,10 @@ function MenuIcon()
 	{
 		ShowIcon(c.network_icon);
 	}
+	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Start UIX Toolbox"))
+	{
+		ShowIcon(c.network_icon);
+	}
 	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("AUTO OFF"))
 	{
 		ShowIcon(c.AutoOffIcon);
@@ -3764,6 +3767,10 @@ function UpdateRootMeta()
 	{
 		metaString = theTranslator.Translate("NETWORK");
 	}
+	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("Start UIX Toolbox"))
+	{
+		metaString = theTranslator.Translate("Start UIX Toolbox");
+	}
 	else if(sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("AUTO OFF"))
 	{
 		if (theConfig.GetAutoOff())
@@ -3862,16 +3869,7 @@ DEF theSettingsMenu Level
 
 				strCurMenu = "SETTINGS";
 				strPrevMenu = "SETTINGS";
-				if(GetSavedValue("ShowInSettings","Configuration") == "") SetSavedBooleanValue("ShowInSettings","Configuration",true);
-				if(GetSavedValue("ShowInSettings","Reboot") == "") SetSavedBooleanValue("ShowInSettings","Reboot",true);
-				if(GetSavedValue("ShowInSettings","Shutdown") == "") SetSavedBooleanValue("ShowInSettings","Shutdown",true);
-				ShowMemoryInSettings   = GetSavedBooleanValue("ShowInSettings","Memory");
-				ShowMusicInSettings    = GetSavedBooleanValue("ShowInSettings","Music");
-				ShowXOnlineInSettings  = GetSavedBooleanValue("ShowInSettings","XOnline");
-				ShowLauncherInSettings = GetSavedBooleanValue("ShowInSettings","Launcher");
-				ShowConfigInSettings   = GetSavedBooleanValue("ShowInSettings","Configuration");
-				ShowRebootInSettings   = GetSavedBooleanValue("ShowInSettings","Reboot");
-				ShowShutdownInSettings = GetSavedBooleanValue("ShowInSettings","Shutdown");
+
 				//
 				// This used to be the very last option at the end of the if..else if statement below
 				// I moved it here, so that if a user is forced to set a specific setting, and an Audio CD or
@@ -4052,6 +4050,11 @@ DEF theSettingsMenu Level
 			{
 				theLiveAccounts.PersistUser(-1);
 				GoToXoDashEntryPoint(0, 0, "TROUBLE SHOOTER");
+			}
+			if (sSettingsElements[nCurSettingsMenuItem] == Translate("Start UIX Toolbox"))
+			{
+				strCurMenu = "START TOOLBOX";
+				launch("Toolbox.xip","\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00");
 			}
 			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("AUTO OFF"))
 			{

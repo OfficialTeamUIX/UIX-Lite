@@ -1154,11 +1154,24 @@ DEF theWholeThing Transform
 							}
 							geometry Mesh { url "MEM_L2_sc_pod_icon-FACES.xm" }
 						}
+						DEF theIconSelector SavedGameGrid
+						{
+							function OnUpdatingTitlesBegin()
+							{
+								BlockUser("ENUMERATING SAVED GAMES:");
+							}
+							
+							function OnUpdatingTitlesEnd()
+							{
+								CloseMessage();
+								EnterLauncherMenu();
+							}
+						}
 					]
 				}
 			]
 			rotation -1.000000 0.000000 0.000000 -1.571000
-			scale 0.324700 0.324700 0.324700
+			scale 0.304700 0.304700 0.304700
 			translation -46.89 55.14 -204.8
 		}
 		DEF MU_L3_musicpod Transform

@@ -24,6 +24,7 @@ var arrMenuPaths;
 var TotalSections;
 var LastTitleLaunched;
 var DefaultIcon;
+var TitleCount;
 
 function initialize()
 {
@@ -94,7 +95,7 @@ function UpdateTrackList()
 			if(bInBrowser == false | bRecentToggled)
 			{
 				if(parseTrans(Trans,"X") != -0.41) c.TrackNames.children[i].SetTranslation(-0.42, parseTrans(Trans,"Y"), parseTrans(Trans,"Z"));
-				var strAltName = GetSavedValue("AltTitleName",strName0);
+				var strAltName = GetTitleName(strName0);
 				if (strAltName != "") strName0 = strAltName;
 				if(strName0.length() > 42) strName0 = strName0.substr(0,40) + "...";
 			}
@@ -117,9 +118,26 @@ function UpdateTrackList()
 			{
 				c.TrackNames.children[i].SetScale(0.12, 0.12, 0.12);
 				c.TrackNames.children[i].children[0].appearance.name = "GameHilite";
-				var Icon = IconFile.GetValue(strCacheItem[0]);
-				if(Icon == "Unknown" | Icon == "" | (bInBrowser & (bRecentToggled == false))) Icon = DefaultIcon; else  Icon = Icon.toLowerCase() + ".xbx";
-				c.theIcons.children[0].children[0].appearance.texture.url = Icon; 
+				c.theIcons.children[0].children[0].appearance.material.name = "MainMenuOrb";
+				var Icon = IconFile.GetValue(strCacheItem[0]).toLowerCase();
+				if(Icon == "Unknown" | Icon == "" | (bInBrowser & (bRecentToggled == false))) 
+				{
+					c.theIcons.children[0].children[0].appearance.texture.url = DefaultIcon; 
+				}
+				else
+				{
+					for(var x = 0; x < TitleCount; x = x + 1)
+					{
+						if(c.theIconSelector.GetTitleID(x).toLowerCase() == Icon) 
+						{
+							c.theIcons.children[0].children[0].appearance.material.name = "SelectedIcon";
+							c.theIconSelector.curTitle = x;
+							c.theIconSelector.setSelImage();
+							break;
+						}
+
+					}
+				}
 			}
 			else
 			{               
@@ -131,7 +149,7 @@ function UpdateTrackList()
 
 	if(bInBrowser & (bRecentToggled == false))
 	{
-		var sPath = arrMenuPaths[TotalSections - 1];
+		var sPath = arrMenuPaths[nCurLauncherItem0];
 		if(sPath.length() > 20)
 		{
 			if(sPath.length() > 27) sPath = PathEllipsis(sPath,27);
@@ -205,6 +223,7 @@ function ShowLauncherMenu()
 	bInRecentTitles = false;
 	bRecentToggled = false;
 	bInBrowser = false;
+	c.theIcons.children[0].children[0].appearance.material.name = "MainMenuOrb";
 	if(c.theIcons.visible) c.theIcons.children[0].children[0].appearance.texture.url = DefaultIcon;
 }
 
@@ -235,6 +254,12 @@ function EnterLauncherMenu()
 {
 	var c = theLauncher.children[0].children[0];
 	c.theIcons.visible = true;
+	theMemoryMonitor.curDevUnit = 8;
+	c.theIconSelector.curDevUnit = theMemoryMonitor.curDevUnit;
+	c.theIconSelector.isActive = true;
+	if (c.theIconSelector.IsDevUnitReady(theMemoryMonitor.curDevUnit) == false)
+		return;
+	TitleCount = c.theIconSelector.GetTitleCount();
 	var Icon = GetSavedValue("default","LauncherOrbIcon");
 	if (Icon == "Xbox") { DefaultIcon = "xboxicon.bmp"; }
 	else if (Icon == "UIX") { DefaultIcon =  "uixlogo.xbx"; }
@@ -266,7 +291,7 @@ function LoadMenuItems()
 	}
 	for (var i = 0; i < nMaxLauncherMenuItems; i = i + 1)
 	{
-		var v = GetSavedValue("LauncherMenu", "Title" + i);
+		var v = Translate(GetSavedValue("LauncherMenu", "Title" + i));
 		if(v != "") 
 		{
 			arrMenuNames[TotalSections] = v;
@@ -277,6 +302,12 @@ function LoadMenuItems()
 	arrMenuNames[TotalSections] = Translate("File Browser");
 	arrMenuPaths[TotalSections] = Translate("Xbox Root");
 	TotalSections = TotalSections + 1;
+	if(GetSavedBooleanValue("ShowInSettings","StartFTP") != true)
+	{
+		arrMenuNames[TotalSections] = Translate("Start UIX Toolbox");
+		arrMenuPaths[TotalSections] = Translate("");
+		TotalSections = TotalSections + 1;
+	}
 	if(TotalSections >= 3) { nCurLauncherVisible0 = Math.min(5, TotalSections); } else { nCurLauncherVisible0 = 2; }
 }
 
@@ -417,8 +448,18 @@ function RefreshTitleList()
 {
 	RefreshCache();
 	LoadRecentTitles();
-	TempTitleList = GetTitleList(arrMenuPaths[nCurLauncherItem0]);
-	if (bLauncherVisible0 == false){ UpdateTrackList(); }
+	if (bLauncherVisible0 == false & bInBrowser == false)
+	{
+	   if(bInRecentTitles)
+	   {
+		   TempTitleList = arrRecentNames;
+	   }
+	   else
+	   {
+		   TempTitleList = GetTitleList(arrMenuNames[nCurLauncherItem0]);
+	   }
+	   UpdateTrackList(); 
+	}
 }
 
 function GetTitleList(mnuName)
@@ -593,10 +634,14 @@ DEF theLauncher Level
 					}
 					else
 					{
-						TempTitleList = GetDirectoryContents(arrMenuPaths[TotalSections - 1]);
+						TempTitleList = GetDirectoryContents(arrMenuPaths[nCurLauncherItem0]);
 					}
 					thePlayerPanelIn.Play();
 					StartTitleList();
+				}
+				else if(mnuName == Translate("Start UIX Toolbox"))
+				{
+					launch("Toolbox.xip","\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00");
 				}
 				else
 				{
@@ -626,15 +671,15 @@ DEF theLauncher Level
 				}
 				else if(sFileType[nPlayCursor0] == "xbe")
 				{
-					if(LeftTrigger & RightTrigger)
+					if(LeftTrigger & RightTrigger & bInRoot == false)
 					{
-						var sPath = arrMenuPaths[TotalSections - 1] + "\\" + TempTitleList[nPlayCursor0];
+						var sPath = arrMenuPaths[nCurLauncherItem0] + "\\" + TempTitleList[nPlayCursor0];
 						SetSavedValue("QuickLaunch","QuickLaunchA",sPath);
 						TellUser(Translate("ASSIGNED_QUICKLAUNCH") + "A","");
 					}
 					else
 					{
-						ExecuteFile(arrMenuPaths[TotalSections - 1] + "\\" + TempTitleList[nPlayCursor0]);
+						ExecuteFile(arrMenuPaths[nCurLauncherItem0] + "\\" + TempTitleList[nPlayCursor0]);
 					}
 				}
 			}
@@ -649,13 +694,13 @@ DEF theLauncher Level
 			if(bInRecentTitles) return;
 			theLauncher.children[0].children[0].MU_recent_pod_HL.children[0].appearance.material.param = 1;
 			PlaySoundA();
-			if(bInBrowser)
+			if(bInBrowser & bInRoot == false)
 			{
-				if(sFileType[nPlayCursor0] == "xbe")
+				if(LeftTrigger & RightTrigger)
 				{
-					if(LeftTrigger & RightTrigger)
+					if(sFileType[nPlayCursor0] == "xbe")
 					{
-						var sPath = arrMenuPaths[TotalSections - 1] + "\\" + TempTitleList[nPlayCursor0];
+						var sPath = arrMenuPaths[nCurLauncherItem0] + "\\" + TempTitleList[nPlayCursor0];
 						SetSavedValue("QuickLaunch","QuickLaunchX",sPath);
 						TellUser(Translate("ASSIGNED_QUICKLAUNCH") + "X","");
 						return;
@@ -686,13 +731,13 @@ DEF theLauncher Level
 		{
 			theLauncher.children[0].children[0].MU_refresh_pod_HL.children[0].appearance.material.param = 1;
 			PlaySoundA();
-			if(bInBrowser)
+			if(bInBrowser & bInRoot == false)
 			{
-				if(sFileType[nPlayCursor0] == "xbe")
+				if(LeftTrigger & RightTrigger)
 				{
-					if(LeftTrigger & RightTrigger)
+					if(sFileType[nPlayCursor0] == "xbe")
 					{
-						var sPath = arrMenuPaths[TotalSections - 1] + "\\" + TempTitleList[nPlayCursor0];
+						var sPath = arrMenuPaths[nCurLauncherItem0] + "\\" + TempTitleList[nPlayCursor0];
 						SetSavedValue("QuickLaunch","QuickLaunchY",sPath);
 						TellUser(Translate("ASSIGNED_QUICKLAUNCH") + "Y","");
 						return;
@@ -707,13 +752,13 @@ DEF theLauncher Level
 		{
 			theLauncher.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
 			PlaySoundB();
-			if(bInBrowser)
+			if(bInBrowser & bInRoot == false)
 			{
-				if(sFileType[nPlayCursor0] == "xbe")
+				if(LeftTrigger & RightTrigger)
 				{
-					if(LeftTrigger & RightTrigger)
+					if(sFileType[nPlayCursor0] == "xbe")
 					{
-						var sPath = arrMenuPaths[TotalSections - 1] + "\\" + TempTitleList[nPlayCursor0];
+						var sPath = arrMenuPaths[nCurLauncherItem0] + "\\" + TempTitleList[nPlayCursor0];
 						SetSavedValue("QuickLaunch","QuickLaunchB",sPath);
 						TellUser(Translate("ASSIGNED_QUICKLAUNCH") + "B","");
 						return;
@@ -745,7 +790,7 @@ DEF theLauncher Level
 					}
 					else
 					{
-						TempTitleList = GetDirectoryContents(arrMenuPaths[TotalSections - 1]);
+						TempTitleList = GetDirectoryContents(arrMenuPaths[nCurLauncherItem0]);
 					}
 				}
 				else
@@ -820,13 +865,20 @@ DEF theLauncher Level
 		{
 			if (bLauncherVisible0)
 			{
-				if (nCurLauncherItem0 > 0)
+				if (nCurLauncherItem0 <= 0)
 				{
 					PlaySoundMenuChange();
+					nCurLauncherItem0 = TotalSections - 1;
+					if(TotalSections > 5) nCurLauncherScroll0 = TotalSections - 5; 
+				}
+				else
+				{
 					nCurLauncherItem0 = nCurLauncherItem0 - 1;
 					if(nCurLauncherItem0 < nCurLauncherScroll0) nCurLauncherScroll0 = nCurLauncherItem0; 
-					UpdateLauncherMenu();
+					
 				}
+				PlaySoundMenuChange();
+				UpdateLauncherMenu();
 			}
 			else
 			{
@@ -849,13 +901,18 @@ DEF theLauncher Level
 		{
 			if (bLauncherVisible0)
 			{
-				if (nCurLauncherItem0 < TotalSections - 1)
+				if (nCurLauncherItem0 == TotalSections - 1)
 				{
-					PlaySoundMenuChange();
+					nCurLauncherScroll0 = 0;
+					nCurLauncherItem0 = 0;
+				}
+				else
+				{
 					nCurLauncherItem0 = nCurLauncherItem0 + 1; 
 					if(nCurLauncherItem0 - nCurLauncherScroll0 >= nCurLauncherVisible0) nCurLauncherScroll0 = nCurLauncherScroll0 + 1; 
-					UpdateLauncherMenu();
 				}
+				PlaySoundMenuChange();
+				UpdateLauncherMenu();
 			}
 			else
 			{
@@ -880,6 +937,11 @@ DEF theLauncher Level
 		{
 			EnterLauncherMenu();
 		}
+	}
+	
+	function OnDeactivate()
+	{
+		theLauncher.children[0].children[0].theIconSelector.isActive = false;
 	}
 }
 
@@ -915,32 +977,32 @@ function ChangeDirectory(x)
 {
 	if(bInRoot)
 	{
-		arrMenuPaths[TotalSections - 1] = x + ":";
+		arrMenuPaths[nCurLauncherItem0] = x + ":";
 		bInRoot = false;
 	}
 	else
 	{
-		arrMenuPaths[TotalSections - 1] = arrMenuPaths[TotalSections - 1] + "\\" + x;
+		arrMenuPaths[nCurLauncherItem0] = arrMenuPaths[nCurLauncherItem0] + "\\" + x;
 	}
-	TempTitleList = GetDirectoryContents(arrMenuPaths[TotalSections - 1]);
+	TempTitleList = GetDirectoryContents(arrMenuPaths[nCurLauncherItem0]);
 	if(TempTitleList.length >= 0) UpdateTrackList();
 }
 
 function GoBackDirectory()
 {
-	var CurPath = arrMenuPaths[TotalSections - 1];
+	var CurPath = arrMenuPaths[nCurLauncherItem0];
 	if(CurPath.lastIndexOf("\\") < 0)
 	{
 		nPlayScroll0 = 0;
 		nPlayCursor0 = 0;
 		bInRoot = true;
-		arrMenuPaths[TotalSections - 1] = Translate("Xbox Root");
+		arrMenuPaths[nCurLauncherItem0] = Translate("Xbox Root");
 		TempTitleList = RootDirectory;
 	}
 	else
 	{
-		arrMenuPaths[TotalSections - 1] = CurPath.substr(0,CurPath.lastIndexOf("\\"));
-		TempTitleList = GetDirectoryContents(arrMenuPaths[TotalSections - 1]);
+		arrMenuPaths[nCurLauncherItem0] = CurPath.substr(0,CurPath.lastIndexOf("\\"));
+		TempTitleList = GetDirectoryContents(arrMenuPaths[nCurLauncherItem0]);
 	}
 	UpdateTrackList();
 }

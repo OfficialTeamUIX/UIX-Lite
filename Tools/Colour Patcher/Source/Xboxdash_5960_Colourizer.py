@@ -1,5 +1,5 @@
 # Rocky5 2024
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 from ftplib import FTP
 import argparse
 import colorsys
@@ -21,6 +21,8 @@ Values are stored in big-endian format by default, as this is the standard way t
 If 'patch_type' is set to 0, the bytes are written as-is.
 If 'patch_type' is set to 1, the bytes are added to the sequence "C6400C**C6400D**C6400E**" and then written.
 If 'patch_type' is set to 2, the bytes are added to the sequence "C6400F**C6400C**C6400D**C6400E**" and then written.
+If 'patch_type' is set to 3, insert bytes at offset.
+If 'patch_type' is set to 4, insert a byte and duplicate as many time as you want.
 
 
 Original MSDash Colours
@@ -60,7 +62,7 @@ def rgb_to_hex(rgb_color):
 	return '{:02X}{:02X}{:02X}'.format(*rgb_color)
 
 def adjust_color_to_target(color, target_color, brightness_factor):
-	if len(color) == 8:  # ARGB
+	if len(color) == 8: # ARGB
 		a, r, g, b = hex_to_argb(color)
 		h, l, s = colorsys.rgb_to_hls(r / 255.0, g / 255.0, b / 255.0)
 		# print('ARGB - Original Lightness: {}'.format(l))
@@ -70,7 +72,7 @@ def adjust_color_to_target(color, target_color, brightness_factor):
 		# print('ARGB - Adjusted Lightness: {}'.format(l))
 		new_r, new_g, new_b = colorsys.hls_to_rgb(target_h, l, target_s)
 		adjusted_color = argb_to_hex((a, int(new_r * 255), int(new_g * 255), int(new_b * 255)))
-	elif len(color) == 6:  # RGB
+	elif len(color) == 6: # RGB
 		r, g, b = hex_to_rgb(color)
 		h, l, s = colorsys.rgb_to_hls(r / 255.0, g / 255.0, b / 255.0)
 		# print('RGB - Original Lightness: {}'.format(l))
@@ -117,7 +119,7 @@ def patch_file(file_path, patches, target_color='FFFFFF', brightness_factor=1.0,
 	global export_colours
 	export_colours = []
 	name = ''
-	with open(file_path, 'r+b') as f:
+	with open(file_path, 'r+b') as xbeData:
 		for data in patches:
 			try:
 				name = data['name']
@@ -136,14 +138,30 @@ def patch_file(file_path, patches, target_color='FFFFFF', brightness_factor=1.0,
 					value = insert_bytes(value)
 				elif patch == '2' and len(value) in [8]:
 					value = patch_list_to_support_ARGB(value)
-				
+
+				if patch == '4':
+					fill_value, repeat_size = value.split('|')
+					repeat_size = int(repeat_size)
+					value = (fill_value * ((repeat_size * 2) // len(fill_value) + 1))[:repeat_size * 2]
+
 				if python_mode == 3:
 					value = bytes.fromhex(value)
 				else:
 					value = value.decode('hex')
 				
-				f.seek(address)
-				f.write(value)
+				if patch in ['0', '1', '2']:
+					xbeData.seek(address)
+					xbeData.write(value)
+					
+				if patch in ['3', '4']:
+					xbeData.seek(0)
+					xbe_bytes = xbeData.read()
+					beginning = xbe_bytes[:address]
+					end = xbe_bytes[address:]
+					xbe_bytes = beginning + value + end
+					xbeData.seek(0)
+					xbeData.write(xbe_bytes)
+					xbeData.truncate()
 
 def calculate_md5(file_path):
 	with open(file_path, 'rb') as file:
@@ -196,12 +214,15 @@ def set_window_size(title, color='00', width=100, height=100):
 
 def show_error(error):
 	if os.name == 'nt':
-		set_window_size('Error', '0B', 70, 11)
+		set_window_size('Error', '4F', 70, 11)
 	else:
 		set_window_size('Error')
 	
 	print('{}'.format(error))
-	time.sleep(10)
+	if python_mode == 3:
+		input("\n Press Enter to exit.")
+	else:
+		raw_input("\n Press Enter to exit.")
 	sys.exit()
 
 def check_length_of_colour(value):
@@ -260,15 +281,26 @@ def upload_file(ftp_server, server_path, file_path, ftp_username='xbox', ftp_pas
 				sys.exit()
 
 fg_patches = [
-	# Updated 3rd September 2024 thanks BigJx and to the original patch creator, you know who you're.
-	# Description: F/G Support
-	{'apply': '1', 'address': 0x00000840, 'patch_type': '0', 'flip': '0', 'value': '07'},
-	{'apply': '1', 'address': 0x0001DCA2, 'patch_type': '0', 'flip': '0', 'value': '77C31B00E855FDFFFF31C0C3'},
-	# F & G HDD0 - E, F, G HDD1
-	{'apply': '1', 'address': 0x001C9000, 'patch_type': '0', 'flip': '0', 'value': '5589E583EC2C8B450C8A45080FBE45088D55E98D0DD09F1E00891424894C240489442408E8578FE8FF8D45E98D4DF0890C2489442404FF150C20010083EC088B450C8D4DE0890C2489442404FF150C20010083EC088D4DF08D45E0890C2489442404FF152420010083EC0883C42C5DC35C3F3F5C25633A005C4465766963655C486172646469736B305C506172746974696F6E360000000000005C4465766963655C486172646469736B305C506172746974696F6E37000000000000005589E568D89F1E006A4EE834FFFFFF83C4085D5589E568FA9F1E006A4FE821FFFFFF83C4085D5589E5686CA01E006A50E80EFFFFFF83C4085D5589E5688FA01E006A51E8FBFEFFFF83C4085DEB47C35C4465766963655C486172646469736B315C506172746974696F6E36000000000000005C4465766963655C486172646469736B315C506172746974696F6E37000000000000005589E568C8A01E006A52E89FFEFFFF83C4085D31C0C35C4465766963655C486172646469736B315C506172746974696F6E3100000000000000'}
+	# New patch position 01/04/2025 BigJx, I and to the original patch creator, you know who you're.
+	# Header sections count and offset/size
+	{'apply': '1', 'address': 0x0000010D, 'patch_type': '0', 'flip': '0', 'value': 'E31E00840100003D856840840101001A0000007003010008000000DCA2FAA8B42801000000010000001000'},
+	{'apply': '1', 'address': 0x0000014C, 'patch_type': '0', 'flip': '0', 'value': '400B0100610B01001C0B0100B6606C5B000000000E0000003C0A01007C0A01003C0A0100740B0100B20200000000000000000000000000'},
+	# sections data (.hack)
+	{'apply': '1', 'address': 0x00000384, 'patch_type': '0', 'flip': '0', 'value': '580901000000000020090100220901005A0D6C2C59FBF9AA8E3CB4AD8FE9EC75273FAB360700000020F40C00E059020000000C00D85902005E090100000000002209010024090100A974B91B76A0C446440F89214C5715F5AAE71B6507000000004E0F00A484000000600E004482000063090100000000002409010026090100BC2C38531E85D8A6B6F907CE05290DC8F196E17E07000000C0D20F002495010000F00E00249501006A090100000000002609010028090100C38F8CFE3D5BE8308F42AAB405E15811B32B9D562600000000681100BC9E010000901000BC9E01007109010000000000280901002A090100BF655CA4A371C032DD501C988BD3573163AD979B16000000C006130078250100003012007825010079090100000000002A0901002C09010096E49224CD0699B30AF51CA8B524F3AF3175A3F507000000402C14004C460100006013007C0D01007E090100000000002C0901002E0901006544C534AFDA6CA2C02B79B23861FB3F985D245307000000A0721500781D000000701400741D000082090100000000002E0901003009010009FBE39DB0FEC712C63D10A98D489A7AAB0846400700000020901500E897000000901400E89700008809010000000000300901003209010007418A8C78F415963F80A5A9E464308D413D30060700000020281600ACB4020000301500F03F01008C090100000000003209010034090100BEC4FEA336329A535D22964166C26FC9118B93EB26000000E0DC180080710000007016006C71000092090100000000003409010036090100C8C9142DCCBD31BDCA9A2D94E0ACC47C2048D61516000000604E1900EC13000000F01600EC130000980901000000000036090100380901001738DA1C0F4234ADFBF6846178573D6480DA7D3307000000606219005C040000001017005C0400009F09010000000000380901003A090100C30E38F79B11C31FDC254E0BE103DF8DE19C759907000000C0661900701D000000201700701D0000A8090100000000003A0901003C090100386FD794D32434FC9D81FC24082EEBFF956DF78C0A00000040841900706900000040170070690000AF090100000000003C0901003E090100D2F9E272F9AF5D2E6015E5B1F93F70EE4641E6A109000000C0ED190076AF000000B0170076AF0000B4090100000000003E090100400901000939C1222F8EE32A45A62AB9FC3599FF7B2BDF5209000000409D1A00FE90000000601800FE900000C10901000000000040090100420901009BFE4CF251FAFAB330C7ED757E9EF69C2F28B06909000000402E1B00A8BA000000001900A8BA0000CF0901000000000042090100440901001CB60A80A2064D6C2410FF495A805FD802EAD4FA0900000000E91B00B2BA000000C01900B2BA0000DB0901000000000044090100460901002419B2B0C43C7C7F5B7E4BF5FAB5374BAC755B2A09000000C0A31C00A0B9000000801A00A0B90000E70901000000000046090100480901007D6611F78514F60A89220E70939B5DE1A8DB0BAC09000000605D1D00C8B5000000401B00C8B50000F409010000000000480901004A09010072FA6B132CB1FD40996531D3F5A1111A04C2E4F00900000040131E00028C000000001C00028C0000010A0100000000004A0901004C0901004E4FB4E76A1A6935442549214E2C8327BB96893309000000609F1E003A81000000901C003A8100000D0A0100000000004C0901004E090100A166ED7F85F0BDEC78D4C5454F7708B7DA31570009000000A0201F00D4B5000000201D00D4B500001B0A0100000000004E090100500901005671EF6B923682EABB2CB6E49B25D71BEFB68AF30800000080D61F00A008000000E01D00A00800002B0A01000000000050090100520901001AEDA73A30C27FAAE259AB82A3F562A5D9E9A30D0700000000E01F000004000000F01D0000040000320A0100000000005209010054090100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002E7465787400443344580044534F554E4400574D4144454300584F4E4C494E4500584E45540044334400584752504800585050002E6461746100444F4C425900584F4E5F5244004456445448554E4B002E6461746131005849505300456E676C697368586C617465004A6170616E657365586C617465004765726D616E586C617465004672656E6368586C617465005370616E697368586C617465004974616C69616E586C617465004B6F7265616E586C61746500544368696E657365586C61746500506F7274756775657365586C617465002E58544C4944002E6861636B7300000000584150494C49420001000000D9160140584150494C42500001000000D916012058424F584441534801000100481701504C4942434D54000001000000D916014058424F584B524E4C01000000D9160140443344583800000001000000D916014044534F554E44000001000000D916014058564F494345000001000000D9160140584B45590000000001000000D9160120584F4E4C494E455301000000D91603204C494243504D540001000000D9160140443344380000000001000000D9160140443344384C54434701000000D9160140584752415048434C01000000D9160140780062006F00780064006100730068005F0032003000300032002E006500780065000000643A5C78626F785C707269766174655C75695C786170705C6F626A5C693338365C78626F78646173685F323030322E65786500000733AD030753AD03A903EA000373A7033200B3FD030503FDD343F9EA0003E3F93347332200FF030573FD7373A773EA0073F7D373E3F7430F03FF0305FF332E00037A00035200F93303F9030F33FF030343FF13F913050393A3F7730773A7632353A30513A3D3F77303071373E3F7E3A3130903A3F7E39313054353F95373F9B333032363030593FF4303E3FF33F9030343E3FDB305F9D3F5D303A3FFE303037326F0130523E3FF630336F0132333C36305D3FF45FFA393F7E3036326F04303FF73D3F9B3F97313F95313E3F7930323F9E3D3F9D336F00323638363030322F043E3FF43D3F79323F9A30323F7B33332F0130353F7E343F7E305A3F7A303E3F7D305D3F7C303D3F75303F913071333030313F9D3F7A3F7D3F913F943D3F9030303F993F9E32323F9730503F963F9D34313030773F92305A3F903F92303F9030F53F973FDE3B3F913F923F9730FD3F7E3030393F9030533F913E3FFD30303E3F7D307A3F913F90343F7D32200A3F923FD43E3F7D343F943F9030D03F95305F9E30743F90303B3FFE303F9A307D3F953F7E30393F7932200FB03FBE303F973A3F7D343F90305030723F90305F9A307D3F39323090333D3FB23F9430513F973B3F79303E3F7330F03F9D303FB4323F933E3F79343F90513F963F907F9B3054322F0430573F923F97305A3F913F94303F9030F33F97303F9E30353F913F94313F97343E3F773B3F7B30793F96323E3F7D3F9A30303A3F903D3F7E32373F96303F90313F9B3A30D73F92303F94303B3F923F90303D322F0B303F973071326F0E303D32AF073032326F0A30343F90343FB930DD3F90303F7E305F9A353F90503E3FDB30303F9330923FF73030303E322F0630763FDE34305A3F7B305D3F9330D4B0547130303491373A793070343A3C3A37313051349030B0353D3F3E3731309034373A3D3F3E373130B03235347030749130749030D'},
+	# Jump to patch data
+	{'apply': '1', 'address': 0x0001DCA2, 'patch_type': '0', 'flip': '0', 'value': 'CA031D00E855FDFFFF31C0C3'},
+	# Add patch space (F & G HDD0 - E, F, G HDD1)
+	{"apply": "1", "address": 0x001DF000, "patch_type": "4", "flip": "0", "value": '0000|4096'},
+	{"apply": "1", "address": 0x001DF000, "patch_type": "0", "flip": "0", "value": '5589E583EC2C8B450C8A45080FBE45088D55E98D0D00E11F00891424894C240489442408E8B74EE7FF8D45E98D4DF0890C2489442404FF150C20010083EC088B450C8D4DE0890C2489442404FF150C20010083EC088D4DF08D45E0890C2489442404FF152420010083EC0883C42C5DC35589E56808E11F006A4EE881FFFFFF83C4085D5589E5682AE11F006A4FE86EFFFFFF83C4085D5589E56871E11F006A50E85BFFFFFF83C4085D5589E56894E11F006A51E848FFFFFF83C4085D5589E5684DE11F006A52E835FFFFFF83C4085D31C0C300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'},
+	{"apply": "1", "address": 0x001DF100, "patch_type": "0", "flip": "0", "value": '5C3F3F5C25633A005C4465766963655C486172646469736B305C506172746974696F6E360000000000005C4465766963655C486172646469736B305C506172746974696F6E37000000000000005C4465766963655C486172646469736B315C506172746974696F6E3100000000000000005C4465766963655C486172646469736B315C506172746974696F6E36000000000000005C4465766963655C486172646469736B315C506172746974696F6E37'}
 ]
 	
 other_patches = [
+	# 64MB limit disabled
+	{'apply': '1', 'address': 0x00000124, 'patch_type': '0', 'flip': '0', 'value': '08'},
+	# 720p patch by Team Resurgent (Phantom)
+	{'apply': '1', 'address': 0x00000F00, 'patch_type': '0', 'flip': '0', 'value': '5589E550518B7508B863C50600FFD083F8017549B81AC50600FFD083E00383F803753AB86BC50600FFD083F801752E8B462883E0DF83C840894628C70600050000C74604D0020000C7461000000000C7462C00000000C7463000000080595856BBD0821400FFD3C9C204'},
+	{'apply': '1', 'address': 0x0001CE70, 'patch_type': '0', 'flip': '0', 'value': '8C40FEFF'},
 	# Description: Bypass Xip checks and allow external ones
 	{'apply': '1', 'address': 0x0002D4C8, 'patch_type': '0', 'flip': '0', 'value': 'EB'},
 	{'apply': '1', 'address': 0x0002D520, 'patch_type': '0', 'flip': '0', 'value': 'EB'},
@@ -704,7 +736,7 @@ colour_patches = [
 ]
 
 if __name__ == '__main__':
-	version = 1.2
+	version = 1.3
 	if os.name == 'nt':
 		set_window_size('Xboxdash Colourizer v{}'.format(version), '0B', 70, 11)
 	else:
@@ -755,140 +787,143 @@ password=xbox'''
 	parser.add_argument('--brightness_factor', type=float, help='Brightness factor')
 
 	args = parser.parse_args()
+	
+	# Check if xbe is clean.
+	if calculate_md5(file_path) in ['08d3a6f99184679aa13008d6397bacce']:
+		# Create output folder, copy xbe from xbe file folder so source file is left intact.
+		tran_folder = 'transfer to xbox'
+		if not os.path.isdir(tran_folder):
+			os.makedirs(tran_folder)
+		else:
+			shutil.rmtree(tran_folder)
+			os.makedirs(tran_folder)
+		
+		# Set new file path
+		shutil.copyfile(file_path, os.path.join(tran_folder, os.path.basename(file_path)))
+		file_path = os.path.join(tran_folder, os.path.basename(file_path))
+		
+		# Assign the arguments to variables, prompting the user if necessary
+		if python_mode == 3:
+			colour_file = args.colour_file if args.colour_file else input('\n Use an "theme".ini file to override specific colours.\n (optional enter export to output a "theme.ini" file)\n Enter filename: ') or ''
+			colour_file = os.path.join('skins', colour_file)
+			
+			# So you can enter filename without extension
+			if not colour_file.endswith('.ini'):
+				colour_file += '.ini'
+			
+			if os.path.isfile(colour_file):
+				override = 1
+				target_color, brightness_factor, external_patches = read_external_patch_list(colour_file)
+			elif not os.path.isfile(colour_file) and not "export.ini":
+				print("\n Couldn't fine the file {}".format(colour_file))
+			
+			if target_color == '':
+				target_color = args.target_color if args.target_color else input('\n Will restore Stock colours if left blank.\n Enter RGB Hex colour value: ') or 'stock'
+			else:
+				print('\n Colour set to: {}'.format(target_color))
+			
+			check_length_of_colour(target_color)
+			
+			if brightness_factor == '':
+				brightness_factor = args.brightness_factor if args.brightness_factor else float(input('\n Default to 1.0 if left blank.\n Enter brightness factor (defaults to 1.0): ') or 1.0)
+			else:
+				print(' Brightness facter set to: {}'.format(brightness_factor))
+		
+			check_for_float(brightness_factor)
+		
+		else: # Python 2
+			colour_file = args.colour_file if args.colour_file else raw_input('\n Use an "theme".ini file to override specific colours.\n (optional enter export to output a "theme.ini" file)\n Enter filename: ') or ''
+			colour_file = os.path.join('skins', colour_file)
+			
+			# So you can enter filename without extension
+			if colour_file != '' and not colour_file.endswith('.ini'):
+				colour_file += '.ini'
+			
+			if os.path.isfile(colour_file):
+				override = 1
+				target_color, brightness_factor, external_patches = read_external_patch_list(colour_file)
+			elif not os.path.isfile(colour_file) and not "export.ini":
+				print("\n Couldn't fine the file {}".format(colour_file))
+			
+			if target_color == '':
+				target_color = args.target_color if args.target_color else raw_input('\n Will restore Stock colours if left blank.\n Enter RGB Hex colour value: ') or 'stock'
+			else:
+				print('\n Colour set to: {}'.format(target_color))
+			
+			check_length_of_colour(target_color)
+			
+			if brightness_factor == '':
+				brightness_factor = args.brightness_factor if args.brightness_factor else float(raw_input('\n Default to 1.0 if left blank.\n Enter brightness factor (defaults to 1.0): ') or 1.0)
+			else:
+				print(' Brightness facter set to: {}'.format(brightness_factor))
+		
+			check_for_float(brightness_factor)
 
-	# Assign the arguments to variables, prompting the user if necessary
-	if python_mode == 3:
-		colour_file = args.colour_file if args.colour_file else input('\n Use an "theme".ini file to override specific colours.\n (optional enter export to output a "theme.ini" file)\n Enter filename: ') or ''
-		colour_file = os.path.join('skins', colour_file)
+		if target_color != 'stock':
+			target_a, target_r, target_g, target_b = hex_to_argb(target_color)
+			target_hue, target_lightness, target_saturation = colorsys.rgb_to_hls(target_r / 255.0, target_g / 255.0, target_b / 255.0)
 		
-		# So you can enter filename without extension
-		if not colour_file.endswith('.ini'):
-			colour_file += '.ini'
-		
-		if os.path.isfile(colour_file):
-			override = 1
-			target_color, brightness_factor, external_patches = read_external_patch_list(colour_file)
-		elif not os.path.isfile(colour_file) and not "export.ini":
-			print("\n Couldn't fine the file {}".format(colour_file))
-		
-		if target_color == '':
-			target_color = args.target_color if args.target_color else input('\n Will restore Stock colours if left blank.\n Enter RGB Hex colour value: ') or 'stock'
-		else:
-			print('\n Colour set to: {}'.format(target_color))
-		
-		check_length_of_colour(target_color)
-		
-		if brightness_factor == '':
-			brightness_factor = args.brightness_factor if args.brightness_factor else float(input('\n Default to 1.0 if left blank.\n Enter brightness factor (defaults to 1.0): ') or 1.0)
-		else:
-			print(' Brightness facter set to: {}'.format(brightness_factor))
-	
-		check_for_float(brightness_factor)
-	
-	else: # Python 2
-		colour_file = args.colour_file if args.colour_file else raw_input('\n Use an "theme".ini file to override specific colours.\n (optional enter export to output a "theme.ini" file)\n Enter filename: ') or ''
-		colour_file = os.path.join('skins', colour_file)
-		
-		# So you can enter filename without extension
-		if colour_file != '' and not colour_file.endswith('.ini'):
-			colour_file += '.ini'
-		
-		if os.path.isfile(colour_file):
-			override = 1
-			target_color, brightness_factor, external_patches = read_external_patch_list(colour_file)
-		elif not os.path.isfile(colour_file) and not "export.ini":
-			print("\n Couldn't fine the file {}".format(colour_file))
-		
-		if target_color == '':
-			target_color = args.target_color if args.target_color else raw_input('\n Will restore Stock colours if left blank.\n Enter RGB Hex colour value: ') or 'stock'
-		else:
-			print('\n Colour set to: {}'.format(target_color))
-		
-		check_length_of_colour(target_color)
-		
-		if brightness_factor == '':
-			brightness_factor = args.brightness_factor if args.brightness_factor else float(raw_input('\n Default to 1.0 if left blank.\n Enter brightness factor (defaults to 1.0): ') or 1.0)
-		else:
-			print(' Brightness facter set to: {}'.format(brightness_factor))
-	
-		check_for_float(brightness_factor)
+		# Pause so you can see info for external files
+		time.sleep(0.5)
 
-	if target_color != 'stock':
-		target_a, target_r, target_g, target_b = hex_to_argb(target_color)
-		target_hue, target_lightness, target_saturation = colorsys.rgb_to_hls(target_r / 255.0, target_g / 255.0, target_b / 255.0)
-	
-	# Pause so you can see info for external files
-	time.sleep(0.5)
-	
-	# Create output folder, copy xbe from xbe file folder so source file is left intact.
-	tran_folder = 'transfer to xbox'
-	if not os.path.isdir(tran_folder):
-		os.makedirs(tran_folder)
-	else:
-		shutil.rmtree(tran_folder)
-		os.makedirs(tran_folder)
-	
-	shutil.copyfile(file_path, os.path.join(tran_folder, os.path.basename(file_path)))
-	# Set new file path
-	file_path = os.path.join(tran_folder, os.path.basename(file_path))
-	
-	# Check if xbe is clean & patch extended partitions support.
-	if calculate_md5(file_path) == '08d3a6f99184679aa13008d6397bacce':
+		# Patch partitions
 		patch_file(file_path, fg_patches, '', '', 1)
 	
-	# Patch out xip stuff
-	patch_file(file_path, other_patches, '', '', 1)
-	
-	# Patch colours.
-	patch_file(file_path, colour_patches, target_color, brightness_factor, 0)
-	
-	# If override file is found
-	if override or target_color == 'stock':
-		if target_color != 'stock':
-			external_patches = update_patches(colour_patches, external_patches)
-			patch_file(file_path, external_patches, '', '', 1)
-			ini_name = os.path.basename(os.path.splitext(colour_file)[0])
-			xip_file = os.path.splitext(colour_file)[0] + '.xip'
-		else:
-			ini_name = 'stock'
-			xip_file = 'skins\\stock.xip'
+		# Patch out xip stuff
+		patch_file(file_path, other_patches, '', '', 1)
 		
-		if os.path.isfile(xip_file):	
-			xbdash_folder = os.path.join(tran_folder, 'xboxdashdata.185ead00')
-			if not os.path.isdir(xbdash_folder):
-				os.makedirs(xbdash_folder)
-			shutil.copyfile(xip_file, os.path.join(xbdash_folder, 'skin.xip'))
+		# Patch colours.
+		patch_file(file_path, colour_patches, target_color, brightness_factor, 0)
+		
+		# If override file is found
+		if override or target_color == 'stock':
+			if target_color != 'stock':
+				external_patches = update_patches(colour_patches, external_patches)
+				patch_file(file_path, external_patches, '', '', 1)
+				ini_name = os.path.basename(os.path.splitext(colour_file)[0])
+				xip_file = os.path.splitext(colour_file)[0] + '.xip'
+			else:
+				ini_name = 'stock'
+				xip_file = 'skins\\stock.xip'
+			
+			if os.path.isfile(xip_file):	
+				xbdash_folder = os.path.join(tran_folder, 'xboxdashdata.185ead00')
+				if not os.path.isdir(xbdash_folder):
+					os.makedirs(xbdash_folder)
+				shutil.copyfile(xip_file, os.path.join(xbdash_folder, 'skin.xip'))
 
-		colour = ini_name
-	else:
-		colour = '#{}'.format(target_color)
-	
-	# Export colours
-	if 'export' in colour_file:
-		with open('exported {}.ini'.format(target_color), "w") as file:
-			template = '[These are mandatory]\ncolour=%s\nbrightness=%s\n[Override colours with your own]'
-			file.write(template % (target_color, brightness_factor) + "\n")
-			for line in export_colours:
-				file.write(line + "\n")
-	
-	clear_screen()
-	if target_color.lower() == 'stock':
-		print('\n\n Stock colours restored\n')
-	else:
-		print('\n\n Colour {}\n Applied successfully\n'.format(colour))
-	
-	if ftp_enabled.lower() in ['1', 'yes', 'true']:
-		if file_path:
-			print(' Uploading:')
-			upload_file(ftp_server, '/C/', file_path, ftp_username, ftp_password)
-			try:
-				skin_xip = os.path.join(xbdash_folder, 'skin.xip')
-				if skin_xip:
-					upload_file(ftp_server, '/C/xboxdashdata.185ead00/', skin_xip, ftp_username, ftp_password)
-			except:
-				pass
-		ftp.quit()
-		print(" Done.")
-		shutil.rmtree(tran_folder)
+			colour = ini_name
+		else:
+			colour = '#{}'.format(target_color)
+		
+		# Export colours
+		if 'export' in colour_file:
+			with open('exported {}.ini'.format(target_color), "w") as file:
+				template = '[These are mandatory]\ncolour=%s\nbrightness=%s\n[Override colours with your own]'
+				file.write(template % (target_color, brightness_factor) + "\n")
+				for line in export_colours:
+					file.write(line + "\n")
+		
+		clear_screen()
+		if target_color.lower() == 'stock':
+			print('\n\n Stock colours restored\n')
+		else:
+			print('\n\n Colour {}\n Applied successfully\n'.format(colour))
+		
+		if ftp_enabled.lower() in ['1', 'yes', 'true']:
+			if file_path:
+				print(' Uploading:')
+				upload_file(ftp_server, '/C/', file_path, ftp_username, ftp_password)
+				try:
+					skin_xip = os.path.join(xbdash_folder, 'skin.xip')
+					if skin_xip:
+						upload_file(ftp_server, '/C/xboxdashdata.185ead00/', skin_xip, ftp_username, ftp_password)
+				except:
+					pass
+			ftp.quit()
+			print(" Done.")
+			shutil.rmtree(tran_folder)
 
-time.sleep(2)
+		time.sleep(2)
+	else:
+		show_error("\n Error: xboxdash.xbe mismatch:\n\n Valid MD5 Hash:\n  - 08d3a6f99184679aa13008d6397bacce\n\n Please ensure this file is from the Microsoft Dashboard 5960.\n")
