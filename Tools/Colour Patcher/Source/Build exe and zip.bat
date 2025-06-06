@@ -17,12 +17,12 @@ start /wait C:\Python312\Scripts\cxfreeze.exe "Xboxdash_5960_Colourizer.py" --ta
 	call Echo d | XCopy /s /e /i /h /r /y "skins" "!archive_name!\skins"
 	md "!archive_name!\xbe file"
 
-	attrib +h +s "!archive_name!\lib"
+	attrib +h -s "!archive_name!\lib"
 	attrib +h -s "!archive_name!\frozen_application_license.txt"
 	attrib +h -s "!archive_name!\python3.dll"
 	attrib +h -s "!archive_name!\python312.dll"
 
-	"!zip!" a "!archive_name!.zip" "!archive_name!" -mx=7 -r -y
+	"!zip!" a "!archive_name!.zip" "!archive_name!" -mx=9 -r -y
 
 	REM Cleanup
 	rmdir /s /q "!archive_name!" > NUL
