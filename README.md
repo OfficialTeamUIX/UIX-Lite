@@ -31,16 +31,13 @@ Some of these features include;
 * Download the latest xboxdashdata.185ead00-vXXXXXX.zip from the assets in the pre-patched release.
 * Extract and Copy the pre-patched 5960 Dashboard files via ftp to the root of the C partition on your Xbox.
 
-## How-To (Manual)
+## How-To (Auto-Magically)
 
-* DO NOT USE ON AN UNMODIFIED XBOX. It won’t work, and you'll brick your Xbox. Make sure you have a modchip or softmod installed that doesn't rely on the dashboard files to boot.
-* DO NOT DELETE YOUR ORIGINAL MS DASHBOARD FILES. SIMPLY REPLACE THE EXISTING FILES WITH THE MODIFIED FILES ONLY. KEEP ANY UNMODIFED FILES.
-* Download VisualXIP from the Tools page.
-* Copy the unmodified 5960 Dashboard files to a directory on your computer.
-* Create a folder in that directory called "UIX Configs" and place config.ini and Icons.ini inside.
-* Use VisualXIP or the Binary Patcher to patch the xboxdash.xbe to allow modified xips and to add F & G partition support.
-* Use VisualXIP or WinXip to modify the xips in your xboxdashdata.185ead00 directory with the updated source files from the github repository.
-* Copy your now "modified" 5960 Dashboard files via ftp to the root of the C partition on your Xbox.
+* Download `UIXLiteToolbox.xbe` from the `Releases` section of the repository.
+* Install it as an application on your Xbox, for example in `E:\Apps\UIXLiteToolbox\default.xbe`.
+* Once running the `UIXLiteToolbox.xbe`, go to the installer section, `Install 5960`, then `Install UIX Lite`.
+* Congratulations! You have successfully installed UIX Lite on your Xbox.
+
 
 ## Configuration and Use
 
