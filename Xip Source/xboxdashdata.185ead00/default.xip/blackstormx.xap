@@ -283,19 +283,18 @@ DEF theBSXMenu Level
 			if(ButtonYXAction != "Nothing")
 			{
 				PlaySoundA();
-				if(ButtonYXAction == "GoToMusic()")
+				if(ButtonYXAction == "GoToLauncher()")
+				{
+					REZN8OnADown();
+					return;
+				}
+				else if(ButtonYXAction == "GoToMusic()")
 				{
 					theMusicMenuIn.Play();
 				}
 				else if(ButtonYXAction != "ToggleNoisyCam()")
 				{ 
 					theGamesMenuIn.Play(); 
-				}
-				else if(ButtonYXAction != "GoToLauncher()")
-				{
-					if(bUseBSXHDD) { BSXOnADown(); }
-					else { REZN8OnADown(); }
-					return;
 				}
 				eval(ButtonYXAction);
 			}
