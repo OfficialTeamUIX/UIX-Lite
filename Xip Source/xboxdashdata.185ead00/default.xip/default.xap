@@ -198,7 +198,11 @@ DEF theScreenSaver ScreenSaver
 	function OnStart()
 	{
 		theScreen.brightness = 0.1;
-		if(thcorb | btHcScreenSaver)
+		if (bUseBSXMenu)
+		{
+			theBSXInline.children[0].EnterTestScreensaver();
+		}
+		else if(thcorb | btHcScreenSaver)
 		{
 			StartScreenSaverView();
 		}
@@ -207,13 +211,17 @@ DEF theScreenSaver ScreenSaver
 	function OnEnd()
 	{
 		theScreen.brightness = 1;
-		if(thcorb | btHcScreenSaver)
+		if (bUseBSXMenu)
+		{
+			theBSXInline.children[0].ExitTestScreensaver();
+		}
+		else if(thcorb | btHcScreenSaver)
 		{
 			StopScreenSaverView();
 		}
 	}
-	function OnDelay2() {StartScreenSaverView();}
-	function OnDelay3() {StartScreenSaverView();}
+	//function OnDelay2() { if(thcorb | btHcScreenSaver){StartScreenSaverView();}}
+	//function OnDelay3() { if(thcorb | btHcScreenSaver){StartScreenSaverView();}}
 }
 
 NavigationInfo
@@ -509,6 +517,65 @@ function ParseEscapedChars(sText)
 }
 
 ///////////////////////////////////////////////////////////////////
+DEF theInfoPanel Layer
+{
+	visible true
+	viewpoint Viewpoint
+	{
+		fieldOfView 1.2
+		position 000000 -30.299999 120.300003
+	}
+
+	children
+	[
+		DEF theInfoPanelTransform Transform
+		{
+			children
+			[
+				DEF theInfoPanelInline Inline
+				{
+					preload true
+					url "info_panel/default.xap"
+					function onLoad()
+					{
+
+					}
+				}
+			]
+		}
+	]
+}
+
+////////////////////////////////////////////////////////////////////////////
+DEF theBGMesh Layer
+{
+	viewpoint Viewpoint
+	{
+		fieldOfView 1.2
+		position -500 0 0
+	}
+
+	children
+	[
+		DEF theBGMeshTransform Transform
+		{
+			children
+			[
+				DEF theBGMeshInline Inline
+				{
+					preload true
+					url "bg_mesh/default.xap"
+					function onLoad()
+					{
+						LoadBGMeshValues();
+					}
+				}
+			]
+		}
+	]
+}
+
+///////////////////////////////////////////////////////////////////
 DEF theSkinInline Inline
 {
 	visible false
@@ -529,7 +596,6 @@ function GoToSkin()
 }
 
 ////////////////////////////////////////////////////////////////////////////
-
 DEF theLauncherInline Inline
 {
 	visible false
@@ -618,6 +684,21 @@ function GoToSettings()
 		theSettingsInline.children[0].theSettingsMenu.GoTo();
 	else
 		theSettingsInline.visible = true;
+}
+
+////////////////////////////////////////////////////////////////////////////
+
+DEF theBSXInline Inline
+{
+	visible false
+	url "blackstormx.xap"
+	function onLoad() { theBSXInline.children[0].theBSXMenu.GoTo(); }
+}
+
+function GoToBSX()
+{
+	if( theBSXInline.visible ) { theBSXInline.children[0].theBSXMenu.GoTo(); }
+	else { theBSXInline.visible = true; }
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -1542,7 +1623,7 @@ function SetButtonText()
 	c.MainMenuButton2_Text.text = Button2Text;
 	c.MainMenuButton3_Text.text = Button3Text;
 	c.MainMenuButton4_Text.text = Button4Text;
-	c.MainMenuButton5_Text.text = theTranslator.Translate("SETTINGS");
+	c.MainMenuButton5_Text.text = Translate("SETTINGS");
 }
 
 function MainMenuAttract()
@@ -1668,7 +1749,7 @@ DEF theMainMenu Level
 					c.Main_pod_backing01.visible = true;
 					c.Main_pod_backing02.visible = false;
 				}
-				if(bUseMainMenuAttract){ MainMenuAttract(); }
+				if(bUseMainMenuAttract & bUseBSXMenu == false) { MainMenuAttract(); }
 				g_theMainMenuLoaded = true;
 			}
 		}
@@ -1823,6 +1904,12 @@ DEF theMainMenu Level
 				UpdateMainMenu();
 			}
 		}
+		
+		function OnWhiteDown()
+		{
+			bUseBSXMenu = true;
+			GoToBSX();
+		}
 
 		function OnKeyVerified()
 		{
@@ -1906,7 +1993,14 @@ DEF theMainMenu Level
 			else if(bLoadDir)
 			{
 				bHDDInitialized = true;
-				theLauncherInline.children[0].LoadDir();
+				if (bUseBSXMenu)
+				{
+					theBSXInline.children[0].LoadDir();
+				}
+				else
+				{
+					theLauncherInline.children[0].LoadDir();
+				} 
 				bLoadDir = false;
 			}
 			bHDDInitializing = false;
@@ -1939,6 +2033,7 @@ DEF theMainMenu Level
 	
 	function OnArrival()
 	{
+		if (bUseBSXMenu) GoToBSX();
 		theSkinBackground.isBound = true;
 		if( false == bAcceptedLegalInfo )
 		{
@@ -2063,9 +2158,13 @@ var ShowShutdownInSettings;
 
 var CurrentGameBoardAltViewpoint;
 
+//BSX 
+var bUseBSXMenu;
+var answeredNo;
+
 function initialize()
 {
-	sBuildDate = "250603"; //Date of commit YYMMDD
+	sBuildDate = "250608"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2131,6 +2230,9 @@ function initialize()
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
 	btHcScreenSaver = GetSavedBooleanValue("default","UsetHcScreenSaver");
 	bUseMainMenuAttract = GetSavedBooleanValue("default","UseMainMenuAttract");
+	if(GetSavedValue("default","DashStyle") == "BSX") bUseBSXMenu = true; else bUseBSXMenu = false;
+	if(GetSavedBooleanValue("default","InfoPanel") != true) { theInfoPanel.visible = false; }
+	
 	bUseUnderlay = GetSavedBooleanValue("default","UseListUnderlay");
 	bSkinExists = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00\\Skin.xip");
 	bPresence = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\Discord Presence\\Discord.xbe");
@@ -3525,7 +3627,10 @@ function RefreshCache()
 	var arrMenuNames = new Array;
 	var arrMenuPaths = new Array;
 	var cTitles = new Array;
-	for (var i = 0; i < 8; i = i + 1)
+	var nMaxLauncherMenuItems = StringToNumber(GetSavedValue("LauncherMenu","MaxLauncherMenuItems"));
+	if(nMaxLauncherMenuItems <= 0){ nMaxLauncherMenuItems = 8;SetSavedValue("LauncherMenu","MaxLauncherMenuItems",nMaxLauncherMenuItems);}
+
+	for (var i = 0; i < nMaxLauncherMenuItems; i = i + 1)
 	{
 		var v = GetSavedValue("LauncherMenu", "Title" + i);
 		if(v != "") 
@@ -3775,3 +3880,76 @@ function GetDrivePath(x,y)
 	if(x == "Harddisk1" & y == "Partition6") return "F2:\\";
 	if(x == "Harddisk1" & y == "Partition7") return "G2:\\";
 }
+
+////////////////////////////////////////////////////////DNA///////////////////////////////////////////////////////////
+function LoadBGMeshValues()
+{
+	ConfigFile.section = "BGMesh";
+
+	var theDNA = ConfigFile.GetValue("BGMesh");
+	var DNAAlpha = ConfigFile.GetValue("Alpha");
+
+	///dna spinner
+	var x = ConfigFile.GetValue("BGMesh1 rpm");
+	var y = ConfigFile.GetValue("BGMesh2 rpm");
+	var z = ConfigFile.GetValue("BGMesh3 rpm");
+
+	if((x == "") | (y == "") | (z == "")) { x = 2; y = 2; z = 2; }
+
+	var c = theBGMeshInline.children[0];
+	c.theDNA1.children[0].rpm = x;
+	c.theDNA3.children[0].rpm = y;
+	c.theDNA5.children[0].rpm = z;
+	c.theDNA1.SetAlpha(DNAAlpha);
+	c.theDNA3.SetAlpha(DNAAlpha);
+	c.theDNA5.SetAlpha(DNAAlpha);
+
+	var dnaMesh = "";
+	var dnaBackingMesh = "";
+
+	if (theDNA == "chains")
+	{
+		dnaMesh = "chain.xm";
+		c.theDNA1.SetTranslation(-5400, 0, -5100);
+		c.theDNA3.SetTranslation(0, 0, -5000);
+		c.theDNA5.SetTranslation(4000, 0, -5100);
+	}
+	else if ((theDNA == "spirals") | (theDNA == "corkscrews"))
+	{
+		dnaMesh = theDNA + ".xm";
+	}
+	else if (theDNA == "dna")
+	{
+		dnaMesh = "Backing_dna.xm";
+		dnaBackingMesh = "Backing_dna_SIDES.xm";
+	}
+	else if (theDNA == "squigles")
+	{
+		dnaMesh = "Backing_squigles.xm";
+		dnaBackingMesh = "Backing_squigles_sides.xm";
+	}
+
+	c.DNA1_Mesh.url = dnaMesh;
+	c.DNA3_Mesh.url = dnaMesh;
+	c.DNA5_Mesh.url = dnaMesh;
+	c.DNAString1_Mesh.url = dnaBackingMesh;
+	c.DNAString3_Mesh.url = dnaBackingMesh;
+	c.DNAString5_Mesh.url = dnaBackingMesh;
+}
+////////////////////////////////////////////////////////DNA END////////////////////////////////////////////////////////
+
+/////////////////////////BEGIN INFO PANEL FUNCTIONS ////////////////////////////////
+function HideInfoPanel()
+{
+	var c = theInfoPanelInline.children[0];
+	if(bUseBSXMenu) { c.Information_panel.SetTranslation(-235,-100,-45); }
+	else { c.Information_panel.SetTranslation(-250,-110,5); }
+}
+
+function ShowInfoPanel()
+{
+	var c = theInfoPanelInline.children[0];
+	if(bUseBSXMenu) { c.Information_panel.SetTranslation(-250,-110,5); }
+	else { c.Information_panel.SetTranslation(-90,-100,-45); }
+}
+/////////////////////////////////////END INFO PANEL FUNCTIONS///////////////////////////

@@ -495,6 +495,7 @@ DEF theLauncher Level
 				
 				c.MU_L3_panel_tracklist_overlay.visible = bUseUnderlay;
 				nMaxLauncherMenuItems = StringToNumber(GetSavedValue("LauncherMenu","MaxLauncherMenuItems"));
+				if(nMaxLauncherMenuItems <= 0){ nMaxLauncherMenuItems = 8;SetSavedValue("LauncherMenu","MaxLauncherMenuItems",nMaxLauncherMenuItems);}
 				if( thcorb == true ) 
 				{
 					c.MU_L3_musicpod.visible = false;
@@ -786,7 +787,11 @@ DEF theLauncher Level
 					if(bInRoot)
 					{
 						TempTitleList = RootDirectory;
-						sFileType = new Array(RootDirectory.length);
+						sFileType = new Array;
+						for(var i = 0; i < RootDirectory.length; i = i + 1)
+						{
+							sFileType[sFileType.length] = "folder";
+						}
 					}
 					else
 					{
@@ -867,7 +872,6 @@ DEF theLauncher Level
 			{
 				if (nCurLauncherItem0 <= 0)
 				{
-					PlaySoundMenuChange();
 					nCurLauncherItem0 = TotalSections - 1;
 					if(TotalSections > 5) nCurLauncherScroll0 = TotalSections - 5; 
 				}

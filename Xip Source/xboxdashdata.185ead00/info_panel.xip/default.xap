@@ -1,0 +1,197 @@
+////////////INFO PANEL/////////////////////
+DEF Information_panel Transform
+{
+    visible true
+    fade 0.75
+    children
+    [
+        DEF Information_panel_backing3 Transform
+        {
+            children
+            [
+                Shape
+                {
+                    appearance Appearance { material MaxMaterial { name "Black80" } }
+                    geometry DEF MU_panel_backing-FACES Mesh { url "MU_panel_backing-FACES.xm" }
+                }
+            ]
+            rotation -0.999200 -0.027600 0.027600 -1.572000
+            scale 0.492900 0.492900 0.492900
+            scaleOrientation -0.022670 0.396500 0.917700 -0.008776
+            translation -0.821800 -1.632000 0.457700
+        }
+        DEF MEM_L1_panel_meta Transform
+        {
+            children
+            [
+                Shape
+                {
+                    appearance Appearance { material MaxMaterial { name "MenuCell" } }
+                    geometry DEF MEM_L1_panel_meta-FACES Mesh { url "MEM_L1_panel_meta-FACES.xm" }
+                }
+            ]
+            rotation -1.000000 0.000000 0.000000 -1.571000
+            scale 0.019720 0.019720 0.019720
+            translation -2.112000 -0.431600 0.021390
+        }
+        DEF theDateTime Transform
+        {
+            children
+            [
+                Shape
+                {
+                    appearance Appearance { material MaxMaterial { name "NavType" } }
+                    geometry DEF theDateTimeText Text { font "Heading" justify "middle" text "<clock>"}
+                }
+            ]
+            scale 0.563580 0.563580 0.563580
+            translation -1.101000 1.370000 0.059800
+        }
+        DEF theSoundtrackAlbumInfo Transform
+        {
+            children
+            [
+                Shape
+                {
+                    appearance Appearance { material MaxMaterial { name "CellEgg/Partsz" } }
+                    geometry DEF theSoundtrackAlbumInfoText Text { font "Heading" justify "left" width -9 translate false text ""}
+                }
+            ]
+            //rotation -1.000000 0.000000 0.000000 -1.571000
+            scale 0.7000 0.7000 0.063580
+            translation -4.03000 0.629800 0.059800
+        }
+        DEF theSoundtrackSongInfo Transform
+        {
+            children
+            [
+                Shape
+                {
+                    appearance Appearance { material MaxMaterial { name "NavType" } }
+                    geometry DEF theSoundtrackSongInfoText Text { font "Body" text "" justify "left" scroll true scrollDelay 0.2 scrollRate 0.85 width -7 }
+                }
+            ]
+            //rotation -1.000000 0.000000 0.000000 -1.571000
+            scale .9 1.2 1.2
+            translation -4.035800 -.47500 0.059800
+        }
+        DEF MEM_L1_panel_metasupport Transform
+        {
+            children
+            [
+                Shape
+                {
+                    appearance Appearance { material MaxMaterial { name "JwlSrfc01/InfoPnls" } }
+                    geometry DEF MEM_L1_panel_metasupport-FACES Mesh { url "MEM_L1_panel_metasupport-FACES.xm" }
+                }
+            ]
+            rotation 1.000000 0.000000 0.000000 -1.571000
+            scale 0.021480 0.021480 0.021480
+            translation 0.108300 -1.269000 -0.075180
+        }
+        DEF MEM_L1_text_totalmemory Transform
+        {
+            children
+            [
+                Shape
+                {
+                    appearance Appearance { material MaxMaterial { name "NavType" } }
+                    geometry Text { font "Body" text "" justify "end" }
+                }
+            ]
+            //rotation -1.000000 0.000000 0.000000 -1.571000
+            scale 0.663580 0.663580 0.063580
+            translation -0.155800 -0.107500 0.059800
+        }
+        DEF MEM_L1_text_473blocks Transform
+        {
+            children
+            [
+                Shape
+                {
+                    appearance Appearance { material MaxMaterial { name "CellEgg/Partsz" } }
+                    geometry DEF AvailableMemoryText Text { font "Body" translate false }
+                }
+            ]
+            //rotation -1.000000 0.000000 0.000000 -1.571000
+            scale 0.663580 0.663580 0.663580
+            translation 0.155800 -0.666500 0.059800
+        }
+        DEF MEM_L1_text_8000blocks Transform
+        {
+            children
+            [
+                Shape
+                {
+                    appearance Appearance { material MaxMaterial { name "CellEgg/Partsz" } }
+                    geometry DEF TotalMemoryText Text { font "Body" translate false }
+                }
+            ]
+            //rotation -1.000000 0.000000 0.000000 -1.571000
+            scale 0.663580 0.663580 0.663580
+            translation 0.155800 -0.107500 0.059800
+        }
+        DEF DVDStatusIcon Transform
+        {
+            children
+            [
+                Shape
+                {
+                    appearance Appearance
+                    {
+                        material Material { }
+                        texture DEF DVDStatusIconTexture ImageTexture { url "dvdempty.xbx" }
+                    }
+                    geometry Box { }
+                }
+            ]
+            scale 2.3 2.3 0
+            translation 3.655800 0.107500 0.059800
+            rotation 0 0 1 3.141592654
+        }
+        DEF theAbutton Transform
+        {
+            visible false
+            children
+            [
+                Shape
+                {
+                    appearance Appearance
+                    {
+                        material Material { }
+                        texture DEF theAbuttonTexture ImageTexture { url "a_button.xbx" }
+                    }
+                    geometry Box { }
+                }
+            ]
+            scale 1 1 0
+            translation -3.85 -0.207500 0.059800
+            rotation 0 0 1 3.141592654
+        }
+        DEF theBbutton Transform
+        {
+            visible false
+            children
+            [
+                Shape
+                {
+                    appearance Appearance
+                    {
+                        material Material { }
+                        texture DEF theBbuttonTexture ImageTexture { url "b_button.xbx" }
+                    }
+                    geometry Box { }
+                }
+            ]
+            scale 1 1 0
+            translation -0.5 -0.207500 0.059800
+            rotation 0 0 1 3.141592654
+        }
+
+    ]
+    scale 10 10 10
+    //translation -105 -110 5
+    //translation 50 50 50
+    translation -90 -100 -45
+}
+////////////END OF INFO PANEL/////////////////////

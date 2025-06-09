@@ -37,6 +37,8 @@ function buildconfigList() //written this way so u can easily rearrange and add,
 	configList = new Array;
 	configList[i] = "General Settings";
 	i = i + 1;
+	configList[i] = "Appearance";
+	i = i + 1;
 	configList[i] = "Main Menu";
 	i = i + 1;
 	configList[i] = "Launcher Menu";
@@ -55,23 +57,27 @@ function buildconfigList() //written this way so u can easily rearrange and add,
 	updateText();
 }
 
-function buildGSList() //just copy this function for more subsections
+function BuildAPList()
 {
 	var i = 0;
 	configList = new Array;
 	configValues = new Array;
 	configSelect = new Array;
-	
-	configList[i] = "Main Orb Style:";
+
+	configList[i] = "Dash Style:";
+	configValues[i] = "default-DashStyle";
+	configSelect[i] = "toggleDS()";
+	i = i + 1;
+	configList[i] = "MS Dash Style:";
 	configValues[i] = "default-MainOrbStyle"; //section-value
 	configSelect[i] = "toggleMOS()";
 	i = i + 1;
-	configList[i] = "Show Insignia:";
-	configValues[i] = "default-ShowInsignia";
+	configList[i] = "Animate MS Main Menu:";
+	configValues[i] = "default-UseMainMenuAttract";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
-	configList[i] = "Animate Main Menu:";
-	configValues[i] = "default-UseMainMenuAttract";
+	configList[i] = "Animate Orb Navigation:";
+	configValues[i] = "default-Animated";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
 	configList[i] = "Auto-Launch Media:";
@@ -90,8 +96,47 @@ function buildGSList() //just copy this function for more subsections
 	configValues[i] = "default-LauncherOrbIcon";
 	configSelect[i] = "toggleLOI()";
 	i = i + 1;
+	configList[i] = "Info Panel:";
+	configValues[i] = "default-InfoPanel";
+	configSelect[i] = "toggleTF()";
+	i = i + 1;
 	configList[i] = "Use List Underlay:";
 	configValues[i] = "default-UseListUnderlay";
+	configSelect[i] = "toggleTF()";
+	i = i + 1;
+	configList[i] = "BG Mesh:";
+	configValues[i] = "BGMesh-BGMesh";
+	configSelect[i] = "toggleBGMesh()";
+	i = i + 1;
+	configList[i] = "BG Mesh Alpha:";
+	configValues[i] = "BGMesh-Alpha";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	configList[i] = "Mesh 1 Rpm:";
+	configValues[i] = "BGMesh-BGMesh1 rpm";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	configList[i] = "Mesh 2 Rpm:";
+	configValues[i] = "BGMesh-BGMesh2 rpm";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	configList[i] = "Mesh 3 Rpm:";
+	configValues[i] = "BGMesh-BGMesh3 rpm";
+	configSelect[i] = "configKeyb()";
+
+	clearText();
+	updateText();
+}
+
+function buildGSList() //just copy this function for more subsections
+{
+	var i = 0;
+	configList = new Array;
+	configValues = new Array;
+	configSelect = new Array;
+	
+	configList[i] = "Show Insignia:";
+	configValues[i] = "default-ShowInsignia";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
 	configList[i] = "Toggle Noisy Camera";
@@ -177,11 +222,11 @@ function buildHDList()
 	configValues = new Array;
 	configSelect = new Array;
 	var nMaxLauncherMenuItems = StringToNumber(GetSavedValue("LauncherMenu","MaxLauncherMenuItems"));
-	if(nMaxLauncherMenuItems == 0){ nMaxLauncherMenuItems = 8;SetSavedValue("LauncherMenu","MaxLauncherMenuItems",nMaxLauncherMenuItems);}
+	if(nMaxLauncherMenuItems <= 0){ nMaxLauncherMenuItems = 8;SetSavedValue("LauncherMenu","MaxLauncherMenuItems",nMaxLauncherMenuItems);}
 	configList[0] = "Max Launcher Menu Items:";
 	configValues[0] = "LauncherMenu-MaxLauncherMenuItems";
 	configSelect[0] = "configKeyb()";
-	
+
 	for(var i = 0; i < nMaxLauncherMenuItems; i = i + 1)
 	{
 		configList[configList.length] = "Item "+ (i + 1) + " Title:";
@@ -332,6 +377,14 @@ function toggle345()
 	else { refreshMenu("3"); }
 }
 
+function toggleDS()
+{
+	var b = getConfigMenuValue(configValues[LV2Item]);
+	if(b.toLowerCase() == "ms") { refreshMenu("BSX"); }
+	else if(b.toLowerCase() == "bsx") { refreshMenu("MS"); }
+	else { refreshMenu("MS"); }
+}
+
 function toggleMOS()
 {
 	var b = getConfigMenuValue(configValues[LV2Item]);
@@ -369,6 +422,18 @@ function toggleMMB()
 	else if(b.toLowerCase() == "music") { refreshMenu("XONLINE"); }
 	else if(b.toLowerCase() == "xonline") { refreshMenu("LAUNCHER"); }
 	else { refreshMenu("MEMORY"); }
+}
+
+function toggleBGMesh()
+{
+	var b = getConfigMenuValue(configValues[LV2Item]);
+	if(b.toLowerCase() == "squigles") { refreshMenu("corkscrews"); }
+	else if(b.toLowerCase() == "corkscrews") { refreshMenu("off"); }
+	else if(b.toLowerCase() == "off") { refreshMenu("dna"); }
+	else if(b.toLowerCase() == "dna") { refreshMenu("chains"); }
+	else if(b.toLowerCase() == "chains") { refreshMenu("spirals"); }
+	else if(b.toLowerCase() == "spirals") { refreshMenu("squigles"); }
+	else { refreshMenu("squigles"); }
 }
 
 function toggleIcon()
@@ -512,13 +577,14 @@ function refreshMenu(x)
 	if((inChangeTitleMenu | inQuickLaunchMenu) == false) { settChanged = true; }
 	if(x.toLowerCase() == "x") 
 	{   //Delete the key and return if the user enters only an "x" on the keyboard.
-		setConfigMenuValue(configValues[LV2Item],"");
 		if(inChangeTitleMenu) 
 		{ 
+			SetTitleName(configList[LV2Item],configList[LV2Item]);
 			c.theLeftSlots.children[LV2Hold].children[0].geometry.text = configList[LV2Item];
 		}
 		else 
 		{
+			setConfigMenuValue(configValues[LV2Item],"");
 			c.theRightSlots.children[LV2Hold].children[0].geometry.text = ""; 
 		}
 		return; 
@@ -831,6 +897,12 @@ DEF theConfigPanel Level
 					buildHDList();
 					tabSlot(LV2Hold);
 					c.theConfigHeader.children[0].geometry.text = Translate("Launcher Menu");
+				}
+				else if(configList[LV1Item] == "Appearance")
+				{
+					BuildAPList();
+					tabSlot(LV2Hold);
+					c.theConfigHeader.children[0].geometry.text = Translate("Appearance");
 				}
 				else if(configList[LV1Item] == "Show in Settings")
 				{
