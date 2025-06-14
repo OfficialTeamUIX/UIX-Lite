@@ -18,6 +18,7 @@ start /wait C:\Python312\Scripts\cxfreeze.exe "Xboxdash_5960_Colourizer.py" --ta
 	md "!archive_name!\xbe file"
 
 	attrib +h -s "!archive_name!\lib"
+	attrib +h -s "!archive_name!\share"
 	attrib +h -s "!archive_name!\frozen_application_license.txt"
 	attrib +h -s "!archive_name!\python3.dll"
 	attrib +h -s "!archive_name!\python312.dll"
