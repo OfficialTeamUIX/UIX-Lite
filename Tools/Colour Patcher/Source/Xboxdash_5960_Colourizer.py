@@ -1,26 +1,14 @@
 # -*- coding: utf-8 -*-
-# Rocky5 2024
+# Rocky5 2025
 from __future__ import print_function, unicode_literals
 from binascii import unhexlify
 from tkinter import colorchooser, filedialog, messagebox, simpledialog
-import argparse
-import colorsys
-import configparser
-import ftplib
-import hashlib
-import io
-import os
-import re
-import shutil
 import tkinter as tk
-import struct
-import sys
-import time
-import zipfile
+import argparse, colorsys, configparser, ftplib, hashlib, io, os, re, shutil, struct, sys, time, zipfile
 
 '''
 
-Good site for looking at colours - https://traditionalcolours.com
+Good site for looking at colours - https://traditionalcolors.com
 
 If 'apply' is set to 1, the line will be processed.
 
@@ -30,7 +18,7 @@ Values are stored in big-endian format by default, as this is the standard way t
 If 'patch_type' is set to 0, the bytes are written as-is.
 If 'patch_type' is set to 1, the bytes are added to the sequence "C6400C**C6400D**C6400E**" and then written.
 If 'patch_type' is set to 2, the bytes are added to the sequence "C6400F**C6400C**C6400D**C6400E**" and then written.
-If 'patch_type' is set to 3, the bytes are added to the sequence "C6400F**C6400C**C6400D**C6400E**" and then written.
+If 'patch_type' is set to 3, floats for xonlinedash.
 If 'patch_type' is set to 4, insert bytes at offset.
 If 'patch_type' is set to 5, insert a byte and duplicate as many time as you want.
 
@@ -162,8 +150,6 @@ def patch_list_to_support_ARGB(small_value):
 	for byte in bytes_list:
 		large_value = large_value.replace('**', byte, 1)
 	return large_value
-
-import struct
 
 def patch_file(file_path, patches, target_colour='FFFFFF', brightness_factor=1.0, override=0):
 	with open(file_path, 'r+b') as xbeData:
