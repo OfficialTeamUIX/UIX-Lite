@@ -118,9 +118,9 @@ def adjust_colour_to_target(colour, target_colour, float_type, brightness_factor
 		if float_type == "B":
 			adjusted_colour = adjusted_colour[2:]
 	else:
-		print('Skipping colour: {}'.format(colour))
-		os.system('pause')
+		# print('Skipping colour: {}'.format(colour))
 		return colour
+
 	# print('Original: {}\tAdjusted: {}'.format(colour, adjusted_colour))
 	return adjusted_colour
 
