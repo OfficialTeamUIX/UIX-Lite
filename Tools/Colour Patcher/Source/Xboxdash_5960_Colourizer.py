@@ -404,6 +404,7 @@ xonline_patches = [
 	{'apply': '1', 'address': '0x00000F00', 'patch_type': '0', 'flip': '0', 'value': '56B8FAA90700FFD083F8017552B8B1A90700FFD083E00383F8037543B888A90700FFD083F802740583F80175328B7424148B462883E0DF83C840894628C70600050000C74604D0020000C7461000000000C7462C00000000C74630000000005EB8E0660E00FFD0B92CD70400FFE1B8FAA90700FFD083F801752EB8B1A90700FFD083E00383F803751FB888A90700FFD083F802740583F801750EC745FC0000A044C745F800003444FF35C4351900B8A88E0900FFE0'},
 	{'apply': '1', 'address': '0x0003D727', 'patch_type': '0', 'flip': '0', 'value': 'E9D437FCFF'},
 	{'apply': '1', 'address': '0x00088EA2', 'patch_type': '0', 'flip': '0', 'value': 'E9C780F7FF'},
+	# Description: Bypass Xip checks and allow external ones
 	{'apply': '1', 'address': '0x0003D669', 'patch_type': '0', 'flip': '0', 'value': '9090'},
 	{'apply': '1', 'address': '0x0006E3D7', 'patch_type': '0', 'flip': '0', 'value': '9090'},
 	{'apply': '1', 'address': '0x000833F8', 'patch_type': '0', 'flip': '0', 'value': '90909090909090'},
