@@ -35,7 +35,7 @@ Some of these features include;
 
 * Download `UIXToolbox.xbe` from the `Releases` section of the repository.
 * Install it as an application on your Xbox, for example in `E:\Apps\UIXLiteToolbox\default.xbe`.
-* Once running the `UIXLiteToolbox.xbe`, go to the installer section, `Install 5960`, then `Install UIX Lite`.
+* Once running the `UIXToolbox.xbe`, go to the installer section, `Restore Original MSDash 5960`, then `Install UIX Lite`.
 * Congratulations! You have successfully installed UIX Lite on your Xbox.
 
 
