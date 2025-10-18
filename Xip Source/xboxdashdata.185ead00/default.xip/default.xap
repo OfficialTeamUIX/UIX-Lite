@@ -317,6 +317,16 @@ DEF theDiscDrive DiscDrive
 				c.UpdateMusicMetaData();
 			}
 		}
+		else if(theLauncherInline.visible)
+		{
+			var c = theLauncherInline.children[0];
+			c.LoadRootContents();
+			if(c.bInBrowser & c.bInRoot) 
+			{
+				c.TempTitleList = c.RootDirectory;
+				c.UpdateTrackList();
+			}
+		}
 		else
 		{
 			var strYesFunction = strMessageYesFunction;
@@ -354,6 +364,16 @@ DEF theDiscDrive DiscDrive
 				stra = Translate("AUTOLAUNCH_UNKN_ASK");
 			}
 			AskQuestion(stra,"theDiscDrive.AutoLaunch()","",1);
+		}
+		if(theLauncherInline.visible)
+		{
+			var c = theLauncherInline.children[0];
+			c.LoadRootContents();
+			if(c.bInBrowser & c.bInRoot) 
+			{
+				c.TempTitleList = c.RootDirectory;
+				c.UpdateTrackList();
+			}
 		}
 	}
 	
@@ -501,7 +521,7 @@ function ParseEscapedChars(sText)
 						sRet = sRet + unicode + arrTemp[i].substr(4);
 					}
 				}
-				return sRet;
+				sText = sRet;
 			}
 		}
 	}
@@ -541,8 +561,9 @@ DEF theLauncherInline Inline
 	}
 }
 
-function GoToLauncher()
+function GoToLauncher(mnuName)
 {
+	if(mnuName != null) sLauncherMenu = mnuName;
 	if (theLauncherInline.visible)
 		theLauncherInline.children[0].theLauncher.GoTo();
 	else
@@ -1737,27 +1758,32 @@ DEF theMainMenu Level
 			
 			PlaySoundA();
 			if ((RightTrigger == true) & (LeftTrigger == true)) { QuickLaunch("A"); return;}
+			
+			if(nCurMainMenuItem == nMusicButton)
+			{
+				theMusicMenuIn.Play();
+			}
+			else if(nCurMainMenuItem != 4)
+			{
+				theGamesMenuIn.Play(); 
+			}
+			
 			if (nCurMainMenuItem == 0)  // Memory Button
 			{
-				theGamesMenuIn.Play();
 				eval(Button1Action);
 			}
 			else if (nCurMainMenuItem == 1) // Music Button
 			{
-				theMusicMenuIn.Play();
 				eval(Button2Action);
 			}
 			else if (nCurMainMenuItem == 2) // Xbox Live Button
 			{
-				theGamesMenuIn.Play();      // TODO: Get final sound
 				eval(Button3Action);        // Enter LiveToday
 			}
 			else if (nCurMainMenuItem == 3) // Launcher Button
 			{
-				theGamesMenuIn.Play();
 				eval(Button4Action);
 			}
-
 			else if (nCurMainMenuItem == 4) // Settings Button
 			{
 				theSettingsMenuIn.Play();
@@ -2045,6 +2071,7 @@ var DriveLocations;
 var PartitionLocations;
 var sBuildDate;
 var bSkinExists;
+var sLauncherMenu;
 
 // Discord Presence
 var Discord;
@@ -2065,7 +2092,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "250603"; //Date of commit YYMMDD
+	sBuildDate = "251018"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2103,6 +2130,7 @@ function initialize()
 	strMessageNoFunction = "";
 	strKeyboardDoneFunction = "";
 	strKeyboardCancelFunction = "";
+	sLauncherMenu = "";
 	g_theMainMenuLoaded = false;
 	g_theMessageLayerLoaded = false;
 	g_nCurrentAccountSelected = 0;
@@ -3446,12 +3474,21 @@ function ExecuteFile(sPath)
 	launchXbe = a.substr(d + 1);
 	
 	if(b.toUpperCase() == "C") { launchPath = "\\Device\\Harddisk0\\Partition2" + e; }
+	else if(b.toUpperCase() == "D") { launchPath = "\\Device\\Cdrom0" + e; }
 	else if(b.toUpperCase() == "E") { launchPath = "\\Device\\Harddisk0\\Partition1" + e; }
 	else if(b.toUpperCase() == "F") { launchPath = "\\Device\\Harddisk0\\Partition6" + e; ExtendedPartition = true; }
 	else if(b.toUpperCase() == "G") { launchPath = "\\Device\\Harddisk0\\Partition7" + e; ExtendedPartition = true; }
 	else if(b.toUpperCase() == "E2") { launchPath = "\\Device\\Harddisk1\\Partition1" + e; }
 	else if(b.toUpperCase() == "F2") { launchPath = "\\Device\\Harddisk1\\Partition6" + e; ExtendedPartition = true; }
 	else if(b.toUpperCase() == "G2") { launchPath = "\\Device\\Harddisk1\\Partition7" + e; ExtendedPartition = true; }
+	else if(b.toUpperCase() == "DVD-ROM") { launchPath = "\\Device\\Cdrom0" + e; }
+	else if(b.toUpperCase() == "HDD0-C") { launchPath = "\\Device\\Harddisk0\\Partition2" + e; }
+	else if(b.toUpperCase() == "HDD0-E") { launchPath = "\\Device\\Harddisk0\\Partition1" + e; }
+	else if(b.toUpperCase() == "HDD0-F") { launchPath = "\\Device\\Harddisk0\\Partition6" + e; ExtendedPartition = true; }
+	else if(b.toUpperCase() == "HDD0-G") { launchPath = "\\Device\\Harddisk0\\Partition7" + e; ExtendedPartition = true; }
+	else if(b.toUpperCase() == "HDD1-E") { launchPath = "\\Device\\Harddisk1\\Partition1" + e; }
+	else if(b.toUpperCase() == "HDD1-F") { launchPath = "\\Device\\Harddisk1\\Partition6" + e; ExtendedPartition = true; }
+	else if(b.toUpperCase() == "HDD1-G") { launchPath = "\\Device\\Harddisk1\\Partition7" + e; ExtendedPartition = true; }
 	else return;
 	
 	if(ExtendedPartition & bHDDInitialized == false)
@@ -3525,7 +3562,10 @@ function RefreshCache()
 	var arrMenuNames = new Array;
 	var arrMenuPaths = new Array;
 	var cTitles = new Array;
-	for (var i = 0; i < 8; i = i + 1)
+	var nMaxLauncherMenuItems = StringToNumber(GetSavedValue("LauncherMenu","MaxLauncherMenuItems"));
+	if(nMaxLauncherMenuItems <= 0){ nMaxLauncherMenuItems = 8;SetSavedValue("LauncherMenu","MaxLauncherMenuItems",nMaxLauncherMenuItems);}
+
+	for (var i = 0; i < nMaxLauncherMenuItems; i = i + 1)
 	{
 		var v = GetSavedValue("LauncherMenu", "Title" + i);
 		if(v != "") 

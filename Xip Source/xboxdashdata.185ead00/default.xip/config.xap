@@ -177,7 +177,7 @@ function buildHDList()
 	configValues = new Array;
 	configSelect = new Array;
 	var nMaxLauncherMenuItems = StringToNumber(GetSavedValue("LauncherMenu","MaxLauncherMenuItems"));
-	if(nMaxLauncherMenuItems == 0){ nMaxLauncherMenuItems = 8;SetSavedValue("LauncherMenu","MaxLauncherMenuItems",nMaxLauncherMenuItems);}
+	if(nMaxLauncherMenuItems <= 0){ nMaxLauncherMenuItems = 8;SetSavedValue("LauncherMenu","MaxLauncherMenuItems",nMaxLauncherMenuItems);}
 	configList[0] = "Max Launcher Menu Items:";
 	configValues[0] = "LauncherMenu-MaxLauncherMenuItems";
 	configSelect[0] = "configKeyb()";
@@ -512,13 +512,14 @@ function refreshMenu(x)
 	if((inChangeTitleMenu | inQuickLaunchMenu) == false) { settChanged = true; }
 	if(x.toLowerCase() == "x") 
 	{   //Delete the key and return if the user enters only an "x" on the keyboard.
-		setConfigMenuValue(configValues[LV2Item],"");
 		if(inChangeTitleMenu) 
 		{ 
+			SetTitleName(configList[LV2Item],configList[LV2Item]);
 			c.theLeftSlots.children[LV2Hold].children[0].geometry.text = configList[LV2Item];
 		}
 		else 
 		{
+			setConfigMenuValue(configValues[LV2Item],"");
 			c.theRightSlots.children[LV2Hold].children[0].geometry.text = ""; 
 		}
 		return; 
@@ -697,6 +698,7 @@ DEF theConfigPanel Level
 				c.theBuildInfo.children[0].geometry.text = "Build: " + sBuildDate;
 				c.theConfigHeader.children[0].geometry.text = "UIX Lite";
 				c.MU_L3_panel_tracklist_overlay.visible = bUseUnderlay;
+				bAdvancedMode =  GetSavedBooleanValue("MainMenu","AdvancedMode");
 				var YStart;
 				var YStep;
 				var Y = 0;
