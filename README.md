@@ -28,14 +28,14 @@ Some of these features include;
 
 * DO NOT USE ON AN UNMODIFIED XBOX. It won’t work, and you'll brick your Xbox. Make sure you have a modchip or softmod installed that doesn’t rely on the dashboard files to boot.
 * DO NOT DELETE YOUR ORIGINAL MS DASHBOARD FILES. SIMPLY REPLACE THE EXISTING FILES WITH THE MODIFIED FILES ONLY. KEEP ANY UNMODIFIED FILES.
-* Download the latest xboxdashdata.185ead00-vXXXXXX.zip from the assets in the pre-patched release.
+* Download the latest UIX-Lite-v0.5.XXXXXX.zip from the assets in the pre-patched release.
 * Extract and Copy the pre-patched 5960 Dashboard files via ftp to the root of the C partition on your Xbox.
 
 ## How-To (Auto-Magically)
 
-* Download `UIXLiteToolbox.xbe` from the `Releases` section of the repository.
+* Download `UIXToolbox.xbe` from the `Releases` section of the repository.
 * Install it as an application on your Xbox, for example in `E:\Apps\UIXLiteToolbox\default.xbe`.
-* Once running the `UIXLiteToolbox.xbe`, go to the installer section, `Install 5960`, then `Install UIX Lite`.
+* Once running the `UIXToolbox.xbe`, go to the installer section, `Restore Original MSDash 5960`, then `Install UIX Lite`.
 * Congratulations! You have successfully installed UIX Lite on your Xbox.
 
 
