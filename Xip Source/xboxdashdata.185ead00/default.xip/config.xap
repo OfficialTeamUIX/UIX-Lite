@@ -70,6 +70,10 @@ function buildGSList() //just copy this function for more subsections
 	configValues[i] = "default-ShowInsignia";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
+	configList[i] = "Main Menu on Auto Sign-In:";
+	configValues[i] = "default-MainMenuOnAutoSignIn";
+	configSelect[i] = "toggleTF()";
+	i = i + 1;
 	configList[i] = "Animate Main Menu:";
 	configValues[i] = "default-UseMainMenuAttract";
 	configSelect[i] = "toggleTF()";
