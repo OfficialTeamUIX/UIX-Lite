@@ -1975,7 +1975,7 @@ DEF theMainMenu Level
 			bShowLegalInfo = true;
 			DisplayWaitingMessage();
 		}
-		if (g_bPanelDisplayed == true)
+		else if(g_bPanelDisplayed == true)
 		{
 			theMessageJoystick.isBound = true;
 		}
@@ -2072,6 +2072,7 @@ var PartitionLocations;
 var sBuildDate;
 var bSkinExists;
 var sLauncherMenu;
+var bMainMenuOnAutoSignIn;
 
 // Discord Presence
 var Discord;
@@ -2092,7 +2093,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "251018"; //Date of commit YYMMDD
+	sBuildDate = "260124"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2157,6 +2158,7 @@ function initialize()
 
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
+	bMainMenuOnAutoSignIn = GetSavedBooleanValue("default","MainMenuOnAutoSignIn");true;
 	btHcScreenSaver = GetSavedBooleanValue("default","UsetHcScreenSaver");
 	bUseMainMenuAttract = GetSavedBooleanValue("default","UseMainMenuAttract");
 	bUseUnderlay = GetSavedBooleanValue("default","UseListUnderlay");
@@ -2457,18 +2459,26 @@ function GoToFinalDestination()
 	else
 	{
 		EnableInput(true);
-		if (theConfig.GetLiveToday() == 0)
+		if (theConfig.GetLiveToday() == 0)                  //Check if Auto Sign-In
 		{
 			theMainMenu.GoTo();
 		}
-		else if (theConfig.GetEthernetLinkStatus() == 0)
+		else if (theConfig.GetEthernetLinkStatus() == 0)    //Check if Internet is Connected
 		{
 			theMainMenu.GoTo();
 		}
-		else if (theLiveAccounts.GetNumberOfAccounts())
+		else if (theLiveAccounts.GetNumberOfAccounts())     //Check if a Live account exists
 		{
-			g_bFirstSignIn = true;
-			EnterLiveToday(true);
+			if(bMainMenuOnAutoSignIn)
+			{
+				theMainMenu.GoTo();
+			}
+			else
+			{
+				bUseMainMenuAttract = false;
+				g_bFirstSignIn = true;
+				EnterLiveToday(true);
+			}
 		}
 		else
 		{
@@ -3416,12 +3426,22 @@ DEF theLaunchGameLevel Level
 		{
 			if(bPresence & bPresenceEnabled) 
 			{
+				var sPath = "";
 				var PathArray = new Array;
 				var Slice = new Array;
 				PathArray = Split(launchPath,"\\");
-				Slice = PathArray.slice(4,PathArray.length);
-				Discord.SetValue("Path",GetDrivePath(PathArray[2],PathArray[3]) + Slice.join("\\") + "\\" + launchXbe);
-				launch("Discord.xbe", "\\Device\\Harddisk0\\Partition2\\Discord Presence");
+				if(PathArray[2].toLowerCase() == "cdrom0") 
+				{
+					//DVD not currently supported in the ShortcutRelayXBE
+					launch(launchXbe, launchPath); 
+				}
+				else
+				{
+					Slice = PathArray.slice(4,PathArray.length);
+					if(Slice.length > 0) sPath = Slice.join("\\") + "\\";
+					Discord.SetValue("Path",GetDrivePath(PathArray[2],PathArray[3]) + sPath + launchXbe);
+					launch("Discord.xbe", "\\Device\\Harddisk0\\Partition2\\Discord Presence");
+				}
 			}
 			else
 			{
@@ -3805,6 +3825,7 @@ function SetSavedBooleanValue(x,y,z)
 		ConfigFile.SetValue(b,"false");
 	}
 }
+
 function GetDrivePath(x,y)
 {
 	if(x == "Harddisk0" & y == "Partition2") return "C:\\";

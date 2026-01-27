@@ -190,7 +190,7 @@ DEF LauncherViewpoint Viewpoint
 {
 	fieldOfView 1.287000
 	orientation 0.200900 0.979000 0.034330 -0.345700
-	position -47.889999 54.662001 -202.299994
+	position -47.889999 54.462001 -202.299994
 	jump false
 }
 
@@ -198,14 +198,13 @@ DEF theTitleListViewpoint Viewpoint
 {
 	fieldOfView 1.316000
 	orientation -0.017440 -0.999800 0.000769 -0.088190
-	position -45.230000 54.810001 -202.299994
+	position -45.230000 54.610001 -202.299994
 	jump false
 }
 
 function ShowLauncherMenu()
 {
 	var c = theLauncher.children[0].children[0];
-	c.MU_L3_text_tracklist01.visible = false;
 	c.theMenuArm.SetRotation(0, 1, 0, 0);
 	c.audio_panel.SetRotation(-1, 0, 0, -3.246000);
 	c.audio_panel.SetTranslation(-45.549999, 57.18, -203.800003);
@@ -231,7 +230,6 @@ function ShowLauncherMenu()
 function StartTitleList()
 {
 	var c = theLauncher.children[0].children[0];
-	c.MU_L3_text_tracklist01.visible = false;
 	c.back1.SetTranslation(-47.340000, 52.810000, -204.300003); 
 	c.back1.SetRotation(0.000000, -1.000000, 0.000000, -0.340300);
 	c.refresh.SetTranslation(-47.690000, 52.380000, -204.300003); 
@@ -547,7 +545,7 @@ DEF theLauncher Level
 			{
 				
 				var c = theLauncher.children[0].children[0];
-				
+				c.MU_L3_text_tracklist01.visible = false;
 				c.MU_L3_panel_tracklist_overlay.visible = bUseUnderlay;
 				nMaxLauncherMenuItems = StringToNumber(GetSavedValue("LauncherMenu","MaxLauncherMenuItems"));
 				if(nMaxLauncherMenuItems <= 0){ nMaxLauncherMenuItems = 8;SetSavedValue("LauncherMenu","MaxLauncherMenuItems",nMaxLauncherMenuItems);}
