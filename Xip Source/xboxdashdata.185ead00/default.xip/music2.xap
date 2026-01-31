@@ -2206,29 +2206,6 @@ DEF theMusicPlayMenu Level
 
 ////////////////////////////////////////////////////////////////////////////
 
-DEF theMusicCollection MusicCollection
-{
-	function OnCopyComplete()
-	{
-		OnMusicCopyComplete();
-	}
-
-	function OnCopyProgressChanged()
-	{
-		UpdateProgressText(theMusicCollection.GetUpdateString());
-		SetProgress(copyProgress);
-	}
-
-	function OnAddSoundtrackNewSongFailed(ErrorCode)
-	{
-		g_nRec = ErrorCode;
-		if (ErrorCode == 1)
-		{
-			theLauncherLevel.GoTo();
-		}
-	}
-}
-
 var musicCount;
 var musicScroll;
 var musicSelect;

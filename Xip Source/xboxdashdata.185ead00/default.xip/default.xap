@@ -98,16 +98,24 @@ DEF thePeriodicSounds Group
 
 function EnableAmbientAudio()
 {
-	var n = Math.round(Math.random() * (theAmbientSounds.children.length() - 1));
-
-	for (var i = 0; i < theAmbientSounds.children.length(); i = i + 1)
+	if(BGMon)
+	{
+		theControlPanelControlsInline.children[0].MusicPlayerStart();
+		DisableAmbientAudio();
+	}
+	else
+	{
+		var n = Math.round(Math.random() * (theAmbientSounds.children.length() - 1));
+		
+		for (var i = 0; i < theAmbientSounds.children.length(); i = i + 1)
 		theAmbientSounds.children[i].isActive = false;
-
-	theAmbientSounds.children[n].volume = 0.95;
-	theAmbientSounds.children[n].isActive = true;
-
-	for (i = 0; i < thePeriodicSounds.children.length(); i = i + 1)
+		
+		theAmbientSounds.children[n].volume = 0.95;
+		theAmbientSounds.children[n].isActive = true;
+		
+		for (i = 0; i < thePeriodicSounds.children.length(); i = i + 1)
 		thePeriodicSounds.children[i].isActive = true;
+	}
 }
 
 function DisableAmbientAudio()
@@ -308,7 +316,7 @@ DEF theDiscDrive DiscDrive
 			}
 			else if (c.theMusicCopyMenu.visible)
 			{
-				c.theMusicCollection.error = 3; // Disc ejected
+				theMusicCollection.error = 3; // Disc ejected
 				c.OnMusicCopyComplete();
 			}
 			else if (c.theMusicMenu.visible)
@@ -592,6 +600,29 @@ function GoToMusic()
 	{
 		BlockMemoryUnitInsert();
 		theMusicInline.visible = true;
+	}
+}
+
+DEF theMusicCollection MusicCollection
+{
+	function OnCopyComplete()
+	{
+		theMusicInline.children[0].OnMusicCopyComplete();
+	}
+
+	function OnCopyProgressChanged()
+	{
+		UpdateProgressText(theMusicCollection.GetUpdateString());
+		SetProgress(copyProgress);
+	}
+
+	function OnAddSoundtrackNewSongFailed(ErrorCode)
+	{
+		g_nRec = ErrorCode;
+		if (ErrorCode == 1)
+		{
+			theLauncherLevel.GoTo();
+		}
 	}
 }
 
@@ -1795,11 +1826,11 @@ DEF theMainMenu Level
 			if ((RightTrigger == true) & (LeftTrigger == true)) { QuickLaunch("B"); return;}
 		}
 		function OnXDown()
-		{    
+		{
 			if ((RightTrigger == true) & (LeftTrigger == true)) { QuickLaunch("X"); return;}
 		}
 		function OnYDown()
-		{        
+		{
 			if ((RightTrigger == true) & (LeftTrigger == true)) { QuickLaunch("Y"); return;}
 		}
 		function OnRightDown() { RightTrigger = true; }
@@ -1849,7 +1880,17 @@ DEF theMainMenu Level
 				UpdateMainMenu();
 			}
 		}
-
+		function OnRightThumbDown()
+		{
+			previousControlType = joy;
+			StartControlPanel();
+		}
+		function OnBlackDown()
+		{
+		}
+		function OnWhiteDown()
+		{
+		}
 		function OnKeyVerified()
 		{
 			//theConfig.ToggleNoisyCamera();
@@ -2018,10 +2059,10 @@ var LeftTrigger;
 var RightTrigger;
 var RightThumb;
 var LeftThumb;
-
+var ControlPanelOut;
 var CurrentViewpoint;
 var CurrentAltViewpoint;
-
+var BGMon;
 var theInLine;
 var currentControlType;
 var previousControlType;
@@ -2031,11 +2072,18 @@ var CacheFile;
 var XlateFile;
 var IconFile;
 var TitleNamesFile;
+var PlaylistInfo;
 var thcorb;
 var ShowInsignia;
 var btHcScreenSaver;
 var bMusicPlayerReady;
 var currentMusicPlayerMode;
+var BGMTracks;
+var BGMst;
+var BGMtr;
+var vCurAlbum; 
+var vCurSong;
+var bPlayingCd;
 
 var Button1Text;
 var Button2Text;
@@ -2067,6 +2115,7 @@ var bRefreshCache;
 var bHasExtendedPartition;
 var bUseMainMenuAttract;
 var bMainMenuAttractFinish;
+var bIsCerbios;
 var DriveLocations;
 var PartitionLocations;
 var sBuildDate;
@@ -2093,12 +2142,15 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "260124"; //Date of commit YYMMDD
+	sBuildDate = "260131"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
 	bHDDInitializing = false;
 	bHDDInitialized = false;
+	bMusicPlayerReady = false;
+	bPlayingCd = false;
+	ControlPanelOut = false;
 	RightThumb = false;
 	LeftThumb = false;
 	LeftTrigger = false;
@@ -2124,6 +2176,10 @@ function initialize()
 	g_bAboutToLaunchGame = false;
 	bShowDVDStopBackground = true;
 	bCleanupSpecifiedDrive = false;
+	BGMst = 0;
+	BGMtr = 0;
+	vCurAlbum = "";
+	vCurSong = "";
 	nSettingArea = 0;
 	nTime = 1.4;
 	g_nRec = 0;
@@ -2148,14 +2204,16 @@ function initialize()
 	XlateFile = new Settings;
 	IconFile = new Settings;
 	TitleNamesFile = new Settings;
+	PlaylistInfo = new Settings;
 	version.file = "T:\\version";
+	PlaylistInfo.file = "T:\\PlaylistInfo.xbx";    
 	version.SetValue("version","0.5." + sBuildDate);
 	ConfigFile.file = "Y:\\UIX Configs\\config.ini";
 	CacheFile.file = "Y:\\UIX Configs\\cache.ini";
 	XlateFile.file = "Y:\\UIX Configs\\xlate.ini";
 	IconFile.file = "Y:\\UIX Configs\\icons.ini";
 	TitleNamesFile.file = "Y:\\UIX Configs\\TitleNames.ini";
-
+	bIsCerbios = (theConfig.GetROMVersion() == "1.00.8008.135");
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
 	bMainMenuOnAutoSignIn = GetSavedBooleanValue("default","MainMenuOnAutoSignIn");true;
@@ -2213,6 +2271,7 @@ function initialize()
 	theAmbientSound0.Play();
 	theAmbientSound1.Play();
 	theAmbientSound2.Play();
+	BGMon = GetSavedBooleanValue("Default","BackgroundMusic");
 	
 	var nLanguage = theConfig.GetLanguage();
 	if (nLanguage != 0) nLanguage = nLanguage - 1;
@@ -2440,11 +2499,13 @@ function GoToFinalDestination()
 	
 	if (theDiscDrive.discType == "Video")
 	{
+		bUseMainMenuAttract = false;
 		EnableInput(true);
 		StartDVDPlayer();
 	}
 	else if (theDiscDrive.discType == "Audio")
 	{
+		bUseMainMenuAttract = false;
 		nCurMainMenuItem = nMusicButton; // select music when backing up
 		StartCDPlayer();
 	}
@@ -2558,6 +2619,47 @@ function StopScreenSaverView()
 		theLauncherInline.children[0].theLauncherWaver.rpm = 0.75;
 	}    
 }
+
+// Audio PLayer//////////////////////////////////////////////////////////////
+
+DEF theControlPanelControlsInline Inline
+{
+	visible true
+	url "controlpanel.xap"
+}
+
+DEF theControlPanelLayer Layer
+{
+	visible false
+	transparency 0.95
+	fade 0.75
+
+	viewpoint Viewpoint
+	{
+		fieldOfView 1.2
+		position 10 6 150
+	}
+
+	children
+	[
+		DEF theControlPanel Transform
+		{
+			fade 0.25
+			scale 1 1 1
+			children
+			[
+				DEF theControlPanelInline Inline
+				{
+					preload true
+					url "controlpanel/default.xap"
+				}
+			]
+		}
+	]
+}
+
+////////////////////////////////////////////////////////////////////////////
+
 // Japanese Keyboard////////////////////////////////////////////////////////
 
 DEF theJapaneseKeyboardLayer Layer
@@ -2596,6 +2698,8 @@ DEF theJapaneseKeyboardLayer Layer
 var strKeyboardTitle, strKeyboardEdit;
 var strKeyboardDoneFunction, strKeyboardCancelFunction;
 
+// Keyboard////////////////////////////////////////////////////////////////
+
 DEF theKeyboardLayer Layer
 {
 	visible false
@@ -2626,6 +2730,8 @@ DEF theKeyboardLayer Layer
 		}
 	]
 }
+
+////////////////////////////////////////////////////////////////////////////
 
 function KeyboardDone()
 {
@@ -2695,6 +2801,11 @@ function CloseKeyboard()
 	UnblockMemoryUnitInsert();
 	
 	g_bKeyboardDisplayed = false;
+	if(ControlPanelOut)
+	{
+		theControlPanelInline.children[0].theControlPanelDisplay.visible = true;
+		theControlPanelInline.children[0].theDropDownPanels.visible = true;
+	}
 }
 
 var g_PrevAsteriskFormattingState;
@@ -3759,6 +3870,13 @@ DEF theMainMenuAlternateViewpoint Viewpoint
 	orientation -0.177400 -1.983500 -0.036250 -0.045440
 	position -15.180000 -112.299999 174.300003
 	jump false
+}
+
+function StartControlPanel()
+{
+	theControlPanelControlsInline.children[0].InitializeControlPanel();
+	EnableCurrentAlternateViewpoint();
+	theScreenSaver.enabled = false;
 }
 
 function GetTitleName(x)

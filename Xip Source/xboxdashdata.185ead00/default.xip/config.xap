@@ -78,6 +78,10 @@ function buildGSList() //just copy this function for more subsections
 	configValues[i] = "default-UseMainMenuAttract";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
+	configList[i] = "Enable Background Music:";
+	configValues[i] = "default-BackgroundMusic";
+	configSelect[i] = "toggleTF()";
+	i = i + 1;
 	configList[i] = "Auto-Launch Media:";
 	configValues[i] = "default-AutoLaunchMedia";
 	configSelect[i] = "toggleTF()";
