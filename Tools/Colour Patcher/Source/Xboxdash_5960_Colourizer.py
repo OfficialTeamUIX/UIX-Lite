@@ -402,6 +402,8 @@ xonline_patches = [
 	{'apply': '1', 'address': '0x00000124', 'patch_type': '0', 'flip': '0', 'value': '08'},
 	# xonlinedash 720p patch by Team Resurgent (Phantom)
 	{'apply': '1', 'address': '0x00000F00', 'patch_type': '0', 'flip': '0', 'value': '56B8FAA90700FFD083F8017552B8B1A90700FFD083E00383F8037543B888A90700FFD083F802740583F80175328B7424148B462883E0DF83C840894628C70600050000C74604D0020000C7461000000000C7462C00000000C74630000000005EB8E0660E00FFD0B92CD70400FFE1B8FAA90700FFD083F801752EB8B1A90700FFD083E00383F803751FB888A90700FFD083F802740583F801750EC745FC0000A044C745F800003444FF35C4351900B8A88E0900FFE0'},
+	# Redirect xbox.xtf to the root version so not to Error21 on softmods using BFM bios
+	{'apply': '1', 'address': '0x00003ECC', 'patch_type': '0', 'flip': '0', 'value': '5C4465766963655C486172646469736B305C506172746974696F6E325C78626F782E78746600000000000000'},
 	{'apply': '1', 'address': '0x0003D727', 'patch_type': '0', 'flip': '0', 'value': 'E9D437FCFF'},
 	{'apply': '1', 'address': '0x00088EA2', 'patch_type': '0', 'flip': '0', 'value': 'E9C780F7FF'},
 	# Description: Bypass Xip checks and allow external ones
@@ -411,6 +413,12 @@ xonline_patches = [
 	{'apply': '1', 'address': '0x00083548', 'patch_type': '0', 'flip': '0', 'value': '9090'},
 	{'apply': '1', 'address': '0x0008354D', 'patch_type': '0', 'flip': '0', 'value': '9090'},
 	{'apply': '1', 'address': '0x00083587', 'patch_type': '0', 'flip': '0', 'value': '9090'}
+]
+
+xonline_xboxdash_patches = [
+	# Change xboxdash to xb0xdash for softmods
+	{'apply': '1', 'address': '0x00003D89', 'patch_type': '0', 'flip': '0', 'value': '30'},
+	{'apply': '1', 'address': '0x00005FB6', 'patch_type': '0', 'flip': '0', 'value': '30'},
 ]
 
 xonline_colour_patches = [
@@ -1487,6 +1495,10 @@ password=xbox'''
 				
 				# Patch out xip stuff and 720p
 				patch_file(xonlinedash_new_file_path, xonline_patches, '', '', 1)
+
+				# Patch xboxdash to xb0xdash if using that xbe name
+				if 'xb0xdash' in xboxdash_file_path:
+					patch_file(xonlinedash_new_file_path, xonline_xboxdash_patches, '', '', 1)
 				
 				# Patch colours.
 				patch_file(xonlinedash_new_file_path, xonline_colour_patches, target_colour, brightness_factor, 0)
