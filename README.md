@@ -9,7 +9,7 @@ Our ultimate goal is to provide a legal, open-source, and distributable patch se
 
 Please note that a modified console is required to run this project. However, we will leverage two decades of modification techniques to simplify the process for end users as much as possible.
 
-For more information and community support, join us in #teamuix on [Discord](https://discord.gg/xbox-scene).
+For more information and community support, join us on [Discord](https://discord.gg/qfVHTYD4xX).
 
 ## What is UIX Lite
 As stated in the title above UIX Lite is a collection of patches and XIP edits that adds some of the features of UIX to the stock 5960 MS Dash. 
