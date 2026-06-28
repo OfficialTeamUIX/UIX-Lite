@@ -930,6 +930,11 @@ DEF theConfigPanel Level
 		{
 			//theConfig.DebugOutput(configList[LV1Item] );
 		}
+		function OnRightThumbDown()
+		{
+			previousControlType = theConfigMenuJoystick;
+			StartControlPanel();
+		}
 	}
 	
 	function OnActivate()

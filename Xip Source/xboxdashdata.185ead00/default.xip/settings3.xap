@@ -729,7 +729,7 @@ DEF theSetClockMenu Level
 		]
 	}
 
-	control Joystick
+	control DEF theSetClockJoystick Joystick
 	{
 		function OnADown()
 		{
@@ -846,11 +846,17 @@ DEF theSetClockMenu Level
 			theSetClockMenu.children[0].children[0].Clock_morearrow_up.children[0].appearance.material.name = "HilightedType";
 			theSetClockMenu.children[0].children[0].Clock_morearrow_down.children[0].appearance.material.name = "HilightedType";
 		}
+		function OnRightThumbDown()
+		{
+			previousControlType = theSetClockJoystick;
+			StartControlPanel();
+		}
 	}
 
 	function OnActivate()
 	{
 		EnableAmbientAudio();
+		CurrentViewpoint = theSetClockMenuViewpoint;
 		if (children[0].children.length() > 0)
 		{
 			StartClockSettings();
@@ -1067,7 +1073,7 @@ DEF theSetTimezoneMenu Level
 		]
 	}
 
-	control Joystick
+	control DEF theSetTimezoneJoystick Joystick
 	{
 		function OnADown()
 		{
@@ -1177,10 +1183,16 @@ DEF theSetTimezoneMenu Level
 
 			UpdateTimezoneMenu();
 		}
+		function OnRightThumbDown()
+		{
+			previousControlType = theSetTimezoneJoystick;
+			StartControlPanel();
+		}
 	}
 
 	function OnActivate()
 	{
+		CurrentViewpoint = theSetTimezoneMenuViewpoint;
 		if (children[0].children.length() > 0)
 		{
 			StartTimezoneMenu();
@@ -1585,7 +1597,7 @@ DEF theChooseClockMenu Level
 		]
 	}
 
-	control Joystick
+	control DEF theChooseClockMenuJoystick Joystick
 	{
 		function OnADown()
 		{
@@ -1729,17 +1741,27 @@ DEF theChooseClockMenu Level
 			UpdateListHighlight();
 
 		}
-
+		
+		function OnRightThumbDown()
+		{
+			previousControlType = theChooseClockMenuJoystick;
+			StartControlPanel();
+		}
 	}
 
 	function OnActivate()
 	{
 		EnableAmbientAudio();
 		if((strCurMenu == "VIDEO") & (theConfig.GetAVRegion() != "PAL_I"))
+		{
 			fourButtonViewpoint.isBound = true;
+			CurrentViewpoint = fourButtonViewpoint;
+		}
 		else
+		{
 			threeButtonViewpoint.isBound = true;
-
+			CurrentViewpoint = threeButtonViewpoint;
+		}
 		if (children[0].children.length() > 0)
 		{
 			UpdateListIcons();
@@ -2462,10 +2484,17 @@ DEF theSetPanelMenu Level
 			AskQuestion("CONFIRM RECOVERY", "theSettingsInline.children[0].ConfirmRecovery()", "", 1);
 			thePanelJoystick.enableSecretKey = false;
 		}
+
+		function OnRightThumbDown()
+		{
+			previousControlType = thePanelJoystick;
+			StartControlPanel();
+		}
 	}
 
 	function OnActivate()
 	{
+		CurrentViewpoint = theSetPanelMenuViewpoint;
 		if (children[0].children.length() > 0)
 			StartPanelMenu();
 	}
@@ -2633,7 +2662,7 @@ DEF theSetPCMenu Level
 		]
 	}
 
-	control Joystick
+	control DEF theSetPCMenuJoystick Joystick
 	{
 		function OnADown()
 		{
@@ -2705,10 +2734,17 @@ DEF theSetPCMenu Level
 
 			UpdatePCMenu();
 		}
+
+		function OnRightThumbDown()
+		{
+			previousControlType = theSetPCMenuJoystick;
+			StartControlPanel();
+		}
 	}
 
 	function OnActivate()
 	{
+		CurrentViewpoint = theSetPCMenuViewpoint;
 		if (children[0].children.length() > 0)
 			StartPCMenu();
 	}
@@ -2925,7 +2961,7 @@ DEF theSetLanguageMenu Level
 		]
 	}
 
-	control Joystick
+	control DEF theSetLanguageMenuJoystick Joystick
 	{
 		function OnADown()
 		{
@@ -3050,10 +3086,17 @@ DEF theSetLanguageMenu Level
 
 			UpdateLanguageMenu();
 		}
+
+		function OnRightThumbDown()
+		{
+			previousControlType = theSetLanguageMenuJoystick;
+			StartControlPanel();
+		}
 	}
 
 	function OnActivate()
 	{
+		CurrentViewpoint = theSetLanguageMenuViewpoint;
 		if (children[0].children.length() > 0)
 		{
 			StartLanguageMenu();
@@ -3221,7 +3264,7 @@ DEF theSetModeMenu Level
 		]
 	}
 
-	control Joystick
+	control DEF theSetModeMenuJoystick Joystick
 	{
 		function OnADown()
 		{
@@ -3342,10 +3385,17 @@ DEF theSetModeMenu Level
 
 			UpdateModeMenu();
 		}
+
+		function OnRightThumbDown()
+		{
+			previousControlType = theSetModeMenuJoystick;
+			StartControlPanel();
+		}
 	}
 
 	function OnActivate()
 	{
+		CurrentViewpoint = theSetModeMenuViewpoint;
 		if (children[0].children.length() > 0)
 		{
 			StartModeMenu();
@@ -4188,6 +4238,11 @@ DEF theSettingsMenu Level
 			}
 
 			UpdateSettingsMenu();
+		}
+		function OnRightThumbDown()
+		{
+			previousControlType = theSettingsJoystick;
+			StartControlPanel();
 		}
 	}
 

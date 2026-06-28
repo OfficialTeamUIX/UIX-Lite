@@ -333,6 +333,11 @@ DEF theAccountSelectionLevel Level
 			PlaySoundMenuChange();
 			UpdateAccountSelectionMenuHilite();
 		}
+		function OnRightThumbDown()
+		{
+			previousControlType = theAccountSelectionJoystick;
+			StartControlPanel();
+		}
 	}
 
 	function OnActivate()

@@ -983,6 +983,11 @@ DEF theLauncher Level
 				UpdateTrackList();
 			}
 		}
+		function OnRightThumbDown()
+		{
+			previousControlType = theLauncherJoystick;
+			StartControlPanel();
+		}
 	}
 	
 	function OnActivate()

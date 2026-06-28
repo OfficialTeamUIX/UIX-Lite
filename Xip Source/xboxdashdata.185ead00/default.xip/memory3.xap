@@ -22,6 +22,7 @@ function ShowFileDetailView()
 
 		bDetailView = true;
 		fileDetailView.isBound = true;
+		CurrentViewpoint = fileDetailView;
 		c.Saved_Game_Parent.SetAlpha(0);
 		c.Copy_Dest_Parent.SetAlpha(1);
 		c.mainPodPanel.SetAlpha(0);
@@ -439,7 +440,8 @@ function StartCopy()
 
 
 	fileCopyView.isBound = true;
-
+	CurrentViewpoint = fileCopyView;
+	
 	ResetCopyScreen();
 	UpdateSavedGameInfo();
 	UpdateCopyToInfo();
@@ -1119,14 +1121,14 @@ DEF theFilesMenu Level
 		jump false
 	}
 
-	control Joystick
+	control DEF theMemoryFilesJoystick Joystick
 	{
 		function OnADown()
 		{
 			var c = theFilesMenu.children[0].children[0];
 			if (c.Dummy01.moving)
-				return;
-
+			return;
+			
 			if (bInCopy)
 			{
 				c.MU_select_pod_HL2.children[0].appearance.material.param = 1;
@@ -1144,19 +1146,19 @@ DEF theFilesMenu Level
 				c.MU_select_pod_HL.children[0].appearance.material.param = 1;
 				PlaySoundA();
 				if(c.theSavedGameGrid.curDevUnit != 8) //MUs
-					ShowFileDetailView();
+				ShowFileDetailView();
 				else if(c.theSavedGameGrid.GetTitleCount() > 0)
-					ShowFileDetailView();
-
+				ShowFileDetailView();
+				
 			}
 		}
-
+		
 		function OnBDown()
 		{
 			var c = theFilesMenu.children[0].children[0];
 			if (c.Dummy01.moving)
-				return;
-
+			return;
+			
 			if (bInCopy)
 			{
 				PlaySoundB();
@@ -1176,20 +1178,20 @@ DEF theFilesMenu Level
 				// Turn enumeration off before changing levels.
 				theMemoryMonitor.enumerationOn = false;
 				if (bCleanupSpecifiedDrive)
-					theLauncherLevel.GoTo();
+				theLauncherLevel.GoTo();
 				else
-					theMemoryMenu.GoBackTo();
-
+				theMemoryMenu.GoBackTo();
+				
 				theGamesSubMenuOut.Play();
 			}
 		}
-
+		
 		function OnMoveUp()
 		{
 			var c = theFilesMenu.children[0].children[0];
 			if (c.Dummy01.moving)
-				return;
-
+			return;
+			
 			if (bInCopy)
 			{
 				c.theCopyDestination.selectUp();
@@ -1207,22 +1209,22 @@ DEF theFilesMenu Level
 			{
 				var oldCurTitle = c.theSavedGameGrid.curTitle;
 				var oldCurSave = c.theSavedGameGrid.curGridItem;
-
+				
 				c.theSavedGameGrid.selectUp();
-
+				
 				if (oldCurTitle != c.theSavedGameGrid.curTitle)
-					theMemoryTitleSelectSound.Play();
+				theMemoryTitleSelectSound.Play();
 				else if (oldCurSave != c.theSavedGameGrid.curGridItem)
-					theMemorySaveSelectSound.Play();
+				theMemorySaveSelectSound.Play();
 			}
 		}
-
+		
 		function OnMoveDown()
 		{
 			var c = theFilesMenu.children[0].children[0];
 			if (c.Dummy01.moving)
-				return;
-
+			return;
+			
 			if (bInCopy)
 			{
 				c.theCopyDestination.selectDown();
@@ -1240,22 +1242,22 @@ DEF theFilesMenu Level
 			{
 				var oldCurTitle = c.theSavedGameGrid.curTitle;
 				var oldCurSave = c.theSavedGameGrid.curGridItem;
-
+				
 				c.theSavedGameGrid.selectDown();
-
+				
 				if (oldCurTitle != c.theSavedGameGrid.curTitle)
-					theMemoryTitleSelectSound.Play();
+				theMemoryTitleSelectSound.Play();
 				else if (oldCurSave != c.theSavedGameGrid.curGridItem)
-					theMemorySaveSelectSound.Play();
+				theMemorySaveSelectSound.Play();
 			}
 		}
-
+		
 		function OnMoveRight()
 		{
 			var c = theFilesMenu.children[0].children[0];
 			if (c.Dummy01.moving)
-				return;
-
+			return;
+			
 			if (bInCopy)
 			{
 			}
@@ -1266,22 +1268,22 @@ DEF theFilesMenu Level
 			{
 				var oldCurTitle = c.theSavedGameGrid.curTitle;
 				var oldCurSave = c.theSavedGameGrid.curGridItem;
-
+				
 				c.theSavedGameGrid.selectRight();
-
+				
 				if (oldCurTitle != c.theSavedGameGrid.curTitle)
-					theMemoryTitleSelectSound.Play();
+				theMemoryTitleSelectSound.Play();
 				else if (oldCurSave != c.theSavedGameGrid.curGridItem)
-					theMemorySaveSelectSound.Play();
+				theMemorySaveSelectSound.Play();
 			}
 		}
-
+		
 		function OnMoveLeft()
 		{
 			var c = theFilesMenu.children[0].children[0];
 			if (c.Dummy01.moving)
-				return;
-
+			return;
+			
 			if (bInCopy)
 			{
 			}
@@ -1292,19 +1294,25 @@ DEF theFilesMenu Level
 			{
 				var oldCurTitle = c.theSavedGameGrid.curTitle;
 				var oldCurSave = c.theSavedGameGrid.curGridItem;
-
+				
 				c.theSavedGameGrid.selectLeft();
-
+				
 				if (oldCurTitle != c.theSavedGameGrid.curTitle)
-					theMemoryTitleSelectSound.Play();
+				theMemoryTitleSelectSound.Play();
 				else if (oldCurSave != c.theSavedGameGrid.curGridItem)
-					theMemorySaveSelectSound.Play();
+				theMemorySaveSelectSound.Play();
 			}
+		}
+		function OnRightThumbDown()
+		{
+			previousControlType = theMemoryFilesJoystick;
+			StartControlPanel();
 		}
 	}
 
 	function OnActivate()
 	{
+		CurrentViewpoint = fileListView;
 		EnableAmbientAudio();
 		if (children[0].children.length() > 0)
 		{
@@ -1618,7 +1626,7 @@ DEF theMemoryMenu Level
 		jump false
 	}
 
-	control Joystick
+	control DEF theMemoryJoystick Joystick
 	{
 		function OnMoveUp()
 		{
@@ -1685,6 +1693,11 @@ DEF theMemoryMenu Level
 					theMainMenu.GoBackTo();
 				}
 			}
+		}
+		function OnRightThumbDown()
+		{
+			previousControlType = theMemoryJoystick;
+			StartControlPanel();
 		}
 	}
 

@@ -2142,7 +2142,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "260131"; //Date of commit YYMMDD
+	sBuildDate = "260628"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -3875,7 +3875,7 @@ DEF theMainMenuAlternateViewpoint Viewpoint
 function StartControlPanel()
 {
 	theControlPanelControlsInline.children[0].InitializeControlPanel();
-	EnableCurrentAlternateViewpoint();
+	if(CurrentViewpoint == theMainMenuViewpoint) EnableCurrentAlternateViewpoint();
 	theScreenSaver.enabled = false;
 }
 

@@ -459,6 +459,11 @@ DEF theLiveTodayLevel Level
 		{
 			theConfig.ToggleNoisyCamera();
 		}
+		function OnRightThumbDown()
+		{
+			previousControlType = theLiveTodayJoystick;
+			StartControlPanel();
+		}
 	}
 
 	function OnActivate()

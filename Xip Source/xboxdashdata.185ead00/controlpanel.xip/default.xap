@@ -806,24 +806,24 @@ DEF theControlPanelDisplay Transform
 						{
 							children
 							[
-								DEF theAudioPlayerBackground Transform
-								{
-									children 
-									[
-										Shape
-										{
-											appearance Appearance
-											{
-												material MaxMaterial { name "GameIcon_01" }
-												texture DEF theAudioPlayerBackground_texture ImageTexture { url "panel8.tga" }  
-											}
-											geometry Mesh { url "control_panel_backdrop.xm" }
-										}
-									]
-									scale 2.01 2.37 2.2
-									rotation 1.000000 0.000000 0.000000 3.140000 
-									translation 1 20 0
-								}
+								//DEF theAudioPlayerBackground Transform
+								//{
+								//    children 
+								//    [
+								//        Shape
+								//        {
+								//            appearance Appearance
+								//            {
+								//                material MaxMaterial { name "PanelBacking_02" }
+								//                texture DEF theAudioPlayerBackground_texture ImageTexture { url "panel8.tga" }  
+								//            }
+								//            geometry Mesh { url "control_panel_backdrop.xm" }
+								//        }
+								//    ]
+								//    scale 2.01 2.37 2.2
+								//    rotation 1.000000 0.000000 0.000000 3.140000 
+								//    translation 1 20 0
+								//}
 								DEF theSoundtrackText_Title Transform
 								{
 									children

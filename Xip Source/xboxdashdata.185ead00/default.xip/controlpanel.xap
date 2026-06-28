@@ -44,6 +44,7 @@ function ShowControlPanel()
 	theInLine.theControlPanelDisplay.SetAlpha(1);
 	UpdateMainIconHilite();
 	UpdateMusicPlayerDisplayText();
+	theMainMenu.children[0].children[0].select.SetAlpha(0);
 }
 
 function HideControlPanel()
@@ -71,6 +72,7 @@ function HideControlPanel()
 	{
 		HideDropDown2();
 	}
+	theMainMenu.children[0].children[0].select.SetAlpha(1);
 }
 
 DEF theMainControlPanelJoy Joystick
