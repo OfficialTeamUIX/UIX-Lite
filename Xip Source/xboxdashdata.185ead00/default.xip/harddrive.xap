@@ -320,6 +320,13 @@ function EnterLauncherMenu()
 			}
 		}
 	}
+	if (bFromToolbox) 
+	{
+		bFromToolbox = false;
+		nCurLauncherItem0 = TotalSections - 1;
+		if(TotalSections > 5) nCurLauncherScroll0 = TotalSections - 5;
+		UpdateLauncherMenu();
+	}
 }
 
 function LoadMenuItems()
@@ -346,7 +353,7 @@ function LoadMenuItems()
 	arrMenuNames[TotalSections] = Translate("File Browser");
 	arrMenuPaths[TotalSections] = Translate("Xbox Root");
 	TotalSections = TotalSections + 1;
-	if(GetSavedBooleanValue("ShowInSettings","StartFTP") != true)
+	if(ShowStartFTPInSettings != true)
 	{
 		arrMenuNames[TotalSections] = Translate("Start UIX Toolbox");
 		arrMenuPaths[TotalSections] = Translate("");

@@ -101,7 +101,6 @@ function EnableAmbientAudio()
 	if(BGMon)
 	{
 		theControlPanelControlsInline.children[0].MusicPlayerStart();
-		DisableAmbientAudio();
 	}
 	else
 	{
@@ -2115,6 +2114,7 @@ var bRefreshCache;
 var bHasExtendedPartition;
 var bUseMainMenuAttract;
 var bMainMenuAttractFinish;
+var bFromToolbox;
 var bIsCerbios;
 var DriveLocations;
 var PartitionLocations;
@@ -2142,7 +2142,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "260628"; //Date of commit YYMMDD
+	sBuildDate = "260731"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2150,6 +2150,7 @@ function initialize()
 	bHDDInitialized = false;
 	bMusicPlayerReady = false;
 	bPlayingCd = false;
+	bFromToolbox = false;
 	ControlPanelOut = false;
 	RightThumb = false;
 	LeftThumb = false;
@@ -2364,6 +2365,20 @@ function MainInitPart3()
 		nSettingArea = theConfig.GetLaunchParameter1();
 		EnableInput(true);
 		EnableAmbientAudio();
+		if (nSettingArea == 32)
+		{
+			bFromToolbox = true;
+			bBackToLauncher = false;
+			if (ShowStartFTPInSettings != true)
+			{
+				GoToLauncher(); 
+				return;
+			}
+			else
+			{
+				nCurMainMenuItem = 4;
+			}
+		}
 		GoToSettings();
 		return;
 	}

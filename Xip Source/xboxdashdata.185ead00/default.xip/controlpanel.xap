@@ -674,8 +674,11 @@ function InitializeMusicPlayerValues()
 	SoundtrackSongMenu = false;
 	
 	PlaylistNumber = 0;
-	GetPlaylists();
+	var nVolume=StringToNumber(PlaylistInfo.GetValue("Music Player Volume"));
+	if(nVolume <= 0 | nVolume > 1.0) nVolume = 1.0;
+	theMusicPlayer.volume = nVolume;
 	acurMenuItem = 0;
+	theInLine = theControlPanelInline.children[0];
 }
 
 function MusicPlayerStop()
@@ -704,10 +707,11 @@ function PlaySong(x,y)
 function MusicPlayerPlay()
 {
 	theMusicPlayer.Stop();
-	BGMon = true;
-	DisableAmbientAudio();
 	theMusicPlayer.url = "st:" + theMusicCollection.GetSoundtrackSongID(BGMst, BGMtr);
 	theMusicPlayer.Play();
+	if(theMusicPlayer.transportMode == 0) return;
+	BGMon = true;
+	DisableAmbientAudio();
 	vCurAlbum = theMusicCollection.GetSoundtrackName(BGMst);
 	vCurSong = theMusicCollection.GetSoundtrackSongName(BGMst, BGMtr);
 	UpdateMusicPlayerDisplayText();

@@ -15,6 +15,7 @@ var nCurVideoItem;
 var nCurAudioItem;
 var nCurLockItem;
 var nNetworkItem;
+var nTooboxItem;
 
 function initialize()
 {
@@ -3559,6 +3560,7 @@ function StartSettingsMenu()
 	if(ShowStartFTPInSettings)
 	{
 		sSettingsMenu[index] = Translate("Start UIX Toolbox");
+		nTooboxItem = index;
 		index = index + 1;
 	}
 	
@@ -3658,7 +3660,7 @@ function MenuIcon()
 	}
 	if (sSettingsElements[nCurSettingsMenuItem] == Translate("Insignia")) 
 	{ 
-		ShowIcon(c.Icon_live); 
+		ShowIcon(c.InsigniaIcon); 
 	}
 	if (sSettingsElements[nCurSettingsMenuItem] == Translate("XONLINE")) 
 	{ 
@@ -3670,7 +3672,7 @@ function MenuIcon()
 	}
 	else if (sSettingsElements[nCurSettingsMenuItem] == Translate("Configuration"))
 	{
-		ShowIcon(c.ConsoleIcon);
+		ShowIcon(c.UIXIcon);
 	}
 	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("CLOCK"))
 	{
@@ -3695,7 +3697,14 @@ function MenuIcon()
 	}
 	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("LIVE TODAY"))
 	{
-		ShowIcon(c.Icon_live);
+		if(GetSavedBooleanValue("default","ShowInsignia"))
+		{
+			ShowIcon(c.InsigniaIcon);
+		}
+		else
+		{
+			ShowIcon(c.Icon_live);
+		}
 	}
 	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("NETWORK"))
 	{
@@ -3979,6 +3988,15 @@ DEF theSettingsMenu Level
 							strCurMenu = "AUDIO MODE";
 							theSetModeMenu.GoTo();
 						}
+					}
+					else if (bFromToolbox)
+					{
+						bFromToolbox = false;
+						nCurSettingsMenuItem = nTooboxItem;
+						if(nCurSettingsMenuItem >= nNumSettingsMenuItems) { nSettingsScroll = nCurSettingsMenuItem - nNumSettingsMenuItems + 1; }
+						nCurSettingsMenuButton = nCurSettingsMenuItem - nSettingsScroll;
+						UpdateSettingsMenu();
+						theSettingsViewpoint.jump = false;
 					}
 				}
 			}
