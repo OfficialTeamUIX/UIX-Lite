@@ -2116,6 +2116,7 @@ var bUseMainMenuAttract;
 var bMainMenuAttractFinish;
 var bFromToolbox;
 var bIsCerbios;
+var bIsTheseus;
 var DriveLocations;
 var PartitionLocations;
 var sBuildDate;
@@ -2142,7 +2143,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "260731"; //Date of commit YYMMDD
+	sBuildDate = "260802"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2206,6 +2207,8 @@ function initialize()
 	IconFile = new Settings;
 	TitleNamesFile = new Settings;
 	PlaylistInfo = new Settings;
+	bIsCerbios = (theConfig.GetROMVersion() == "1.00.8008.135");
+	bIsTheseus = theConfig.FileExists("Q:\\System\\config.ini");
 	version.file = "T:\\version";
 	PlaylistInfo.file = "T:\\PlaylistInfo.xbx";    
 	version.SetValue("version","0.5." + sBuildDate);
@@ -2214,7 +2217,6 @@ function initialize()
 	XlateFile.file = "Y:\\UIX Configs\\xlate.ini";
 	IconFile.file = "Y:\\UIX Configs\\icons.ini";
 	TitleNamesFile.file = "Y:\\UIX Configs\\TitleNames.ini";
-	bIsCerbios = (theConfig.GetROMVersion() == "1.00.8008.135");
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
 	bMainMenuOnAutoSignIn = GetSavedBooleanValue("default","MainMenuOnAutoSignIn");true;

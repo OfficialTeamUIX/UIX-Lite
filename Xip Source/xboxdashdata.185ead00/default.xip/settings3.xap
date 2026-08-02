@@ -1863,7 +1863,16 @@ function StartPanelMenu()
 		c.PanelHeading.text = theTranslator.Translate("LIVE TODAY");
 		c.QuestionText.text = theTranslator.Translate("EnableLiveToday");
 		c.ButtonGroup.visible = true;
-		c.Icon_live.visible = true;
+		if(ShowInsignia) 
+		{
+			c.Icon_live.visible = false;
+			c.InsigniaIcon.visible = true;
+		}
+		else
+		{
+			c.Icon_live.visible = true;
+			c.InsigniaIcon.visible = false;
+		}
 
 		nCurPanelMenuItem = theConfig.GetLiveToday();
 		nStartPanelMenuItem = nCurPanelMenuItem;
@@ -3514,7 +3523,7 @@ function StartSettingsMenu()
 	
 	if(ShowXOnlineInSettings)
 	{
-		if(GetSavedBooleanValue("default","ShowInsignia"))
+		if(ShowInsignia)
 		{
 			sSettingsMenu[index] = Translate("Insignia");
 		}
@@ -3697,7 +3706,7 @@ function MenuIcon()
 	}
 	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("LIVE TODAY"))
 	{
-		if(GetSavedBooleanValue("default","ShowInsignia"))
+		if(ShowInsignia)
 		{
 			ShowIcon(c.InsigniaIcon);
 		}

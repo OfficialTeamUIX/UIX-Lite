@@ -2270,7 +2270,7 @@ DEF InsigniaIcon Transform
 	[
 		Transform
 		{
-			scale 5 5 5
+			scale 4 4 4
 			children
 			[
 				Waver

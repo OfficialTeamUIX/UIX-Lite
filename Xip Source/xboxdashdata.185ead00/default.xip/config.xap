@@ -219,7 +219,14 @@ function BuildSSList()
 	configValues[i] = "ShowInSettings-Music";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
-	configList[i] = "XONLINE:";
+	if(ShowInsignia)
+	{
+		configList[i] = "Insignia:";
+	}
+	else
+	{
+		configList[i] = "XONLINE:";
+	}
 	configValues[i] = "ShowInSettings-XOnline";
 	configSelect[i] = "toggleTF()";
 	i = i +1;
