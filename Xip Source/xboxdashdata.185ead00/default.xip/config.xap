@@ -78,6 +78,10 @@ function buildGSList() //just copy this function for more subsections
 	configValues[i] = "default-UseMainMenuAttract";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
+	configList[i] = "Enable Background Music:";
+	configValues[i] = "default-BackgroundMusic";
+	configSelect[i] = "toggleTF()";
+	i = i + 1;
 	configList[i] = "Auto-Launch Media:";
 	configValues[i] = "default-AutoLaunchMedia";
 	configSelect[i] = "toggleTF()";
@@ -86,10 +90,10 @@ function buildGSList() //just copy this function for more subsections
 	configValues[i] = "default-UsetHcScreenSaver";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
-	configList[i] = "UIX Settings Icon:";
-	configValues[i] = "default-ConfigPanelIcon";
-	configSelect[i] = "toggleIcon()";
-	i = i + 1;
+	//configList[i] = "UIX Settings Icon:";
+	//configValues[i] = "default-ConfigPanelIcon";
+	//configSelect[i] = "toggleIcon()";
+	//i = i + 1;
 	configList[i] = "Launcher Orb Icon:";
 	configValues[i] = "default-LauncherOrbIcon";
 	configSelect[i] = "toggleLOI()";
@@ -215,7 +219,14 @@ function BuildSSList()
 	configValues[i] = "ShowInSettings-Music";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
-	configList[i] = "XONLINE:";
+	if(ShowInsignia)
+	{
+		configList[i] = "Insignia:";
+	}
+	else
+	{
+		configList[i] = "XONLINE:";
+	}
 	configValues[i] = "ShowInSettings-XOnline";
 	configSelect[i] = "toggleTF()";
 	i = i +1;
@@ -382,12 +393,21 @@ function toggleIcon()
 	var cValue;
 	if(b.toLowerCase() == "console")
 	{
+		c.UIXIcon.visible = true;
+		c.GlobeIcon.visible = false;
+		c.ConsoleIcon.visible = false;
+		cValue = "UIX";
+	}
+	else if(b.toLowerCase() == "uix")
+	{
+		c.UIXIcon.visible = false;
 		c.GlobeIcon.visible = true;
 		c.ConsoleIcon.visible = false;
 		cValue = "Globe";
 	}
 	else
 	{
+		c.UIXIcon.visible = false;
 		c.GlobeIcon.visible = false;
 		c.ConsoleIcon.visible = true;
 		cValue = "Console";
@@ -744,7 +764,8 @@ DEF theConfigPanel Level
 					if(Discord.GetValue("RelayPort") == "") Discord.SetValue("RelayPort","1101");
 				}
 				var cValue = getConfigMenuValue("default-ConfigPanelIcon");
-				if(cValue.toLowerCase() == "globe") { c.GlobeIcon.visible = true; } else { c.ConsoleIcon.visible = true; }
+				//if(cValue.toLowerCase() == "globe") { c.GlobeIcon.visible = true; } else if(cValue.toLowerCase() == "uix") { c.UIXIcon.visible = true; } else { c.ConsoleIcon.visible = true; }
+				c.UIXIcon.visible = true;
 				buildconfigList();
 				tabSlot(0);
 			}
@@ -925,6 +946,11 @@ DEF theConfigPanel Level
 		function OnWhiteDown()
 		{
 			//theConfig.DebugOutput(configList[LV1Item] );
+		}
+		function OnRightThumbDown()
+		{
+			previousControlType = theConfigMenuJoystick;
+			StartControlPanel();
 		}
 	}
 	

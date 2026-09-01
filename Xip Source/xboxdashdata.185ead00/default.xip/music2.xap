@@ -354,7 +354,7 @@ DEF theMusicCopyMenu Level
 		]
 	}
 
-	path Viewpoint
+	path DEF theMusicCopyViewpoint Viewpoint
 	{
 		fieldOfView 1.342000
 		orientation -0.088340 -0.996100 -0.000514 -0.160500
@@ -362,7 +362,7 @@ DEF theMusicCopyMenu Level
 		jump false
 	}
 
-	control Joystick
+	control DEF theMusicCopyJoystick Joystick
 	{
 		function OnADown()
 		{
@@ -445,10 +445,16 @@ DEF theMusicCopyMenu Level
 				UpdateCopyDestHighlight();
 			}
 		}
+		function OnRightThumbDown()
+		{
+			previousControlType = theMusicCopyJoystick;
+			StartControlPanel();
+		}
 	}
 
 	function OnActivate()
 	{
+		CurrentViewpoint = theMusicCopyViewpoint;
 		EnableAmbientAudio();
 		if (children[0].children.length() > 0)
 			EnterCopyDestMenu();
@@ -1177,6 +1183,7 @@ function NoVisualizer()
 	{
 		SetVisualizerAlpha(1);
 		musicPlayerViewpoint.isBound = true;
+		CurrentViewpoint = musicPlayerViewpoint;
 		theMusicPlayJoystick.enableSecretKey = true;
 		theScreenSaver.enabled = true;
 		g_bFullVis = false;
@@ -1240,6 +1247,7 @@ function ShowMusicMenu()
 	UpdateMusicMenu();
 
 	musicMenuViewpoint.isBound = true;
+	CurrentViewpoint = musicMenuViewpoint;
 	bMusicMenuVisible = true;
 
 	EnableAmbientAudio();
@@ -1289,6 +1297,7 @@ function StartMusicPlayer()
 	}
 
 	musicPlayerViewpoint.isBound = true;
+	CurrentViewpoint = musicPlayerViewpoint;
 	bMusicMenuVisible = false;
 	UpdatePlayerMenu();
 	UpdateTransportIndicators();
@@ -1333,6 +1342,7 @@ function StartMusicCopier()
 	UpdateTrackList();
 
 	musicPlayerViewpoint.isBound = true;
+	CurrentViewpoint = musicPlayerViewpoint;
 	bMusicMenuVisible = false;
 	UpdatePlayerMenu();
 	UpdateTransportIndicators();
@@ -1377,6 +1387,7 @@ function StartMusicEditor()
 	UpdateTrackList();
 
 	musicPlayerViewpoint.isBound = true;
+	CurrentViewpoint = musicPlayerViewpoint;
 	bMusicMenuVisible = false;
 	UpdatePlayerMenu();
 	UpdateTransportIndicators();
@@ -2166,6 +2177,7 @@ DEF theMusicPlayMenu Level
 			{
 				SetVisualizerAlpha(0);
 				visualizerViewpoint.isBound = true;
+				CurrentViewpoint = visualizerViewpoint;
 				theMusicPlayJoystick.enableSecretKey = false; // turn checking off
 				theScreenSaver.enabled = false;
 				g_bFullVis = true;
@@ -2178,10 +2190,16 @@ DEF theMusicPlayMenu Level
 			{
 				SetVisualizerAlpha(0);
 				visualizerViewpoint.isBound = true;
+				CurrentViewpoint = visualizerViewpoint;
 				theMusicPlayJoystick.enableSecretKey = false; // turn checking off
 				theScreenSaver.enabled = false;
 				g_bFullVis = true;
 			}
+		}
+		function OnRightThumbDown()
+		{
+			previousControlType = theMusicPlayJoystick;
+			StartControlPanel();
 		}
 	}
 
@@ -2205,29 +2223,6 @@ DEF theMusicPlayMenu Level
 }
 
 ////////////////////////////////////////////////////////////////////////////
-
-DEF theMusicCollection MusicCollection
-{
-	function OnCopyComplete()
-	{
-		OnMusicCopyComplete();
-	}
-
-	function OnCopyProgressChanged()
-	{
-		UpdateProgressText(theMusicCollection.GetUpdateString());
-		SetProgress(copyProgress);
-	}
-
-	function OnAddSoundtrackNewSongFailed(ErrorCode)
-	{
-		g_nRec = ErrorCode;
-		if (ErrorCode == 1)
-		{
-			theLauncherLevel.GoTo();
-		}
-	}
-}
 
 var musicCount;
 var musicScroll;
@@ -2449,7 +2444,7 @@ DEF theMusicMenu Level
 		jump false
 	}
 
-	control Joystick
+	control DEF theMusicJoystick Joystick
 	{
 		function OnADown()
 		{
@@ -2541,6 +2536,11 @@ DEF theMusicMenu Level
 				musicButton = musicButton + 1;
 
 			UpdateMusicList();
+		}
+		function OnRightThumbDown()
+		{
+			previousControlType = theMusicJoystick;
+			StartControlPanel();
 		}
 	}
 

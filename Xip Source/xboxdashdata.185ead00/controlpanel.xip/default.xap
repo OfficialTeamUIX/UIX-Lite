@@ -1,0 +1,1640 @@
+
+DEF theControlPanelDisplay Transform
+{
+	
+	children
+	[
+		DEF theBasicControlPanel Transform
+		{
+			children
+			[
+				DEF controlpanel_tube_01 Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "Tubes"
+								}
+							}
+							geometry Mesh { url "controlpanel_tube_01.xm" } 
+						}
+					]
+					scale 2 2 2
+					rotation 0.000000 0.000000 0.000000 0.000000 
+					translation 0 0 0
+				}
+				DEF controlpanel_tube_02 Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "Tubes"
+								}
+							}
+							geometry Mesh { url "controlpanel_tube_02.xm" } 
+						}
+					]
+					scale 2 2 2
+					rotation 0.000000 0.000000 0.000000 0.000000 
+					translation 0 0 0
+				}   
+				DEF controlpanel_tube_03 Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "Tubes"
+								}
+							}
+							geometry Mesh { url "controlpanel_tube_03.xm" } 
+						}
+					]
+					scale 2 2 2
+					rotation 0.000000 0.000000 0.000000 0.000000 
+					translation 0 0 0
+				}
+				DEF controlpanel_tube_04 Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial
+								{
+									name "Tubes"
+								}
+							}
+							geometry Mesh { url "controlpanel_tube_04.xm" } 
+						}
+					]
+					scale 2 2 2
+					rotation 0.000000 0.000000 0.000000 0.000000 
+					translation 0 0 0
+				}
+				
+				DEF theControlPanelParts Transform
+				{
+					children
+					[
+						
+						DEF controlpanel_backing Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance { material MaxMaterial { name "PanelBacking_02" } 
+									/*texture ImageTexture { url "keyboard_alpha.xbx" }*/ }
+									geometry Mesh { url "controlpanel_backing.xm" }
+								}
+							]
+							rotation -1.000000 -0.006247 0.006546 -1.615000
+							scale 0.786900 0.786900 0.786900
+							scaleOrientation 0.065650 0.935500 -0.347200 -0.408500
+							translation -0.015970 0.101500 0
+						}
+						DEF controlpanel_panel_01 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance { material MaxMaterial { name "FlatSurfaces" } }
+									geometry Mesh { url "controlpanel_panel_01.xm" }
+								}
+								Shape
+								{
+									appearance Appearance { material MaxMaterial { name "MenuCell" } }
+									geometry Mesh { url "controlpanel_panel_01.xm" }
+								}
+							]
+							rotation -1.000000 -0.003277 0.001206 -1.573000
+							scale 0.012610 0.012610 0.012610
+							scaleOrientation 0.371300 0.666500 0.646400 -0.119900
+							translation 1.033000 0.068050 0
+						}
+						DEF controlpanel_panel_02 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance { material MaxMaterial { name "FlatSurfaces" } }
+									geometry Mesh { url "controlpanel_panel_02.xm" }
+								}
+								Shape
+								{
+									appearance Appearance { material MaxMaterial { name "MenuCell" } }
+									geometry Mesh { url "controlpanel_panel_02.xm" }
+								}
+							]
+							rotation -1.000000 -0.003277 0.001206 -1.573000
+							scale 0.012610 0.012610 0.012610
+							scaleOrientation 0.371300 0.666500 0.646400 -0.119900
+							translation -0.793800 -0.168800 0
+						}   
+						DEF controlpanel_panel_03 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance { material MaxMaterial { name "FlatSurfaces" } }
+									geometry Mesh { url "controlpanel_panel_03.xm" }
+								}
+								Shape
+								{
+									appearance Appearance { material MaxMaterial { name "MenuCell" } }
+									geometry Mesh { url "controlpanel_panel_03.xm" }
+								}
+							]
+							rotation -1.000000 -0.003277 0.001206 -1.573000
+							scale 0.012610 0.012610 0.012610
+							scaleOrientation 0.371300 0.666500 0.646400 -0.11990
+							translation 0.759200 0.116900 0
+						}   
+						DEF controlpanel_panel_04 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance { material MaxMaterial { name "FlatSurfaces" } }
+									geometry Mesh { url "controlpanel_panel_04.xm" }
+								}
+								Shape
+								{
+									appearance Appearance { material MaxMaterial { name "MenuCell" } }
+									geometry Mesh { url "controlpanel_panel_04.xm" }
+								}
+							]
+							rotation -1.000000 -0.003277 0.001206 -1.573000
+							scale 0.012610 0.012610 0.012610
+							scaleOrientation 0.371300 0.666500 0.646400 -0.119900
+							translation 0.197300 0.570800 0
+						}   
+						DEF controlpanel_panel_05 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance { material MaxMaterial { name "FlatSurfaces" } }
+									geometry Mesh { url "controlpanel_panel_05.xm" }
+								}
+								Shape
+								{
+									appearance Appearance { material MaxMaterial { name "MenuCell" } }
+									geometry Mesh { url "controlpanel_panel_05.xm" }
+								}
+							]
+							rotation -1.000000 -0.003277 0.001206 -1.573000
+							scale 0.012610 0.012610 0.012610
+							scaleOrientation 0.371300 0.666500 0.646400 -0.119900
+							translation -0.853200 0.389000 0
+						}
+					]
+					rotation 0.000000 0.000000 -1.000000 -3.14158
+					scale 55 61 58
+					translation 7 10 0 
+				}
+				
+				DEF theControlPanelIcons Transform
+				{
+					children
+					[
+						DEF controlpanel_time_display Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "NavType"
+										}
+									}
+									geometry DEF controlpanel_time_text Text { font "Heading" text "<clock>" }  
+								}
+							]
+							scale 4.8 4.9 5  
+							rotation 0.000000 0.000000 0.000000 0.000000 
+							translation -27.2 -21.86 0
+						}
+						DEF controlpanel_icon_01 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "GameIcon_01"
+										}
+										texture DEF controlpanel_icon_01_texture ImageTexture
+										{
+											url "rew.bmp"
+										}
+									}
+									geometry Mesh { url "controlpanel_icon_01.xm" } 
+								}
+							]
+							scale 2 2 2
+							rotation 0.000000 0.000000 0.000000 0.000000 
+							translation 0 0 0
+						}
+						DEF controlpanel_icon_01_hilite Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "MemoryHeader"
+										}
+									}
+									geometry Mesh { url "controlpanel_icon_01_hilite.xm" }  
+								}
+							]
+							scale 2 2 2
+							rotation 0.000000 0.000000 0.000000 0.000000 
+							translation 0 0 0
+						}
+						DEF controlpanel_icon_02 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "GameIcon_01"
+										}
+										texture DEF controlpanel_icon_02_texture ImageTexture
+										{
+											url "play.bmp"
+										}
+									}
+									geometry Mesh { url "controlpanel_icon_02.xm" } 
+								}
+							]
+							scale 2 2 2
+							rotation 0.000000 0.000000 0.000000 0.000000 
+							translation 0 0 0
+						}
+						DEF controlpanel_icon_02_hilite Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "MemoryHeader"
+										}
+									}
+									geometry Mesh { url "controlpanel_icon_02_hilite.xm" }  
+								}
+							]
+							scale 2 2 2
+							rotation 0.000000 0.000000 0.000000 0.000000 
+							translation 0 0 0
+						}
+						DEF controlpanel_icon_03 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "GameIcon_01"
+										}
+										texture DEF controlpanel_icon_03_texture ImageTexture
+										{
+											url "stop.bmp"
+										}
+									}
+									geometry Mesh { url "controlpanel_icon_03.xm" } 
+								}
+							]
+							scale 2 2 2
+							rotation 0.000000 0.000000 0.000000 0.000000 
+							translation 0 0 0
+						}
+						DEF controlpanel_icon_03_hilite Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "MemoryHeader"
+										}
+									}
+									geometry Mesh { url "controlpanel_icon_03_hilite.xm" }  
+								}
+							]
+							scale 2 2 2
+							rotation 0.000000 0.000000 0.000000 0.000000 
+							translation 0 0 0
+						}
+						DEF controlpanel_icon_014 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "GameIcon_01"
+										}
+										texture DEF controlpanel_icon_04_texture ImageTexture
+										{
+											url "ffw.bmp"
+										}
+									}
+									geometry Mesh { url "controlpanel_icon_04.xm" } 
+								}
+							]
+							scale 2 2 2
+							rotation 0.000000 0.000000 0.000000 0.000000 
+							translation 0 0 0
+						}
+						DEF controlpanel_icon_04_hilite Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "MemoryHeader"
+										}
+									}
+									geometry Mesh { url "controlpanel_icon_04_hilite.xm" }  
+								}
+							]
+							scale 2 2 2
+							rotation 0.000000 0.000000 0.000000 0.000000 
+							translation 0 0 0
+						}
+						DEF controlpanel_icon_05 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "GameIcon_01"
+										}
+										texture DEF controlpanel_icon_05_texture ImageTexture
+										{
+											url "repeat.bmp"
+										}
+									}
+									geometry Mesh { url "controlpanel_icon_05.xm" } 
+								}
+							]
+							scale 2 2 2
+							rotation 0.000000 0.000000 0.000000 0.000000 
+							translation 0 0 0
+						}
+						DEF controlpanel_icon_05_hilite Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "MemoryHeader"
+										}
+									}
+									geometry Mesh { url "controlpanel_icon_05_hilite.xm" }  
+								}
+							]
+							scale 2 2 2
+							rotation 0.000000 0.000000 0.000000 0.000000 
+							translation 0 0 0
+						}
+						DEF controlpanel_icon_06 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "GameIcon_01"
+										}
+										texture DEF controlpanel_icon_06_texture ImageTexture
+										{
+											url "random.bmp"
+										}
+									}
+									geometry Mesh { url "controlpanel_icon_06.xm" } 
+								}
+							]
+							scale 2 2 2
+							rotation 0.000000 0.000000 0.000000 0.000000 
+							translation 0 0 0
+						}
+						DEF controlpanel_icon_06_hilite Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "MemoryHeader"
+										}
+									}
+									geometry Mesh { url "controlpanel_icon_06_hilite.xm" }  
+								}
+							]
+							scale 2 2 2
+							rotation 0.000000 0.000000 0.000000 0.000000 
+							translation 0 0 0
+						}
+						DEF controlpanel_icon_07 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "GameIcon_01"
+										}
+										texture DEF controlpanel_icon_07_texture ImageTexture
+										{
+											url "continuous.bmp"
+										}
+									}
+									geometry Mesh { url "controlpanel_icon_07.xm" } 
+								}
+							]
+							scale 2 2 2
+							rotation 0.000000 0.000000 0.000000 0.000000 
+							translation 0 0 0
+						}
+						DEF controlpanel_icon_07_hilite Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "MemoryHeader"
+										}
+									}
+									geometry Mesh { url "controlpanel_icon_07_hilite.xm" }  
+								}
+							]
+							scale 2 2 2
+							rotation 0.000000 0.000000 0.000000 0.000000 
+							translation 0 0 0
+						}
+					]
+					//scale 0 0 0
+					rotation 0.000000 0.000000 0.000000 0.000000 
+					translation 1 -3 0
+				}
+				DEF theXboxLogo Transform   //jbone1
+				{
+					children
+					[
+						Spinner
+						{
+							rpm -1.45
+							axis 0 1 0
+							children
+							[
+								Transform
+								{
+									children
+									[
+										Shape
+										{
+											appearance Appearance
+											{
+												material MaxMaterial
+												{
+													name "PanelBacking_01"
+												}
+											}
+											geometry Mesh { url "logox.xm" }    
+										}
+										Shape
+										{
+											appearance Appearance
+											{
+												material MaxMaterial
+												{
+													name "FlatSrfc/PodParts"//"FlatSurfaces2sided"
+												}
+											}
+											geometry Mesh { url "logox.xm" }    
+										}
+									]
+									scale 0.034 0.034 0.034 
+								}
+							]
+						}
+						
+						Spinner
+						{
+							rpm 5.75
+							axis 1 0 1
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "InnerWall_01"
+										}
+										texture ImageTexture
+										{
+											alpha true
+											url "logo2.bmp"//"logoshell.bmp"
+										}
+									}
+									geometry Mesh { url "logoshell.xm" }
+								}
+							]
+						}
+						Spinner
+						{
+							rpm -6.75
+							axis 0 -2 0
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "InnerWall_01"
+										}
+										texture ImageTexture
+										{
+											alpha true
+											url "logo2.bmp"//"logoshell.bmp"
+										}
+									}
+									geometry Mesh { url "logoshell.xm" }
+								}
+							]
+						}
+						
+						Spinner
+						{
+							rpm 7.75
+							axis 2 0 2
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "InnerWall_01"
+										}
+										texture ImageTexture
+										{
+											alpha true
+											url "logoshell.bmp"
+										}
+									}
+									geometry Mesh { url "logoshell.xm" }
+								}
+							]
+						}
+						
+						Waver
+						{
+							rpm 3.75
+							//axis 0 2 0
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "InnerWall_01"
+										}
+										texture ImageTexture
+										{
+											alpha true
+											url "logo2.bmp"//"logoshell.bmp"
+										}
+									}
+									geometry Mesh { url "logoshell.xm" }
+								}
+								
+							]
+						}
+						Spinner
+						{
+							rpm -6.75
+							axis -2 0 -2
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "InnerWall_01"
+										}
+										texture ImageTexture
+										{
+											alpha true
+											url "logoshell.bmp"
+										}
+									}
+									geometry Mesh { url "logoshell.xm" }
+								}
+							]
+						}
+						Spinner
+						{
+							rpm 7.75
+							axis -1 2 0
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "InnerWall_01"
+										}
+										texture ImageTexture
+										{
+											alpha true
+											url "logoshell.bmp"
+										}
+									}
+									geometry Mesh { url "logoshell.xm" }
+								}
+							]
+						}
+						
+						Spinner
+						{
+							rpm -8.75
+							axis -3 0 -3
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "InnerWall_01"
+										}
+										texture ImageTexture
+										{
+											alpha true
+											url "logoshell.bmp"
+										}
+									}
+									geometry Mesh { url "logoshell.xm" }
+								}
+							]
+						}
+						
+						Waver
+						{
+							rpm -3.75
+							axis 0 -2 0
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "InnerWall_01"
+										}
+										texture ImageTexture
+										{
+											alpha true
+											url "logoshell.bmp"
+										}
+									}
+									geometry Mesh { url "logoshell.xm" }
+								}
+								
+							]
+						}
+					] //jbone1
+					rotation 0 0 0 0
+					scale 5.5 5.5 5.5 
+					translation -34.2 -17 0
+				}
+				DEF theModes Transform  
+				{
+					children
+					[
+						DEF MusicPlayerMode Transform
+						{
+							children
+							[
+								//DEF theAudioPlayerBackground Transform
+								//{
+								//    children 
+								//    [
+								//        Shape
+								//        {
+								//            appearance Appearance
+								//            {
+								//                material MaxMaterial { name "PanelBacking_02" }
+								//                texture DEF theAudioPlayerBackground_texture ImageTexture { url "panel8.tga" }  
+								//            }
+								//            geometry Mesh { url "control_panel_backdrop.xm" }
+								//        }
+								//    ]
+								//    scale 2.01 2.37 2.2
+								//    rotation 1.000000 0.000000 0.000000 3.140000 
+								//    translation 1 20 0
+								//}
+								DEF theSoundtrackText_Title Transform
+								{
+									children
+									[
+										Shape
+										{
+											appearance Appearance { material MaxMaterial { name "CellEgg/Partsz" } }
+											geometry DEF theSoundtrackNameText_Title Text { font "Heading" text "Soundtrack" width -18 }
+										}
+									]
+									scale 8 6 8
+									translation -52 20 0
+								}
+								DEF theSoundtrackText_Trait Transform
+								{
+									children
+									[
+										Shape
+										{
+											appearance Appearance { material MaxMaterial { name "CellEgg/Partsz" } }
+											geometry DEF theSoundtrackNameText_Trait Text { font "Heading" text "_____________" width -18 }
+										}
+									]
+									scale 8 4 8
+									translation -52 20 0
+								}
+								DEF theSongText_Title Transform
+								{
+									children
+									[
+										Shape
+										{
+											appearance Appearance { material MaxMaterial { name "CellEgg/Partsz" } }
+											geometry DEF theSongNameText_Title Text { font "Heading" text "Song" width -18 }
+										}
+									]
+									scale 8 6 8
+									translation -52 6 0
+								}
+								DEF theSongText_Trait Transform
+								{
+									children
+									[
+										Shape
+										{
+											appearance Appearance { material MaxMaterial { name "CellEgg/Partsz" } }
+											geometry DEF theSongNameText_Trait Text { font "Heading" text "_____________" width -18 }
+										}
+									]
+									scale 8 4 8
+									translation -52 6 0
+								}                                
+								DEF theSoundtrackText Transform
+								{
+									children
+									[
+										Shape
+										{
+											appearance Appearance { material MaxMaterial { name "NavType" } }
+											geometry DEF theSoundtrackNameText Text { font "Heading" text "Soundtrack 1" width -18 }
+										}
+									]
+									scale 6 6 6
+									translation -50 15 0
+								}
+								DEF theSongText Transform
+								{
+									children
+									[
+										Shape
+										{
+											appearance Appearance { material MaxMaterial { name "NavType" } }
+											geometry DEF theSongNameText Text { font "Heading" text "Song 1" width -18 }
+										}
+									]
+									scale 6 6 6
+									translation -50 1 0
+								}
+								DEF theModeText Transform
+								{
+									children
+									[
+										Shape
+										{
+											appearance Appearance { material MaxMaterial { name "NavType" } }
+											geometry DEF theModeNameText Text { font "Heading" width 15 justify "end" text "Continuous" }
+										}
+									]
+									scale 6 6 6
+									translation 50 -7 0
+								}
+								DEF theSongProgressText Transform
+								{
+									children
+									[
+										Shape
+										{
+											appearance Appearance { material MaxMaterial { name "NavType" } }
+											geometry DEF theTrackTimeText Text { font "Heading" text "00:00" }
+										}
+									]
+									scale 7 7 7
+									translation -55 -7 0
+								}
+							]
+							//scale 0 0 0
+							rotation 0.000000 0.000000 0.000000 0.000000 
+							translation 0 0 0
+						}
+					]
+					//scale 0 0 0
+					rotation 0.000000 0.000000 0.000000 0.000000 
+					translation 0 0 0
+				}
+				
+			]/*theBasicControlPanel*/
+			scale 1 1 1
+			rotation 0.000000 0.000000 0.000000 0.000000 
+			translation 0 0 0
+		}
+	]/*theControlPanelDisplay */
+	scale 1.55 1.5 1.5
+	rotation 1.0 0 0 3.17 
+	translation 0 -250 -60 
+}   
+
+/*separate structures*/
+
+
+DEF theDropDownPanels Transform
+{
+	children
+	[
+		DEF DropDownMenu1 Transform
+		{
+			children 
+			[
+				DEF theArm01 Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "FlatSurfaces" }
+							}
+							geometry DEF Arm02_05-FACES Mesh { url "Arm02_05-FACES.xm" }
+						}
+					]
+				}
+				DEF panel02_backing Transform
+				{
+					children 
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "PanelBacking_02" }
+								texture ImageTexture { url "panel8.tga" }
+							}
+							geometry DEF panel02_backing-FACES Mesh { url "panel02_backing-FACES.xm" }
+						}
+					]
+					rotation -1.000000 0.004363 -0.004363 -1.571000
+					translation -24.270000 14.610000 2.360000
+				}
+				DEF panel02_header2 Transform
+				{
+					children 
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "MenuCell" }
+							}
+							geometry DEF panel02_header-FACES Mesh { url "panel02_header-FACES.xm" }
+						}
+					]
+					rotation -0.575700 -0.575700 -0.580700 -2.089000
+					translation -6.646000 -7.603000 2.330000
+				}
+				DEF panel02_header Transform
+				{
+					children 
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "FlatSurfaces" }
+							}
+							geometry DEF panel02_header-FACES Mesh { url "panel02_header-FACES.xm" }
+						}
+					]
+					rotation -0.575700 -0.575700 -0.580700 -2.089000
+					translation -6.646000 -7.603000 2.330000
+				}
+				DEF tube_01 Transform
+				{
+					children 
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "Tubes" }
+							}
+							geometry DEF tube_01-FACES Mesh { url "tube_01-FACES.xm" }
+						}
+					]
+					rotation -0.575700 -0.575700 -0.580700 -2.089000
+					translation 17.680000 -18.459999 13.620000
+				}
+				DEF tube_02 Transform
+				{
+					children 
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "Tubes" }
+							}
+							geometry DEF tube_02-FACES Mesh { url "tube_02-FACES.xm" }
+						}
+					]
+					rotation -0.575700 -0.575700 -0.580700 -2.089000
+					translation 17.680000 -20.820000 13.620000
+				}
+				DEF panel02_support_01_2 Transform
+				{
+					children 
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "MenuCell" }
+							}
+							geometry DEF panel02_support_01-FACES Mesh { url "panel02_support_01-FACES.xm" }
+						}
+					]
+					rotation -0.003085 0.707100 0.707100 -3.148000
+					translation -17.750000 0.642600 2.228000
+				}
+				DEF panel02_support_01 Transform
+				{
+					children 
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "FlatSurfaces" }
+							}
+							geometry DEF panel02_support_01-FACES Mesh { url "panel02_support_01-FACES.xm" }
+						}
+					]
+					rotation -0.003085 0.707100 0.707100 -3.148000
+					translation -17.750000 0.642600 2.228000
+				}
+				DEF panel02_support_03 Transform
+				{
+					children 
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "MenuCell" }
+							}
+							geometry DEF panel02_support_03-FACES Mesh { url "panel02_support_03-FACES.xm" }
+						}
+					]
+					rotation 0.575700 -0.575700 0.580700 -2.089000
+					translation -24.100000 -6.927000 2.178000
+				}
+				DEF panel02_support_03 Transform
+				{
+					children 
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "FlatSurfaces" }
+							}
+							geometry DEF panel02_support_03-FACES Mesh { url "panel02_support_03-FACES.xm" }
+						}
+					]
+					rotation 0.575700 -0.575700 0.580700 -2.089000
+					translation -24.100000 -6.927000 2.178000
+				}
+				DEF theDropDown1Header Transform
+				{
+					children
+					[
+						Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry DEF DropDown1_HeadingA Text { font "Heading" text "Playlists" }
+								}
+							]
+							scale 1.8 1.6 1.8
+							translation -16.15 3 0
+						}
+					]
+					rotation 0.2 0.2 0 -3.142
+					translation -9.3 -1.5 2     //jbone6
+				}
+				DEF theDropDown1Text Transform
+				{
+					children
+					[
+						DEF DropDown1_Text01 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry Text { font "Body" width -10 justify "end" scrollDelay 0.3 scrollRate 0.85 text "Song1" }
+								}
+							]
+							translation 0 0 0
+						}
+						DEF DropDown1_Text02 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry Text { font "Body" width -10 justify "end" scrollDelay 0.3 scrollRate 0.85 text "Song2" }
+								}
+							]
+							translation 0 -1 0
+						}
+						DEF DropDown1_Text03 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry Text { font "Body" width -10 justify "end" scrollDelay 0.3 scrollRate 0.85 text "Song3" }
+								}
+							]
+							translation 0 -2 0
+						}
+						DEF DropDown1_Text04 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry Text { font "Body" width -10 justify "end" scrollDelay 0.3 scrollRate 0.85 text "Song4" }
+								}
+							]
+							translation 0 -3 0
+						}
+						DEF DropDown1_Text05 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry Text { font "Body" width -10 justify "end" scrollDelay 0.3 scrollRate 0.85 text "Song5" }
+								}
+							]
+							translation 0 -4 0
+						}
+						DEF DropDown1_Text06 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry Text { font "Body" width -10 justify "end" scrollDelay 0.3 scrollRate 0.85 text "Song6" }
+								}
+							]
+							translation 0 -5 0
+						}
+						DEF DropDown1_Text07 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry Text { font "Body" width -10 justify "end" scrollDelay 0.3 scrollRate 0.85 text "Song7" }
+								}
+							]
+							translation 0 -6 0
+						}
+						DEF DropDown1_Text08 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry Text { font "Body" width -10 justify "end" scrollDelay 0.3 scrollRate 0.85 text "Song8" }
+								}
+							]
+							translation 0 -7 0
+						}
+						DEF DropDown1_Text09 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry Text { font "Body" width -10 justify "end" text "Song9" }
+								}
+							]
+							translation 0 -8 0
+						}
+					]
+					scale 1.8 1.6 1.8
+					rotation 0.2 0.2 0 -3.142
+					translation -9.3 -1.5 2
+				}
+			]
+			scale 5.5 6.5 2.5
+			//scale 6 7 3
+			rotation 0.200000 0.200000 0.900000 -3.142000
+			translation 160.988000 250.056000 -10.780000
+		}
+		DEF DropDownMenu2 Transform
+		{
+			children 
+			[
+				DEF theArm01 Transform
+				{
+					children
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "FlatSurfaces" }
+							}
+							geometry DEF Arm02_05-FACES Mesh { url "Arm02_05-FACES.xm" }
+						}
+					]
+				}
+				DEF panel02_backing Transform
+				{
+					children 
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "PanelBacking_02" }
+								texture ImageTexture { url "panel8.tga" }
+							}
+							geometry DEF panel02_backing-FACES Mesh { url "panel02_backing-FACES.xm" }
+						}
+					]
+					scale 1 1 0.98
+					rotation -1.000000 0.004363 -0.004363 -1.571000
+					translation -24.270000 14.010000 2.360000
+				}
+				DEF panel02_header2 Transform
+				{
+					children 
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "MenuCell" }
+							}
+							geometry DEF panel02_header-FACES Mesh { url "panel02_header-FACES.xm" }
+						}
+					]
+					rotation -0.575700 -0.575700 -0.580700 -2.089000
+					translation -6.646000 -7.603000 2.330000
+				}
+				DEF panel02_header Transform
+				{
+					children 
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "FlatSurfaces" }
+							}
+							geometry DEF panel02_header-FACES Mesh { url "panel02_header-FACES.xm" }
+						}
+					]
+					rotation -0.575700 -0.575700 -0.580700 -2.089000
+					translation -6.646000 -7.603000 2.330000
+				}
+				DEF tube_01 Transform
+				{
+					children 
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "Tubes" }
+							}
+							geometry DEF tube_01-FACES Mesh { url "tube_01-FACES.xm" }
+						}
+					]
+					rotation -0.575700 -0.575700 -0.580700 -2.089000
+					translation 17.680000 -18.459999 13.620000
+				}
+				DEF tube_02 Transform
+				{
+					children 
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "Tubes" }
+							}
+							geometry DEF tube_02-FACES Mesh { url "tube_02-FACES.xm" }
+						}
+					]
+					rotation -0.575700 -0.575700 -0.580700 -2.089000
+					translation 17.680000 -20.820000 13.620000
+				}
+				DEF panel02_support_01_2 Transform
+				{
+					children 
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "MenuCell" }
+							}
+							geometry DEF panel02_support_01-FACES Mesh { url "panel02_support_01-FACES.xm" }
+						}
+					]
+					rotation -0.003085 0.707100 0.707100 -3.148000
+					translation -17.750000 0.642600 2.228000
+				}
+				DEF panel02_support_01 Transform
+				{
+					children 
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "FlatSurfaces" }
+							}
+							geometry DEF panel02_support_01-FACES Mesh { url "panel02_support_01-FACES.xm" }
+						}
+					]
+					rotation -0.003085 0.707100 0.707100 -3.148000
+					translation -17.750000 0.642600 2.228000
+				}
+				DEF panel02_support_03 Transform
+				{
+					children 
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "MenuCell" }
+							}
+							geometry DEF panel02_support_03-FACES Mesh { url "panel02_support_03-FACES.xm" }
+						}
+					]
+					rotation 0.575700 -0.575700 0.580700 -2.089000
+					translation -24.100000 -6.927000 2.178000
+				}
+				DEF panel02_support_03 Transform
+				{
+					children 
+					[
+						Shape
+						{
+							appearance Appearance
+							{
+								material MaxMaterial { name "FlatSurfaces" }
+							}
+							geometry DEF panel02_support_03-FACES Mesh { url "panel02_support_03-FACES.xm" }
+						}
+					]
+					rotation 0.575700 -0.575700 0.580700 -2.089000
+					translation -24.100000 -6.927000 2.178000
+				}
+				DEF theDropDown2Header Transform
+				{
+					children
+					[
+						Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry DEF DropDown2_HeadingA Text { font "Heading" justify "end" text "Soundtracks" }
+								}
+							]
+							scale 1.8 1.6 1.8
+							translation 16.5 3 0    
+						}
+					]
+					rotation 0 0 4.715 4.715
+					translation -9.25 -1 2      //jbone6
+				}
+				DEF theDropDown2Text Transform
+				{
+					children
+					[
+						DEF DropDown2_Text01 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry Text { font "Body" width -10 scrollDelay 0.3 scrollRate 0.85 text "Song1" }
+								}
+							]
+							translation 0 0 0
+						}
+						DEF DropDown2_Text02 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry Text { font "Body" width -10 scrollDelay 0.3 scrollRate 0.85 text "Song2" }
+								}
+							]
+							translation 0 -1 0
+						}
+						DEF DropDown2_Text03 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry Text { font "Body" width -10 scrollDelay 0.3 scrollRate 0.85 text "Song3" }
+								}
+							]
+							translation 0 -2 0
+						}
+						DEF DropDown2_Text04 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry Text { font "Body" width -10 scrollDelay 0.3 scrollRate 0.85 text "Song4" }
+								}
+							]
+							translation 0 -3 0
+						}
+						DEF DropDown2_Text05 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry Text { font "Body" width -10 scrollDelay 0.3 scrollRate 0.85 text "Song5" }
+								}
+							]
+							translation 0 -4 0
+						}
+						DEF DropDown2_Text06 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry Text { font "Body" width -10 scrollDelay 0.3 scrollRate 0.85 text "Song6" }
+								}
+							]
+							translation 0 -5 0
+						}
+						DEF DropDown2_Text07 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry Text { font "Body" width -10 scrollDelay 0.3 scrollRate 0.85 text "Song7" }
+								}
+							]
+							translation 0 -6 0
+						}
+						DEF DropDown2_Text08 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry Text { font "Body" width -10 scrollDelay 0.3 scrollRate 0.85 text "Song8" }
+								}
+							]
+							translation 0 -7 0
+						}
+						DEF DropDown2_Text09 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial { name "NavType" }
+									}
+									geometry Text { font "Body" width -10 scrollDelay 0.3 scrollRate 0.85 text "Song9" }
+								}
+							]
+							translation 0 -8 0
+						}
+					]
+					scale 1.8 1.6 1.8
+					rotation 0 0 4.715 4.715
+					translation -9.25 -1 2
+				}
+				
+			]
+			scale 5.5 6.5 2.5
+			//scale 6 7 3
+			rotation 3.7 -1.2 1.715 -3.715
+			translation -240.988 250.056 -20.78
+		}
+	]
+	scale 1 1 1
+	rotation 0 0 0 0
+	translation 0 0 0
+}

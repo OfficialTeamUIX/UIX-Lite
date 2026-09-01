@@ -1,0 +1,1866 @@
+
+var CurrentIcon;
+var DropDown1On;
+var DropDown2On;
+var bInMusicPlayerMode;
+var RightThumbDown;
+var LeftThumbDown;
+
+function InitializeControlPanel()
+{
+	CurrentIcon = 2;
+	theControlPanelLayer.visible = true;
+	theInLine = theControlPanelInline.children[0];
+	theInLine.theControlPanelDisplay.fade = 1;
+	theInLine.theControlPanelDisplay.SetAlpha(0);
+	theInLine.theSoundtrackNameText_Title.text = Translate("Soundtrack");
+	theInLine.theSongNameText_Title.text = Translate("Song");
+	ShowControlPanel();
+	InitDropDown1();
+	InitDropDown2();
+	HideDropDown1();
+	HideDropDown2();
+	DropDown1On = false;
+	DropDown2On = false;
+	GetMode();
+	UpdateModeText();
+	GetPlaylists();
+	var nVolume=StringToNumber(PlaylistInfo.GetValue("Music Player Volume"));
+	if(nVolume <= 0 | nVolume > 1.0) nVolume = 1.0;
+	theMusicPlayer.volume = nVolume;
+}
+
+function ShowControlPanel()
+{
+	ControlPanelOut = true;
+	thePlayerPanelIn.Play();
+	currentControlType = theMainControlPanelJoy;
+	bInMusicPlayerMode = true;
+	theMainControlPanelJoy.isBound = true;
+	
+	theInLine.theControlPanelDisplay.fade = 1;
+	theInLine.theControlPanelDisplay.SetTranslation(10,-37,1);
+	theInLine.theControlPanelDisplay.SetRotation(-0.0001,0,0,0.54);
+	theInLine.theControlPanelDisplay.SetAlpha(1);
+	UpdateMainIconHilite();
+	UpdateMusicPlayerDisplayText();
+	theMainMenu.children[0].children[0].select.SetAlpha(0);
+}
+
+function HideControlPanel()
+{
+	thePlayerPanelOut.Play();
+	ControlPanelOut = false;
+	
+	theMainControlPanelJoy.isBound = false;
+	
+	currentControlType = "";
+	previousControlType.isBound = true;
+	bInMusicPlayerMode = false;
+	
+	theInLine.theControlPanelDisplay.fade = 1.3;
+	theInLine.theControlPanelDisplay.SetTranslation(0,-250,-60);
+	theInLine.theControlPanelDisplay.SetRotation(1.0,0,0,3.17);
+	theInLine.theControlPanelDisplay.SetAlpha(0);
+	DisableCurrentAlternateViewpoint();
+	theScreenSaver.enabled = true;
+	if(DropDown1On == true)
+	{
+		HideDropDown1();
+	}
+	if(DropDown2On == true)
+	{
+		HideDropDown2();
+	}
+	theMainMenu.children[0].children[0].select.SetAlpha(1);
+}
+
+DEF theMainControlPanelJoy Joystick
+{
+	function OnADown()
+	{
+		if((LeftTrigger == true) & (RightTrigger == true))
+		{
+			QuickLaunch("A");
+		}
+		else
+		{
+			if(CurrentIcon == 1)
+			{
+				if(currentMusicPlayerMode == "Continuous")
+				{
+					MusicPlayerRewind();
+				}
+				else if(currentMusicPlayerMode == "Playlist")
+				{
+					PlaylistREW();
+				}
+				else if(currentMusicPlayerMode == "Random")
+				{
+					MusicPlayerRandom();
+				}
+			}
+			else if(CurrentIcon == 2)
+			{
+				if(currentMusicPlayerMode == "Random")
+				{
+					MusicPlayerRandom();
+				}
+				else if(currentMusicPlayerMode == "Playlist")
+				{
+					GetPlaylists();
+					if(PlaylistTotal == 0)
+					{
+						MusicPlayerRandom();
+					}
+					else
+					{
+						GetPlaylistSongs(0);
+						PlayPlaylistSong(0);
+					}
+				}
+				else if(currentMusicPlayerMode == "Continuous")
+				{
+					MusicPlayerPlay();
+				} 
+			}
+			else if(CurrentIcon == 3)
+			{
+				MusicPlayerStop();
+			}
+			else if(CurrentIcon == 4)
+			{
+				if(currentMusicPlayerMode == "Continuous")
+				{
+					MusicPlayerFastForward();
+				}
+				else if(currentMusicPlayerMode == "Playlist")
+				{
+					PlaylistFFWD();
+				}
+				else if(currentMusicPlayerMode == "Random")
+				{
+					MusicPlayerRandom();
+				}
+			}
+			else if(CurrentIcon == 5)
+			{
+				currentMusicPlayerMode = "Repeat";
+				UpdateModeText();
+			}
+			else if(CurrentIcon == 6)
+			{
+				currentMusicPlayerMode = "Random";
+				UpdateModeText();
+				SaveMode();
+			}
+			else if(CurrentIcon == 7)
+			{
+				currentMusicPlayerMode = "Continuous";
+				UpdateModeText();
+				SaveMode();
+			}
+		}
+	}
+	
+	function OnSkipBack()
+	{
+		if(currentMusicPlayerMode == "Continuous")
+		{
+			MusicPlayerRewind();
+		}
+		else if(currentMusicPlayerMode == "Playlist")
+		{
+			PlaylistREW();
+		}
+		else if(currentMusicPlayerMode == "Random")
+		{
+			MusicPlayerRandom();
+		}
+	}
+	
+	function OnSkipForward()
+	{
+		if(currentMusicPlayerMode == "Continuous")
+		{
+			MusicPlayerFastForward();
+		}
+		else if(currentMusicPlayerMode == "Playlist")
+		{
+			PlaylistFFW();
+		}
+		else if(currentMusicPlayerMode == "Random")
+		{
+			MusicPlayerRandom();
+		}
+	}
+	
+	function OnStop()
+	{
+		MusicPlayerStop();
+	}
+	
+	function OnPlay()
+	{
+		if(currentMusicPlayerMode == "Random")
+		{
+			MusicPlayerRandom();
+		}
+		else if(currentMusicPlayerMode == "Playlist")
+		{
+			GetPlaylists();
+			if(PlaylistTotal == 0)
+			{
+				MusicPlayerRandom();
+			}
+			else
+			{
+				GetPlaylistSongs(0);
+				PlayPlaylistSong(0);
+			}
+		}
+		else if(currentMusicPlayerMode == "Continuous")
+		{
+			MusicPlayerPlay();
+		} 
+	}
+	
+	function OnGuide()
+	{
+		if(beInSoundtracks)
+		{
+			HideSoundtrackMenu();
+			beInSoundtracks = false;
+		}
+		else
+		{
+			ShowSoundtrackMenu();
+			beInSoundtracks = true;
+		}
+	}
+	
+	function OnInfo()
+	{
+		if(beInPlaylists)
+		{
+			HidePlaylistMenu();
+			beInPlaylists = false;
+		}
+		else
+		{
+			ShowPlaylistMenu();
+			beInPlaylists = true;
+		}
+	}
+	
+	function OnBDown()
+	{
+		if((LeftTrigger == true) & (RightTrigger == true))
+		{
+			QuickLaunch("B");
+		}
+		else
+		{
+			HideControlPanel();
+		}
+	}
+	
+	function OnXDown()
+	{
+		if((LeftTrigger == true) & (RightTrigger == true))
+		{
+			QuickLaunch("X");
+		}
+		else
+		{
+			if(beInSoundtracks)
+			{
+				HideSoundtrackMenu();
+				beInSoundtracks = false;
+			}
+			else
+			{
+				ShowSoundtrackMenu();
+				beInSoundtracks = true;
+			}
+		}
+	}
+	
+	function OnYDown()
+	{
+		if((LeftTrigger == true) & (RightTrigger == true))
+		{
+			QuickLaunch("Y");
+		}
+		else
+		{
+			if(beInPlaylists)
+			{
+				HidePlaylistMenu();
+				beInPlaylists = false;
+			}
+			else
+			{
+				ShowPlaylistMenu();
+				beInPlaylists = true;
+			}
+		}
+	}
+	
+	function OnWhiteDown()
+	{
+		ShowCDPlayerMenu();
+	}
+	
+	function OnLeftDown()
+	{
+		LeftTrigger = true;
+	}
+	
+	function OnRightDown()
+	{
+		RightTrigger = true;
+		UpdateVolumeOnScreen();
+	}
+	
+	function OnLeftUp()
+	{
+		LeftTrigger = false;
+	}
+	
+	function OnRightUp()
+	{
+		RightTrigger = false;
+		UpdateModeText();
+	}
+	
+	function OnMoveUp()
+	{
+		if(RightTrigger)
+		{
+			MusicPlayerVolumeUp();
+		}
+	}
+	
+	function OnMoveDown()
+	{
+		if(RightTrigger)
+		{
+			MusicPlayerVolumeDown();
+		}
+	}
+	
+	function OnMoveLeft()
+	{
+		if(RightTrigger == true)
+		{
+			CPWidth = CPWidth - 0.01;
+			UpdateCPSize();
+		}
+		else
+		{
+			if(CurrentIcon == 1)
+			{
+				return;
+			}
+			else
+			{
+				PlaySoundMenuChange();
+				CurrentIcon = CurrentIcon - 1;
+			}
+			UpdateMainIconHilite();
+		}
+	}
+	
+	function OnMoveRight()
+	{
+		if(RightTrigger == true)
+		{
+			CPWidth = CPWidth + 0.01;
+			UpdateCPSize();
+		}
+		else
+		{
+			if(CurrentIcon == 7)
+			{
+				return;
+			}
+			else
+			{
+				PlaySoundMenuChange();
+				CurrentIcon = CurrentIcon + 1;
+			}
+			UpdateMainIconHilite();
+		}
+	}
+	
+	function OnRightThumbDown()
+	{
+		RightThumbDown = true;
+	}
+	
+	function OnLeftThumbDown()
+	{
+		LeftThumbDown = true;
+	}
+	
+	function OnRightThumbUp()
+	{
+		RightThumbDown = false;
+	}
+	
+	function OnLeftThumbUp()
+	{
+		LeftThumbDown = false;
+	}
+}
+
+function HideIconsHilite()
+{
+	theInLine.controlpanel_icon_01_hilite.fade = 0.3;
+	theInLine.controlpanel_icon_02_hilite.fade = 0.3;
+	theInLine.controlpanel_icon_03_hilite.fade = 0.3;
+	theInLine.controlpanel_icon_04_hilite.fade = 0.3;
+	theInLine.controlpanel_icon_05_hilite.fade = 0.3;
+	theInLine.controlpanel_icon_06_hilite.fade = 0.3;
+	theInLine.controlpanel_icon_07_hilite.fade = 0.3;
+	
+	theInLine.controlpanel_icon_01_hilite.SetAlpha(0);
+	theInLine.controlpanel_icon_02_hilite.SetAlpha(0);
+	theInLine.controlpanel_icon_03_hilite.SetAlpha(0);
+	theInLine.controlpanel_icon_04_hilite.SetAlpha(0);
+	theInLine.controlpanel_icon_05_hilite.SetAlpha(0);
+	theInLine.controlpanel_icon_06_hilite.SetAlpha(0);
+	theInLine.controlpanel_icon_07_hilite.SetAlpha(0);
+}
+
+function UpdateMainIconHilite()
+{
+	HideIconsHilite();
+	if(CurrentIcon == 1)
+	{
+		theInLine.controlpanel_icon_01_hilite.SetAlpha(1);
+	}
+	else if(CurrentIcon == 2)
+	{
+		theInLine.controlpanel_icon_02_hilite.SetAlpha(1);
+	}
+	else if(CurrentIcon == 3)
+	{
+		theInLine.controlpanel_icon_03_hilite.SetAlpha(1);
+	}
+	else if(CurrentIcon == 4)
+	{
+		theInLine.controlpanel_icon_04_hilite.SetAlpha(1);
+	}
+	else if(CurrentIcon == 5)
+	{
+		theInLine.controlpanel_icon_05_hilite.SetAlpha(1);
+	}
+	else if(CurrentIcon == 6)
+	{
+		theInLine.controlpanel_icon_06_hilite.SetAlpha(1);
+	}
+	else if(CurrentIcon == 7)
+	{
+		theInLine.controlpanel_icon_07_hilite.SetAlpha(1);
+	}
+}
+
+var beInCDPlayer;
+var currentCDTrack;
+var CDPlayerScroll;
+var bInPause;
+
+var beInPlaylists;
+var PlaylistActive;
+var PlaylistNumber;
+var PlaylistTitleMenu;
+var PlaylistSongMenu;
+
+var beInSoundtracks;
+var SoundtrackActive;
+var SoundtrackTitleMenu;
+var SoundtrackSongMenu;
+
+var acurMenuItem;
+var bcurMenuItem;
+var ccurMenuItem;
+var dcurMenuItem;
+var ecurMenuItem;
+var fcurMenuItem;
+var gcurMenuItem;
+
+var StCount;
+var TrCount;
+var StName;
+var StNum;
+var TrNum;
+
+var bIsNewSong;
+var BGMCount;
+var curMusicPlayerButton;
+
+DEF theMusicPlayer AudioClip
+{
+	url "cd:"
+	sendProgress true
+	
+	function OnProgressChanged()
+	{
+		if (bMusicPlayerReady)
+		{
+			theMusicInline.children[0].SetMusicPlayPos(progress);
+		}
+		UpdateTrackTime();
+	}
+	
+	function OnTransportModeChanged()
+	{
+		if (bMusicPlayerReady)
+		{
+			theMusicInline.children[0].UpdateTransportIndicators();
+		}
+	}
+	
+	function OnTrackChanged()
+	{
+		if (bMusicPlayerReady)
+		theMusicInline.children[0].UpdateTrackList();
+		UpdateMusicPlayerDisplayText();
+	}
+	
+	function OnEndOfAudio()
+	{
+		if(currentMusicPlayerMode == "Playlist")
+		{
+			PlaylistFFWD();
+		}
+		else if(currentMusicPlayerMode == "Continuous")
+		{
+			SoundtrackFFW();
+		}
+		else if(currentMusicPlayerMode == "Random")
+		{
+			MusicPlayerRandom();
+		}
+		else if(currentMusicPlayerMode == "Repeat")
+		{
+			MusicPlayerRepeat();
+		}
+	}
+}
+
+function GetMode()
+{
+	currentMusicPlayerMode = PlaylistInfo.GetValue("Music Play Mode");
+	if(currentMusicPlayerMode == "") { currentMusicPlayerMode = "Continuous"; SaveMode(); }
+}
+
+function ChangeMode()
+{
+	if(currentMusicPlayerMode == "Continuous")
+	{
+		currentMusicPlayerMode = "Playlist";
+		PlayPlaylistSong(0);
+	}
+	else if(currentMusicPlayerMode == "Playlist")
+	{
+		currentMusicPlayerMode = "Random";
+		MusicPlayerRandom();
+	}
+	else if(currentMusicPlayerMode == "Random")
+	{
+		currentMusicPlayerMode = "Continuous";
+	}
+	SaveMode();
+	UpdateModeText();
+}
+
+function SaveMode()
+{
+	PlaylistInfo.SetValue("Music Play Mode", currentMusicPlayerMode);
+}
+
+function UpdateModeText()
+{
+	theInLine.theModeNameText.text = Translate(currentMusicPlayerMode);
+}
+
+function UpdateTrackTime()
+{
+	var m = theMusicPlayer.getMinutes();
+	if (m < 10)
+	m = "0" + m;
+	var s = theMusicPlayer.getSeconds();
+	if (s < 10)
+	s = "0" + s;
+	
+	theInLine.theTrackTimeText.text = m + ":" + s;
+	if(bMusicPlayerReady)
+	{
+		theMusicPlayMenu.children[0].children[0].MusicTimeText.text = m + ":" + s;
+	}
+}
+
+function MusicPlayerVolumeUp()
+{
+	if(theMusicPlayer.volume >= 0.99)
+	{
+		theMusicPlayer.volume = 1.0;
+	}
+	else
+	{
+		theMusicPlayer.volume = theMusicPlayer.volume + 0.01;
+	}
+	UpdateVolumeOnScreen();
+}
+
+function MusicPlayerVolumeDown()
+{
+	if(theMusicPlayer.volume <= 0.0)
+	{
+		theMusicPlayer.volume = 0.0;
+	}
+	else
+	{
+		theMusicPlayer.volume = theMusicPlayer.volume - 0.01;
+	}
+	UpdateVolumeOnScreen();
+}
+
+function MusicPlayerStart()
+{
+	InitializeMusicPlayerValues();
+	GetMode();
+	if(theMusicPlayer.transportMode == 1) return; //transportMode stop=0 play=1 and pause=2
+	DisableAmbientAudio();
+	if(currentMusicPlayerMode == "Random")
+	{
+		MusicPlayerRandom();
+	}
+	else if(currentMusicPlayerMode == "Playlist")
+	{
+		GetPlaylists();
+		if(PlaylistTotal == 0)
+		{
+			MusicPlayerRandom();
+		}
+		else
+		{
+			GetPlaylistSongs(0);
+			PlayPlaylistSong(0);
+		}
+	}
+	else if(currentMusicPlayerMode == "Continuous")
+	{
+		PlaySong(0,0);
+	}
+	else
+	{
+		MusicPlayerRandom();
+	}
+}
+
+function InitializeMusicPlayerValues()
+{
+	bInPause = false;
+	beInCDPlayer = false;
+	beInSoundtracks = false;
+	beInPlaylists = false;
+	PlaylistActive = false;
+	SoundtrackActive = false;
+	SoundtrackTitleMenu = false;
+	SoundtrackSongMenu = false;
+	
+	PlaylistNumber = 0;
+	var nVolume=StringToNumber(PlaylistInfo.GetValue("Music Player Volume"));
+	if(nVolume <= 0 | nVolume > 1.0) nVolume = 1.0;
+	theMusicPlayer.volume = nVolume;
+	acurMenuItem = 0;
+	theInLine = theControlPanelInline.children[0];
+}
+
+function MusicPlayerStop()
+{
+	if(theMusicPlayer.transportMode == 0) return;
+	BGMon = false;
+	theInLine.theTrackTimeText.text = "00:00";
+	EnableAmbientAudio();
+	theMusicPlayer.Stop();
+}
+
+function PlaySong(x,y)
+{
+	currentMusicPlayerMode = "Continuous";
+	theMusicPlayer.Stop();
+	BGMst = x;
+	BGMtr = y;
+	theMusicPlayer.url = "st:" + theMusicCollection.GetSoundtrackSongID(BGMst, BGMtr);
+	theMusicPlayer.Play();
+	vCurAlbum = theMusicCollection.GetSoundtrackName(BGMst);
+	vCurSong = theMusicCollection.GetSoundtrackSongName(BGMst, BGMtr);
+	SaveMode();
+	UpdateMusicPlayerDisplayText();
+}
+
+function MusicPlayerPlay()
+{
+	theMusicPlayer.Stop();
+	theMusicPlayer.url = "st:" + theMusicCollection.GetSoundtrackSongID(BGMst, BGMtr);
+	theMusicPlayer.Play();
+	if(theMusicPlayer.transportMode == 0) return;
+	BGMon = true;
+	DisableAmbientAudio();
+	vCurAlbum = theMusicCollection.GetSoundtrackName(BGMst);
+	vCurSong = theMusicCollection.GetSoundtrackSongName(BGMst, BGMtr);
+	UpdateMusicPlayerDisplayText();
+}
+
+function MusicPlayerRandom()
+{
+	currentMusicPlayerMode = "Random";
+	DisableAmbientAudio();//todo - make it not needed
+	BGMCount = theMusicCollection.GetSoundtrackCount() - 1;
+	var a = Math.random() * BGMCount;
+	BGMst = Math.round(a);
+	BGMTracks = theMusicCollection.GetSoundtrackSongCount(BGMst) - 1;
+	var b = Math.random() * BGMTracks;
+	BGMtr = Math.round(b);
+	MusicPlayerPlay();
+}
+
+function MusicPlayerRewind()
+{
+	BGMTracks = theMusicCollection.GetSoundtrackSongCount(BGMst) - 1;
+	if(BGMtr == 0)
+	{
+		BGMtr = BGMTracks;
+		MusicPlayerPlay();
+	}
+	else
+	{
+		BGMtr = BGMtr - 1;
+		MusicPlayerPlay();
+	}
+}
+
+function MusicPlayerFastForward()
+{
+	BGMTracks = theMusicCollection.GetSoundtrackSongCount(BGMst) - 1;
+	if(BGMtr == BGMTracks)
+	{
+		BGMtr = 0;
+		MusicPlayerPlay();
+	}
+	else
+	{
+		BGMtr = BGMtr + 1;
+		MusicPlayerPlay();
+	}
+}
+
+function InitDropDown2()
+{
+	theInLine.DropDownMenu2.visible = true;
+	DropDown2On = true;
+	ShowDropDown2();
+}
+
+function InitDropDown1()
+{
+	theInLine.DropDownMenu1.visible = true;
+	DropDown1On = true;
+	ShowDropDown1();
+}
+
+function ShowDropDown2()
+{
+	theInLine.DropDownMenu2.fade = 0.85;
+	theInLine.DropDownMenu2.SetTranslation(-120.988, 125, -20.78);
+	theInLine.DropDownMenu2.SetRotation(0, 0, 4.715, -4.715);
+	thePlayerPanelIn.Play();
+}
+
+function ShowDropDown1()
+{
+	theInLine.DropDownMenu1.fade = 0.85;
+	theInLine.DropDownMenu1.SetTranslation(140.988, 125, -10.78);
+	theInLine.DropDownMenu1.SetRotation(0.2, 0.2, 0, -3.142);
+	thePlayerPanelIn.Play();
+}
+
+function HideDropDown2()
+{
+	theInLine.DropDownMenu2.fade = 0.85;
+	theInLine.DropDownMenu2.SetTranslation(-540, 250, -21);
+	theInLine.DropDownMenu2.SetRotation(3.7, -1.2, 1.715, -3.715);
+	DropDown2On = false;
+	thePlayerPanelOut.Play();
+}
+
+function HideDropDown1()
+{
+	theInLine.DropDownMenu1.fade = 0.85;
+	theInLine.DropDownMenu1.SetTranslation(360, 250.056, -10.78);
+	theInLine.DropDownMenu1.SetRotation(0.2, 0.2, 0.9, -3.142);
+	DropDown1On = false;
+	thePlayerPanelOut.Play();
+}
+
+function UpdateVolumeOnScreen()
+{
+	var a = Math.round(theMusicPlayer.volume * 100);
+	theInLine.theModeNameText.text = "vol: " + a;
+	PlaylistInfo.SetValue("Music Player Volume",theMusicPlayer.volume);
+}
+
+function UpdateMusicPlayerDisplayText()
+{
+	if(bPlayingCd)
+	{
+		theInLine.theSoundtrackNameText.text = "CD ROM";
+		theInLine.theSongNameText.text = "Track " + BGMtr;
+	}
+	else
+	{   
+		theInLine.theSoundtrackNameText.text = vCurAlbum;
+		theInLine.theSongNameText.text = vCurSong;
+	}
+}
+
+///////////////////////////// Playlist Menu //////////////////////////////////////////
+
+function ShowPlaylistMenu()
+{
+	InitDropDown1();
+	ShowPlaylistTitleMenu();
+	
+	beInPlaylists = true;
+	if(thePlaylistJoy.isBound == false)
+	{
+		thePlaylistJoy.isBound = true;
+	}
+}
+
+function HidePlaylistMenu()
+{
+	HideDropDown1();
+	PlaylistActive = false;
+	beInPlaylists = false;
+	if(beInSoundtracks)
+	{
+		SoundtrackActive = true;
+		theInLine.theDropDown2Header.children[0].children[0].appearance.material.name = "NavType";
+	}
+	else
+	{
+		thePlaylistJoy.isBound = false;
+		currentControlType.isbound = true;
+	}
+}
+
+function ShowPlaylistTitleMenu()
+{
+	bcurMenuItem = 0;
+	ccurMenuItem = 0;
+	dcurMenuItem = 0;
+	GetPlaylists();
+	PlaylistActive = true;
+	SoundtrackActive = false;
+	theInLine.theDropDown2Header.children[0].children[0].appearance.material.name = "HilightedType";
+	theInLine.theDropDown1Header.children[0].children[0].appearance.material.name = "NavType";
+	PlaylistTitleMenu = true;
+	PlaylistSongMenu = false;
+	UpdatePlaylistTitleMenu();
+}
+
+function ShowPlaylistSongMenu(x)
+{
+	var a = x;
+	bcurMenuItem = 0;
+	ccurMenuItem = 0;
+	dcurMenuItem = 0;
+	GetPlaylistSongs(a);
+	PlaylistTitleMenu = false;
+	PlaylistSongMenu = true;
+	UpdatePlaylistSongMenu();
+}
+
+function UpdatePlaylistTitleMenu()
+{
+	for(var i = 0; i < 9; i = i + 1)
+	{
+		var nplist = bcurMenuItem + i - 1;
+		if (nplist >= PlaylistTotal)
+		{
+			theInLine.theDropDown1Text.children[i].children[0].geometry.text = "";
+		}
+		else
+		{
+			var str;
+			if(nplist < 0)
+			str = "Add Playlist";
+			else
+			str = PlaylistNames[nplist];
+			
+			theInLine.theDropDown1Text.children[i].children[0].geometry.text = str;
+			if (i == dcurMenuItem)
+			{
+				theInLine.theDropDown1Text.children[i].children[0].appearance.material.name = "CellEgg/Partsz";
+			}
+			else
+			{
+				theInLine.theDropDown1Text.children[i].children[0].appearance.material.name = "XBoxGreen2";
+			}
+		}
+	}
+}
+
+function UpdatePlaylistSongMenu()
+{
+	for(var i = 0; i < 9; i = i + 1)
+	{
+		var nplist = bcurMenuItem + i;
+		if (nplist >= SongTotal)
+		{
+			theInLine.theDropDown1Text.children[i].children[0].geometry.text = "";
+		}
+		else
+		{
+			var str = SongTitles[nplist];
+			theInLine.theDropDown1Text.children[i].children[0].geometry.text = str;
+			if (i == dcurMenuItem)
+			{
+				theInLine.theDropDown1Text.children[i].children[0].appearance.material.name = "CellEgg/Partsz";
+			}
+			else
+			{
+				theInLine.theDropDown1Text.children[i].children[0].appearance.material.name = "XBoxGreen2";
+			}
+		}
+	}
+}
+
+///////////////////////////// Soundtrack Menu //////////////////////////////////////////
+
+function ShowSoundtrackMenu()
+{
+	InitDropDown2();
+	ShowSoundtrackTitleMenu();
+	
+	beInSoundtracks = true;
+	if(thePlaylistJoy.isBound == false)
+	{
+		thePlaylistJoy.isBound = true;
+	}
+}
+
+function HideSoundtrackMenu()
+{
+	HideDropDown2();
+	SoundtrackActive = false;
+	beInSoundtracks = false;
+	
+	if(beInPlaylists)
+	{
+		PlaylistActive = true;
+		theInLine.theDropDown1Header.children[0].children[0].appearance.material.name = "NavType";
+	}
+	else
+	{
+		thePlaylistJoy.isBound = false;
+		currentControlType.isBound = true;
+	}
+}
+
+function ShowSoundtrackTitleMenu()
+{
+	StNum = 0;
+	TrNum = 0;
+	ecurMenuItem = 0;
+	fcurMenuItem = 0;
+	gcurMenuItem = 0;
+	PlaylistActive = false;
+	SoundtrackActive = true;
+	theInLine.theDropDown1Header.children[0].children[0].appearance.material.name = "HilightedType";
+	theInLine.theDropDown2Header.children[0].children[0].appearance.material.name = "NavType";
+	SoundtrackTitleMenu = true;
+	SoundtrackSongMenu = false;
+	StCount = theMusicCollection.GetSoundtrackCount();
+	UpdateSoundtrackTitleMenu();
+}
+
+function ShowSoundtrackSongMenu()
+{
+	ecurMenuItem = 0;
+	fcurMenuItem = 0;
+	gcurMenuItem = 0;
+	SoundtrackTitleMenu = false;
+	SoundtrackSongMenu = true;
+	TrCount = theMusicCollection.GetSoundtrackSongCount(StNum);
+	StName = theMusicCollection.GetSoundtrackName(StNum);
+	UpdateSoundtrackSongMenu();
+}
+
+function UpdateSoundtrackTitleMenu()
+{
+	theInLine.DropDown2_HeadingA.text = Translate("Soundtracks");
+	StNum = fcurMenuItem;
+	for(var i = 0; i < 9; i = i + 1)
+	{
+		var nslist = ecurMenuItem + i;
+		if (nslist >= StCount)
+		{
+			theInLine.theDropDown2Text.children[i].children[0].geometry.text = "";
+		}
+		else
+		{
+			var str = theMusicCollection.GetSoundtrackName(nslist);
+			theInLine.theDropDown2Text.children[i].children[0].geometry.text = str;
+			if (i == gcurMenuItem)
+			{
+				theInLine.theDropDown2Text.children[i].children[0].appearance.material.name = "CellEgg/Partsz";
+			}
+			else
+			{
+				theInLine.theDropDown2Text.children[i].children[0].appearance.material.name = "XBoxGreen2";
+			}
+		}
+	}
+}
+
+function UpdateSoundtrackSongMenu()
+{
+	TrNum = fcurMenuItem;
+	for(var i = 0; i < 9; i = i + 1)
+	{
+		var nslist = ecurMenuItem + i;
+		if (nslist >= TrCount)
+		{
+			theInLine.theDropDown2Text.children[i].children[0].geometry.text = "";
+		}
+		else
+		{
+			var str = theMusicCollection.GetSoundtrackSongName(StNum, nslist);
+			theInLine.theDropDown2Text.children[i].children[0].geometry.text = str;
+			if (i == gcurMenuItem)
+			{
+				theInLine.theDropDown2Text.children[i].children[0].appearance.material.name = "CellEgg/Partsz";
+			}
+			else
+			{
+				theInLine.theDropDown2Text.children[i].children[0].appearance.material.name = "XBoxGreen2";
+			}
+		}
+	}
+}
+
+DEF thePlaylistJoy Joystick
+{
+	function OnADown()
+	{
+		if(PlaylistActive)
+		{
+			if(PlaylistTitleMenu)
+			{
+				if(ccurMenuItem == 0)
+				{
+					var b = "";
+					theControlPanelInline.children[0].theControlPanelDisplay.visible = false;
+					theControlPanelInline.children[0].theDropDownPanels.visible = false;
+					ShowKeyboard("Enter Playlist Name", b, "theControlPanelControlsInline.children[0].AddPlaylist(strKeyboardEdit)", "theControlPanelControlsInline.children[0].ExitRename()");
+				}
+				else
+				{
+					PlaylistNumber = ccurMenuItem - 1;
+					ShowPlaylistSongMenu(PlaylistNumber);
+				}
+			}
+			else if(PlaylistSongMenu)
+			{
+				PlayPlaylistSong(ccurMenuItem);
+			}
+		}
+		else if(SoundtrackActive)
+		{
+			if(SoundtrackTitleMenu)
+			{
+				ShowSoundtrackSongMenu();
+			}
+			else if(SoundtrackSongMenu)
+			{
+				PlaySoundtrackSong();
+			}
+		}
+	}
+	function OnBDown()
+	{
+		if(PlaylistActive)
+		{
+			if(PlaylistTitleMenu)
+			{
+				return;
+			}
+			else if(PlaylistSongMenu)
+			{
+				PlaylistSongMenu = false;
+				PlaylistTitleMenu = true;
+				bcurMenuItem = 0;
+				ccurMenuItem = 0;
+				dcurMenuItem = 0;
+				UpdatePlaylistTitleMenu();
+			}
+		}
+		else if(SoundtrackActive)
+		{
+			if(SoundtrackTitleMenu)
+			{
+				return;
+			}
+			else if(SoundtrackSongMenu)
+			{
+				SoundtrackSongMenu = false;
+				SoundtrackTitleMenu = true;
+				ecurMenuItem = 0;
+				fcurMenuItem = 0;
+				gcurMenuItem = 0;
+				UpdateSoundtrackTitleMenu();
+			}
+		}
+	}
+	function OnWhiteDown()
+	{
+		if((PlaylistSongMenu) & (SoundtrackSongMenu) & (SoundtrackActive))
+		{
+			AddSong(fcurMenuItem);
+			GetPlaylistSongs(PlaylistNumber);
+			UpdatePlaylistSongMenu();
+		}
+	}
+	function OnBlackDown()
+	{
+		if((PlaylistActive) & (PlaylistTitleMenu))
+		{
+			PlaylistNumber = ccurMenuItem - 1;
+			if(ccurMenuItem > 0)
+			{
+				if(PlaylistTotal == 1)
+				{
+					ClearPlaylists();
+					ClearPlaylistSongs(0);
+					bcurMenuItem = 0;
+					ccurMenuItem = 0;
+					dcurMenuItem = 0;
+				}
+				else
+				{
+					ClearPlaylistSongs(PlaylistNumber);
+					DeletePlaylist(PlaylistNumber);
+					if(PlaylistNumber == PlaylistTotal)
+					{
+						ccurMenuItem = ccurMenuItem - 1;
+						
+						if (dcurMenuItem == 0)
+						bcurMenuItem = bcurMenuItem - 1;
+						else
+						dcurMenuItem = dcurMenuItem - 1;
+					}
+				}
+				GetPlaylists();
+				UpdatePlaylistTitleMenu();
+			}
+		}
+		else if((PlaylistActive) & (PlaylistSongMenu))
+		{
+			if(SongTotal == 1)
+			{
+				ClearPlaylistSongs(PlaylistNumber);
+			}
+			else
+			{
+				DeleteSong(ccurMenuItem);
+				if(ccurMenuItem == SongTotal)
+				{
+					ccurMenuItem = ccurMenuItem - 1;
+					
+					if (dcurMenuItem == 0)
+					bcurMenuItem = bcurMenuItem - 1;
+					else
+					dcurMenuItem = dcurMenuItem - 1;
+				}
+			}
+			GetPlaylistSongs(PlaylistNumber);
+			UpdatePlaylistSongMenu();
+		}
+	}
+	function OnYDown()
+	{
+		if(beInPlaylists)
+		{
+			HidePlaylistMenu();
+			beInPlaylists = false;
+		}
+		else
+		{
+			ShowPlaylistMenu();
+			beInPlaylists = true;
+		}
+	}
+	
+	function OnInfo()
+	{
+		if(beInPlaylists)
+		{
+			HidePlaylistMenu();
+			beInPlaylists = false;
+		}
+		else
+		{
+			ShowPlaylistMenu();
+			beInPlaylists = true;
+		}
+	}
+	
+	function OnGuide()
+	{
+		if(beInSoundtracks)
+		{
+			HideSoundtrackMenu();
+			beInSoundtracks = false;
+		}
+		else
+		{
+			ShowSoundtrackMenu();
+			beInSoundtracks = true;
+		}
+	}
+	
+	function OnXDown()
+	{
+		if(beInSoundtracks)
+		{
+			HideSoundtrackMenu();
+			beInSoundtracks = false;
+		}
+		else
+		{
+			ShowSoundtrackMenu();
+			beInSoundtracks = true;
+		}
+	}
+	function OnMoveRight()
+	{
+		if((beInSoundtracks) & (beInPlaylists))
+		{
+			PlaylistActive = true;
+			SoundtrackActive = false;
+			theInLine.theDropDown1Header.children[0].children[0].appearance.material.name = "NavType";
+			theInLine.theDropDown2Header.children[0].children[0].appearance.material.name = "HilightedType";
+		}
+	}
+	function OnMoveLeft()
+	{
+		if((beInSoundtracks) & (beInPlaylists))
+		{
+			SoundtrackActive = true;
+			PlaylistActive = false;
+			theInLine.theDropDown1Header.children[0].children[0].appearance.material.name = "HilightedType";
+			theInLine.theDropDown2Header.children[0].children[0].appearance.material.name = "NavType";
+		}
+	}
+	function OnMoveUp()
+	{
+		if(PlaylistActive)
+		{
+			if(PlaylistTitleMenu)
+			{
+				if (ccurMenuItem <= 0)
+				return;
+				
+				PlaySoundMenuChange();
+				
+				ccurMenuItem = ccurMenuItem - 1;
+				
+				if (dcurMenuItem == 0)
+				bcurMenuItem = bcurMenuItem - 1;
+				else
+				dcurMenuItem = dcurMenuItem - 1;
+				
+				UpdatePlaylistTitleMenu();
+			}
+			else if(PlaylistSongMenu)
+			{
+				if (ccurMenuItem == 0)
+				return;
+				
+				PlaySoundMenuChange();
+				
+				ccurMenuItem = ccurMenuItem - 1;
+				
+				if (dcurMenuItem == 0)
+				bcurMenuItem = bcurMenuItem - 1;
+				else
+				dcurMenuItem = dcurMenuItem - 1;
+				
+				UpdatePlaylistSongMenu();
+			}
+		}
+		else if(SoundtrackActive)
+		{
+			if (fcurMenuItem == 0)
+			return;
+			
+			PlaySoundMenuChange();
+			
+			fcurMenuItem = fcurMenuItem - 1;
+			
+			if (gcurMenuItem == 0)
+			ecurMenuItem = ecurMenuItem - 1;
+			else
+			gcurMenuItem = gcurMenuItem - 1;
+			
+			if(SoundtrackTitleMenu)
+			UpdateSoundtrackTitleMenu();
+			else if(SoundtrackSongMenu)
+			UpdateSoundtrackSongMenu();
+		}
+	}
+	function OnMoveDown()
+	{
+		if(PlaylistActive)
+		{
+			if(PlaylistTitleMenu)
+			{
+				if (ccurMenuItem >= PlaylistTotal)
+				return;
+				
+				PlaySoundMenuChange();
+				
+				ccurMenuItem = ccurMenuItem + 1;
+				
+				if (dcurMenuItem == 8)
+				bcurMenuItem = bcurMenuItem + 1;
+				else
+				dcurMenuItem = dcurMenuItem + 1;
+				
+				UpdatePlaylistTitleMenu();
+			}
+			else if(PlaylistSongMenu)
+			{
+				if (ccurMenuItem == SongTotal - 1)
+				return;
+				
+				PlaySoundMenuChange();
+				
+				ccurMenuItem = ccurMenuItem + 1;
+				
+				if (dcurMenuItem == 8)
+				bcurMenuItem = bcurMenuItem + 1;
+				else
+				dcurMenuItem = dcurMenuItem + 1;
+				
+				UpdatePlaylistSongMenu();
+			}
+		}
+		else if(SoundtrackActive)
+		{
+			if(SoundtrackTitleMenu)
+			{
+				if (fcurMenuItem == StCount - 1)
+				return;
+				
+				PlaySoundMenuChange();
+				
+				fcurMenuItem = fcurMenuItem + 1;
+				
+				if (gcurMenuItem == 8)
+				ecurMenuItem = ecurMenuItem + 1;
+				else
+				gcurMenuItem = gcurMenuItem + 1;
+				
+				UpdateSoundtrackTitleMenu();
+			}
+			else if(SoundtrackSongMenu)
+			{
+				if (fcurMenuItem == TrCount - 1)
+				return;
+				
+				PlaySoundMenuChange();
+				
+				fcurMenuItem = fcurMenuItem + 1;
+				
+				if (gcurMenuItem == 8)
+				ecurMenuItem = ecurMenuItem + 1;
+				else
+				gcurMenuItem = gcurMenuItem + 1;
+				
+				UpdateSoundtrackSongMenu();
+			}
+		}
+	}
+}
+
+///////////////////////////// Soundtrack Functions /////////////////////////////////////
+
+function PlaySoundtrackSong()
+{
+	currentMusicPlayerMode = "Continuous";
+	BGMst = StNum;
+	BGMtr = TrNum;
+	MusicPlayerPlay();
+	UpdateModeText();
+	SaveMode();
+}
+
+function SoundtrackFFW()
+{
+	BGMTracks = theMusicCollection.GetSoundtrackSongCount(BGMst);
+	if(BGMtr < (BGMTracks - 1))
+	BGMtr = BGMtr + 1;
+	else
+	BGMtr = 0;
+	
+	MusicPlayerPlay();
+}
+
+function SoundtrackREW()
+{
+	BGMTracks = theMusicCollection.GetSoundtrackSongCount(BGMst);
+	if(BGMtr == 0)
+	BGMtr = BGMTracks;
+	else
+	BGMtr = BGMtr - 1;
+	
+	MusicPlayerPlay();
+}
+
+function SoundtrackRandom()
+{
+	MusicPlayerRandom();
+}
+
+/////////////////////// Playlist Functions //////////////////////////////////////////////////////////////
+
+var vPLPos;
+var PlaylistTotal;
+var PlaylistNames;
+var PlaylistNumber;
+var SoundtrackTitles;
+var SongTitles;
+var SongTotal;
+
+function GetPlaylists()
+{
+	var d = PlaylistInfo.GetValue("Number of Playlists");
+	PlaylistTotal = StringToNumber(d);
+	if(PlaylistTotal == 0)
+	{
+		PlaylistNames = "";
+	}
+	else
+	{
+		PlaylistNames = new Array(PlaylistTotal);
+		for(var i = 0; i < PlaylistTotal; i = i + 1)
+		{
+			var a = "Title of Playlist" + i;
+			PlaylistNames[i] = PlaylistInfo.GetValue(a);
+		}
+	}
+}
+
+function ExitRename()
+{
+	theControlPanelLayer.fade = 0.25;
+	theControlPanelLayer.visible = true;
+}
+
+function AddPlaylist(x)
+{
+	theControlPanelLayer.fade = 0.25;
+	theControlPanelLayer.visible = true;
+	var a = x;
+	var b = "Title of Playlist" + PlaylistTotal;
+	var e = PlaylistTotal + 1;
+	PlaylistInfo.SetValue("Number of Playlists", e);
+	PlaylistInfo.SetValue(b, a);
+	GetPlaylists();
+	UpdatePlaylistTitleMenu();
+}
+
+function DeletePlaylist(x)
+{
+	var a = x;
+	var d = new Array;
+	var b = new Array;
+	for(var i = 0; i < PlaylistTotal; i = i + 1)
+	{
+		if(i < a)
+		{
+			d[i] = PlaylistNames[i];
+		}
+		else if(i > a)
+		{
+			d[i - 1] = PlaylistNames[i];
+		}
+	}
+	PlaylistTotal = PlaylistTotal - 1;
+	PlaylistNames = d;
+	for(var k = 0; k < PlaylistTotal; k = k + 1)
+	{
+		RebuildPlaylist(k,PlaylistNames[k]);
+	}
+}
+
+function RebuildPlaylist(x,y)
+{
+	var a = x;
+	var b = y;
+	PlaylistInfo.SetValue("Number of Playlists", PlaylistTotal);
+	PlaylistInfo.SetValue("Title of Playlist" + a, b);
+	PlaylistInfo.SetValue("Title of Playlist" + PlaylistTotal, "");
+}
+
+function ClearPlaylists()
+{
+	PlaylistInfo.SetValue("Number of Playlists", 0);
+	PlaylistInfo.SetValue("Title of Playlist0", "");
+}
+
+function GetPlaylistSongs(x)
+{
+	var a = x;
+	var info = new Settings;
+	info.file = "T:\\" + PlaylistNames[a] + ".xbx";
+	info.section = "default"; 
+	var b = info.GetValue("Total Songs");
+	SongTotal = StringToNumber(b);
+	if(SongTotal == 0)
+	{
+		SongTitles = "";
+		SoundtrackTitles = "";
+	}
+	else
+	{
+		SongTitles = new Array(SongTotal);
+		SoundtrackTitles = new Array(SongTotal);
+		for(var i = 0; i < SongTotal; i = i + 1)
+		{
+			var c = "Album" + i;
+			var d = "Song" + i;
+			info.section = "Albums"; 
+			SoundtrackTitles[i] = info.GetValue(c);
+			info.section = "Songs";            
+			SongTitles[i] = info.GetValue(d);
+		}
+	}
+}
+
+function AddSong(x)
+{
+	var a = x;
+	var info = new Settings;
+	info.file = "T:\\" + PlaylistNames[PlaylistNumber] + ".xbx";
+	info.section = "Albums";
+	var b = "Album" + SongTotal;
+	var d = theMusicCollection.GetSoundtrackName(StNum);
+	info.SetValue(b, d);
+	info.section = "Songs";
+	var h = "Song" + SongTotal;
+	var g = theMusicCollection.GetSoundtrackSongName(StNum, TrNum);
+	info.SetValue(h, g);
+	info.section = "default";
+	var i = SongTotal + 1;
+	info.SetValue("Total Songs", i);
+}
+
+function DeleteSong(x)
+{
+	var a = x;
+	var b = new Array;
+	var c = new Array;
+	var d = SoundtrackTitles.length;
+	var e = SongTitles.length;
+	for(var i = 0; i < d; i = i + 1)
+	{
+		if(i < a)
+		{
+			b[i] = SoundtrackTitles[i];
+		}
+		else if(i > a)
+		{
+			b[i - 1] = SoundtrackTitles[i];
+		}
+	}
+	for(var j = 0; j < e; j = j + 1)
+	{
+		if(j < a)
+		{
+			c[j] = SongTitles[j];
+		}
+		else if(j > a)
+		{
+			c[j - 1] = SongTitles[j];
+		}
+	}
+	SongTotal = SongTotal - 1;
+	SoundtrackTitles = b;
+	SongTitles = c;
+	for(var k = 0; k < SongTotal; k = k + 1)
+	{
+		RebuildPlaylistSongs(k,SoundtrackTitles[k],SongTitles[k]);
+	}
+}
+
+function RebuildPlaylistSongs(x,y,z)
+{
+	var a = x;
+	var b = y;
+	var c = z;
+	var info = new Settings;
+	info.file = "T:\\" + PlaylistNames[PlaylistNumber] + ".xbx";
+	if(SongTotal == 0)
+	{
+		info.section = "Albums";
+		info.SetValue("Album0", "");
+		info.section = "Songs";
+		info.SetValue("Song0", "");
+		info.section = "default";
+		info.SetValue("Total Songs", 0);
+	}
+	else
+	{
+		info.section = "Albums";
+		info.SetValue("Album" + a, b);
+		info.SetValue("Album" + SongTotal, "");
+		info.section = "Songs";
+		info.SetValue("Song" + a, c);
+		info.SetValue("Song" + SongTotal, "");
+		info.section = "default";
+		info.SetValue("Total Songs", SongTotal);
+	}
+}
+
+function ClearPlaylistSongs(x)
+{
+	var a = x;
+	GetPlaylistSongs(a);
+	var info = new Settings;
+	info.file = "T:\\" + PlaylistNames[a] + ".xbx";
+	if(SongTotal > 0)
+	{
+		for(var i = 0; i < SongTotal; i = i + 1)
+		{
+			info.section = "Albums";
+			info.SetValue("Album" + i, "");
+			
+		}
+		for(var j = 0; j < SongTotal; j = j + 1)
+		{
+			info.section = "Songs";
+			info.SetValue("Song" + j, "");
+		}
+		info.section = "default";
+		info.SetValue("Total Songs", 0);
+	}
+}
+
+function PlayPlaylistSong(x)
+{
+	currentMusicPlayerMode = "Playlist";
+	var a = x;
+	BGMCount = theMusicCollection.GetSoundtrackCount();
+	for(var i = 0; i < BGMCount; i = i + 1)
+	{
+		if(theMusicCollection.GetSoundtrackName(i) == SoundtrackTitles[a])
+		{
+			BGMst = i;
+		}
+	}
+	BGMTracks = theMusicCollection.GetSoundtrackSongCount(BGMst);
+	for(var k = 0; k < BGMTracks; k = k + 1)
+	{
+		if(theMusicCollection.GetSoundtrackSongName(BGMst, k) == SongTitles[a])
+		{
+			BGMtr = k;
+		}
+	}
+	vPLPos = a;
+	MusicPlayerPlay();
+	UpdateModeText();
+	SaveMode();
+}
+
+function PlaylistFFWD()
+{
+	if(vPLPos == SongTotal - 1)
+	vPLPos = 0;
+	else
+	vPLPos = vPLPos + 1;
+	
+	PlayPlaylistSong(vPLPos);
+}
+
+function PlaylistREW()
+{
+	if(vPLPos == 0)
+	vPLPos = SongTotal - 1;
+	else
+	vPLPos = vPLPos - 1;
+	
+	PlayPlaylistSong(vPLPos);
+}
+
+///////////////////////////// CD Player Functions /////////////////////////////////////
+function CDPlayerPlay(x)
+{
+	var a = x;
+	beInCDPlayer = true;//temp
+	DisableAmbientAudio();
+	BGMtr = a + 1;
+	theMusicPlayer.url = "cd:" + BGMtr;
+	theMusicPlayer.Play();
+	vCurAlbum = "CD-ROM";
+	vCurSong = BGMtr;
+	
+	if(bInMusicPlayerMode)
+	{
+		UpdateMusicPlayerDisplayText();
+	}
+}
+
+function CDPlayerStop()
+{
+	beInCDPlayer = false;//temp
+	MusicPlayerStop();
+}
+
+function CDPlayerFFW()
+{
+	BGMTracks = (theDiscDrive.getTrackCount() - 1);
+	if(currentCDTrack == BGMTracks)
+	currentCDTrack = 0;
+	else
+	currentCDTrack = currentCDTrack + 1;
+	
+	CDPlayerPlay();
+}
+
+function CDPlayerREW()
+{
+	BGMTracks = (theDiscDrive.getTrackCount() - 1);
+	if(currentCDTrack == 0)
+	currentCDTrack = BGMTracks;
+	else
+	currentCDTrack = currentCDTrack - 1;
+	
+	CDPlayerPlay();
+}
+
+function CDPlayerRandom()
+{
+	DisableAmbientAudio();
+	BGMTracks = (theDiscDrive.getTrackCount() - 1);
+	var b = Math.random() * BGMTracks;
+	BGMtr = Math.round(b);
+	CDPlayerPlay();
+}
+
+function ShowCDPlayerMenu()
+{
+	currentCDTrack = 0;
+	CDPlayerScroll = 0;
+	beInCDPlayer = true;
+	InitDropDown2();
+	ShowCDPlayerSongMenu();
+	theInLine.theDropDown2Header.children[0].children[0].appearance.material.name = "NavType";
+	theInLine.DropDown2_HeadingA.text = Translate("cd-rom");
+	theCDPlayerJoy.isBound = true;
+}
+
+function HideCDPlayerMenu()
+{
+	theControlPanelControlsInline.children[0].HideDropDown2();
+	beInCDPlayer = false;
+	
+	theCDPlayerJoy.isBound = false;
+	theMainMusicControlPanelJoy.isBound = true;
+}
+
+function ShowCDPlayerSongMenu()
+{
+	TrCount = theDiscDrive.getTrackCount();
+	StName = TrCount + 1;
+	UpdateCDPlayerSongMenu();
+}
+
+function UpdateCDPlayerSongMenu()
+{
+	if(currentCDTrack - CDPlayerScroll > 8) CDPlayerScroll = currentCDTrack - 8;
+	if(currentCDTrack - CDPlayerScroll < 0) CDPlayerScroll = currentCDTrack;
+	for(var i = 0; i < 9; i = i + 1)
+	{
+		var nslist = CDPlayerScroll + i;
+		if (nslist >= TrCount)
+		{
+			theInLine.theDropDown2Text.children[i].children[0].geometry.text = "";
+		}
+		else
+		{
+			var str = "CD Track " + (nslist + 1);
+			c.theDropDown2Text.children[i].children[0].geometry.text = str;
+			if (nslist == currentCDTrack)
+			{
+				theInLine.theDropDown2Text.children[i].children[0].appearance.material.name = "CellEgg/Partsz";
+			}
+			else
+			{
+				theInLine.theDropDown2Text.children[i].children[0].appearance.material.name = "XBoxGreen2";
+			}
+		}
+	}
+}
+
+DEF theCDPlayerJoy Joystick
+{
+	function OnADown()
+	{
+		CDPlayerPlay(currentCDTrack);
+	}
+	
+	function OnBDown()
+	{
+		CDPlayerStop();
+	}
+	
+	function OnWhiteDown()
+	{
+		HideCDPlayerMenu();
+	}
+	
+	function OnMoveUp()
+	{
+		if(currentCDTrack == 0)
+		{
+			return;
+		}
+		else
+		{
+			currentCDTrack = currentCDTrack - 1;
+			UpdateCDPlayerSongMenu();
+		}
+	}
+	
+	function OnMoveDown()
+	{
+		if(currentCDTrack == TrCount - 1)
+		{
+			return;
+		}
+		else
+		{
+			currentCDTrack = currentCDTrack + 1;
+			UpdateCDPlayerSongMenu();
+		}
+	}
+}

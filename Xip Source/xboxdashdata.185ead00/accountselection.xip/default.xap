@@ -506,6 +506,117 @@ DEF Icon_live Transform
 	rotation -0.946900 -0.227300 0.227300 -1.625000
 	scale 26 26 26
 }
+DEF InsigniaIcon Transform
+{
+	visible false
+	translation 105 0.6806 -183.176
+	children
+	[
+		Transform
+		{
+			scale 4 4 4
+			children
+			[
+				Waver
+				{
+					axis 0 1 0
+					rpm 5
+					field 0.392
+					children
+					[
+						DEF Insignia_back01 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{ 
+											name "Material #133"
+										}
+									}
+									geometry DEF Insignia_01-FACES Mesh { url "Iback.xm" }
+								}
+							]
+							rotation 0.000267 -0.707100 0.707100 -3.142000
+							scale 0.004331 0.004331 0.004331
+							scaleOrientation 0.000864 0.407200 0.913400 -0.016060
+							translation -0.012850 -0.014420 -0.003235
+						}  
+						DEF Insignia_traces01 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											//name "Metal_Chrome"
+											name "IconParts1"
+											//name "Screen"
+										}
+									}
+									geometry DEF Insignia_02-FACES Mesh { url "Itraces.xm" }
+								}
+							]
+							rotation 0.000267 -0.707100 0.707100 -3.142000
+							scale 0.004331 0.004331 0.004331
+							scaleOrientation 0.000864 0.407200 0.913400 -0.016060
+							translation -0.012850 -0.014420 -0.003235
+						}
+						DEF Insignia_ring01 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "Metal_Chrome"
+										}
+									}
+									geometry DEF Insignia_03-FACES Mesh { url "Iring.xm" }
+								}
+							]
+							rotation 0.000267 -0.707100 0.707100 -3.142000
+							scale 0.004331 0.004331 0.004331
+							scaleOrientation 0.000864 0.407200 0.913400 -0.016060
+							translation -0.012850 -0.014420 -0.003235
+						}
+						DEF Insignia_eye01 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "ButtonGlow"
+											//name "Metal_Chrome"  
+										}
+									}
+									geometry DEF Insignia_04-FACES Mesh { url "Ieye.xm" }
+								}
+							]
+							rotation 0.000267 -0.707100 0.707100 -3.142000
+							scale 0.004331 0.004331 0.004331
+							scaleOrientation 0.000864 0.407200 0.913400 -0.016060
+							translation -0.012850 -0.014420 -0.003235
+						}
+					]
+				}
+			]
+		}
+	]
+}
 DEF panel_backing Transform
 {
 	children
