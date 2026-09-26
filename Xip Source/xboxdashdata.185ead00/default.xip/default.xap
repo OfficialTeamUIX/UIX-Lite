@@ -555,6 +555,20 @@ function GoToSkin()
 	  theSkinInline.visible = true;
 }
 
+DEF theSkinsInline Inline
+{
+	visible false
+	url "skins.xap"
+	function onLoad() { theSkinsInline.children[0].theSkinsMenu.GoTo(); }
+}
+
+function GoToSkins()
+{
+	theSettingsMenuIn.Play();
+	if( theSkinsInline.visible ) { theSkinsInline.children[0].theSkinsMenu.GoTo(); }
+	else { theSkinsInline.visible = true; }
+}
+
 ////////////////////////////////////////////////////////////////////////////
 
 DEF theLauncherInline Inline
@@ -3477,6 +3491,28 @@ function UnblockMemoryUnitEnumeration()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////// Added Functions for HDD Menu
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function FindLaunchFile(sFolder)
+{
+	if(theConfig.NtFileExists(sFolder + "\\default.xbe")) return "default.xbe";
+	if(theConfig.DiscImagesSupported() == 0) return "";
+	if(theConfig.NtFileExists(sFolder + "\\default.iso")) return "default.iso";
+	if(theConfig.NtFileExists(sFolder + "\\default.cci")) return "default.cci";
+	return "";
+}
+
+function IsDiscImage(sFile)
+{
+	var ext = sFile.substr(sFile.lastIndexOf(".") + 1).toLowerCase();
+	return (ext == "iso") | (ext == "cci");
+}
+
+function IsLaunchable(sType)
+{
+	if(sType == "xbe") return true;
+	if((sType == "iso") | (sType == "cci")) return theConfig.DiscImagesSupported();
+	return false;
+}
+
 function FillMenuList(x) // search Y:\, C:\, N:\ and O:\ for a relative path's contents to use to fill a menu
 {
 	var RelativePath = Split(x,";");
@@ -3493,8 +3529,8 @@ function FillMenuList(x) // search Y:\, C:\, N:\ and O:\ for a relative path's c
 				for(var cLoop = 0; cLoop < cSize; cLoop = cLoop + 1)
 				{
 					launchPath = PartitionLocations[i] + RelativePath[ix] + "\\" + c.subFolders[cLoop].name;
-					launchXbe = "default.xbe";
-					if(theConfig.NtFileExists(launchPath + "\\" + launchXbe))
+					launchXbe = FindLaunchFile(launchPath);
+					if(launchXbe != "")
 					{
 						TitleList[TitleList.length] = c.subFolders[cLoop].name + ";" + i + ";" + ix;
 					}                
@@ -3552,7 +3588,14 @@ DEF theLaunchGameLevel Level
 
 		if(g_bAboutToLaunchGame)
 		{
-			if(bPresence & bPresenceEnabled) 
+			if(IsDiscImage(launchXbe))
+			{
+				// Cerbios mounts it and reboots into the disc; only back here if that failed
+				theConfig.LaunchDiscImage(launchPath + "\\" + launchXbe);
+				g_bAboutToLaunchGame = false;
+				Reload();
+			}
+			else if(bPresence & bPresenceEnabled) 
 			{
 				var sPath = "";
 				var PathArray = new Array;

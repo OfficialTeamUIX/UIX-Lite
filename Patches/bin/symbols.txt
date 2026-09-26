@@ -1,0 +1,6 @@
+001fe000 T patch_config_getfunctionmap
+00202e10 T patch_create_device
+002047cc D patch_features
+00202cb0 T patch_material_init
+001fe600 T patch_start
+00201be0 T patch_texture_from_xip

@@ -1,7 +1,7 @@
 # UIX-Lite
 ## What's with all the names?
 
-UIX, originally released in 2003, was a modification of source code developed by JbOnE/TeamUIX. In 2020, during the Covid-19 pandemic, various parts of the original Xbox source code tree, along with snippets of code from pre-UIX modifications like XboxDashNext (tHc Final), were discovered, sparking the revival of UIX as UIX Lite. Initially, UIX Ultra Lite was introduced during the launch of Insignia as a streamlined game launcher within the 5960 dashboard. It was designed to maintain Xbox Live (Insignia) support while preserving the original dashboard's aesthetic. However, as is common with many projects, "Ultra Lite" evolved over time. By August 2024, it became our mainline project and was rebranded simply as UIX Lite. Concurrently, a reverse engineering project focused on the 5960 dashboard is being developed privately.
+UIX, originally released in 2003, was a modification of source code developed by JbOnE/TeamUIX. In 2020, during the Covid-19 pandemic, various parts of the original Xbox source code tree, along with snippets of code from pre-UIX modifications like XboxDashNext (tHc Final), were discovered, sparking the revival of UIX as UIX Lite. Initially, UIX Ultra Lite was introduced during the launch of Insignia as a streamlined game launcher within the 5960 dashboard. It was designed to maintain Xbox Live (Insignia) support while preserving the original dashboard's aesthetic. However, as is common with many projects, "Ultra Lite" evolved over time. By August 2024, it became our mainline project and was rebranded simply as UIX Lite. Alongside it, we reverse engineered the 5960 dashboard from scratch, which grew into Theseus and UIX Desktop. That understanding of how the dashboard actually works is what now lets us write these patches as readable source (see [Patches](Patches)) rather than opaque byte edits, and to add features the original patches never could.
 
 In the early 2000s, limited access to source code led to the creation of several pioneering projects like tHc, tHc Lite, TrueBlue, BlackStormX (BSX), User.Interface.X, and Dash2GAM. These projects laid the groundwork for what UIX would eventually become. The foundation of UIX was built by a dedicated sub-community within the Xbox scene, focused on modifying retail dashboard files. Contributions from notable figures such as JbOnE, Gcue, fuckdb, Vulgasprofanum,Xbox-Scene forums, and the xboxdash[.]net community were instrumental in shaping both UIX and TeamUIX. Today, we continue to explore these archives, integrating patches and mods from this rich legacy into a modern, live-enabled dashboard.
 
@@ -14,7 +14,9 @@ For more information and community support, join us on [Discord](https://discord
 ## What is UIX Lite
 As stated in the title above UIX Lite is a collection of patches and XIP edits that adds some of the features of UIX to the stock 5960 MS Dash. 
 Some of these features include; 
-* A customizable Launcher to launch titles from your Xbox hard disk.
+* A customizable Launcher to launch titles from your Xbox hard disk, including `default.iso` / `default.cci` disc images on Cerbios.
+* An in-dashboard FTP server for pushing files to the console over the network.
+* Skins you can switch live from Settings>Skins.
 * The ability to customize the Main Menu items.
 * An option to select the tHc Main Orb style.
 * Define up to four QuickLaunch titles.
@@ -30,6 +32,11 @@ Some of these features include;
 * DO NOT DELETE YOUR ORIGINAL MS DASHBOARD FILES. SIMPLY REPLACE THE EXISTING FILES WITH THE MODIFIED FILES ONLY. KEEP ANY UNMODIFIED FILES.
 * Download the latest UIX-Lite-v0.5.XXXXXX.zip from the assets in the pre-patched release.
 * Extract and Copy the pre-patched 5960 Dashboard files via ftp to the root of the C partition on your Xbox.
+
+## How-To (From Source)
+
+* Every change UIX Lite makes to `xboxdash.xbe` is in [Patches](Patches), as source.
+* Run `python3 patch.py xboxdash.xbe xboxdash_uixlite.xbe` on your own retail 5960 `xboxdash.xbe`, then copy the result to `C:\xboxdash.xbe` with the UIX Lite XIPs. See [Patches/README.md](Patches/README.md) for the feature list.
 
 ## How-To (Auto-Magically)
 
@@ -147,3 +154,7 @@ QuickLaunchY=
 We successfully got the HDD Loader from tHc Lite (Which is why the POC Video here is called tHc Ultra-Lite) to launch XBE's from within 5960.
 
 [![tHc Ultra Lite POC](http://img.youtube.com/vi/IlFVf--V0Ac/0.jpg)](https://www.youtube.com/watch?v=IlFVf--V0Ac)
+
+## License
+
+The patch source in [Patches](Patches) and the scripts in this repository are licensed under the GNU General Public License v3.0 or later. See [LICENSE](LICENSE).

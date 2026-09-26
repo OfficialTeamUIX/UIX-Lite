@@ -474,9 +474,9 @@ function LaunchItem(x,y)
 	}
 	
 	launchPath = PartitionLocations[StringToNumber(TitleLocation[1])] + RelativePath[StringToNumber(TitleLocation[2])] + "\\" + FolderName;
-	launchXbe = "default.xbe";
+	launchXbe = FindLaunchFile(launchPath);
 	
-	if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
+	if(launchXbe != "") 
 	{  //We,ve found the title so fade the Launcher, update the RecentTitles , and goto theLaunchGameLevel
 		theLauncher.children[0].children[0].theWholeThing.visible = false;
 		UpdateRecentTitles(x,y);
@@ -730,7 +730,7 @@ DEF theLauncher Level
 						ChangeDirectory(TempTitleList[nPlayCursor0]);
 					}
 				}
-				else if(sFileType[nPlayCursor0] == "xbe")
+				else if(IsLaunchable(sFileType[nPlayCursor0]))
 				{
 					if(LeftTrigger & RightTrigger & bInRoot == false)
 					{
@@ -759,7 +759,7 @@ DEF theLauncher Level
 			{
 				if(LeftTrigger & RightTrigger)
 				{
-					if(sFileType[nPlayCursor0] == "xbe")
+					if(IsLaunchable(sFileType[nPlayCursor0]))
 					{
 						var sPath = arrMenuPaths[nCurLauncherItem0] + "\\" + TempTitleList[nPlayCursor0];
 						SetSavedValue("QuickLaunch","QuickLaunchX",sPath);
@@ -796,7 +796,7 @@ DEF theLauncher Level
 			{
 				if(LeftTrigger & RightTrigger)
 				{
-					if(sFileType[nPlayCursor0] == "xbe")
+					if(IsLaunchable(sFileType[nPlayCursor0]))
 					{
 						var sPath = arrMenuPaths[nCurLauncherItem0] + "\\" + TempTitleList[nPlayCursor0];
 						SetSavedValue("QuickLaunch","QuickLaunchY",sPath);
@@ -817,7 +817,7 @@ DEF theLauncher Level
 			{
 				if(LeftTrigger & RightTrigger)
 				{
-					if(sFileType[nPlayCursor0] == "xbe")
+					if(IsLaunchable(sFileType[nPlayCursor0]))
 					{
 						var sPath = arrMenuPaths[nCurLauncherItem0] + "\\" + TempTitleList[nPlayCursor0];
 						SetSavedValue("QuickLaunch","QuickLaunchB",sPath);
