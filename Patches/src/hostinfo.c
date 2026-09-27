@@ -5,8 +5,8 @@
 #include "dash5960.h"
 #include "net.h"
 
-// Build a CStrObject the VM owns (see dash5960.h).
-static void* make_strobj(const WCHAR* sz)
+// Build a CStrObject the VM owns (see dash5960.h). Shared with fileops.c.
+void* make_strobj(const WCHAR* sz)
 {
 	void* o = op_new(CSTROBJECT_SIZE);
 	if (!o)

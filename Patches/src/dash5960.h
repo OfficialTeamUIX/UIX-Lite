@@ -43,6 +43,8 @@ typedef unsigned short WCHAR;
 #define RemoveDirectoryA   ((BOOL (STDCALL *)(const char*))0x0006c953)
 #define FindFirstFileA     ((HANDLE (STDCALL *)(const char*, void*))0x0006d82a)
 #define FindNextFileA      ((BOOL (STDCALL *)(HANDLE, void*))0x0006d937) // FindClose = NtClose(handle)
+#define MoveFileExA        ((BOOL (STDCALL *)(const char*, const char*, DWORD))0x0006c8b1)
+#define MOVEFILE_REPLACE_EXISTING 0x1
 #define XSetFileCacheSize  ((BOOL (STDCALL *)(DWORD))0x0006c795)
 
 // CRT stdio (__cdecl, NOT stdcall) is the only file-write path in this XBE.
@@ -63,6 +65,7 @@ typedef unsigned short WCHAR;
 #define CStrObject_ctor ((void* (THISCALL *)(const WCHAR*, void*))0x00032090)
 #define snwprintf       ((int (*)(WCHAR*, DWORD, const WCHAR*, ...))0x00073c6f)
 #define CSTROBJECT_SIZE 0x20
+void* make_strobj(const WCHAR* sz); // heap CStrObject the VM owns (hostinfo.c)
 
 // Threads (xapilib)
 #define CreateThread       ((HANDLE (STDCALL *)(void*, DWORD, void*, void*, DWORD, DWORD*))0x0006ba6f)
@@ -168,7 +171,9 @@ typedef struct ScriptFn
 
 #define SIG_VOID          1  // void f()
 #define SIG_INT           2  // int f()
+#define SIG_STRING_STRING 5  // string f(string), like Translate
 #define SIG_STRING        8  // string f(), like GetXdashVersion
+#define SIG_VOID_2STRING  13 // void f(string, string), like CSettings::SetValue
 #define SIG_INT_STRING    25 // int f(string)
 
 #define dash_config_functions ((ScriptFn*)0x0017fdf0) // theConfig's table, built before main

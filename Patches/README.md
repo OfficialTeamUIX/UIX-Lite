@@ -74,7 +74,25 @@ Hooks are 5-byte `call`/`jmp` redirects at these sites:
 | `0002ce6f` | D3D setup creates the device | `patch_create_device` (`video.c`): adjust the present parameters first |
 | `0002d89d` | startup builds the material table | `patch_material_init` (`skins.c`): then apply the current skin's colors |
 | `0006172f` | texture cache miss looks in the XIPs | `patch_texture_from_xip` (`skin_textures.c`): swap in the skin's texture |
-| `0003a490` | theConfig's script function table | `patch_config_getfunctionmap` (`config_functions.c`): adds `ApplySkin`, `LaunchDiscImage`, `DiscImagesSupported`, `GetIPAddress` (`hostinfo.c`) |
+| `0003a490` | theConfig's script function table | `patch_config_getfunctionmap` (`config_functions.c`): adds the script functions below |
+
+### Script functions added to theConfig
+
+Callable from XAP as `theConfig.<name>(...)`:
+
+| Function | Signature | What it does |
+|---|---|---|
+| `ApplySkin()` | void | Re-apply the current skin's colors/textures (`skins.c`) |
+| `LaunchDiscImage(path)` | int | Boot a `.iso`/`.cci` via Cerbios (`disc_image.c`) |
+| `DiscImagesSupported()` | int | 1 if Cerbios's virtual drive is present |
+| `GetIPAddress()` | string | The console's LAN IP, e.g. `192.168.1.50` (`hostinfo.c`) |
+| `getXbeTitleID(path)` | string | 8-hex TitleID from a title's `default.xbe`, e.g. `4D530064` (`fileops.c`) |
+| `deleteFile(path)` | int | Delete a file; 1 on success |
+| `moveFile(src, dst)` | void | Move/rename, replacing dst |
+| `copyFile(src, dst)` | void | Copy the file's bytes |
+
+`moveFile`/`copyFile` return nothing (the VM has no two-string function that
+returns a value); check the result with `NtFileExists`/`getXbeTitleID` if needed.
 
 The FTP server is `ftp.c`; it runs on the retail network stack through
 `net.c` (listen/accept, which the stack has but doesn't export) and the
