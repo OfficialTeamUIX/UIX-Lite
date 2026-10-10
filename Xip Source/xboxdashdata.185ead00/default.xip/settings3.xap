@@ -3545,9 +3545,9 @@ function StartSettingsMenu()
 		sSettingsMenu[index] = Translate("Configuration");
 		index = index + 1;
 	}
+	
 	sSettingsMenu[index] = Translate("Skins");
 	index = index + 1;
-	
 	sSettingsMenu[index] = theTranslator.Translate("CLOCK");
 	index = index + 1;
 	sSettingsMenu[index] = theTranslator.Translate("LANGUAGE");
@@ -3688,7 +3688,7 @@ function MenuIcon()
 	else if (sSettingsElements[nCurSettingsMenuItem] == Translate("Skins"))
 	{
 		ShowIcon(c.UIXIcon);
-	}
+	}   
 	else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("CLOCK"))
 	{
 		UpdateClockHands();
@@ -3772,7 +3772,7 @@ function UpdateRootMeta()
 	{ 
 		metaString = Translate("Configure UIX Settings"); 
 	}
-	else if(sSettingsElements[nCurSettingsMenuItem] == Translate("Skins"))
+	if(sSettingsElements[nCurSettingsMenuItem] == Translate("Skins"))
 	{
 		metaString = Translate("Skin Settings");
 	}
@@ -4082,7 +4082,6 @@ DEF theSettingsMenu Level
 			else if (sSettingsElements[nCurSettingsMenuItem] == Translate("Skins"))
 			{
 				strCurMenu = "SKINS";
-				bBackToSettings = true;
 				GoToSkins();
 			}
 			else if (sSettingsElements[nCurSettingsMenuItem] == theTranslator.Translate("CLOCK"))

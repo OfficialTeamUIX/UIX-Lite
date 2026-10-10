@@ -33,8 +33,11 @@
 // A scene drive whose real letter isn't mounted is skipped (no disc, no 2nd HDD).
 static const struct { const char* scene; char real; } kDrives[] = {
 	{ "C",  'Y' }, // system
-	{ "D",  'D' }, // DVD
+	{ "D",  'B' }, // DVD (private alias; dashboard D: is HDD0 partition 2)
 	{ "E",  'C' }, // main data
+	{ "X",  'S' }, // HDD0 cache partition 3 (dashboard X: is already in use)
+	{ "Y",  'V' }, // HDD0 cache partition 4 (dashboard Y: is already in use)
+	{ "Z",  'W' }, // HDD0 cache partition 5
 	{ "F",  'N' }, // HDD0 partition 6
 	{ "G",  'O' }, // HDD0 partition 7
 	{ "E2", 'R' }, // HDD1 partition 1
@@ -72,9 +75,10 @@ typedef struct Conn
 	DWORD  rest;        // REST offset for the next transfer
 	char   user[32];    // name from the USER command, checked at PASS
 	char   cwd[PATH_MAX];
+	char   renameFrom[PATH_MAX]; // real path saved by RNFR for the next RNTO
 } Conn;
 
-// Login and port, from [FTP] in config.ini (defaults below). Read once at start.
+// Scene-standard login and port defaults; config.ini can override them.
 static char g_user[32] = "xbox";
 static char g_pass[32] = "xbox";
 static WORD g_port = CMD_PORT;
@@ -95,6 +99,32 @@ static int str_eq(const char* a, const char* b) // case-sensitive
 // --- tiny freestanding string / format helpers ------------------------------
 
 static int s_len(const char* s) { int n = 0; while (s[n]) n++; return n; }
+
+// Build a short same-directory temporary name. Appending a suffix to the
+// destination can push an otherwise valid FATX filename past its 42-character
+// component limit. The path hash also avoids one shared temp name per folder.
+static int upload_temp_path(const char* real, char* temp, int cap)
+{
+	int leaf = 0;
+	DWORD hash = 2166136261u;
+	for (int i = 0; real[i]; i++)
+	{
+		hash = (hash ^ (BYTE)real[i]) * 16777619u;
+		if (real[i] == '\\' || real[i] == '/' || real[i] == ':') leaf = i + 1;
+	}
+	const char* hex = "0123456789ABCDEF";
+	const char* pre = "~uix";
+	const char* ext = ".tmp";
+	int n = 0;
+	if (leaf + 16 >= cap) return 0;
+	for (; n < leaf; n++) temp[n] = real[n];
+	for (int i = 0; pre[i]; i++) temp[n++] = pre[i];
+	for (int shift = 28; shift >= 0; shift -= 4)
+		temp[n++] = hex[(hash >> shift) & 0xf];
+	for (int i = 0; ext[i]; i++) temp[n++] = ext[i];
+	temp[n] = 0;
+	return 1;
+}
 
 static int ieq(const char* a, const char* b)
 {
@@ -159,6 +189,23 @@ static int sel_read(SOCKET s, int sec)
 	tv.tv_sec = sec;
 	tv.tv_usec = 0;
 	return select(0, &r, 0, 0, &tv);
+}
+
+// A data socket can be non-blocking, so connect may report would-block while
+// the TCP handshake is still in progress. Wait until it becomes writable;
+// the exception set distinguishes a refused/failed connection from success.
+static int wait_connect(SOCKET s, int sec)
+{
+	fd_set w, e;
+	timeval tv;
+	w.fd_count = 1;
+	w.fd_array[0] = s;
+	e.fd_count = 1;
+	e.fd_array[0] = s;
+	tv.tv_sec = sec;
+	tv.tv_usec = 0;
+	int n = select(0, 0, &w, &e, &tv);
+	return n > 0 && w.fd_count != 0 && e.fd_count == 0;
 }
 
 static int recv_some(SOCKET s, char* buf, int len)
@@ -384,7 +431,7 @@ static SOCKET open_data(Conn* c)
 		if (d == INVALID_SOCKET)
 			return INVALID_SOCKET;
 		net_allow_insecure(d);
-		if (connect(d, &c->port, sizeof(c->port)) != 0)
+		if (connect(d, &c->port, sizeof(c->port)) != 0 && !wait_connect(d, DATA_TIMEOUT))
 		{
 			closesocket(d);
 			return INVALID_SOCKET;
@@ -481,22 +528,43 @@ static void cmd_retr(Conn* c, const char* arg)
 
 static void cmd_stor(Conn* c, const char* arg, int append)
 {
-	char virt[PATH_MAX], real[PATH_MAX];
+	char virt[PATH_MAX], real[PATH_MAX], temp[PATH_MAX];
 	resolve(c->cwd, arg, virt, sizeof(virt));
 	if (!map_real(virt, real, sizeof(real)))
 	{
 		reply(c->cmd, "550 No such path.\r\n");
 		return;
 	}
-	// This XBE has no WriteFile; the dashboard writes through CRT stdio, so we
-	// do too (fopen/fwrite/fclose). APPE appends, a REST resume opens the file
-	// for update and seeks, a plain STOR truncates and starts fresh.
+	// Establish the data channel before touching the destination. A plain STOR
+	// is received into a same-directory temporary file and committed only after
+	// the complete transfer, so connection/transfer failure preserves the old
+	// destination. APPE and REST intentionally operate on the existing file.
+	SOCKET data = open_data(c);
+	if (data == INVALID_SOCKET)
+	{
+		reply(c->cmd, "425 Can't open data connection.\r\n");
+		return;
+	}
+	const char* openPath = real;
+	if (!append && !c->rest)
+	{
+		if (!upload_temp_path(real, temp, sizeof(temp)))
+		{
+			closesocket(data);
+			reply(c->cmd, "550 Path too long.\r\n");
+			return;
+		}
+		DeleteFileA(temp); // stale temporary from an interrupted older upload
+		openPath = temp;
+	}
+	// This XBE has no WriteFile; use the dashboard CRT writer.
 	const char* mode = append ? "ab" : (c->rest ? "r+b" : "wb");
-	void* f = crt_fopen(real, mode, SH_DENYNO);
+	void* f = crt_fopen(openPath, mode, SH_DENYNO);
 	if (!f && c->rest)          // resuming a file that isn't there yet
-		f = crt_fopen(real, "wb", SH_DENYNO);
+		f = crt_fopen(openPath, "wb", SH_DENYNO);
 	if (!f)
 	{
+		closesocket(data);
 		reply(c->cmd, "550 Failed to create file.\r\n");
 		return;
 	}
@@ -505,13 +573,6 @@ static void cmd_stor(Conn* c, const char* arg, int append)
 	else if (c->rest)
 		crt_fseek(f, (long)c->rest, STDIO_SEEK_SET);
 	c->rest = 0;
-	SOCKET data = open_data(c);
-	if (data == INVALID_SOCKET)
-	{
-		crt_fclose(f);
-		reply(c->cmd, "425 Can't open data connection.\r\n");
-		return;
-	}
 	reply(c->cmd, "150 Ok to send data.\r\n");
 	char* buf = (char*)dash_malloc(XFER_BUF);
 	int ok = buf != 0;
@@ -530,6 +591,18 @@ static void cmd_stor(Conn* c, const char* arg, int append)
 	if (buf) dash_free(buf);
 	closesocket(data);
 	crt_fclose(f);
+	if (!append && openPath == temp)
+	{
+		if (ok && !MoveFileExA(temp, real, MOVEFILE_REPLACE_EXISTING))
+		{
+			// Some live dashboard files refuse replace-in-place. The complete
+			// temporary is already safe, so delete only at this final commit.
+			if (!DeleteFileA(real) || !MoveFileExA(temp, real, 0))
+				ok = 0;
+		}
+		if (!ok)
+			DeleteFileA(temp);
+	}
 	reply(c->cmd, ok ? "226 Transfer complete.\r\n" : "426 Transfer failed.\r\n");
 }
 
@@ -579,9 +652,26 @@ static void cmd_port(Conn* c, const char* arg)
 		reply(c->cmd, "501 Bad PORT.\r\n");
 		return;
 	}
+	for (int i = 0; i < 6; i++)
+		if (v[i] > 255)
+		{
+			reply(c->cmd, "501 Bad PORT.\r\n");
+			return;
+		}
+	DWORD target = (DWORD)(v[0] | (v[1] << 8) | (v[2] << 16) | (v[3] << 24));
+	// The retail stack does not link getpeername. Permit RFC 1918 destinations
+	// while rejecting public, loopback, link-local, multicast and zero targets.
+	int privateTarget = v[0] == 10
+	                 || (v[0] == 172 && v[1] >= 16 && v[1] <= 31)
+	                 || (v[0] == 192 && v[1] == 168);
+	if (!target || !privateTarget)
+	{
+		reply(c->cmd, "501 PORT target must be on a private network.\r\n");
+		return;
+	}
 	for (int i = 0; i < (int)sizeof(c->port); i++) ((char*)&c->port)[i] = 0;
 	c->port.sin_family = AF_INET;
-	c->port.sin_addr = (DWORD)(v[0] | (v[1] << 8) | (v[2] << 16) | (v[3] << 24));
+	c->port.sin_addr = target;
 	c->port.sin_port = (WORD)((v[5] << 8) | v[4]); // already network order
 	c->hasPort = 1;
 	if (c->pasv != INVALID_SOCKET) { closesocket(c->pasv); c->pasv = INVALID_SOCKET; }
@@ -716,6 +806,33 @@ static DWORD STDCALL conn_thread(void* param)
 		}
 		else if (ieq(line, "SIZE"))
 			cmd_size(&c, arg);
+		else if (ieq(line, "RNFR"))
+		{
+			char virt[PATH_MAX], real[PATH_MAX];
+			resolve(c.cwd, arg, virt, sizeof(virt));
+			c.renameFrom[0] = 0;
+			if (map_real(virt, real, sizeof(real)) && GetFileAttributesA(real) != INVALID_FILE_ATTRIBUTES)
+			{
+				copy_str(c.renameFrom, real, sizeof(c.renameFrom));
+				reply(c.cmd, "350 Ready for destination name.\r\n");
+			}
+			else
+				reply(c.cmd, "550 File or directory not found.\r\n");
+		}
+		else if (ieq(line, "RNTO"))
+		{
+			if (!c.renameFrom[0])
+				reply(c.cmd, "503 Send RNFR first.\r\n");
+			else
+			{
+				char virt[PATH_MAX], real[PATH_MAX];
+				resolve(c.cwd, arg, virt, sizeof(virt));
+				int ok = map_real(virt, real, sizeof(real))
+				      && MoveFileExA(c.renameFrom, real, MOVEFILE_REPLACE_EXISTING);
+				c.renameFrom[0] = 0;
+				reply(c.cmd, ok ? "250 Rename successful.\r\n" : "550 Rename failed.\r\n");
+			}
+		}
 		else if (ieq(line, "DELE"))
 		{
 			char virt[PATH_MAX], real[PATH_MAX];

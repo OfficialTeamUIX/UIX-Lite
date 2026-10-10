@@ -327,9 +327,9 @@ DEF theDiscDrive DiscDrive
 		else if(theLauncherInline.visible)
 		{
 			var c = theLauncherInline.children[0];
-			c.LoadRootContents();
 			if(c.bInBrowser & c.bInRoot) 
 			{
+				c.LoadRootContents();
 				c.TempTitleList = c.RootDirectory;
 				c.UpdateTrackList();
 			}
@@ -370,90 +370,91 @@ DEF theDiscDrive DiscDrive
 			{
 				stra = Translate("AUTOLAUNCH_UNKN_ASK");
 			}
-			AskQuestion(stra,"theDiscDrive.AutoLaunch()","",1);
+			AskQuestion(stra,"AutoLaunch()","",1);
 		}
 		if(theLauncherInline.visible)
 		{
 			var c = theLauncherInline.children[0];
-			c.LoadRootContents();
 			if(c.bInBrowser & c.bInRoot) 
 			{
+				c.LoadRootContents();
 				c.TempTitleList = c.RootDirectory;
 				c.UpdateTrackList();
 			}
 		}
 	}
-	
-	function AutoLaunch()
+}
+
+function AutoLaunch()
+{
+	if(theDiscDrive.discType == "Audio")
 	{
-		if (discType == "Audio")
+		LogOff();   // PS Bug #33608 You are still seen as Online when playing an Audio CD
+					// PS Bug #33611 You can hear Live Now notification sounds while playing Audio CD
+		
+		if(theMusicInline.visible == false)
 		{
-			LogOff();   // PS Bug #33608 You are still seen as Online when playing an Audio CD
-						// PS Bug #33611 You can hear Live Now notification sounds while playing Audio CD
-
-			if (theMusicInline.visible == false)
+			ClosePopup();
+			nCurMainMenuItem = nMusicButton;   // select music when backing up
+			StartCDPlayer();
+			return;
+		}
+		
+		var c = theMusicInline.children[0];
+		
+		if(c.theMusicPlayMenu.visible) // We are in the music play menu
+		{
+			if(c.musicSelect == 0) // Already in audio CD player
 			{
-				ClosePopup();
-				nCurMainMenuItem = nMusicButton;   // select music when backing up
-				StartCDPlayer();
-				return;
-			}
-
-			var c = theMusicInline.children[0];
-
-			if (c.theMusicPlayMenu.visible) // We are in the music play menu
-			{
-				if (c.musicSelect == 0) // Already in audio CD player
+				if(c.bMusicMenuVisible)
 				{
-					if (c.bMusicMenuVisible)
-					{
-						c.theMusicPlayMenu.GoTo();
-						c.StartMusicPlayer();
-						c.DoMusicPlayPause();
-					}
-					else
-					{
-						c.DoMusicStop();
-						c.InitPlaylist();
-						c.UpdateTrackList();
-						if (c.visualizerViewpoint.isBound)
-							c.DoMusicPlayPause();
-					}
+					c.theMusicPlayMenu.GoTo();
+					c.StartMusicPlayer();
+					c.DoMusicPlayPause();
 				}
-				else if (c.theMusicPlayer.transportMode != 1) // Let's play the disc if no soundtrack is playing
+				else
 				{
-					bGoToCDPlayer = true;
-					EnableInput(false);
-					c.theMusicMenu.GoBackTo();
+					c.DoMusicStop();
+					c.InitPlaylist();
+					c.UpdateTrackList();
+					if (c.visualizerViewpoint.isBound)
+					c.DoMusicPlayPause();
 				}
 			}
-			else if (c.theMusicMenu.visible == true)
+			else if(c.theMusicPlayer.transportMode != 1) // Let's play the disc if no soundtrack is playing
 			{
-				ClosePopup();
 				bGoToCDPlayer = true;
 				EnableInput(false);
-				c.StartMusicLevel();
-			}
-			else
-			{
-				ClosePopup();
-				bGoToCDPlayer = true;
-				EnableInput(false);
-				c.theMusicMenu.GoTo();
+				c.theMusicMenu.GoBackTo();
 			}
 		}
-		else if (discType == "Video")
+		else if(c.theMusicMenu.visible == true)
 		{
-			theLauncherLevel.GoTo();
+			ClosePopup();
+			bGoToCDPlayer = true;
+			EnableInput(false);
+			c.StartMusicLevel();
 		}
-		else if (discType == "Title")
+		else
 		{
-			theLauncherLevel.GoTo();
+			ClosePopup();
+			bGoToCDPlayer = true;
+			EnableInput(false);
+			c.theMusicMenu.GoTo();
 		}
-		else if (discType == "unknown")
-		{
-			BlockUser("ERROR MESSAGE 1");
-		}
+	}
+	else if(theDiscDrive.discType == "Video")
+	{
+		theLauncherLevel.GoTo();
+	}
+	else if(theDiscDrive.discType == "Title")
+	{
+		if(bPresenceEnabled) theConfig.SendDiscordRelay(theConfig.GetXbeTitleID("B:\\default.xbe"));
+		theLauncherLevel.GoTo();
+	}
+	else if(theDiscDrive.discType == "unknown")
+	{
+		BlockUser("ERROR MESSAGE 1");
 	}
 }
 
@@ -535,26 +536,6 @@ function ParseEscapedChars(sText)
 	return sText;
 }
 
-///////////////////////////////////////////////////////////////////
-DEF theSkinInline Inline
-{
-	visible false
-	url "skin.xap"
-
-	function onLoad()
-	{
-	  theSkinInline.children[0].theSkin.GoTo();
-	}
-}
-
-function GoToSkin()
-{
-	if (theSkinInline.visible)
-	  theSkinInline.children[0].theSkin.GoTo();
-	else
-	  theSkinInline.visible = true;
-}
-
 DEF theSkinsInline Inline
 {
 	visible false
@@ -568,7 +549,6 @@ function GoToSkins()
 	if( theSkinsInline.visible ) { theSkinsInline.children[0].theSkinsMenu.GoTo(); }
 	else { theSkinsInline.visible = true; }
 }
-
 ////////////////////////////////////////////////////////////////////////////
 
 DEF theLauncherInline Inline
@@ -1900,9 +1880,11 @@ DEF theMainMenu Level
 		}
 		function OnBlackDown()
 		{
+			TellUser(theConfig.GetXbeTitleID("Y:\\xboxdash.xbe") + "\n" + theConfig.GetXbeTitleName("Y:\\xboxdash.xbe"),"");
 		}
 		function OnWhiteDown()
 		{
+			TellUser(theConfig.GetDiscordRelayStatus(),"");
 		}
 		function OnKeyVerified()
 		{
@@ -2139,8 +2121,6 @@ var sLauncherMenu;
 var bMainMenuOnAutoSignIn;
 
 // Discord Presence
-var Discord;
-var bPresence;
 var bPresenceEnabled;
 
 //Settings Options
@@ -2157,7 +2137,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "260802"; //Date of commit YYMMDD
+	sBuildDate = "261009"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2225,7 +2205,7 @@ function initialize()
 	bIsTheseus = theConfig.FileExists("Q:\\System\\config.ini");
 	version.file = "T:\\version";
 	PlaylistInfo.file = "T:\\PlaylistInfo.xbx";    
-	version.SetValue("version","0.5." + sBuildDate);
+	version.SetValue("version","0.6." + sBuildDate);
 	ConfigFile.file = "Y:\\UIX Configs\\config.ini";
 	CacheFile.file = "Y:\\UIX Configs\\cache.ini";
 	XlateFile.file = "Y:\\UIX Configs\\xlate.ini";
@@ -2238,22 +2218,13 @@ function initialize()
 	bUseMainMenuAttract = GetSavedBooleanValue("default","UseMainMenuAttract");
 	bUseUnderlay = GetSavedBooleanValue("default","UseListUnderlay");
 	bSkinExists = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00\\Skin.xip");
-	bPresence = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\Discord Presence\\Discord.xbe");
-	bPresenceEnabled = GetSavedBooleanValue("DiscordPresence","PresenceEnabled");
-	if(bPresence){
-		if(GetSavedValue("DiscordPresence","PresenceEnabled") == "") SetSavedBooleanValue("DiscordPresence","PresenceEnabled",false);
-		Discord = new Settings;
-		Discord.file = "Y:\\Discord Presence\\shortcut.ini";
-		Discord.section = "Shortcut";
-		var currentPath = Discord.GetValue("Path");
-		var sDashboard = "c:\\xboxdash.xbe";
-		if (theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xb0xdash.xbe")) sDashboard = "c:\\xb0xdash.xbe";
-		if(bPresenceEnabled & currentPath.toLowerCase() != sDashboard) 
-		{
-			Discord.SetValue("Path",sDashboard); 
-			launch("Discord.xbe","\\Device\\Harddisk0\\Partition2\\Discord Presence"); 
-		}
-	}
+
+	if(GetSavedValue("DiscordRelay","PresenceEnabled") == "") SetSavedBooleanValue("DiscordRelay","PresenceEnabled",false);
+	if(GetSavedValue("DiscordRelay","IP") == "") SetSavedValue("DiscordRelay","IP","0.0.0.0");
+	if(GetSavedValue("DiscordRelay","Port") == "") SetSavedValue("DiscordRelay","Port","1101");
+	bPresenceEnabled = GetSavedBooleanValue("DiscordRelay","PresenceEnabled");
+	if(bPresenceEnabled) theConfig.SendDiscordRelayAsync("FFFE0000");
+
 	if(GetSavedValue("ShowInSettings","Configuration") == "") SetSavedBooleanValue("ShowInSettings","Configuration",true);
 	if(GetSavedValue("ShowInSettings","StartFTP") == "") SetSavedBooleanValue("ShowInSettings","StartFTP",false);
 	if(GetSavedValue("ShowInSettings","Reboot") == "") SetSavedBooleanValue("ShowInSettings","Reboot",true);
@@ -2290,19 +2261,7 @@ function initialize()
 	theAmbientSound2.Play();
 	BGMon = GetSavedBooleanValue("Default","BackgroundMusic");
 	
-	var nLanguage = theConfig.GetLanguage();
-	if (nLanguage != 0) nLanguage = nLanguage - 1;
-	theTranslator.SetLanguage(nLanguage);
-	
-	if(bSkinExists)
-	{
-		theTranslator.SetLanguage(0); //Bootloop if language is not English when loading skin.
-		GoToSkin();
-	}
-	else
-	{
-		MainInitPart2();
-	} 
+	MainInitPart2();
 }
 
 function MainInitPart2()
@@ -3588,37 +3547,38 @@ DEF theLaunchGameLevel Level
 
 		if(g_bAboutToLaunchGame)
 		{
-			if(IsDiscImage(launchXbe))
+			var bLaunchingImage = IsDiscImage(launchXbe);
+			if(bPresenceEnabled) 
+			{
+				var sPath = "";
+				var TitleID = "";
+				var PathArray = new Array;
+				var Slice = new Array;
+				PathArray = Split(launchPath,"\\");
+				Slice = PathArray.slice(4,PathArray.length);
+				if(Slice.length > 0) sPath = Slice.join("\\") + "\\";
+				sPath = GetDrivePath(PathArray[2],PathArray[3]) + sPath + launchXbe;
+				if(bLaunchingImage)
+				{ 
+					TitleID = theConfig.GetDiscImageTitleID(sPath);
+				}
+				else
+				{
+					TitleID = theConfig.GetXbeTitleID(sPath);
+				}
+				if(TitleID != "") theConfig.SendDiscordRelay(TitleID);
+			}
+			if(bLaunchingImage)
 			{
 				// Cerbios mounts it and reboots into the disc; only back here if that failed
 				theConfig.LaunchDiscImage(launchPath + "\\" + launchXbe);
 				g_bAboutToLaunchGame = false;
 				Reload();
 			}
-			else if(bPresence & bPresenceEnabled) 
-			{
-				var sPath = "";
-				var PathArray = new Array;
-				var Slice = new Array;
-				PathArray = Split(launchPath,"\\");
-				if(PathArray[2].toLowerCase() == "cdrom0") 
-				{
-					//DVD not currently supported in the ShortcutRelayXBE
-					launch(launchXbe, launchPath); 
-				}
-				else
-				{
-					Slice = PathArray.slice(4,PathArray.length);
-					if(Slice.length > 0) sPath = Slice.join("\\") + "\\";
-					Discord.SetValue("Path",GetDrivePath(PathArray[2],PathArray[3]) + sPath + launchXbe);
-					launch("Discord.xbe", "\\Device\\Harddisk0\\Partition2\\Discord Presence");
-				}
-			}
 			else
 			{
 				launch(launchXbe, launchPath);
 			}
-			
 		}
 	}    
 	function OnActivate()
@@ -4006,11 +3966,11 @@ function SetSavedBooleanValue(x,y,z)
 
 function GetDrivePath(x,y)
 {
-	if(x == "Harddisk0" & y == "Partition2") return "C:\\";
-	if(x == "Harddisk0" & y == "Partition1") return "E:\\";
-	if(x == "Harddisk0" & y == "Partition6") return "F:\\";
-	if(x == "Harddisk0" & y == "Partition7") return "G:\\";
-	if(x == "Harddisk1" & y == "Partition1") return "E2:\\";
-	if(x == "Harddisk1" & y == "Partition6") return "F2:\\";
-	if(x == "Harddisk1" & y == "Partition7") return "G2:\\";
+	if(x == "Harddisk0" & y == "Partition2") return "Y:\\";
+	if(x == "Harddisk0" & y == "Partition1") return "C:\\";
+	if(x == "Harddisk0" & y == "Partition6") return "N:\\";
+	if(x == "Harddisk0" & y == "Partition7") return "O:\\";
+	if(x == "Harddisk1" & y == "Partition1") return "R:\\";
+	if(x == "Harddisk1" & y == "Partition6") return "P:\\";
+	if(x == "Harddisk1" & y == "Partition7") return "Q:\\";
 }

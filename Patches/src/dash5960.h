@@ -30,6 +30,7 @@ typedef unsigned short WCHAR;
 #define XGetVideoFlags     ((DWORD (STDCALL *)(void))0x0006c51a)
 #define XGetVideoStandard  ((DWORD (STDCALL *)(void))0x0006c56b)
 #define OutputDebugStringA ((void (STDCALL *)(const char*))0x000c6463)
+#define GetLastError       ((DWORD (STDCALL *)(void))0x0006cd16)
 #define dash_malloc        ((void* (*)(DWORD))0x000741c0)
 #define dash_free          ((void (*)(void*))0x000741d2)
 
@@ -125,11 +126,14 @@ typedef struct IO_STATUS_BLOCK
 #define KIMPORT(type, slot) ((type)(*(void**)(slot)))
 #define RtlInitAnsiString       KIMPORT(void (STDCALL *)(ANSI_STRING*, const char*), 0x0001200c)
 #define NtOpenFile              KIMPORT(int (STDCALL *)(HANDLE*, DWORD, OBJECT_ATTRIBUTES*, IO_STATUS_BLOCK*, DWORD, DWORD), 0x00012010)
+#define NtCreateEvent           KIMPORT(int (STDCALL *)(HANDLE*, OBJECT_ATTRIBUTES*, DWORD, BOOL), 0x0001212c)
+#define NtWaitForSingleObject   KIMPORT(int (STDCALL *)(HANDLE, BOOL, long long*), 0x00012120)
 #define NtClose                 KIMPORT(int (STDCALL *)(HANDLE), 0x00012014)
 #define HalReturnToFirmware     KIMPORT(void (STDCALL *)(int), 0x00012018)
 #define IoCreateSymbolicLink    KIMPORT(int (STDCALL *)(ANSI_STRING*, ANSI_STRING*), 0x00012024)
 #define NtDeviceIoControlFile   KIMPORT(int (STDCALL *)(HANDLE, HANDLE, void*, void*, IO_STATUS_BLOCK*, DWORD, void*, DWORD, void*, DWORD), 0x00012114)
 #define NtAllocateVirtualMemory KIMPORT(int (STDCALL *)(void**, DWORD, DWORD*, DWORD, DWORD), 0x0001215c)
+#define NtFreeVirtualMemory     KIMPORT(int (STDCALL *)(void**, DWORD*, DWORD), 0x00012160)
 #define XboxKrnlVersion         (*(WORD**)0x00012050) // Major, Minor, Build, Qfe
 
 // The dashboard
@@ -169,6 +173,7 @@ typedef struct ScriptFn
 	const WCHAR* name;
 } ScriptFn;
 
+#define SIG_DEFAULT       0  // CObject* f(CObject** args, int count)
 #define SIG_VOID          1  // void f()
 #define SIG_INT           2  // int f()
 #define SIG_STRING_STRING 5  // string f(string), like Translate

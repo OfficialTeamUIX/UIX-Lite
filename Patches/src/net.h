@@ -38,10 +38,11 @@ typedef struct WSABUF
 #define ioctlsocket ((int (STDCALL *)(SOCKET, int, DWORD*))0x001307aa)
 #define setsockopt  ((int (STDCALL *)(SOCKET, int, int, const char*, int))0x001307b5)
 #define bind        ((int (STDCALL *)(SOCKET, const sockaddr_in*, int))0x001307c4)
-#define connect     ((int (STDCALL *)(SOCKET, const sockaddr_in*, int))0x001307d5)
+#define connect     ((int (STDCALL *)(SOCKET, const sockaddr_in*, int))0x001307cf)
 #define select      ((int (STDCALL *)(int, fd_set*, fd_set*, fd_set*, const timeval*))0x001307da)
 #define WSARecv     ((int (STDCALL *)(SOCKET, WSABUF*, DWORD, DWORD*, DWORD*, void*, void*))0x00130803)
 #define WSASend     ((int (STDCALL *)(SOCKET, WSABUF*, DWORD, DWORD*, DWORD, void*, void*))0x00130812)
+#define WSASendTo   ((int (STDCALL *)(SOCKET, WSABUF*, DWORD, DWORD*, DWORD, const sockaddr_in*, int, void*, void*))0x00130821)
 #define XNetGetTitleXnAddr ((DWORD (STDCALL *)(BYTE*))0x0013077e) // first DWORD of the XNADDR is our IP
 
 int    net_listen(SOCKET s, int backlog);

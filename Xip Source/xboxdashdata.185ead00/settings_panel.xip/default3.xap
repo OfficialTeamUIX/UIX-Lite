@@ -1,8 +1,8 @@
 
 DEF auto_off Transform
 {
-    children 
-    [
+	children 
+	[
 		DEF Group02 Transform
 		{
 			children 
@@ -295,7 +295,7 @@ DEF auto_off Transform
 					scaleOrientation 0.001085 0.003347 1.000000 -0.307700
 					translation 15.680000 -0.338300 -8.418000
 				}
-		/*        DEF S_Home_videopod_backing01 Transform
+				/*        DEF S_Home_videopod_backing01 Transform
 				{
 					children 
 					[
@@ -315,7 +315,7 @@ DEF auto_off Transform
 					scale 1.380000 0.537000 1.380000
 					translation 12.040000 -5.057000 -9.169000
 				}
-		*/
+				*/
 				DEF S_Home_podsocket_outer Transform
 				{
 					children 
@@ -358,11 +358,12 @@ DEF auto_off Transform
 					scaleOrientation 0.105500 -0.014910 -0.994300 -0.050620
 					translation 3.985000 2.638000 -8.418000
 				}
-
+				
 				DEF ConsoleIcon Transform
 				{
 					fade 0.25
 					translation 9.409000 -5.418000 -0.554700
+					alpha 0
 					rotation 0 1 0 -0.35
 					children
 					[
@@ -427,6 +428,80 @@ DEF auto_off Transform
 						}
 					]
 				}
+				
+				DEF UIXIcon Transform
+				{
+					fade 0.25
+					translation 9.409000 -5.418000 -0.554700
+					alpha 1
+					scale 1.0 1.0 1.0
+					children
+					[
+						Transform
+						{
+							scale 5 5 5
+							children
+							[
+								Waver
+								{
+									axis 0 1 0
+									rpm 5
+									field 0.392
+									children
+									[
+										DEF UIX1a Transform
+										{
+											children
+											[
+												Shape
+												{
+													appearance Appearance
+													{
+														material MaxMaterial
+														{
+															name "Metal_Chrome" 
+															//name "ButtonGlow"
+															//name "Screen"
+														}
+													}
+													geometry DEF UIX1a-FACES Mesh { url "UIX1a.xm" }
+												}
+											]
+											rotation 0.000267 -0.707100 0.707100 -3.142000
+											scale 0.004331 0.004331 0.004331
+											scaleOrientation 0.000864 0.407200 0.913400 -0.016060
+											translation -0.012850 -0.014420 -0.003235
+										} 
+										DEF UIX1b Transform
+										{
+											children
+											[
+												Shape
+												{
+													appearance Appearance
+													{
+														material MaxMaterial
+														{
+															//name "Metal_Chrome" 
+															name "ButtonGlow"
+															//name "Screen"
+														}
+													}
+													geometry DEF UIX1b-FACES Mesh { url "UIX1b.xm" }
+												}
+											]
+											rotation 0.000267 -0.707100 0.707100 -3.142000
+											scale 0.004331 0.004331 0.004331
+											scaleOrientation 0.000864 0.407200 0.913400 -0.016060
+											translation -0.012850 -0.014420 -0.003235
+										} 
+									]
+								}
+							]
+						}
+					]
+				}
+
 				DEF S_Home_videopod Transform
 				{
 					children 
@@ -679,44 +754,44 @@ DEF auto_off Transform
 				{
 					children 
 					[
-                        DEF S_Home_panel_support_04 Transform
-                        {
-                            children 
-                            [
-                                Shape
-                                {
-                                    appearance Appearance
-                                    {
-                                        material MaxMaterial
-                                        {
-                                            name "NavType"
-                                        }
-                                    }
-                                    geometry DEF S_Home_panel_support_04-FACES Mesh { url "S_Home_panel_support_04-FACES.xm" }
-                                }
-                            ]
-                            rotation -1.000000 0.000000 0.000000 -1.571000
-                            translation 0.078160 -3.173000 0.000019
-                        }
-                        DEF S_Home_panel_support_05 Transform
-                        {
-                            children 
-                            [
-                                Shape
-                                {
-                                    appearance Appearance
-                                    {
-                                        material MaxMaterial
-                                        {
-                                            name "NavType"
-                                        }
-                                    }
-                                    geometry DEF S_Home_panel_support_05-FACES Mesh { url "S_Home_panel_support_05-FACES.xm" }
-                                }
-                            ]
-                            rotation -1.000000 0.000000 0.000000 -1.571000
-                            translation 0.078160 -1.765000 0.000019
-                        }
+						DEF S_Home_panel_support_04 Transform
+						{
+							children 
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "NavType"
+										}
+									}
+									geometry DEF S_Home_panel_support_04-FACES Mesh { url "S_Home_panel_support_04-FACES.xm" }
+								}
+							]
+							rotation -1.000000 0.000000 0.000000 -1.571000
+							translation 0.078160 -3.173000 0.000019
+						}
+						DEF S_Home_panel_support_05 Transform
+						{
+							children 
+							[
+								Shape
+								{
+									appearance Appearance
+									{
+										material MaxMaterial
+										{
+											name "NavType"
+										}
+									}
+									geometry DEF S_Home_panel_support_05-FACES Mesh { url "S_Home_panel_support_05-FACES.xm" }
+								}
+							]
+							rotation -1.000000 0.000000 0.000000 -1.571000
+							translation 0.078160 -1.765000 0.000019
+						}
 					]
 					translation 0.000000 1.625000 0.387100
 				}
@@ -947,10 +1022,10 @@ DEF auto_off Transform
 					translation 11.010000 -11.290000 3.150000
 				}
 			]
-            rotation 0.000000 -1.000000 0.000000 -0.034910
-            scale 2.171000 2.171000 2.171000
-            scaleOrientation 0.000000 1.000000 0.000000 -0.033020
-            translation -16.490000 -18.490000 58.980000
+			rotation 0.000000 -1.000000 0.000000 -0.034910
+			scale 2.171000 2.171000 2.171000
+			scaleOrientation 0.000000 1.000000 0.000000 -0.033020
+			translation -16.490000 -18.490000 58.980000
 		}
 		DEF Group07 Transform
 		{
@@ -1119,110 +1194,110 @@ DEF auto_off Transform
 					translation 0.178000 -10.330000 3.150000
 				}
 			]
-            rotation 0.000000 1.000000 0.000000 -0.183300
-            scale 2.171000 2.171000 2.171000
-            scaleOrientation 0.000000 -1.000000 0.000000 -0.148100
-            translation 8.965000 -19.209999 60.529999
+			rotation 0.000000 1.000000 0.000000 -0.183300
+			scale 2.171000 2.171000 2.171000
+			scaleOrientation 0.000000 -1.000000 0.000000 -0.148100
+			translation 8.965000 -19.209999 60.529999
 		}
-    ]
-    scale 0.202100 0.202100 0.202100
-    translation 98.070000 5.357000 -264.000000
+	]
+	scale 0.202100 0.202100 0.202100
+	translation 98.070000 5.357000 -264.000000
 }
 
 DEF ButtonGroup Transform
 {
-    children 
-    [
-        DEF MU_L3_button_yes Transform
-        {
-            children 
-            [
-                Shape
-                {
-                    appearance Appearance
-                    {
-                        material MaxMaterial
-                        {
-                            name "GameHilite"
-                        }
-                        texture ImageTexture
-                        {
-                            url "GameHilite_01.bmp"
-                        }
-                    }
-                    geometry DEF ChamferBox01-FACES Mesh { url "ChamferBox01-FACES.xm" }
-                }
-            ]
-            scale 1.8 1 1
-            rotation -1.000000 0.000000 0.000000 -1.571000
-            translation -2.286000 -1.500000 -0.629200
-        }
-        DEF MU_L3_button_no Transform
-        {
-            children 
-            [
-                Shape
-                {
-                    appearance Appearance
-                    {
-                        material MaxMaterial
-                        {
-                            name "GameHilite"
-                        }
-                        texture ImageTexture
-                        {
-                            url "GameHilite_01.bmp"
-                        }
-                    }
-                    geometry DEF ChamferBox02-FACES Mesh { url "ChamferBox02-FACES.xm" }
-                }
-            ]
-            scale 1.8 1 1
-            rotation -1.000000 0.000000 0.000000 -1.571000
-            translation 2.706000 -1.500000 -0.629200
-        }
-        DEF S_Home_text_yes Transform
-        {
-            children 
-            [
-                Shape
-                {
-                    appearance Appearance
-                    {
-                        material MaxMaterial
-                        {
-                            name "NavType"
-                        }
-                    }
-                    geometry DEF the1stPlayerTab Text { font "Body" translate true justify "middle" text "Select Skin" }
-                }
-            ]
-            scale 0.85 0.85 0
-            translation -2.264000 -1.685700 0.233100
-        }
-        DEF S_Home_text_no Transform
-        {
-            children 
-            [
-                Shape
-                {
-                    appearance Appearance
-                    {
-                        material MaxMaterial
-                        {
-                            name "NavType"
-                        }
-                    }
-                    geometry DEF the2ndPlayerTab Text { font "Body" translate true justify "middle" text "Skin Info" }
-                }
-            ]
+	children 
+	[
+		DEF MU_L3_button_yes Transform
+		{
+			children 
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "GameHilite"
+						}
+						texture ImageTexture
+						{
+							url "GameHilite_01.bmp"
+						}
+					}
+					geometry DEF ChamferBox01-FACES Mesh { url "ChamferBox01-FACES.xm" }
+				}
+			]
+			scale 1.8 1 1
+			rotation -1.000000 0.000000 0.000000 -1.571000
+			translation -2.286000 -1.500000 -0.629200
+		}
+		DEF MU_L3_button_no Transform
+		{
+			children 
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "GameHilite"
+						}
+						texture ImageTexture
+						{
+							url "GameHilite_01.bmp"
+						}
+					}
+					geometry DEF ChamferBox02-FACES Mesh { url "ChamferBox02-FACES.xm" }
+				}
+			]
+			scale 1.8 1 1
+			rotation -1.000000 0.000000 0.000000 -1.571000
+			translation 2.706000 -1.500000 -0.629200
+		}
+		DEF S_Home_text_yes Transform
+		{
+			children 
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "NavType"
+						}
+					}
+					geometry DEF the1stPlayerTab Text { font "Body" translate true justify "middle" text "Select Skin" }
+				}
+			]
+			scale 0.85 0.85 0
+			translation -2.264000 -1.685700 0.233100
+		}
+		DEF S_Home_text_no Transform
+		{
+			children 
+			[
+				Shape
+				{
+					appearance Appearance
+					{
+						material MaxMaterial
+						{
+							name "NavType"
+						}
+					}
+					geometry DEF the2ndPlayerTab Text { font "Body" translate true justify "middle" text "Skin Info" }
+				}
+			]
 			
-            scale 0.85 0.85 0
-            translation 2.684000 -1.685700 0.233100
-        }
-    ]
-    scale 0.200500 0.200500 0.200500
-    translation 96.839996 4.207000 -251.600006
+			scale 0.85 0.85 0
+			translation 2.684000 -1.685700 0.233100
+		}
+	]
+	scale 0.200500 0.200500 0.200500
+	translation 96.839996 4.207000 -251.600006
 }
 DEF thePanel1Text Transform
 {

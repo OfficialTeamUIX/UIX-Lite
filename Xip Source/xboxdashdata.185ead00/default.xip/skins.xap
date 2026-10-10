@@ -22,9 +22,9 @@ function GetSkins()
 	skinCount = b.subFolders.length();
 	var skinsArray = new Array();
 	var a;
-
+	
 	currentSkin = GetSavedValue("Dashboard Settings","Current Skin");
-
+	
 	for(var i = 0; i < skinCount; i = i + 1)
 	{
 		a = b.subFolders[i].name;
@@ -35,47 +35,47 @@ function GetSkins()
 
 function UpdateSkinMenu()
 {
-		var c = theSkinsMenu.children[0].children[0];
-		
+	var c = theSkinsMenu.children[0].children[0];
+	
 	for(var i = 0; i < 9; i = i + 1)
 	{
-			var n = skinScroll + i;
-			
+		var n = skinScroll + i;
+		
 		if(n >= skinCount)
 		{
-				c.SkinNames.children[i].visible = false;
+			c.SkinNames.children[i].visible = false;
 		}
 		else
 		{
-				var str;
-				str = SkinMenuList[n];
-						c.SkinNames.children[i].visible = true;
-						c.SkinNames.children[i].visible = true;
-						c.SkinNames.children[i].children[0].appearance.material.name = "CellEgg/Partsz";
-						c.SkinNames.children[i].children[0].geometry.text = str;
-					
-						if(i == skinButton)
-						{
-								c.SkinNames.children[i].children[0].appearance.material.name = "NavType";
-						}
-				}
+			var str;
+			str = SkinMenuList[n];
+			c.SkinNames.children[i].visible = true;
+			c.SkinNames.children[i].visible = true;
+			c.SkinNames.children[i].children[0].appearance.material.name = "CellEgg/Partsz";
+			c.SkinNames.children[i].children[0].geometry.text = str;
+			
+			if(i == skinButton)
+			{
+				c.SkinNames.children[i].children[0].appearance.material.name = "NavType";
+			}
 		}
-		c.MU_L3_button_no.children[0].appearance.material.name = "FlatSurfaces";
-		c.MU_L3_button_yes.children[0].appearance.material.name = "FlatSurfaces";
-
-		c.S_Home_text_no.children[0].appearance.material.name = "NavType";
-		c.S_Home_text_yes.children[0].appearance.material.name = "NavType";
-
+	}
+	c.MU_L3_button_no.children[0].appearance.material.name = "FlatSurfaces";
+	c.MU_L3_button_yes.children[0].appearance.material.name = "FlatSurfaces";
+	
+	c.S_Home_text_no.children[0].appearance.material.name = "NavType";
+	c.S_Home_text_yes.children[0].appearance.material.name = "NavType";
+	
 	if (nCurPlayerMenuItem == 0)
 	{
-				c.MU_L3_button_yes.children[0].appearance.material.name = "GameHilite";
-				c.S_Home_text_yes.children[0].appearance.material.name = "Material #133";
+		c.MU_L3_button_yes.children[0].appearance.material.name = "GameHilite";
+		c.S_Home_text_yes.children[0].appearance.material.name = "Material #133";
 	}
 	if (nCurPlayerMenuItem == 1)
 	{
-				c.MU_L3_button_no.children[0].appearance.material.name = "GameHilite";
-				c.S_Home_text_no.children[0].appearance.material.name = "Material #133";
-		}
+		c.MU_L3_button_no.children[0].appearance.material.name = "GameHilite";
+		c.S_Home_text_no.children[0].appearance.material.name = "Material #133";
+	}
 }
 
 function StartSkinMenu()
@@ -106,16 +106,17 @@ function DoAction()
 		theConfig.ApplySkin();
 	}
 }
+
 DEF theSkinsMenu Level
 {
 	archive "Settings_Panel.xip"
-
+	
 	children
 	[
 		Inline
 		{
 			url "Settings_Panel/default3.xap"
-
+			
 			function onLoad()
 			{
 				StartSkinMenu();
@@ -124,15 +125,15 @@ DEF theSkinsMenu Level
 			}
 		}
 	]
-
-	path Viewpoint
+	
+	path DEF theSkinsViewpoint Viewpoint
 	{
 		fieldOfView 1.287000
 		orientation 0.103700 0.994600 0.006310 -0.122200
 		position 96.940002 4.728000 -248.600006
 		jump false
 	}
-
+	
 	shell Transform
 	{
 		scale 6.15 6.15 6.15
@@ -170,97 +171,104 @@ DEF theSkinsMenu Level
 			}
 		]
 	}
-
-	control DEF theMusicPlayJoystick Joystick
+	
+	control DEF theSkinsJoystick Joystick
 	{
 		function OnADown()
 		{
-						theSkinsMenu.children[0].children[0].MU_select_pod_HL.children[0].appearance.material.param = 1;
-						DoAction();
+			theSkinsMenu.children[0].children[0].MU_select_pod_HL.children[0].appearance.material.param = 1;
+			DoAction();
 		}
-
+		
 		function OnBDown()
 		{
-				PlaySoundB();
-		theSkinsMenu.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
-		GoToSettings();
-		theMusicSubMenuOut.Play();
+			PlaySoundB();
+			theSkinsMenu.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
+			GoToSettings();
+			theMusicSubMenuOut.Play();
 		}
-
+		
 		function OnLeftThumbMoveLeft()
 		{
 			if (nCurPlayerMenuItem == 0) { return; }
 			else { nCurPlayerMenuItem = 0; }
 			UpdateSkinMenu();
 		}
-
+		
 		function OnLeftThumbMoveRight()
 		{
 			if (nCurPlayerMenuItem == 1) { return; }
 			else { nCurPlayerMenuItem = 1; }
 			UpdateSkinMenu();
 		}
-
+		
 		function OnLeftThumbMoveUp()
 		{
-						if (skinSelect <= 0) { return; }
-						PlaySoundMenuChange();
-						skinSelect = skinSelect - 1;
-						if (skinButton == 0) { skinScroll = skinScroll - 1; }
-						else { skinButton = skinButton - 1; }
-						//theConfig.ChangeSkin( SkinMenuList[skinSelect] );
-						UpdateSkinMenu();
+			if (skinSelect <= 0) { return; }
+			PlaySoundMenuChange();
+			skinSelect = skinSelect - 1;
+			if (skinButton == 0) { skinScroll = skinScroll - 1; }
+			else { skinButton = skinButton - 1; }
+			//theConfig.ChangeSkin( SkinMenuList[skinSelect] );
+			UpdateSkinMenu();
 		}
-
+		
 		function OnLeftThumbMoveDown()
 		{
-				if (skinSelect >= skinCount - 1) {  return; }
-						PlaySoundMenuChange();
-						skinSelect = skinSelect + 1;
-						if (skinButton == 8) { skinScroll = skinScroll + 1; }
-						else { skinButton = skinButton + 1; }
-						//theConfig.ChangeSkin( SkinMenuList[skinSelect] );
-						UpdateSkinMenu();                        
+			if (skinSelect >= skinCount - 1) {  return; }
+			PlaySoundMenuChange();
+			skinSelect = skinSelect + 1;
+			if (skinButton == 8) { skinScroll = skinScroll + 1; }
+			else { skinButton = skinButton + 1; }
+			//theConfig.ChangeSkin( SkinMenuList[skinSelect] );
+			UpdateSkinMenu();                        
 		}
- function OnMoveLeft()
+		
+		function OnRightThumbDown()
+		{
+			previousControlType = theSkinsJoystick;
+			StartControlPanel();
+		}
+		function OnMoveLeft()
 		{
 			if (nCurPlayerMenuItem == 0) { return; }
 			else { nCurPlayerMenuItem = 0; }
 			UpdateSkinMenu();
 		}
-
+		
 		function OnMoveRight()
 		{
 			if (nCurPlayerMenuItem == 1) { return; }
 			else { nCurPlayerMenuItem = 1; }
 			UpdateSkinMenu();
 		}
-
+		
 		function OnMoveUp()
 		{
-						if (skinSelect <= 0) { return; }
-						PlaySoundMenuChange();
-						skinSelect = skinSelect - 1;
-						if (skinButton == 0) { skinScroll = skinScroll - 1; }
-						else { skinButton = skinButton - 1; }
-						//theConfig.ChangeSkin( SkinMenuList[skinSelect] );
-						UpdateSkinMenu();
+			if (skinSelect <= 0) { return; }
+			PlaySoundMenuChange();
+			skinSelect = skinSelect - 1;
+			if (skinButton == 0) { skinScroll = skinScroll - 1; }
+			else { skinButton = skinButton - 1; }
+			//theConfig.ChangeSkin( SkinMenuList[skinSelect] );
+			UpdateSkinMenu();
 		}
-
+		
 		function OnMoveDown()
 		{
-				if (skinSelect >= skinCount - 1) {  return; }
-						PlaySoundMenuChange();
-						skinSelect = skinSelect + 1;
-						if (skinButton == 8) { skinScroll = skinScroll + 1; }
-						else { skinButton = skinButton + 1; }
-						//theConfig.ChangeSkin( SkinMenuList[skinSelect] );
-						UpdateSkinMenu();                        
+			if (skinSelect >= skinCount - 1) {  return; }
+			PlaySoundMenuChange();
+			skinSelect = skinSelect + 1;
+			if (skinButton == 8) { skinScroll = skinScroll + 1; }
+			else { skinButton = skinButton + 1; }
+			//theConfig.ChangeSkin( SkinMenuList[skinSelect] );
+			UpdateSkinMenu();                        
 		}
 	}
-
+	
 	function OnActivate()
 	{
+		CurrentViewpoint = theSkinsViewpoint;
 		EnableAudio();
 	}
 }

@@ -45,10 +45,8 @@ function buildconfigList() //written this way so u can easily rearrange and add,
 	i = i + 1;
 	configList[i] = "Quick Launch";
 	i = i + 1;
-	if(bPresence){
-		configList[i] = "Discord Presence";
-		i = i + 1;
-	}
+	configList[i] = "Discord Presence";
+	i = i + 1;
 	configList[i] = "Change Displayed Name of Titles";
 	
 	clearText();
@@ -289,15 +287,15 @@ function BuildDPList()
 	configSelect = new Array;
 	
 	configList[i] = "Enable Discord Presence:";
-	configValues[i] = "DiscordPresence-PresenceEnabled";
+	configValues[i] = "DiscordRelay-PresenceEnabled";
 	configSelect[i] = "toggleDP()";
 	i = i + 1;
 	configList[i] = "xbdStats IPAddress:";
-	configValues[i] = "Shortcut-RelayIP";
+	configValues[i] = "DiscordRelay-IP";
 	configSelect[i] = "configKeyb()";
 	i = i + 1;
 	configList[i] = "xbdStats Port:";
-	configValues[i] = "Shortcut-RelayPort";
+	configValues[i] = "DiscordRelay-Port";
 	configSelect[i] = "togglePorts()";
 	
 	clearText();
@@ -441,7 +439,7 @@ function toggleDP()
 {
 	var cValue;
 	if(bPresenceEnabled) { bPresenceEnabled = false; cValue = "false";} else { bPresenceEnabled = true; cValue = "true";}
-	SetSavedBooleanValue("DiscordPresence","PresenceEnabled",bPresenceEnabled);
+	SetSavedBooleanValue("DiscordRelay","PresenceEnabled",bPresenceEnabled);
 	var c = theConfigPanel.children[0].children[0];
 	c.theRightSlots.children[LV2Hold].children[0].geometry.text = Translate(cValue);
 	settChanged = true;
@@ -688,11 +686,7 @@ function getConfigMenuValue(x)
 	return dud;
 	var vSection = x.substr(0,x.indexOf("-"));
 	var vValue = x.substr(x.indexOf("-") + 1, x.length());
-	if (bPresence & vValue.substr(0,5) == "Relay"){
-		b = Discord.GetValue(vValue);
-	} else {
-		b = GetSavedValue(vSection,vValue);
-	}
+	b = GetSavedValue(vSection,vValue);
 	return b;
 }
 
@@ -700,11 +694,7 @@ function setConfigMenuValue(x,y)
 {
 	var vSection = x.substr(0,x.indexOf("-"));
 	var vValue = x.substr(x.indexOf("-") + 1, x.length());
-	if (bPresence & vValue.substr(0,5) == "Relay"){
-		Discord.SetValue(vValue,y);
-	} else {
-		SetSavedValue(vSection,vValue,y);
-	}
+	SetSavedValue(vSection,vValue,y);
 }
 
 DEF theConfigPanel Level
@@ -757,11 +747,6 @@ DEF theConfigPanel Level
 						c.theRightSlots.children[i].visible = false;
 						c.theRightSlots.children[i].SetTranslation(parseTrans(TransRS,"X"), Y, parseTrans(TransRS,"Z"));
 					}
-				}
-				if(bPresence)
-				{
-					if(Discord.GetValue("RelayIP") == "") Discord.SetValue("RelayIP","0.0.0.0");
-					if(Discord.GetValue("RelayPort") == "") Discord.SetValue("RelayPort","1101");
 				}
 				var cValue = getConfigMenuValue("default-ConfigPanelIcon");
 				//if(cValue.toLowerCase() == "globe") { c.GlobeIcon.visible = true; } else if(cValue.toLowerCase() == "uix") { c.UIXIcon.visible = true; } else { c.ConsoleIcon.visible = true; }

@@ -15,18 +15,20 @@ static int ieq(const char* a, const char* b)
 	return *a == 0 && *b == 0;
 }
 
-static const char* const kGroups[][4] = {
-	{ "cellwall.xm",       "Inner_cell-FACES.xm", 0,                  0 },
-	{ "cellwall.xbx",      "shell.xbx",           0,                  0 },
-	{ "GameHilite_01.xbx", "menu_hilite.xbx",     "menu_hilight.xbx", 0 },
+static const char* const kGroups[][5] = {
+	{ "cellwall.xm",       "Inner_cell-FACES.xm", 0,                  0,                  0  },
+	{ "cellwall.xbx",      "shell.xbx",           0,                  0,                  0  },
+	{ "GameHilite_01.xbx", "menu_hilite.xbx", "menu_hilight.xbx", "highlight.xbx", 0 },
 };
 
 static const char* const kSkinnable[] = {
-	"cellwall.xbx", "dvd_button.xbx", "DVD_paneltex.xbx", "dvdaudio.xbx", "dvdempty.xbx",
-	"dvdstop.xbx", "dvdstopw.xbx", "dvdtitle.xbx", "dvdunknown.xbx", "dvdvideo.xbx",
-	"GameHilite_01.xbx", "menu_hilite.xbx", "menu_hilight.xbx", "outline.xbx", "screenshot.xbx",
-	"shell.xbx", "status_gauge.xbx", "xbox4.xbx", "xboxlogo.xbx", "xboxlogo64.xbx",
-	"xboxlogo128.xbx", "xboxlogow.xbx", "cellwall.xm", "Inner_cell-FACES.xm", 0
+	"background.xbx", "button.xbx", "cellwall.xbx", "continuous.xbx", "dvd_button.xbx", "DVD_paneltex.xbx", 
+	"dvdaudio.xbx", "dvdempty.xbx", "dvdstop.xbx", "dvdstopw.xbx", "dvdtitle.xbx", "dvdunknown.xbx", "dvdvideo.xbx",
+	"ffw.xbx", "footer.xbx", "GameHilite_01.xbx", "harddrivebg.xbx", "highlight.xbx", "Insignia_header.xbx", 
+	"Live_header.xbx", "LiveChrome.xbx", "menu_hilite.xbx", "menu_hilight.xbx", "outline.xbx", "play.xbx",
+	"Pulse1.xbx", "random.xbx", "repeat.xbx", "rew.xbx", "screenshot.xbx", "shell.xbx", "status_gauge.xbx", 
+	"stop.xbx", "xbox4.xbx", "xboxlogo.xbx", "xboxlogo64.xbx", "xboxlogo64a.xbx","xboxlogo128.xbx", 
+	"xboxlogow.xbx", "cellwall.xm", "Inner_cell-FACES.xm", 0
 };
 
 int skin_is_skinnable(const char* base)

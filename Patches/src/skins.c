@@ -17,6 +17,7 @@ static int s_nRetail;
 #define SKIN_DIR    "Y:\\UIX Configs\\Skins\\"
 
 char g_szSkin[64];
+static int s_bootSkinNameLoaded;
 
 char* skin_read_file(const char* path, DWORD* pSize)
 {
@@ -26,7 +27,9 @@ char* skin_read_file(const char* path, DWORD* pSize)
 
 	DWORD size = GetFileSize(h, 0);
 	char* buf = 0;
-	if (size != 0xFFFFFFFF && size < 0x400000)
+	// Full-size uncompressed XBX backgrounds can be 8 MiB plus their XPR
+	// header. Keep a bounded allocation while allowing those large assets.
+	if (size != 0xFFFFFFFF && size < 0x1000000)
 	{
 		buf = (char*)dash_malloc(size + 1);
 		DWORD got = 0;
@@ -293,6 +296,24 @@ int skin_apply(const char* name)
 }
 
 void skin_apply_current(void);
+
+// The root XIP may request textures before material initialization selects
+// the configured skin. Read the boot name once for that early texture path.
+// ApplySkin deliberately does not use this cache: it must reread config.ini
+// whenever the UI changes Current Skin.
+void skin_ensure_boot_name(void)
+{
+	if (s_bootSkinNameLoaded)
+		return;
+	s_bootSkinNameLoaded = 1;
+	g_szSkin[0] = 0;
+	char* cfg = skin_read_file(CONFIG_PATH, 0);
+	if (cfg)
+	{
+		ini_value(cfg, "Dashboard Settings", "Current Skin", g_szSkin, sizeof(g_szSkin));
+		dash_free(cfg);
+	}
+}
 
 // Replaces the startup call to dash_init_materials (0002d89d)
 void patch_material_init(void)

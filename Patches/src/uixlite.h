@@ -13,4 +13,7 @@ void ini_value(const char* text, const char* section, const char* key, char* out
 // Features patch.py switched on, written into patch_features
 #define FEATURE_DRIVES 0x1
 #define FEATURE_FTP    0x2
+#define FEATURE_CONFIG 0x4
+#define FEATURE_SKINS  0x8
+#define FEATURE_DISCIMAGES 0x10
 extern DWORD patch_features;

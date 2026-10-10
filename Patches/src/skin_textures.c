@@ -12,6 +12,7 @@
 #include "dash5960.h"
 
 extern char g_szSkin[64];
+extern void skin_ensure_boot_name(void);
 extern int skin_is_skinnable(const char* base);
 extern int skin_candidates(const char* base, const char** out, int max);
 extern char* skin_read_file(const char* path, DWORD* size);
@@ -52,6 +53,29 @@ static void* parse_texture(const WCHAR* url, void* buf, DWORD size)
 		: "=a"(tex), "+b"(buf), [fn] "+d"(fn)
 		: "a"(url), [sz] "m"(size), [w] "m"(zero), [h] "m"(zero)
 		: "ecx", "memory");
+	return tex;
+}
+
+// Tiny black 64x64 DXT1 XPR used as the stable home resource for an asset
+// absent from the retail XIP. Real skin backgrounds remain removable overlays.
+static Tex* make_blank_texture(void)
+{
+	static const WCHAR xbxName[] = {
+		'b','a','c','k','g','r','o','u','n','d','.','x','b','x',0
+	};
+	const DWORD total = 0x1000, header = 0x800;
+	BYTE* xpr = (BYTE*)dash_malloc(total);
+	if (!xpr)
+		return 0;
+	for (DWORD i = 0; i < total; i++)
+		xpr[i] = 0;
+	((DWORD*)xpr)[0] = 0x30525058; // XPR0
+	((DWORD*)xpr)[1] = total;
+	((DWORD*)xpr)[2] = header;
+	((DWORD*)xpr)[3] = 0x00040001; // texture, one reference
+	((DWORD*)xpr)[6] = 0x06610c2a; // 64x64 DXT1
+	Tex* tex = (Tex*)parse_texture(xbxName, xpr, total);
+	dash_free(xpr);
 	return tex;
 }
 
@@ -149,8 +173,9 @@ static void skin_entry(Tracked* e)
 	e->skin = t;
 }
 
-// Entries only we still hold: the XIP went away and its stock data may be gone
-// too. Drop the skin image and our ref without letting D3D free anything.
+// Entries only we still hold: the XIP released its references. Restore the
+// resource's own image fields, release the separately owned skin image, then
+// drop our final reference through D3D so the resource is destroyed normally.
 static void prune(void)
 {
 	for (int i = 0; i < MAX_TRACKED; i++)
@@ -158,9 +183,12 @@ static void prune(void)
 		Tracked* e = &s_tex[i];
 		if (e->live && (e->live->common & 0xffff) == 1)
 		{
+			e->live->data = e->home[0];
+			e->live->format = e->home[1];
+			e->live->size = e->home[2];
 			if (e->skin)
 				D3DResource_Release(e->skin);
-			e->live->common--;
+			D3DResource_Release(e->live);
 			e->live = 0;
 			e->skin = 0;
 		}
@@ -208,6 +236,7 @@ void skin_textures_apply(void)
 
 void* __attribute__((fastcall)) patch_texture_from_xip(const WCHAR* url)
 {
+	skin_ensure_boot_name();
 	Tex* tex = (Tex*)dash_texture_from_xip(url);
 	if (!url)
 		return tex;
@@ -217,17 +246,22 @@ void* __attribute__((fastcall)) patch_texture_from_xip(const WCHAR* url)
 	if (!skin_is_skinnable(base))
 		return tex;
 
-	// no stock copy to hang it on: hand the skin's texture over as is
+	// No stock copy to hang it on: synthesize a tiny black home texture and
+	// use the normal tracked-overlay path. This supports repeated switching
+	// between skins with and without background.xbx.
 	if (!tex || (tex->common & 0x70000) != TYPE_TEXTURE)
 	{
-		Tex* t = load_for_skin(base);
-		if (t)
+		if (tex)
+			D3DResource_Release(tex);
+		Tex* blank = make_blank_texture();
+		if (blank)
 		{
-			if (tex)
-				D3DResource_Release(tex);
-			return t;
+			Tracked* e = track(blank, base);
+			if (e)
+				skin_entry(e);
+			return blank;
 		}
-		return tex;
+		return 0;
 	}
 
 	Tracked* e = track(tex, base);

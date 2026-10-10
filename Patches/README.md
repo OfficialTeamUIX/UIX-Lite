@@ -20,12 +20,13 @@ Pick features with `--only` or `--skip` (comma-separated):
 
 | Feature | What it does |
 |---|---|
-| `drives` | Maps HDD0 partitions 6 and 7 as `N:` and `O:`, and a second hard drive's partitions 6, 7 and 1 as `P:`, `Q:` and `R:` |
+| `drives` | Maps the CD-ROM internally as `B:` (displayed as `D:` only with media present), HDD0 cache partitions 3/4/5 as `S:`/`V:`/`W:` (displayed as `X:`/`Y:`/`Z:`), partitions 6/7 as `N:`/`O:`, and a second hard drive's partitions 6/7/1 as `P:`/`Q:`/`R:` |
 | `video720` | 1280x720 progressive on an HDTV pack when 720p and widescreen are enabled (NTSC) |
 | `xipsig` | Loads modified XIPs by skipping the signature and digest checks. UIX Lite's XIPs need this |
 | `dvdregion` | Plays DVDs from any region |
 | `skins` | Theseus-style skins from `C:\UIX Configs\Skins\<Name>\`, switchable live from Settings > Skins |
 | `discimages` | Title folders with `default.iso` or `default.cci` show in the Launcher and boot (Cerbios) |
+| `config` | File operations, XBE title information, and LAN-address functions exposed to XAP |
 | `ftp` | FTP file server on port 21 for pushing files to the console over the LAN |
 
 ```
@@ -34,25 +35,32 @@ python3 patch.py --skip video720 xboxdash.xbe xboxdash_uixlite.xbe
 
 ### FTP
 
-Log in as `xbox` / `xbox` by default. Each drive is a folder at the root,
-using the same letters the dashboard's file browser shows (`C`, `E`, `F`,
-`G`, `D` for the disc, `E2`/`F2`/`G2` for a second HDD), so `E:\` on the box
-is `/E`. It comes up on its own once the network is ready and coexists with
+FTP starts by default with the scene-standard `xbox` / `xbox` credentials. Each drive is a folder at the root,
+using the same letters the dashboard's file browser shows (`C`, `D`, `E`, `F`, `G`, `X`, `Y`,
+`Z` for the disc, `E2`/`F2`/`G2` for a second HDD), so `E:\` on the box is `/E`. 
+It comes up on its own once the network is ready and coexists with
 Insignia sign-in.
 
-Configure it in `Y:\UIX Configs\config.ini` (all keys optional):
+Configure or disable it in `C:\UIX Configs\config.ini` (all keys are optional):
 
 ```
 [FTP]
-Enabled=1      ; 0 turns the server off
+Enabled=1      ; 0 disables the server
 User=xbox      ; login name
-Pass=xbox      ; login password
+Pass=xbox      ; password
 Port=21        ; listen port
 ```
 
 The dashboard's LAN IP is available to skins as `theConfig.GetIPAddress()`
 (returns e.g. `192.168.1.50`), the same way `GetXdashVersion()` works, so a
 skin can show people where to point their FTP client.
+
+The server supports active and passive transfers, resume, upload/download,
+directory creation/removal, deletion, and file or directory rename through
+the standard `RNFR`/`RNTO` command pair. Active-mode targets are restricted to
+RFC 1918 private networks (`10/8`, `172.16/12`, and `192.168/16`) to prevent
+public FTP bounce targets. FTP is
+cleartext and exposes writable partitions, so enable it only on a trusted LAN.
 
 The XBE's signature isn't redone, so like every UIX Lite build it needs a
 modded BIOS.
@@ -84,15 +92,47 @@ Callable from XAP as `theConfig.<name>(...)`:
 |---|---|---|
 | `ApplySkin()` | void | Re-apply the current skin's colors/textures (`skins.c`) |
 | `LaunchDiscImage(path)` | int | Boot a `.iso`/`.cci` via Cerbios (`disc_image.c`) |
+| `GetDiscImageTitleID(imagePath)` | string | Read the 8-hex TitleID from `default.xbe` inside an XISO or LZ4-compressed CCI; returns empty for invalid images |
+| `GetDiscImageTitleName(imagePath)` | string | Read the certificate title from `default.xbe` inside an XISO or LZ4-compressed CCI |
+| `ExportDiscImageTitleImage(imagePath, imageDestination)` | bool | Export the raw `$$XTIMAGE` section from `default.xbe` inside an XISO or LZ4-compressed CCI |
 | `DiscImagesSupported()` | int | 1 if Cerbios's virtual drive is present |
 | `GetIPAddress()` | string | The console's LAN IP, e.g. `192.168.1.50` (`hostinfo.c`) |
-| `getXbeTitleID(path)` | string | 8-hex TitleID from a title's `default.xbe`, e.g. `4D530064` (`fileops.c`) |
-| `deleteFile(path)` | int | Delete a file; 1 on success |
-| `moveFile(src, dst)` | void | Move/rename, replacing dst |
-| `copyFile(src, dst)` | void | Copy the file's bytes |
+| `GetXbeTitleID(path)` | string | 8-hex TitleID from a title's `default.xbe`, e.g. `4D530064` (`fileops.c`) |
+| `GetXbeTitleName(path)` | string | Title name from a title's `default.xbe` certificate (`fileops.c`) |
+| `ExportXbeTitleImage(sourceXbe, imageDestination)` | bool | Export the source XBE's raw `$$XTIMAGE` section; false if absent or on I/O failure |
+| `DeleteFile(path)` | int/bool | Delete a file; 1 on success |
+| `CreateDir(path)` | int/bool | Create one directory; parent directories must already exist |
+| `RemoveDir(path)` | int/bool | Remove an empty directory |
+| `MoveFile(src, dst)` | bool | Move/rename, replacing dst |
+| `CopyFile(src, dst)` | bool | Copy the file's bytes |
+| `SendDiscordRelay(titleID)` | int | Send a title ID to the configured relay and block until complete |
+| `SendDiscordRelayAsync(titleID)` | int | Queue TCP/WebSocket on a worker thread; UDP uses the blocking completion-confirmed path |
+| `GetDiscordRelayStatus()` | int | Relay state: 0 idle, 1 sending, 2 sent, or a negative Winsock error |
 
-`moveFile`/`copyFile` return nothing (the VM has no two-string function that
-returns a value); check the result with `NtFileExists`/`getXbeTitleID` if needed.
+Relay status uses negative Winsock errors for socket failures. Diagnostic
+codes `-20001` through `-20004` identify invalid configuration, network not
+ready, worker creation failure, or an unsupported relay port; `-20010` and
+`-20011` identify socket creation or `SO_INSECURE` failure without a Winsock
+error value.
+Diagnostic code `-20013` means the UDP request did not complete within ten
+seconds. Codes `-20014` and `-20015` mean its completion status or completed
+byte count was invalid.
+Configure the relay in `C:\UIX Configs\config.ini`:
+
+```ini
+[DiscordRelay]
+PresenceEnabled=false
+IP=192.168.1.100
+Port=1102
+```
+
+`PresenceEnabled` is a boolean (`true` or `false`) read and written by the XAP;
+the dashboard's **Enable Discord Presence** setting controls this value.
+Port `1101` uses WebSocket, `1102` uses UDP, and `1103` uses TCP. The address
+must be a numeric IPv4 address. `SendDiscordRelayAsync` is non-blocking for TCP
+and WebSocket. UDP waits for network readiness and confirmed transmission on the
+calling thread because worker-thread UDP requests do not reliably progress on
+this network stack.
 
 The FTP server is `ftp.c`; it runs on the retail network stack through
 `net.c` (listen/accept, which the stack has but doesn't export) and the

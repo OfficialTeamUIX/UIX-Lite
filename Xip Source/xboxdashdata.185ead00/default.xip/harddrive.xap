@@ -272,6 +272,7 @@ function EnterLauncherMenu()
 	LoadMenuItems();
 	LoadRecentTitles();
 	LoadRootContents();
+	bInRoot = true;
 	if(sLauncherMenu == "")
 	{
 		ShowLauncherMenu();
@@ -1026,7 +1027,6 @@ function LoadDir()
 
 function LoadRootContents()
 {
-	bInRoot = true;
 	RootDirectory = new Array;
 	RootDirectory[RootDirectory.length] = "C";
 	if(theDiscDrive.discType != "none") RootDirectory[RootDirectory.length] = "D";
@@ -1037,6 +1037,9 @@ function LoadRootContents()
 	if(nPartitions & 16) RootDirectory[RootDirectory.length] = "E2";
 	if(nPartitions & 4) RootDirectory[RootDirectory.length] = "F2";
 	if(nPartitions & 8) RootDirectory[RootDirectory.length] = "G2";
+	RootDirectory[RootDirectory.length] = "X";
+	RootDirectory[RootDirectory.length] = "Y";
+	RootDirectory[RootDirectory.length] = "Z";
 	sFileType = new Array(RootDirectory.length);
 }
 
@@ -1137,13 +1140,16 @@ function GetDirectoryContents(x)
 function GetDrive(x)
 {
 	if(x == "C") return "Y";
-	if(x == "D") return "D";
+	if(x == "D") return "B";
 	if(x == "E") return "C";
 	if(x == "F") return "N";
 	if(x == "G") return "O";
 	if(x == "E2") return "R";
 	if(x == "F2") return "P";
 	if(x == "G2") return "Q";
+	if(x == "X") return "S";
+	if(x == "Y") return "V";
+	if(x == "Z") return "W";
 }
 
 function PathEllipsis(x,MaxCharacters)

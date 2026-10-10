@@ -10,6 +10,7 @@ never modified. The patches are:
   dvdregion   play DVDs from any region
   skins       Theseus-style skins, switchable live from the Skins menu
   discimages  boot default.iso / default.cci title folders (Cerbios)
+  config      file, title-information, and network-address XAP helpers
 
 All of them are applied unless you pick with --only or --skip.
 
@@ -29,7 +30,7 @@ import sys
 RETAIL_MD5 = "08d3a6f99184679aa13008d6397bacce"
 RETAIL_SHA1 = "4d8d6b1d3f7ace05cbaf03565382b0e6e40c706c"
 
-FEATURES = ["drives", "video720", "xipsig", "dvdregion", "skins", "discimages", "ftp"]
+FEATURES = ["drives", "video720", "xipsig", "dvdregion", "skins", "discimages", "config", "ftp"]
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CODE_VA = 0x001FE000         # link address in link.ld
@@ -38,16 +39,16 @@ SECTION_FLAGS = 0x7          # writable, preload, executable
 NEW_HEADERS_VA = 0x00010E00  # free header space in retail (0x10dde..0x11b20 is unused)
 
 # Bits in patch_features (src/uixlite.h): startup work patch_start does per feature
-FEATURE_BITS = {"drives": 0x1, "ftp": 0x2}
+FEATURE_BITS = {"drives": 0x1, "ftp": 0x2, "config": 0x4, "skins": 0x8, "discimages": 0x10}
 
 # 5-byte call / jmp redirects into the patch code:
 # (address, retail bytes, symbol, opcode, features that need it)
 HOOKS = [
-    (0x0002DCA1, "e85afdffff", "patch_start",                 0xE8, set(FEATURE_BITS)),       # main: run the dashboard
+    (0x0002DCA1, "e85afdffff", "patch_start",                 0xE8, {"drives", "ftp", "discimages"}), # startup services/cleanup, then dashboard
     (0x0002CE6F, "e85cb41100", "patch_create_device",         0xE8, {"video720"}),            # D3D setup: create the device
     (0x0002D89D, "e80ea40200", "patch_material_init",         0xE8, {"skins"}),               # startup: build the material table
     (0x0006172F, "e85cf5ffff", "patch_texture_from_xip",      0xE8, {"skins"}),               # texture cache miss: XIP lookup
-    (0x0003A490, "b8f0fd1700", "patch_config_getfunctionmap", 0xE9, {"skins", "discimages"}), # theConfig's function table
+    (0x0003A490, "b8f0fd1700", "patch_config_getfunctionmap", 0xE9, {"skins", "discimages", "config"}), # theConfig's function table
 ]
 
 # In-place edits: (address, retail bytes, new bytes, feature, what)
