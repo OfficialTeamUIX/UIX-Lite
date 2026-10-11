@@ -1880,11 +1880,11 @@ DEF theMainMenu Level
 		}
 		function OnBlackDown()
 		{
-			TellUser(theConfig.GetXbeTitleID("Y:\\xboxdash.xbe") + "\n" + theConfig.GetXbeTitleName("Y:\\xboxdash.xbe"),"");
+			//TellUser(theConfig.GetXbeTitleID("Y:\\xboxdash.xbe") + "\n" + theConfig.GetXbeTitleName("Y:\\xboxdash.xbe"),"");
 		}
 		function OnWhiteDown()
 		{
-			TellUser(theConfig.GetDiscordRelayStatus(),"");
+			TellUser(theConfig.GetIPAddress(),"");
 		}
 		function OnKeyVerified()
 		{
@@ -1909,7 +1909,11 @@ DEF theMainMenu Level
 	{
 		sleep nTime;
 		nTime = 0.1;
-		
+		if(bNetworkReady == false & (theConfig.GetIPAddress() != "0.0.0.0"))
+		{
+			bNetworkReady = true;
+			if(bPresenceEnabled) theConfig.SendDiscordRelayAsync("FFFE0000");
+		}
 		if(bHDDInitialize)
 		{
 			if(bLaunchItem | bExecuteFile)
@@ -2122,6 +2126,7 @@ var bMainMenuOnAutoSignIn;
 
 // Discord Presence
 var bPresenceEnabled;
+var bNetworkReady;
 
 //Settings Options
 var ShowMemoryInSettings;
@@ -2137,7 +2142,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "261009"; //Date of commit YYMMDD
+	sBuildDate = "261011"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2172,6 +2177,7 @@ function initialize()
 	g_bAboutToLaunchGame = false;
 	bShowDVDStopBackground = true;
 	bCleanupSpecifiedDrive = false;
+	bNetworkReady = false;
 	BGMst = 0;
 	BGMtr = 0;
 	vCurAlbum = "";
@@ -2223,7 +2229,6 @@ function initialize()
 	if(GetSavedValue("DiscordRelay","IP") == "") SetSavedValue("DiscordRelay","IP","0.0.0.0");
 	if(GetSavedValue("DiscordRelay","Port") == "") SetSavedValue("DiscordRelay","Port","1101");
 	bPresenceEnabled = GetSavedBooleanValue("DiscordRelay","PresenceEnabled");
-	if(bPresenceEnabled) theConfig.SendDiscordRelayAsync("FFFE0000");
 
 	if(GetSavedValue("ShowInSettings","Configuration") == "") SetSavedBooleanValue("ShowInSettings","Configuration",true);
 	if(GetSavedValue("ShowInSettings","StartFTP") == "") SetSavedBooleanValue("ShowInSettings","StartFTP",false);

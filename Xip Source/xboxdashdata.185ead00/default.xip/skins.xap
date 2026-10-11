@@ -185,7 +185,7 @@ DEF theSkinsMenu Level
 			PlaySoundB();
 			theSkinsMenu.children[0].children[0].MU_back_pod_HL.children[0].appearance.material.param = 1;
 			GoToSettings();
-			theMusicSubMenuOut.Play();
+			theSettingsSubMenuOut.Play();
 		}
 		
 		function OnLeftThumbMoveLeft()

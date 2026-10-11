@@ -1838,6 +1838,7 @@ function StartPanelMenu()
 	c.ConsoleIcon.visible = false;
 	c.AutoOffIcon.visible = false;
 	c.Icon_live.visible = false;
+	c.InsigniaIcon.visible = false;
 	c.GlobeIcon.visible = false;
 	c.MonoIcon.visible = false;
 	c.LockIcon.visible = false;
