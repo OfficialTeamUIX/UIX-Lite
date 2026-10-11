@@ -24,6 +24,7 @@ Pick features with `--only` or `--skip` (comma-separated):
 | `video720` | 1280x720 progressive on an HDTV pack when 720p and widescreen are enabled (NTSC) |
 | `xipsig` | Loads modified XIPs by skipping the signature and digest checks. UIX Lite's XIPs need this |
 | `dvdregion` | Plays DVDs from any region |
+| `ram128` | Clears the XBE `Limit64Megabytes` initialization flag, allowing a RAM-upgraded Xbox or emulator to expose memory above 64 MB |
 | `skins` | Theseus-style skins from `C:\UIX Configs\Skins\<Name>\`, switchable live from Settings > Skins |
 | `discimages` | Title folders with `default.iso` or `default.cci` show in the Launcher and boot (Cerbios) |
 | `config` | File operations, XBE title information, and LAN-address functions exposed to XAP |
@@ -82,7 +83,16 @@ Hooks are 5-byte `call`/`jmp` redirects at these sites:
 | `0002ce6f` | D3D setup creates the device | `patch_create_device` (`video.c`): adjust the present parameters first |
 | `0002d89d` | startup builds the material table | `patch_material_init` (`skins.c`): then apply the current skin's colors |
 | `0006172f` | texture cache miss looks in the XIPs | `patch_texture_from_xip` (`skin_textures.c`): swap in the skin's texture |
+| `0005c221` | a dirty Mesh node reloads its URL | `patch_mesh_load` (`skin_meshes.c`): use the selected skin's `.xm` when present |
+| `00050e1a` | the render path performs its initial/dirty Mesh load | `patch_mesh_load` (`skin_meshes.c`): track and skin meshes loaded outside the ordinary update pass |
+| `0005c297` | Mesh cache lookup receives the resolved virtual path | `patch_mesh_cache_lookup` (`skin_meshes.c`): save the retail XIP path and substitute the skin path |
+| `0005c0c4` | a Mesh node is destroyed | `patch_mesh_destroy` (`skin_meshes.c`): remove the node from live-reload tracking |
 | `0003a490` | theConfig's script function table | `patch_config_getfunctionmap` (`config_functions.c`): adds the script functions below |
+
+A selected skin with `cellwall.xm` (or its `Inner_cell-FACES.xm` alias) uses
+that mesh. If the file is absent, the saved archive-qualified XIP path restores
+the retail mesh synchronously when `ApplySkin()` runs, matching texture fallback
+behavior even when the Mesh node is not scheduled for another URL update.
 
 ### Script functions added to theConfig
 

@@ -143,6 +143,9 @@ typedef struct IO_STATUS_BLOCK
 #define dash_materials      ((Material**)0x0017c6b8)
 #define dash_material_count (*(int*)0x0017e754)
 #define dash_texture_from_xip ((void* (FASTCALL *)(const WCHAR*))0x00060c90)
+#define dash_mesh_load         ((void (THISCALL *)(void*, const WCHAR*))0x0005c250)
+#define dash_mesh_cache_lookup ((void* (STDCALL *)(WCHAR*, int))0x0003dba0)
+#define dash_mesh_destroy      ((void (STDCALL *)(void*))0x0005c0e0)
 #define DASH_PARSE_TEXTURE  0x00060990 // eax = name, ebx = file data, stack = size, width, height; callee pops
 
 typedef struct Material

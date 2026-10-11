@@ -256,6 +256,7 @@ static void restore_retail(void)
 }
 
 void skin_textures_apply(void);
+void skin_meshes_apply(void);
 
 // Retail colors, then Skins\<name>.xbx on top; an empty name leaves retail
 int skin_apply(const char* name)
@@ -266,6 +267,7 @@ int skin_apply(const char* name)
 		g_szSkin[k] = name[k];
 	g_szSkin[k] = 0;
 	skin_textures_apply();
+	skin_meshes_apply();
 	if (!name[0])
 		return 1;
 

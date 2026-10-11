@@ -8,6 +8,7 @@ never modified. The patches are:
   video720    1280x720 progressive on HDTV when 720p + widescreen are enabled
   xipsig      load modified XIPs (skip the signature and digest checks)
   dvdregion   play DVDs from any region
+  ram128      clear Limit64Megabytes so upgraded memory is available
   skins       Theseus-style skins, switchable live from the Skins menu
   discimages  boot default.iso / default.cci title folders (Cerbios)
   config      file, title-information, and network-address XAP helpers
@@ -30,7 +31,7 @@ import sys
 RETAIL_MD5 = "08d3a6f99184679aa13008d6397bacce"
 RETAIL_SHA1 = "4d8d6b1d3f7ace05cbaf03565382b0e6e40c706c"
 
-FEATURES = ["drives", "video720", "xipsig", "dvdregion", "skins", "discimages", "config", "ftp"]
+FEATURES = ["drives", "video720", "xipsig", "dvdregion", "ram128", "skins", "discimages", "config", "ftp"]
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CODE_VA = 0x001FE000         # link address in link.ld
@@ -48,6 +49,10 @@ HOOKS = [
     (0x0002CE6F, "e85cb41100", "patch_create_device",         0xE8, {"video720"}),            # D3D setup: create the device
     (0x0002D89D, "e80ea40200", "patch_material_init",         0xE8, {"skins"}),               # startup: build the material table
     (0x0006172F, "e85cf5ffff", "patch_texture_from_xip",      0xE8, {"skins"}),               # texture cache miss: XIP lookup
+    (0x0005C221, "e82a000000", "patch_mesh_load",             0xE8, {"skins"}),               # Mesh update: resolve/reload URL
+    (0x00050E1A, "e831b40000", "patch_mesh_load",             0xE8, {"skins"}),               # render path: initial/dirty Mesh load
+    (0x0005C297, "e80419feff", "patch_mesh_cache_lookup",     0xE8, {"skins"}),               # resolved Mesh path: cache lookup/substitution
+    (0x0005C0C4, "e817000000", "patch_mesh_destroy",          0xE8, {"skins"}),               # Mesh destructor: remove tracked node
     (0x0003A490, "b8f0fd1700", "patch_config_getfunctionmap", 0xE9, {"skins", "discimages", "config"}), # theConfig's function table
 ]
 
@@ -106,6 +111,14 @@ INPLACE = [
         cmp  byte [esp+0x12], 6
         jbe  try
         nop x28                          ; all six failed: carry on as retail's success path"""),
+]
+
+# Raw XBE header edits: (file offset, retail bytes, new bytes, feature, what).
+# Initialization Flags is a DWORD at 0x124. Retail is 0x0000000c; clearing
+# bit 2 (Limit64Megabytes) leaves the unrelated bit 3 set.
+HEADER_INPLACE = [
+    (0x124, "0c000000", "08000000", "ram128",
+     "clear Initialization Flags bit 2 (Limit64Megabytes)"),
 ]
 
 
@@ -229,6 +242,16 @@ def main():
         if bytes(buf[o:o + len(orig)]) != orig:
             die(f"{va:08x} doesn't hold the retail bytes")
         buf[o:o + len(new)] = new
+
+    for offset, orig, new, feature, _ in HEADER_INPLACE:
+        if feature not in want:
+            continue
+        orig, new = bytes.fromhex(orig), bytes.fromhex(new)
+        if len(orig) != len(new):
+            die(f"header edit at {offset:#x} changes length")
+        if bytes(buf[offset:offset + len(orig)]) != orig:
+            die(f"header offset {offset:#x} doesn't hold the retail bytes")
+        buf[offset:offset + len(new)] = new
 
     open(args.output, "wb").write(buf)
     print(f"{args.output}: {', '.join(f for f in FEATURES if f in want)}")
