@@ -26,6 +26,10 @@ Pick features with `--only` or `--skip` (comma-separated):
 | `dvdregion` | Plays DVDs from any region |
 | `ram128` | Clears the XBE `Limit64Megabytes` initialization flag, allowing a RAM-upgraded Xbox or emulator to expose memory above 64 MB |
 | `skins` | Theseus-style skins from `C:\UIX Configs\Skins\<Name>\`, switchable live from Settings > Skins |
+
+Every XBX texture requested by the 5960 dashboard is eligible for a same-name
+override in the selected skin folder. The built-in asset groups additionally
+provide compatible alias names. Mesh eligibility remains separately limited.
 | `discimages` | Title folders with `default.iso` or `default.cci` show in the Launcher and boot (Cerbios) |
 | `config` | File operations, XBE title information, and LAN-address functions exposed to XAP |
 | `ftp` | FTP file server on port 21 for pushing files to the console over the LAN |
@@ -60,8 +64,17 @@ The server supports active and passive transfers, resume, upload/download,
 directory creation/removal, deletion, and file or directory rename through
 the standard `RNFR`/`RNTO` command pair. Active-mode targets are restricted to
 RFC 1918 private networks (`10/8`, `172.16/12`, and `192.168/16`) to prevent
-public FTP bounce targets. FTP is
-cleartext and exposes writable partitions, so enable it only on a trusted LAN.
+public FTP bounce targets. Both active and passive data sockets use a tested
+32 KiB receive buffer. In bridged xemu testing, a 2,617,344-byte passive upload
+completed in seven seconds; the same passive path transferred a 2,056,192-byte
+file on real hardware in about one second.
+
+A normal `STOR` upload is written to a same-directory temporary file and only
+replaces the destination after the complete transfer, so a broken connection
+does not truncate an existing file. A short disk write, including a full FATX
+partition, returns FTP status `452 Insufficient storage space`; other data
+connection failures return `426 Transfer failed`. FTP is cleartext and exposes
+writable partitions, so use it only on a trusted LAN.
 
 The XBE's signature isn't redone, so like every UIX Lite build it needs a
 modded BIOS.
@@ -146,7 +159,10 @@ this network stack.
 
 The FTP server is `ftp.c`; it runs on the retail network stack through
 `net.c` (listen/accept, which the stack has but doesn't export) and the
-socket thunks. No new hook site: `patch_start` starts it.
+socket thunks. `ftp_tune.c` contains the appended 32 KiB active/passive data
+socket tuning and STOR-result helper; keeping it after the established payload
+preserves the validated hook addresses. No new retail hook site is needed:
+`patch_start` starts the server.
 
 The XIP and DVD region patches are small in-place edits; `patch.py` lists
 each one with the retail bytes it expects and the assembly it writes.
@@ -161,6 +177,42 @@ Only needed if you change `src/`. Needs LLVM (`clang`, `ld.lld`,
 ```
 
 That rebuilds `bin/`; commit it with the source change.
+
+## XOnline Dashboard skin patch
+
+`xonline/patch.py` is a separate, hash-locked patcher for the included
+`xonlinedash.xbe` (`SHA-256 FFE013D6...714D`). It reads the same
+`[Dashboard Settings] Current Skin` value each time XOnline Dashboard starts.
+It applies `Color`, `ColorA`, and `ColorB` values to matching XOnline material
+names. XBX textures found beside the selected skin's XBX file override files
+with the same name under `B:\Media\Xbx`; missing replacements fall back to the
+retail texture. `.xbg` models are
+never redirected, and live switching inside XOnline Dashboard is intentionally
+not implemented. When XOnline Dashboard returns to the main dashboard, the
+patch checks for `Y:\xb0xdash.xbe` and changes only the filename passed to the
+original lower-level launcher. If the alternate file is absent, the retail
+`xboxdash.xbe` filename and all original launch arguments are preserved. The
+patch changes the retail font path to
+`\Device\Harddisk0\partition2\Xbox.xtf` and enables XOnline's matching 720p
+device and UI dimensions when HDTV, widescreen, 720p, and NTSC are enabled.
+
+Build and apply it on Windows with:
+
+```text
+xonline\build.bat
+python xonline\patch.py xonlinedash.xbe xonlinedash_uix.xbe
+```
+
+On macOS or Linux, rebuild the payload and apply the patch with:
+
+```sh
+./xonline/build.sh
+python3 xonline/patch.py xonlinedash.xbe xonlinedash_uix.xbe
+```
+
+The generated filename remains below the Xbox filesystem's 42-character
+limit. Always keep the original `xonlinedash.xbe` so the patch can be rebuilt
+from its verified retail input.
 
 ## Scripts
 

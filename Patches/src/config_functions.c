@@ -50,7 +50,6 @@ static void THISCALL Config_ApplySkin(void* pThis)
 	(void)pThis;
 	skin_apply_current();
 }
-
 static const unsigned short s_szApplySkin[] = u"ApplySkin";
 static const unsigned short s_szLaunchDiscImage[] = u"LaunchDiscImage";
 static const unsigned short s_szGetDiscImageTitleID[] = u"GetDiscImageTitleID";

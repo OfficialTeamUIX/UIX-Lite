@@ -1,0 +1,8 @@
+001595a0 T patch_xonline_colors
+00158fb0 T patch_xonline_createfile
+00158dc0 T patch_xonline_return
+00159c60 T patch_xonline_rgba
+00158d00 T patch_xonline_video_device
+00158d6c T patch_xonline_video_ui
+00158f80 T patch_xonline_xbx_open
+00158e20 T patch_xonline_xbx_size

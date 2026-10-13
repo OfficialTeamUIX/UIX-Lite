@@ -48,5 +48,8 @@ typedef struct WSABUF
 int    net_listen(SOCKET s, int backlog);
 SOCKET net_accept(SOCKET s);
 int    net_allow_insecure(SOCKET s);
+int    net_tune_ftp_data(SOCKET s);
+SOCKET net_accept_ftp(SOCKET s);
+const char* ftp_stor_reply(int result);
 int    net_ready(void);
 DWORD  net_address(void);

@@ -6,7 +6,7 @@
 // family. Keys, EggGlow and EggGlowPulse pick their colors in Setup every
 // frame, so they're left alone for now.
 
-#include "dash5960.h"
+#include "uixlite.h"
 
 #define CONFIG_PATH "Y:\\UIX Configs\\config.ini"
 #define MAX_MATERIALS 256
@@ -322,8 +322,7 @@ void patch_material_init(void)
 {
 	dash_init_materials();
 	snapshot_retail();
-
-	skin_apply_current();
+	if (patch_features & FEATURE_SKINS) skin_apply_current();
 }
 
 // Theseus's key: [Dashboard Settings] Current Skin

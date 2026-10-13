@@ -32,6 +32,7 @@ RETAIL_MD5 = "08d3a6f99184679aa13008d6397bacce"
 RETAIL_SHA1 = "4d8d6b1d3f7ace05cbaf03565382b0e6e40c706c"
 
 FEATURES = ["drives", "video720", "xipsig", "dvdregion", "ram128", "skins", "discimages", "config", "ftp"]
+DEFAULT_FEATURES = set(FEATURES)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CODE_VA = 0x001FE000         # link address in link.ld
@@ -45,15 +46,15 @@ FEATURE_BITS = {"drives": 0x1, "ftp": 0x2, "config": 0x4, "skins": 0x8, "discima
 # 5-byte call / jmp redirects into the patch code:
 # (address, retail bytes, symbol, opcode, features that need it)
 HOOKS = [
-    (0x0002DCA1, "e85afdffff", "patch_start",                 0xE8, {"drives", "ftp", "discimages"}), # startup services/cleanup, then dashboard
+    (0x0002DCA1, "e85afdffff", "patch_start",                 0xE8, {"drives", "ftp", "discimages"}),
     (0x0002CE6F, "e85cb41100", "patch_create_device",         0xE8, {"video720"}),            # D3D setup: create the device
-    (0x0002D89D, "e80ea40200", "patch_material_init",         0xE8, {"skins"}),               # startup: build the material table
-    (0x0006172F, "e85cf5ffff", "patch_texture_from_xip",      0xE8, {"skins"}),               # texture cache miss: XIP lookup
+    (0x0002D89D, "e80ea40200", "patch_material_init",         0xE8, {"skins"}),
+    (0x0006172F, "e85cf5ffff", "patch_texture_from_xip",      0xE8, {"skins"}),
     (0x0005C221, "e82a000000", "patch_mesh_load",             0xE8, {"skins"}),               # Mesh update: resolve/reload URL
     (0x00050E1A, "e831b40000", "patch_mesh_load",             0xE8, {"skins"}),               # render path: initial/dirty Mesh load
     (0x0005C297, "e80419feff", "patch_mesh_cache_lookup",     0xE8, {"skins"}),               # resolved Mesh path: cache lookup/substitution
     (0x0005C0C4, "e817000000", "patch_mesh_destroy",          0xE8, {"skins"}),               # Mesh destructor: remove tracked node
-    (0x0003A490, "b8f0fd1700", "patch_config_getfunctionmap", 0xE9, {"skins", "discimages", "config"}), # theConfig's function table
+    (0x0003A490, "b8f0fd1700", "patch_config_getfunctionmap", 0xE9, {"skins", "discimages", "config"}),
 ]
 
 # In-place edits: (address, retail bytes, new bytes, feature, what)
@@ -197,7 +198,7 @@ def main():
     ap.add_argument("--skip", help="comma-separated features to leave out")
     args = ap.parse_args()
 
-    want = set(FEATURES)
+    want = set(DEFAULT_FEATURES)
     if args.only:
         want = set(args.only.split(","))
     if args.skip:

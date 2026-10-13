@@ -9,7 +9,8 @@ CC=${CC:-clang}
 LD=${LD:-ld.lld}
 OBJCOPY=${OBJCOPY:-llvm-objcopy}
 NM=${NM:-llvm-nm}
-CFLAGS="--target=i386-unknown-none-elf -ffreestanding -fno-pic -fno-pie -O2 -fno-builtin \
+OPT=${OPT:--O2}
+CFLAGS="--target=i386-unknown-none-elf -ffreestanding -fno-pic -fno-pie $OPT -fno-builtin \
  -fno-stack-protector -mno-sse -mno-mmx -fno-zero-initialized-in-bss \
  -fno-asynchronous-unwind-tables -fno-exceptions -Wall"
 mkdir -p build bin

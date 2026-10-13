@@ -1,5 +1,6 @@
-// skin_assets.c: which files a skin folder may override, and the names to try.
-// Port of Theseus's render/skin_assets.h, same list and groups.
+// skin_assets.c: aliases for skin assets. Every texture requested through the
+// XIP texture loader is skinnable; this list remains for mesh eligibility and
+// alternate filenames.
 
 #include "dash5960.h"
 

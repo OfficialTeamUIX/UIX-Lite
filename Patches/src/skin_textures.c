@@ -9,7 +9,7 @@
 // Ownership never moves: the XIP object keeps its stock data, the skin
 // texture keeps the skin data, and we only copy the Data/Format/Size fields.
 
-#include "dash5960.h"
+#include "uixlite.h"
 
 extern char g_szSkin[64];
 extern void skin_ensure_boot_name(void);
@@ -243,8 +243,7 @@ void* __attribute__((fastcall)) patch_texture_from_xip(const WCHAR* url)
 
 	char base[64];
 	base_name(url, base, sizeof(base));
-	if (!skin_is_skinnable(base))
-		return tex;
+	if (!(patch_features & FEATURE_SKINS)) return tex;
 
 	// No stock copy to hang it on: synthesize a tiny black home texture and
 	// use the normal tracked-overlay path. This supports repeated switching

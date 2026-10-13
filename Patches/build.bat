@@ -11,7 +11,8 @@ if not defined LD set "LD=ld.lld"
 if not defined OBJCOPY set "OBJCOPY=llvm-objcopy"
 if not defined NM set "NM=llvm-nm"
 
-set "CFLAGS=--target=i386-unknown-none-elf -ffreestanding -fno-pic -fno-pie -O2 -fno-builtin -fno-stack-protector -mno-sse -mno-mmx -fno-zero-initialized-in-bss -fno-asynchronous-unwind-tables -fno-exceptions -Wall"
+if not defined OPT set "OPT=-O2"
+set "CFLAGS=--target=i386-unknown-none-elf -ffreestanding -fno-pic -fno-pie %OPT% -fno-builtin -fno-stack-protector -mno-sse -mno-mmx -fno-zero-initialized-in-bss -fno-asynchronous-unwind-tables -fno-exceptions -Wall"
 
 if not exist "build" mkdir "build"
 if errorlevel 1 goto :error
