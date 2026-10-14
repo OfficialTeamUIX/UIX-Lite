@@ -26,13 +26,13 @@ Pick features with `--only` or `--skip` (comma-separated):
 | `dvdregion` | Plays DVDs from any region |
 | `ram128` | Clears the XBE `Limit64Megabytes` initialization flag, allowing a RAM-upgraded Xbox or emulator to expose memory above 64 MB |
 | `skins` | Theseus-style skins from `C:\UIX Configs\Skins\<Name>\`, switchable live from Settings > Skins |
+| `discimages` | Title folders with `default.iso` or `default.cci` show in the Launcher and boot (Cerbios) |
+| `config` | File operations, XBE title information, and LAN-address functions exposed to XAP |
+| `ftp` | FTP file server on port 21 for pushing files to the console over the LAN |
 
 Every XBX texture requested by the 5960 dashboard is eligible for a same-name
 override in the selected skin folder. The built-in asset groups additionally
 provide compatible alias names. Mesh eligibility remains separately limited.
-| `discimages` | Title folders with `default.iso` or `default.cci` show in the Launcher and boot (Cerbios) |
-| `config` | File operations, XBE title information, and LAN-address functions exposed to XAP |
-| `ftp` | FTP file server on port 21 for pushing files to the console over the LAN |
 
 ```
 python3 patch.py --skip video720 xboxdash.xbe xboxdash_uixlite.xbe
@@ -42,7 +42,7 @@ python3 patch.py --skip video720 xboxdash.xbe xboxdash_uixlite.xbe
 
 FTP starts by default with the scene-standard `xbox` / `xbox` credentials. Each drive is a folder at the root,
 using the same letters the dashboard's file browser shows (`C`, `D`, `E`, `F`, `G`, `X`, `Y`,
-`Z` for the disc, `E2`/`F2`/`G2` for a second HDD), so `E:\` on the box is `/E`. 
+`Z` for the HDD, `E2`/`F2`/`G2` for a second HDD), so `E:\` on the box is `/E`. 
 It comes up on its own once the network is ready and coexists with
 Insignia sign-in.
 
@@ -65,9 +65,7 @@ directory creation/removal, deletion, and file or directory rename through
 the standard `RNFR`/`RNTO` command pair. Active-mode targets are restricted to
 RFC 1918 private networks (`10/8`, `172.16/12`, and `192.168/16`) to prevent
 public FTP bounce targets. Both active and passive data sockets use a tested
-32 KiB receive buffer. In bridged xemu testing, a 2,617,344-byte passive upload
-completed in seven seconds; the same passive path transferred a 2,056,192-byte
-file on real hardware in about one second.
+32 KiB receive buffer.
 
 A normal `STOR` upload is written to a same-directory temporary file and only
 replaces the destination after the complete transfer, so a broken connection
@@ -186,13 +184,12 @@ That rebuilds `bin/`; commit it with the source change.
 It applies `Color`, `ColorA`, and `ColorB` values to matching XOnline material
 names. XBX textures found beside the selected skin's XBX file override files
 with the same name under `B:\Media\Xbx`; missing replacements fall back to the
-retail texture. `.xbg` models are
-never redirected, and live switching inside XOnline Dashboard is intentionally
-not implemented. When XOnline Dashboard returns to the main dashboard, the
-patch checks for `Y:\xb0xdash.xbe` and changes only the filename passed to the
-original lower-level launcher. If the alternate file is absent, the retail
-`xboxdash.xbe` filename and all original launch arguments are preserved. The
-patch changes the retail font path to
+retail texture. `.xbg` models are never redirected, and live switching inside
+XOnline Dashboard is intentionally not implemented. When XOnline Dashboard
+returns to the main dashboard, the patch checks for `Y:\xb0xdash.xbe` and 
+changes only the filename passed to the original lower-level launcher. If the
+alternate file is absent, the retail `xboxdash.xbe` filename and all original
+launch arguments are preserved. The patch changes the retail font path to
 `\Device\Harddisk0\partition2\Xbox.xtf` and enables XOnline's matching 720p
 device and UI dimensions when HDTV, widescreen, 720p, and NTSC are enabled.
 
@@ -214,10 +211,17 @@ The generated filename remains below the Xbox filesystem's 42-character
 limit. Always keep the original `xonlinedash.xbe` so the patch can be rebuilt
 from its verified retail input.
 
+All XOnline features are enabled by default and can be selected with
+`--only` or `--skip`: `colors`, `textures`, `video720`, `redirect`,
+and `fontpath`. See [xonline/README.md](xonline/README.md) for the complete
+feature table, skin paths, examples, and build details.
+
 ## Scripts
 
 The XAP side lives in `Xip Source/`: the Skins menu (`default.xip/skins.xap`,
 `settings_panel.xip/default3.xap`, the entry in `settings3.xap`) and disc
 image support in the Launcher (`FindLaunchFile` and friends in
 `default.xip/default.xap`, `harddrive.xap`). Images only appear when
-`theConfig.DiscImagesSupported()` finds Cerbios's virtual drive.
+`theConfig.DiscImagesSupported()` finds Cerbios's virtual drive. When the
+dashboard starts after a mounted title exits, UIX detaches the stale Cerbios
+virtual disc so the dashboard does not relaunch it.
