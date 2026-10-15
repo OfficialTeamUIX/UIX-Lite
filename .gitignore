@@ -1,3 +1,7 @@
 Build/
 .gitignore
 .DS_Store
+Patches/__pycache__/patch.cpython-312.pyc
+Patches/xboxdash.xbe
+Patches/xonlinedash.xbe
+*.pyc

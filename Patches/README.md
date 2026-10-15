@@ -65,7 +65,9 @@ directory creation/removal, deletion, and file or directory rename through
 the standard `RNFR`/`RNTO` command pair. Active-mode targets are restricted to
 RFC 1918 private networks (`10/8`, `172.16/12`, and `192.168/16`) to prevent
 public FTP bounce targets. Both active and passive data sockets use a tested
-32 KiB receive buffer.
+32 KiB receive buffer. `REST` resume offsets are supported through
+`4,294,967,294`, including offsets above 2 GiB; invalid, overflowing, missing-
+file, and beyond-end offsets are rejected without modifying the destination.
 
 A normal `STOR` upload is written to a same-directory temporary file and only
 replaces the destination after the complete transfer, so a broken connection

@@ -26,6 +26,8 @@
 #define LINE_MAX       512
 #define PATH_MAX       300
 #define RESP_MAX       640
+#define STDIO_SEEK_CUR 1
+#define MAX_REST_OFFSET 0xfffffffeu
 
 // Drives shown as UIX Lite's scene letters, not the raw system letters, so the
 // FTP tree matches what the dashboard's file browser shows. Same mapping as
@@ -73,6 +75,7 @@ typedef struct Conn
 	int    hasPort;
 	int    loggedIn;
 	DWORD  rest;        // REST offset for the next transfer
+	int    hasRest;     // distinguishes REST 0 from no restart marker
 	char   user[32];    // name from the USER command, checked at PASS
 	char   cwd[PATH_MAX];
 	char   renameFrom[PATH_MAX]; // real path saved by RNFR for the next RNTO
@@ -145,6 +148,25 @@ static char* put_uint(char* p, DWORD v)
 	do { tmp[n++] = (char)('0' + v % 10); v /= 10; } while (v);
 	while (n--) *p++ = tmp[n];
 	return p;
+}
+
+static int parse_rest_offset(const char* text, DWORD* result)
+{
+	DWORD value = 0;
+	int digits = 0;
+	while (*text >= '0' && *text <= '9')
+	{
+		DWORD digit = (DWORD)(*text++ - '0');
+		if (value > (MAX_REST_OFFSET - digit) / 10u)
+			return 0;
+		value = value * 10u + digit;
+		digits++;
+	}
+	while (*text == ' ' || *text == '\t') text++;
+	if (!digits || *text)
+		return 0;
+	*result = value;
+	return 1;
 }
 
 // Minimal formatter: %s %u %d %c %%. Enough for FTP replies.
@@ -485,6 +507,10 @@ static void cmd_list(Conn* c, const char* arg, int namesOnly)
 static void cmd_retr(Conn* c, const char* arg)
 {
 	char virt[PATH_MAX], real[PATH_MAX];
+	DWORD restart = c->rest;
+	int hasRestart = c->hasRest;
+	c->rest = 0;
+	c->hasRest = 0;
 	resolve(c->cwd, arg, virt, sizeof(virt));
 	if (!map_real(virt, real, sizeof(real)))
 	{
@@ -497,10 +523,24 @@ static void cmd_retr(Conn* c, const char* arg)
 		reply(c->cmd, "550 Failed to open file.\r\n");
 		return;
 	}
-	if (c->rest)
+	if (hasRestart)
 	{
-		SetFilePointer(h, (int)c->rest, 0, FILE_BEGIN);
-		c->rest = 0;
+		DWORD sizeHigh = 0;
+		DWORD sizeLow = GetFileSize(h, &sizeHigh);
+		if (sizeHigh || restart > sizeLow)
+		{
+			CloseHandle(h);
+			reply(c->cmd, "551 Restart position exceeds file size.\r\n");
+			return;
+		}
+		int positionHigh = 0;
+		DWORD positionLow = SetFilePointer(h, (int)restart, &positionHigh, FILE_BEGIN);
+		if (positionLow != restart || positionHigh != 0)
+		{
+			CloseHandle(h);
+			reply(c->cmd, "451 File seek failed.\r\n");
+			return;
+		}
 	}
 	SOCKET data = open_data(c);
 	if (data == INVALID_SOCKET)
@@ -526,14 +566,49 @@ static void cmd_retr(Conn* c, const char* arg)
 	reply(c->cmd, ok ? "226 Transfer complete.\r\n" : "426 Transfer failed.\r\n");
 }
 
+// Large-offset CRT seek strategy based on code contributed by ztuxnet. The retail 
+// CRT takes signed 32-bit displacements, so positive relative steps cross the 2 GiB
+// boundary without ever passing a negative absolute offset to fseek.
+static int seek_stdio(void* file, DWORD offset)
+{
+	const DWORD step = 0x7fffffffu;
+	if (offset <= step)
+		return crt_fseek(file, (long)offset, STDIO_SEEK_SET) == 0;
+	if (crt_fseek(file, (long)step, STDIO_SEEK_SET) != 0)
+		return 0;
+	return crt_fseek(file, (long)(offset - step), STDIO_SEEK_CUR) == 0;
+}
+
 static void cmd_stor(Conn* c, const char* arg, int append)
 {
 	char virt[PATH_MAX], real[PATH_MAX], temp[PATH_MAX];
+	DWORD restart = c->rest;
+	int hasRestart = c->hasRest;
+	c->rest = 0;
+	c->hasRest = 0;
 	resolve(c->cwd, arg, virt, sizeof(virt));
 	if (!map_real(virt, real, sizeof(real)))
 	{
 		reply(c->cmd, "550 No such path.\r\n");
 		return;
+	}
+	if (hasRestart)
+	{
+		HANDLE existing = CreateFileA(real, GENERIC_READ, FILE_SHARE_READ, 0,
+		                              OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+		if (existing == INVALID_HANDLE_VALUE)
+		{
+			reply(c->cmd, "550 Cannot resume a missing file.\r\n");
+			return;
+		}
+		DWORD sizeHigh = 0;
+		DWORD sizeLow = GetFileSize(existing, &sizeHigh);
+		CloseHandle(existing);
+		if (sizeHigh || restart > sizeLow)
+		{
+			reply(c->cmd, "551 Restart position exceeds file size.\r\n");
+			return;
+		}
 	}
 	// Establish the data channel before touching the destination. A plain STOR
 	// is received into a same-directory temporary file and committed only after
@@ -546,7 +621,7 @@ static void cmd_stor(Conn* c, const char* arg, int append)
 		return;
 	}
 	const char* openPath = real;
-	if (!append && !c->rest)
+	if (!append && !hasRestart)
 	{
 		if (!upload_temp_path(real, temp, sizeof(temp)))
 		{
@@ -558,21 +633,24 @@ static void cmd_stor(Conn* c, const char* arg, int append)
 		openPath = temp;
 	}
 	// This XBE has no WriteFile; use the dashboard CRT writer.
-	const char* mode = append ? "ab" : (c->rest ? "r+b" : "wb");
+	const char* mode = append ? "ab" : (hasRestart ? "r+b" : "wb");
 	void* f = crt_fopen(openPath, mode, SH_DENYNO);
-	if (!f && c->rest)          // resuming a file that isn't there yet
-		f = crt_fopen(openPath, "wb", SH_DENYNO);
 	if (!f)
 	{
 		closesocket(data);
 		reply(c->cmd, "550 Failed to create file.\r\n");
 		return;
 	}
-	if (append)
-		crt_fseek(f, 0, STDIO_SEEK_END);
-	else if (c->rest)
-		crt_fseek(f, (long)c->rest, STDIO_SEEK_SET);
-	c->rest = 0;
+	int seekOk = append
+	           ? (crt_fseek(f, 0, STDIO_SEEK_END) == 0)
+	           : (!hasRestart || seek_stdio(f, restart));
+	if (!seekOk)
+	{
+		crt_fclose(f);
+		closesocket(data);
+		reply(c->cmd, "451 File seek failed.\r\n");
+		return;
+	}
 	reply(c->cmd, "150 Ok to send data.\r\n");
 	char* buf = (char*)dash_malloc(XFER_BUF);
 	int ok = buf != 0;
@@ -803,10 +881,19 @@ static DWORD STDCALL conn_thread(void* param)
 			cmd_stor(&c, arg, 1);
 		else if (ieq(line, "REST"))
 		{
-			DWORD v = 0;
-			for (const char* p = arg; *p >= '0' && *p <= '9'; p++) v = v * 10 + (DWORD)(*p - '0');
-			c.rest = v;
-			reply(c.cmd, "350 Restart position accepted.\r\n");
+			DWORD value;
+			if (!parse_rest_offset(arg, &value))
+			{
+				c.rest = 0;
+				c.hasRest = 0;
+				reply(c.cmd, "501 Restart offset must be 0-4294967294.\r\n");
+			}
+			else
+			{
+				c.rest = value;
+				c.hasRest = 1;
+				reply(c.cmd, "350 Restart position accepted.\r\n");
+			}
 		}
 		else if (ieq(line, "SIZE"))
 			cmd_size(&c, arg);
