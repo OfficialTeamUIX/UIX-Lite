@@ -50,7 +50,7 @@ Configure or disable it in `C:\UIX Configs\config.ini` (all keys are optional):
 
 ```
 [FTP]
-Enabled=1      ; 0 disables the server
+Enabled=1      ; 0/false/no/off disables the server
 User=xbox      ; login name
 Pass=xbox      ; password
 Port=21        ; listen port

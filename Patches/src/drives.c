@@ -38,6 +38,29 @@ static void mount(char letter, const char* device)
 	IoCreateSymbolicLink(&l, &d);
 }
 
+static int same_word(const char* value, const char* word)
+{
+	while (*value && *word)
+	{
+		int a = *value++, b = *word++;
+		if (a >= 'A' && a <= 'Z') a += 'a' - 'A';
+		if (b >= 'A' && b <= 'Z') b += 'a' - 'A';
+		if (a != b) return 0;
+	}
+	return !*value && !*word;
+}
+
+static int config_boolean(const char* value, int fallback)
+{
+	if (same_word(value, "0") || same_word(value, "false") ||
+	    same_word(value, "no") || same_word(value, "off"))
+		return 0;
+	if (same_word(value, "1") || same_word(value, "true") ||
+	    same_word(value, "yes") || same_word(value, "on"))
+		return 1;
+	return fallback;
+}
+
 // patch.py writes the selected features here
 DWORD patch_features = 0xFFFFFFFF;
 
@@ -66,7 +89,7 @@ void patch_start(void)
 			ini_value(cfg, "FTP", "Enabled", enabled, sizeof(enabled));
 			dash_free(cfg);
 		}
-		if (enabled[0] != '0')
+		if (config_boolean(enabled, 1))
 			ftp_start();
 	}
 
