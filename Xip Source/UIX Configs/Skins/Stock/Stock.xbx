@@ -1,0 +1,31 @@
+#
+#
+#
+#
+#	Xbox Dash Skin Material Data
+#
+#	Skin Name - MS Dash - Stock
+#
+#	
+#	example...
+#	[Some Material Name]		<-- Material Name
+#	ColorA=red,green,blue,alpha		<-- Values for material color 1 - usually side faces color
+#	ColorB=red,green,blue,alpha		<-- Values for material color 1 - usually front faces color
+#	
+#	BGMesh can be set to "dna", "spirals", "chains", or "off"
+#	BGMeshAlpha can be any number between 0.0 and 1.0 (0 being invisible)
+#
+
+[SkinInfo]
+Author=
+DateCreated=
+Version=
+MadeUsing=
+Credits=
+
+[BGMesh]
+BGMesh1-rpm=2
+BGMesh2-rpm=2
+BGMesh3-rpm=2
+BGMesh=dna
+BGMeshAlpha=.45

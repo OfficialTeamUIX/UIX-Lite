@@ -1,0 +1,356 @@
+#
+#
+#
+#
+#	Xbox Dash Skin Material Data
+#
+#	Skin Name - MS Dash - Green
+#
+#	
+#	example...
+#	[Some Material Name]		<-- Material Name
+#	ColorA=red,green,blue,alpha		<-- Values for material color 1 - usually side faces color
+#	ColorB=red,green,blue,alpha		<-- Values for material color 1 - usually front faces color
+#	
+#	BGMesh can be set to "dna", "spirals", "chains", or "off"
+#	BGMeshAlpha can be any number between 0 and 1 (0 being invisible)
+#
+
+[SkinInfo]
+Author=TeamUIX
+DateCreated=10-31-04
+Version=1.0
+MadeUsing=MS Presets/Photoshop
+Credits=foood.net for DVD icons
+
+[BGMesh]
+BGMesh1-rpm=2
+BGMesh2-rpm=2
+BGMesh3-rpm=2
+BGMesh=spirals
+BGMeshAlpha=.75
+
+[InnerWall_01]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[InnerWall_02]
+ColorA=107, 177, 255, 255
+ColorB=0, 14, 192, 20
+
+[Wireframe]
+ColorA=34, 49, 198, 100
+ColorB=34, 49, 198, 0
+
+[CellEgg/Parts]
+ColorA=107, 177, 255, 178
+ColorB=30, 0, 255, 0
+
+[GameEgg]
+ColorA=107, 177, 255, 178
+ColorB=30, 0, 255, 0
+
+[FlatSurfaces2sided3]
+ColorA=0, 30, 253, 255
+ColorB=28, 0, 242, 0
+
+[console_hilite]
+ColorA=255, 173, 107, 255
+ColorB=246, 255, 0, 0
+
+[Metal_Chrome]
+ColorA=229, 229, 229, 0
+ColorB=229, 229, 229, 255
+
+[Tvbox]
+ColorA=229, 229, 229, 0
+ColorB=229, 229, 229, 255
+
+[AudioCD]
+ColorA=255, 255, 255, 40
+ColorB=255, 255, 255, 180
+
+[EggGlowPulse]
+ColorA=0, 102, 255, 0
+ColorB=188, 194, 255, 228
+
+[EggGlow]
+ColorA=252, 255, 0, 0
+ColorB=254, 255, 188, 228
+
+[ButtonGlow]
+ColorA=252, 255, 0, 0
+
+ColorB=254, 255, 188, 228
+[gradient]
+ColorA=117, 107, 255, 51
+ColorB=18, 0, 255, 0
+
+[CellWallStructure]
+ColorA=117, 107, 255, 51
+ColorB=18, 0, 255, 0
+
+[FlatSrfc/PodParts]
+ColorA=117, 107, 255, 51
+ColorB=18, 0, 255, 0
+
+[Cell_Light]
+ColorA=117, 107, 255, 51
+ColorB=18, 0, 255, 0
+
+[Cell_Light/LegSkin]
+ColorA=117, 107, 255, 51
+ColorB=18, 0, 255, 0
+
+[Tubes]
+ColorA=153, 153, 250, 215
+ColorB=7, 0, 104, 37
+
+[JewelSurface02/PodMesh]
+ColorA=153, 153, 250, 215
+ColorB=7, 0, 104, 37
+
+[TubesFade]
+ColorA=155, 153, 250, 215
+ColorB=7, 0, 104, 37
+
+[TubesQ]
+ColorA=153, 153, 250, 215
+ColorB=7, 0, 104, 37
+
+[EmptyMU]
+ColorA=153, 160, 250, 215
+ColorB=7, 0, 104, 37
+
+[Tube]
+ColorA=153, 160, 250, 215
+ColorB=7, 0, 104, 37
+
+[MemoryHeader]
+ColorA=60, 67, 198, 122
+ColorB=7, 0, 104, 37
+
+[FlatSurfaces]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[FlatSurfacesSelected]
+ColorA=107, 177, 255, 192
+ColorB=30, 0, 255, 128
+
+[FlatSurfacesMemory]
+ColorA=107, 177, 255, 192
+ColorB=30, 30, 160, 128
+
+[DarkSurfaces]
+ColorA=91, 85, 205, 90
+ColorB=0, 14, 192, 0
+
+[DarkSurfaces2]
+ColorA=91, 85, 205, 90
+ColorB=0, 10, 100, 0
+
+[FlatSurfaces2sided]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[DetailLegSkin_Inner]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[Screen]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[Spout]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[NavType34]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[MetaFlatSurfaces]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[HK_SavedGame_Row01]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[SavedEgg_Selected]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[FlatUnselected]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[Mem_InnerWall_Outer]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[SavedGameEgg]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[GameMenuEgg]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[Shell]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[Material #133sdsfdsf]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[IconParts]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[IconParts1]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[MU1Pod_HL]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[MU1Pod]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[GamePod]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[GamePodb]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[JwlSrfc01/InfoPnls]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[MenuCell]
+ColorA=107, 177, 255, 192
+ColorB=0, 14, 192, 0
+
+[Material #1334]
+Color=1, 0, 32, 192
+
+[XBOXgreendark]
+Color=6, 0, 33, 255
+
+[XBOXgreen]
+Color=24, 139, 200, 255
+
+[GameHilite33]
+Color=129, 120, 221, 178
+
+[Nothing]
+Color=128, 128, 128, 255
+
+[NavType]
+Color=94, 250, 250, 178
+
+[RedType]
+Color=200, 30, 30, 255
+
+[XBoxGreen]
+Color=24, 32, 200, 255
+
+[Type]
+Color=25, 100, 200, 255
+
+[Typesdsafsda]
+Color=255, 255, 255, 179
+
+[Material #133]
+Color=0, 0, 0, 192
+
+[Material #1335]
+Color=0, 76, 162, 200
+
+[Material #133511]
+Color=0, 41, 87, 255
+
+[Material #1336]
+Color=0, 0, 0, 128
+
+[HilightedType]
+Color=0, 3, 44, 255
+
+[XBoxGreenq]
+Color=24, 139, 200, 255
+
+[Black80]
+Color=0, 0, 0, 204
+
+[CellEgg/Partsw]
+Color=77, 57, 224, 166
+
+[CellEgg/Partsz]
+Color=170, 170, 170, 255
+
+[Material #108]
+Color=0, 160, 252, 255
+
+[ItemsType]
+Color=0, 182, 245, 255
+
+[GameHiliteMemory]
+Color=0, 178, 208, 255
+
+[red]
+Color=255, 0, 0, 255
+
+[PanelBacking_01]
+Color=2, 6, 30, 255
+
+[PanelBacking_02]
+Color=0, 0, 0, 255
+
+[PanelBacking_03]
+Color=0, 4, 20, 240
+
+[PanelBacking_04]
+Color=14, 7, 46, 255
+
+[NameBacking]
+Color=0, 1, 8, 255
+
+[ModeBacking]
+Color=0, 1, 8, 255
+
+[SavedGameBacking]
+Color=10, 11, 18, 255
+
+[MemManMetaBacking]
+Color=0, 4, 25, 255
+
+[DarkenBacking]
+Color=0, 2, 36, 255
+
+[TextBacking]
+Color=0, 0, 0, 255
+
+[MetaBacking]
+Color=0, 4, 50, 255
+
+[DarkenBackingDark]
+Color=0, 1, 8, 255
+
+[GameHilite]
+Color=255, 255, 255, 255
+
+[PanelBacking]
+Color=0, 4, 20, 255
+
+[Keyboard]
+ColorA=178, 208, 0, 255
+ColorB=107, 177, 255, 255
+ColorC=25, 225, 0, 34
+ColorD=190, 250, 94, 0

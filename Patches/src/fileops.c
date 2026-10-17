@@ -332,3 +332,37 @@ void* THISCALL Config_CopyFile(void* pThis, void** args, int count)
 		DeleteFileA(dst); // never leave a partial copy looking successful
 	return make_bool_object(succeeded);
 }
+
+// theConfig.CreateTitleMeta(path, titleName): create/replace a small text
+// metadata file containing "TitleName=<titleName>\r\n".
+void* THISCALL Config_CreateTitleMeta(void* pThis, void** args, int count)
+{
+	(void)pThis;
+	const WCHAR *wpath, *wtitle;
+	if (!get_two_string_args(args, count, &wpath, &wtitle))
+		return make_bool_object(0);
+
+	char path[260];
+	char title[260];
+	w2a(wpath, path, sizeof(path));
+	w2a(wtitle, title, sizeof(title));
+	void* file = crt_fopen(path, "wb", SH_DENYNO);
+	if (!file)
+		return make_bool_object(0);
+
+	static const char key[] = "TitleName=";
+	static const char newline[] = "\r\n";
+	DWORD titleLength = 0;
+	while (title[titleLength])
+		titleLength++;
+	int ok = crt_fwrite(key, 1, sizeof(key) - 1, file) == sizeof(key) - 1;
+	if (ok && crt_fwrite(title, 1, titleLength, file) != titleLength)
+		ok = 0;
+	if (ok && crt_fwrite(newline, 1, sizeof(newline) - 1, file) != sizeof(newline) - 1)
+		ok = 0;
+	if (crt_fclose(file) != 0)
+		ok = 0;
+	if (!ok)
+		DeleteFileA(path);
+	return make_bool_object(ok);
+}

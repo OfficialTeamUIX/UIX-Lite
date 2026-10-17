@@ -1975,6 +1975,12 @@ DEF theMainMenu Level
 				theLauncherInline.children[0].LoadDir();
 				bLoadDir = false;
 			}
+			else if(bAddMissingUdata)
+			{
+				bHDDInitialized = true;
+				theUIXConfigInline.children[0].AddMissingUdata();
+				bAddMissingUdata = false;
+			}
 			bHDDInitializing = false;
 			bHDDInitialized = true;
 			CloseMessage();
@@ -2083,7 +2089,7 @@ var BGMtr;
 var vCurAlbum; 
 var vCurSong;
 var bPlayingCd;
-
+var bAddMissingUdata;
 var Button1Text;
 var Button2Text;
 var Button3Text;
@@ -2142,7 +2148,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "261015"; //Date of commit YYMMDD
+	sBuildDate = "261017"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2167,6 +2173,7 @@ function initialize()
 	bShowNoDongleMessage = false;
 	bOutOfBoxFlow = false;
 	bMainMenuAttractFinish = false;
+	bAddMissingUdata = false;
 	nMusicButton = 1;
 	nXOLineButton = 2;
 	nCurMainMenuItem = 1; // start with music selected
@@ -3502,25 +3509,31 @@ function FillMenuList(x) // search Y:\, C:\, N:\ and O:\ for a relative path's c
 						TitleList[TitleList.length] = FolderName + ";" + i + ";" + ix;
 						if(IsDiscImage(launchXbe))
 						{
-							TitleID = theConfig.GetDiscImageTitleID(sPath);
-							SetCacheValue("TitleIDs",FolderName,TitleID.toLowerCase());
-							if(CacheFile.GetValue(FolderName) == "") 
+							TitleID = theConfig.GetDiscImageTitleID(sPath).toLowerCase();
+							if(TitleID != "")
 							{
-								TitleName = theConfig.GetDiscImageTitleName(sPath);
-								TitleNamesFile.SetValue(FolderName,TitleName);
+								SetCacheValue("TitleIDs",FolderName,TitleID);
+								if(TitleNamesFile.GetValue(FolderName) == "") 
+								{
+									TitleName = theConfig.GetDiscImageTitleName(sPath);
+									TitleNamesFile.SetValue(FolderName,TitleName);
+								}
 							}
 						}
 						else
 						{
-							TitleID = theConfig.GetXbeTitleID(sPath);
-							SetCacheValue("TitleIDs",FolderName,TitleID.toLowerCase());
-							if(TitleNamesFile.GetValue(FolderName) == "") 
+							TitleID = theConfig.GetXbeTitleID(sPath).toLowerCase();
+							if(TitleID != "")
 							{
-								TitleName = theConfig.GetXbeTitleName(sPath);
-								TitleNamesFile.SetValue(FolderName,TitleName);
+								SetCacheValue("TitleIDs",FolderName,TitleID);
+								if(TitleNamesFile.GetValue(FolderName) == "") 
+								{
+									TitleName = theConfig.GetXbeTitleName(sPath);
+									TitleNamesFile.SetValue(FolderName,TitleName);
+								}
 							}
 						}
-					}                
+					}
 				}
 			}
 		}  
@@ -4020,4 +4033,16 @@ function GetDrivePath(x,y)
 	if(x == "Harddisk1" & y == "Partition1") return "R:\\";
 	if(x == "Harddisk1" & y == "Partition6") return "P:\\";
 	if(x == "Harddisk1" & y == "Partition7") return "Q:\\";
+}
+
+function ClearCache()
+{
+	if(theConfig.ClearCache())
+	{
+		TellUser(Translate("Cleared System Cache."),"");
+	}
+	else
+	{
+		TellUser(Translate("Clear System Cache Failed."),"");
+	}
 }

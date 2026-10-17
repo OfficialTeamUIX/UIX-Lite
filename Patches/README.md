@@ -131,6 +131,7 @@ Callable from XAP as `theConfig.<name>(...)`:
 | `RemoveDir(path)` | int/bool | Remove an empty directory |
 | `MoveFile(src, dst)` | bool | Move/rename, replacing dst |
 | `CopyFile(src, dst)` | bool | Copy the file's bytes |
+| `CreateTitleMeta(path, titleName)` | bool | Create or replace a text metadata file containing `TitleName=<titleName>` |
 | `ClearCache()` | int/bool | Format cache partitions X:, Y:, and Z:, then recursively clear `C:\cache`; the running dashboard's locked `LocalCache00.bin` is intentionally retained and does not count as a failure |
 | `SendDiscordRelay(titleID)` | int | Send a title ID to the configured relay and block until complete |
 | `SendDiscordRelayAsync(titleID)` | int | Queue TCP/WebSocket on a worker thread; UDP uses the blocking completion-confirmed path |

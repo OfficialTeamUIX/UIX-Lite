@@ -21,6 +21,7 @@ extern int THISCALL Config_RemoveDir(void* pThis, const WCHAR* szPath);
 extern void* THISCALL Config_ExportXbeTitleImage(void* pThis, void** args, int count);
 extern void* THISCALL Config_MoveFile(void* pThis, void** args, int count);
 extern void* THISCALL Config_CopyFile(void* pThis, void** args, int count);
+extern void* THISCALL Config_CreateTitleMeta(void* pThis, void** args, int count);
 extern int THISCALL Config_ClearCache(void* pThis);
 extern int THISCALL Config_SendDiscordRelay(void* pThis, const WCHAR* title);
 extern int THISCALL Config_SendDiscordRelayAsync(void* pThis, const WCHAR* title);
@@ -66,6 +67,7 @@ static const unsigned short s_szRemoveDir[] = u"RemoveDir";
 static const unsigned short s_szExportXbeTitleImage[] = u"ExportXbeTitleImage";
 static const unsigned short s_szMoveFile[] = u"MoveFile";
 static const unsigned short s_szCopyFile[] = u"CopyFile";
+static const unsigned short s_szCreateTitleMeta[] = u"CreateTitleMeta";
 static const unsigned short s_szClearCache[] = u"ClearCache";
 static const unsigned short s_szSendDiscordRelay[] = u"SendDiscordRelay";
 static const unsigned short s_szSendDiscordRelayAsync[] = u"SendDiscordRelayAsync";
@@ -91,8 +93,8 @@ ScriptFn* patch_config_getfunctionmap(void)
 		const ScriptFn* intEntry = 0;       // sig 2, int f(void)
 		const ScriptFn* stringEntry = 0;    // sig 8, string f(void), like GetXdashVersion
 		const ScriptFn* strStrEntry = 0;    // sig 5, string f(string), like Translate
-		// Reserve nineteen possible extension entries plus the terminating zero entry.
-		for (const ScriptFn* f = dash_config_functions; f->code && n < MAX_FNS - 20; f++)
+		// Reserve twenty possible extension entries plus the terminating zero entry.
+		for (const ScriptFn* f = dash_config_functions; f->code && n < MAX_FNS - 21; f++)
 		{
 			s_fns[n++] = *f;
 			if (!voidEntry && f->sig == SIG_VOID)
@@ -138,6 +140,7 @@ ScriptFn* patch_config_getfunctionmap(void)
 		{
 			add(&n, &s_genericEntry, (void*)Config_MoveFile, s_szMoveFile);
 			add(&n, &s_genericEntry, (void*)Config_CopyFile, s_szCopyFile);
+			add(&n, &s_genericEntry, (void*)Config_CreateTitleMeta, s_szCreateTitleMeta);
 		}
 		if ((patch_features & FEATURE_CONFIG) && intStringEntry)
 		{
