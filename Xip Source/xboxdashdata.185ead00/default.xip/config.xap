@@ -240,8 +240,8 @@ function BuildSSList()
 	configValues[i] = "ShowInSettings-Configuration";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
-	configList[i] = "Start UIX Toolbox:";
-	configValues[i] = "ShowInSettings-StartFTP";
+	configList[i] = "UIX Update:";
+	configValues[i] = "ShowInSettings-UIXUpdate";
 	configSelect[i] = "toggleTF()";
 	i = i +1;
 	configList[i] = "Reboot:";
