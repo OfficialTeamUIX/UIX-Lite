@@ -39,6 +39,7 @@ typedef unsigned short WCHAR;
 // which is what the dashboard itself uses. Reads still go through ReadFile.
 #define SetFilePointer     ((DWORD (STDCALL *)(HANDLE, int, int*, DWORD))0x0006d057)
 #define GetFileAttributesA ((DWORD (STDCALL *)(const char*))0x0006c63a)
+#define SetFileAttributesA ((BOOL (STDCALL *)(const char*, DWORD))0x0006c594)
 #define DeleteFileA        ((BOOL (STDCALL *)(const char*))0x0006c707)
 #define CreateDirectoryA   ((BOOL (STDCALL *)(const char*, void*))0x0006c8e7)
 #define RemoveDirectoryA   ((BOOL (STDCALL *)(const char*))0x0006c953)
@@ -47,6 +48,10 @@ typedef unsigned short WCHAR;
 #define MoveFileExA        ((BOOL (STDCALL *)(const char*, const char*, DWORD))0x0006c8b1)
 #define MOVEFILE_REPLACE_EXISTING 0x1
 #define XSetFileCacheSize  ((BOOL (STDCALL *)(DWORD))0x0006c795)
+// FATX formatters. The one-argument wrapper supplies the retail default
+// 16-KiB cluster size to XapiFormatFATVolumeEx.
+#define XapiFormatFATVolumeEx ((BOOL (STDCALL *)(ANSI_STRING*, DWORD))0x0006c9e1)
+#define XapiFormatFATVolume   ((BOOL (STDCALL *)(ANSI_STRING*))0x0006cd05)
 
 // CRT stdio (__cdecl, NOT stdcall) is the only file-write path in this XBE.
 // fopen is inlined to _fsopen(name, mode, shflag); _SH_DENYNO = 0x40.
@@ -79,6 +84,7 @@ void* make_strobj(const WCHAR* sz); // heap CStrObject the VM owns (hostinfo.c)
 #define FILE_END                 2
 #define INVALID_SET_FILE_POINTER 0xFFFFFFFF
 #define INVALID_FILE_ATTRIBUTES  0xFFFFFFFF
+#define FILE_ATTRIBUTE_READONLY  0x01
 #define FILE_ATTRIBUTE_DIRECTORY 0x10
 
 // WIN32_FIND_DATAA as xapilib fills it (name at +44, size low at +32)
@@ -123,8 +129,21 @@ typedef struct IO_STATUS_BLOCK
 	DWORD Information;
 } IO_STATUS_BLOCK;
 
+typedef struct TIME_FIELDS
+{
+	short Year;
+	short Month;
+	short Day;
+	short Hour;
+	short Minute;
+	short Second;
+	short Milliseconds;
+	short Weekday;
+} TIME_FIELDS;
+
 #define KIMPORT(type, slot) ((type)(*(void**)(slot)))
 #define RtlInitAnsiString       KIMPORT(void (STDCALL *)(ANSI_STRING*, const char*), 0x0001200c)
+#define RtlTimeToTimeFields     KIMPORT(void (STDCALL *)(const DWORD*, TIME_FIELDS*), 0x0001208c)
 #define NtOpenFile              KIMPORT(int (STDCALL *)(HANDLE*, DWORD, OBJECT_ATTRIBUTES*, IO_STATUS_BLOCK*, DWORD, DWORD), 0x00012010)
 #define NtCreateEvent           KIMPORT(int (STDCALL *)(HANDLE*, OBJECT_ATTRIBUTES*, DWORD, BOOL), 0x0001212c)
 #define NtWaitForSingleObject   KIMPORT(int (STDCALL *)(HANDLE, BOOL, long long*), 0x00012120)

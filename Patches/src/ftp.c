@@ -85,6 +85,7 @@ typedef struct Conn
 static char g_user[32] = "xbox";
 static char g_pass[32] = "xbox";
 static WORD g_port = CMD_PORT;
+static int load_config(void);
 
 static void copy_str(char* dst, const char* src, int cap)
 {
@@ -386,19 +387,60 @@ static int path_is_dir(const char* real)
 
 // --- directory listing ------------------------------------------------------
 
+static const char* list_mode(DWORD attributes)
+{
+	int directory = (attributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
+	int readonly = (attributes & FILE_ATTRIBUTE_READONLY) != 0;
+	if (directory)
+		return readonly ? "dr-xr-xr-x" : "drwxrwxrwx";
+	return readonly ? "-r--r--r--" : "-rw-rw-rw-";
+}
+
+static void two_digits(char* out, int value)
+{
+	out[0] = (char)('0' + (value / 10) % 10);
+	out[1] = (char)('0' + value % 10);
+}
+
+static void list_time(char out[13], const DWORD fileTime[2])
+{
+	static const char months[] = "JanFebMarAprMayJunJulAugSepOctNovDec";
+	TIME_FIELDS fields;
+	RtlTimeToTimeFields(fileTime, &fields);
+	if (fields.Month < 1 || fields.Month > 12 || fields.Day < 1 || fields.Day > 31
+		|| fields.Hour < 0 || fields.Hour > 23 || fields.Minute < 0 || fields.Minute > 59)
+	{
+		copy_str(out, "Jan 01 00:00", 13);
+		return;
+	}
+	int month = (fields.Month - 1) * 3;
+	out[0] = months[month];
+	out[1] = months[month + 1];
+	out[2] = months[month + 2];
+	out[3] = ' ';
+	two_digits(out + 4, fields.Day);
+	out[6] = ' ';
+	two_digits(out + 7, fields.Hour);
+	out[9] = ':';
+	two_digits(out + 10, fields.Minute);
+	out[12] = 0;
+}
+
 static void send_root_listing(SOCKET data, int namesOnly)
 {
 	for (int i = 0; i < NDRIVES; i++)
 	{
 		char root[8];
 		root[0] = kDrives[i].real; root[1] = ':'; root[2] = '\\'; root[3] = 0;
-		if (GetFileAttributesA(root) == INVALID_FILE_ATTRIBUTES)
+		DWORD attributes = GetFileAttributesA(root);
+		if (attributes == INVALID_FILE_ATTRIBUTES)
 			continue;
 		char line[80];
 		if (namesOnly)
 			fmt(line, "%s\r\n", kDrives[i].scene);
 		else
-			fmt(line, "drwxrwxrwx 1 xbox xbox 0 Jan 01 00:00 %s\r\n", kDrives[i].scene);
+			fmt(line, "%s 1 xbox xbox 0 Jan 01 00:00 %s\r\n",
+			    list_mode(attributes | FILE_ATTRIBUTE_DIRECTORY), kDrives[i].scene);
 		reply(data, line);
 	}
 }
@@ -421,13 +463,16 @@ static void send_dir_listing(SOCKET data, const char* real, int namesOnly)
 		const char* name = fd.cFileName;
 		if (name[0] == '.' && (name[1] == 0 || (name[1] == '.' && name[2] == 0)))
 			continue;
-		int dir = (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
 		char line[400];
 		if (namesOnly)
 			fmt(line, "%s\r\n", name);
 		else
-			fmt(line, "%crwxrwxrwx 1 xbox xbox %u Jan 01 00:00 %s\r\n",
-			    dir ? 'd' : '-', fd.nFileSizeLow, name);
+		{
+			char modified[13];
+			list_time(modified, fd.ftLastWriteTime);
+			fmt(line, "%s 1 xbox xbox %u %s %s\r\n",
+			    list_mode(fd.dwFileAttributes), fd.nFileSizeLow, modified, name);
+		}
 		reply(data, line);
 	} while (FindNextFileA(h, &fd));
 	NtClose(h); // FindClose
@@ -971,6 +1016,8 @@ static DWORD STDCALL listen_thread(void* param)
 	(void)param;
 	while (!net_ready())
 		SleepEx(500, 0);
+	if (!load_config())
+		return 0;
 
 	SOCKET ls = INVALID_SOCKET;
 	while (ls == INVALID_SOCKET)
@@ -998,13 +1045,15 @@ static DWORD STDCALL listen_thread(void* param)
 	}
 }
 
-// [FTP] User / Pass / Port from config.ini; unset keys keep the defaults.
-static void load_config(void)
+// [FTP] settings from config.ini; unset or unknown values keep FTP enabled.
+static int load_config(void)
 {
 	char* cfg = skin_read_file(CONFIG_INI, 0);
 	if (!cfg)
-		return;
+		return 1;
 	char v[32];
+	char enabled[8];
+	ini_value(cfg, "FTP", "Enabled", enabled, sizeof(enabled));
 	ini_value(cfg, "FTP", "User", v, sizeof(v));
 	if (v[0]) copy_str(g_user, v, sizeof(g_user));
 	ini_value(cfg, "FTP", "Pass", v, sizeof(v));
@@ -1017,6 +1066,10 @@ static void load_config(void)
 		if (p > 0 && p < 65536) g_port = (WORD)p;
 	}
 	dash_free(cfg);
+	if (enabled[0] && (ieq(enabled, "0") || ieq(enabled, "false") ||
+	                   ieq(enabled, "no") || ieq(enabled, "off")))
+		return 0;
+	return 1;
 }
 
 void ftp_start(void)
@@ -1025,7 +1078,6 @@ void ftp_start(void)
 	if (started)
 		return;
 	started = 1;
-	load_config();
 	// Buffered writes go through the file cache; the default is tiny (~128 KB)
 	// and a large upload fills it and starts failing. Give it room.
 	XSetFileCacheSize(4 * 1024 * 1024);

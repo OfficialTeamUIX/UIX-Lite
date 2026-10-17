@@ -38,29 +38,6 @@ static void mount(char letter, const char* device)
 	IoCreateSymbolicLink(&l, &d);
 }
 
-static int same_word(const char* value, const char* word)
-{
-	while (*value && *word)
-	{
-		int a = *value++, b = *word++;
-		if (a >= 'A' && a <= 'Z') a += 'a' - 'A';
-		if (b >= 'A' && b <= 'Z') b += 'a' - 'A';
-		if (a != b) return 0;
-	}
-	return !*value && !*word;
-}
-
-static int config_boolean(const char* value, int fallback)
-{
-	if (same_word(value, "0") || same_word(value, "false") ||
-	    same_word(value, "no") || same_word(value, "off"))
-		return 0;
-	if (same_word(value, "1") || same_word(value, "true") ||
-	    same_word(value, "yes") || same_word(value, "on"))
-		return 1;
-	return fallback;
-}
-
 // patch.py writes the selected features here
 DWORD patch_features = 0xFFFFFFFF;
 
@@ -78,20 +55,10 @@ void patch_start(void)
 		for (unsigned i = 0; i < sizeof(kDrives) / sizeof(kDrives[0]); i++)
 			mount(kDrives[i].letter, kDrives[i].device);
 
-	// FTP is on unless config.ini turns it off. The listener waits for the
-	// network stack itself, so starting here (before the dashboard runs) is fine.
+	// Start the bootstrap thread here. It waits for readiness, then reads all
+	// FTP settings (including Enabled) before it creates the listener.
 	if (patch_features & FEATURE_FTP)
-	{
-		char* cfg = skin_read_file(CONFIG_INI, 0);
-		char enabled[8] = "1";
-		if (cfg)
-		{
-			ini_value(cfg, "FTP", "Enabled", enabled, sizeof(enabled));
-			dash_free(cfg);
-		}
-		if (config_boolean(enabled, 1))
-			ftp_start();
-	}
+		ftp_start();
 
 	dash_run();
 }

@@ -2065,11 +2065,11 @@ var BGMon;
 var theInLine;
 var currentControlType;
 var previousControlType;
+var ConfigFolder;
 var version;
 var ConfigFile;
 var CacheFile;
 var XlateFile;
-var IconFile;
 var TitleNamesFile;
 var PlaylistInfo;
 var thcorb;
@@ -2134,7 +2134,7 @@ var ShowMusicInSettings;
 var ShowXOnlineInSettings;
 var ShowLauncherInSettings;
 var ShowConfigInSettings;
-var ShowStartFTPInSettings;
+var ShowUIXUpdateInSettings;
 var ShowRebootInSettings;
 var ShowShutdownInSettings;
 
@@ -2142,7 +2142,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "261011"; //Date of commit YYMMDD
+	sBuildDate = "261015"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2204,7 +2204,6 @@ function initialize()
 	ConfigFile = new Settings;
 	CacheFile = new Settings;
 	XlateFile = new Settings;
-	IconFile = new Settings;
 	TitleNamesFile = new Settings;
 	PlaylistInfo = new Settings;
 	bIsCerbios = (theConfig.GetROMVersion() == "1.00.8008.135");
@@ -2212,11 +2211,11 @@ function initialize()
 	version.file = "T:\\version";
 	PlaylistInfo.file = "T:\\PlaylistInfo.xbx";    
 	version.SetValue("version","0.6." + sBuildDate);
-	ConfigFile.file = "Y:\\UIX Configs\\config.ini";
-	CacheFile.file = "Y:\\UIX Configs\\cache.ini";
-	XlateFile.file = "Y:\\UIX Configs\\xlate.ini";
-	IconFile.file = "Y:\\UIX Configs\\icons.ini";
-	TitleNamesFile.file = "Y:\\UIX Configs\\TitleNames.ini";
+	ConfigFolder = "Y:\\UIX Configs\\";
+	ConfigFile.file = ConfigFolder + "config.ini";
+	CacheFile.file = ConfigFolder + "cache.ini";
+	XlateFile.file = ConfigFolder + "xlate.ini";
+	TitleNamesFile.file = ConfigFolder + "TitleNames.ini";
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
 	bMainMenuOnAutoSignIn = GetSavedBooleanValue("default","MainMenuOnAutoSignIn");true;
@@ -2231,7 +2230,7 @@ function initialize()
 	bPresenceEnabled = GetSavedBooleanValue("DiscordRelay","PresenceEnabled");
 
 	if(GetSavedValue("ShowInSettings","Configuration") == "") SetSavedBooleanValue("ShowInSettings","Configuration",true);
-	if(GetSavedValue("ShowInSettings","StartFTP") == "") SetSavedBooleanValue("ShowInSettings","StartFTP",false);
+	if(GetSavedValue("ShowInSettings","UIXUpdate") == "") SetSavedBooleanValue("ShowInSettings","UIXUpdate",false);
 	if(GetSavedValue("ShowInSettings","Reboot") == "") SetSavedBooleanValue("ShowInSettings","Reboot",true);
 	if(GetSavedValue("ShowInSettings","Shutdown") == "") SetSavedBooleanValue("ShowInSettings","Shutdown",true);
 	ShowMemoryInSettings = GetSavedBooleanValue("ShowInSettings","Memory");
@@ -2239,7 +2238,7 @@ function initialize()
 	ShowXOnlineInSettings = GetSavedBooleanValue("ShowInSettings","XOnline");
 	ShowLauncherInSettings = GetSavedBooleanValue("ShowInSettings","Launcher");
 	ShowConfigInSettings = GetSavedBooleanValue("ShowInSettings","Configuration");
-	ShowStartFTPInSettings = GetSavedBooleanValue("ShowInSettings","StartFTP");
+	ShowUIXUpdateInSettings = GetSavedBooleanValue("ShowInSettings","UIXUpdate");
 	ShowRebootInSettings = GetSavedBooleanValue("ShowInSettings","Reboot");
 	ShowShutdownInSettings = GetSavedBooleanValue("ShowInSettings","Shutdown");
 	
@@ -2349,7 +2348,7 @@ function MainInitPart3()
 		{
 			bFromToolbox = true;
 			bBackToLauncher = false;
-			if (ShowStartFTPInSettings != true)
+			if (ShowUIXUpdateInSettings != true)
 			{
 				GoToLauncher(); 
 				return;
@@ -3492,11 +3491,35 @@ function FillMenuList(x) // search Y:\, C:\, N:\ and O:\ for a relative path's c
 			{
 				for(var cLoop = 0; cLoop < cSize; cLoop = cLoop + 1)
 				{
-					launchPath = PartitionLocations[i] + RelativePath[ix] + "\\" + c.subFolders[cLoop].name;
+					var FolderName = c.subFolders[cLoop].name;
+					launchPath = PartitionLocations[i] + RelativePath[ix] + "\\" + FolderName;
 					launchXbe = FindLaunchFile(launchPath);
 					if(launchXbe != "")
 					{
-						TitleList[TitleList.length] = c.subFolders[cLoop].name + ";" + i + ";" + ix;
+						var TitleID;
+						var TitleName;
+						var sPath = DriveLocations[i] + RelativePath[ix] + "\\" + FolderName + "\\" + launchXbe;
+						TitleList[TitleList.length] = FolderName + ";" + i + ";" + ix;
+						if(IsDiscImage(launchXbe))
+						{
+							TitleID = theConfig.GetDiscImageTitleID(sPath);
+							SetCacheValue("TitleIDs",FolderName,TitleID.toLowerCase());
+							if(CacheFile.GetValue(FolderName) == "") 
+							{
+								TitleName = theConfig.GetDiscImageTitleName(sPath);
+								TitleNamesFile.SetValue(FolderName,TitleName);
+							}
+						}
+						else
+						{
+							TitleID = theConfig.GetXbeTitleID(sPath);
+							SetCacheValue("TitleIDs",FolderName,TitleID.toLowerCase());
+							if(TitleNamesFile.GetValue(FolderName) == "") 
+							{
+								TitleName = theConfig.GetXbeTitleName(sPath);
+								TitleNamesFile.SetValue(FolderName,TitleName);
+							}
+						}
 					}                
 				}
 			}
@@ -3702,6 +3725,7 @@ function ScanPartitions()
 				nPartitions = nPartitions | Flag;
 				DriveLocations[DriveLocations.length] = Drives[i];
 				PartitionLocations[PartitionLocations.length] = Locations[i];
+				theConfig.DeleteFile(Drives[i] + "-DeleteMe-");
 			}
 		}
 	}
@@ -3718,9 +3742,15 @@ function RefreshCache()
 	var arrMenuNames = new Array;
 	var arrMenuPaths = new Array;
 	var cTitles = new Array;
+	var NewCacheFile = new Settings;
 	var nMaxLauncherMenuItems = StringToNumber(GetSavedValue("LauncherMenu","MaxLauncherMenuItems"));
 	if(nMaxLauncherMenuItems <= 0){ nMaxLauncherMenuItems = 8;SetSavedValue("LauncherMenu","MaxLauncherMenuItems",nMaxLauncherMenuItems);}
 
+	// Clear previous cache.
+	theConfig.DeleteFile(ConfigFolder + "cache.ini");
+	NewCacheFile.file = ConfigFolder + "cache.ini";
+	CacheFile = NewCacheFile;
+	
 	for (var i = 0; i < nMaxLauncherMenuItems; i = i + 1)
 	{
 		var v = GetSavedValue("LauncherMenu", "Title" + i);
@@ -3730,16 +3760,10 @@ function RefreshCache()
 			arrMenuPaths[arrMenuPaths.length] = GetSavedValue("LauncherMenu", "Path" + i);
 		}
 	}
+	
 	for (var x = 0; x < arrMenuNames.length; x = x + 1)
 	{
-		CacheFile.section = "Cache";
-		// Clear previous segments if they exist.
 		var idx = 1;
-		while(CacheFile.GetValue(arrMenuNames[x] + "-" + idx) != "") 
-		{
-			CacheFile.SetValue(arrMenuNames[x] + "-" + idx, "");
-			idx = idx + 1;
-		}
 		var cache;
 		cTitles = FillMenuList(arrMenuPaths[x]);
 		// Segment Titles more than 25
@@ -3753,14 +3777,14 @@ function RefreshCache()
 				if(ptr + cnt > cTitles.length) cnt = cTitles.length - ptr;
 				Segment = cTitles.slice(ptr,ptr + cnt);
 				cache = Segment.join("|");
-				if(ptr == 0){ CacheFile.SetValue(arrMenuNames[x], cache); }
-				else { CacheFile.SetValue(arrMenuNames[x] + "-" + indx, cache); indx = indx + 1; }    
+				if(ptr == 0){ SetCacheValue("Cache",arrMenuNames[x], cache); }
+				else { SetCacheValue("Cache",arrMenuNames[x] + "-" + indx, cache); indx = indx + 1; }    
 			}
 		}
 		else
 		{
 			cache = cTitles.join("|");
-			CacheFile.SetValue(arrMenuNames[x], cache);
+			SetCacheValue("Cache",arrMenuNames[x], cache);
 		}
 	}
 }
@@ -3943,7 +3967,7 @@ function GetSavedBooleanValue(x,y)
 	var b = y;
 	ConfigFile.section = a;
 	var c = ConfigFile.GetValue(b);
-	if(c.toLowerCase() == "true")
+	if(c.toLowerCase() == "true" | c == "1")
 	{
 		return true;
 	}
@@ -3967,6 +3991,24 @@ function SetSavedBooleanValue(x,y,z)
 	{
 		ConfigFile.SetValue(b,"false");
 	}
+}
+
+function GetCacheValue(x,y) 
+{
+	var a = x;
+	var b = y;
+	CacheFile.section = a;
+	var c = CacheFile.GetValue(b);
+	return c;
+}
+
+function SetCacheValue(x,y,z) 
+{
+	var a = x;
+	var b = y;
+	var c = z;
+	CacheFile.section = a;
+	CacheFile.SetValue(b,c);
 }
 
 function GetDrivePath(x,y)

@@ -107,6 +107,10 @@ function buildGSList() //just copy this function for more subsections
 	configList[i] = "Rescan Partitions";
 	configValues[i] = "-blank-";
 	configSelect[i] = "RescanPartitions()";
+	i = i + 1;
+	configList[i] = "Clear Cache";
+	configValues[i] = "-blank-";
+	configSelect[i] = "theConfig.ClearCache()";
 	
 	clearText();
 	updateText();

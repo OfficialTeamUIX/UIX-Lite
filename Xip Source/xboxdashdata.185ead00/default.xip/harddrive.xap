@@ -119,8 +119,8 @@ function UpdateTrackList()
 				c.TrackNames.children[i].SetScale(0.12, 0.12, 0.12);
 				c.TrackNames.children[i].children[0].appearance.name = "GameHilite";
 				c.theIcons.children[0].children[0].appearance.material.name = "MainMenuOrb";
-				var Icon = IconFile.GetValue(strCacheItem[0]).toLowerCase();
-				if(Icon == "Unknown" | Icon == "" | (bInBrowser & (bRecentToggled == false))) 
+				var TitleID = GetCacheValue("TitleIDs",strCacheItem[0]).toLowerCase();
+				if(TitleID == "Unknown" | TitleID == "" | (bInBrowser & (bRecentToggled == false))) 
 				{
 					c.theIcons.children[0].children[0].appearance.texture.url = DefaultIcon; 
 				}
@@ -128,7 +128,7 @@ function UpdateTrackList()
 				{
 					for(var x = 0; x < TitleCount; x = x + 1)
 					{
-						if(c.theIconSelector.GetTitleID(x).toLowerCase() == Icon) 
+						if(c.theIconSelector.GetTitleID(x).toLowerCase() == TitleID) 
 						{
 							c.theIcons.children[0].children[0].appearance.material.name = "SelectedIcon";
 							c.theIconSelector.curTitle = x;
@@ -308,9 +308,9 @@ function EnterLauncherMenu()
 				}
 				StartTitleList();
 			}
-			else if(mnuName == Translate("Start UIX Toolbox"))
+			else if(mnuName == Translate("UIX Update"))
 			{
-				launch("Toolbox.xip","\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00");
+				launch("update.xip","\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00");
 			}
 			else
 			{
@@ -354,9 +354,9 @@ function LoadMenuItems()
 	arrMenuNames[TotalSections] = Translate("File Browser");
 	arrMenuPaths[TotalSections] = Translate("Xbox Root");
 	TotalSections = TotalSections + 1;
-	if(ShowStartFTPInSettings != true)
+	if(ShowUIXUpdateInSettings != true)
 	{
-		arrMenuNames[TotalSections] = Translate("Start UIX Toolbox");
+		arrMenuNames[TotalSections] = Translate("UIX Update");
 		arrMenuPaths[TotalSections] = Translate("");
 		TotalSections = TotalSections + 1;
 	}
@@ -516,15 +516,14 @@ function RefreshTitleList()
 
 function GetTitleList(mnuName)
 {
-	CacheFile.section = "Cache";
 	var TitleList = new Array;
 	var TempList = new Array;
 	var i = 1;
-	TempList = Split(CacheFile.GetValue(mnuName),"|");
+	TempList = Split(GetCacheValue("Cache",mnuName),"|");
 	while(TempList.length == 25)
 	{
 		TitleList = TitleList.concat(TempList);
-		TempList = Split(CacheFile.GetValue(mnuName + "-" + i),"|");
+		TempList = Split(GetCacheValue("Cache",mnuName + "-" + i),"|");
 		i = i + 1;
 	}
 	TitleList = TitleList.concat(TempList);
@@ -701,9 +700,9 @@ DEF theLauncher Level
 					thePlayerPanelIn.Play();
 					StartTitleList();
 				}
-				else if(mnuName == Translate("Start UIX Toolbox"))
+				else if(mnuName == Translate("UIX Update"))
 				{
-					launch("Toolbox.xip","\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00");
+					launch("update.xip","\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00");
 				}
 				else
 				{

@@ -59,6 +59,9 @@ Port=21        ; listen port
 The dashboard's LAN IP is available to skins as `theConfig.GetIPAddress()`
 (returns e.g. `192.168.1.50`), the same way `GetXdashVersion()` works, so a
 skin can show people where to point their FTP client.
+`LIST` reports each entry's actual last-write month, day, hour, and minute,
+reports files and directories separately, and removes write permission from
+entries carrying the FATX read-only attribute.
 
 The server supports active and passive transfers, resume, upload/download,
 directory creation/removal, deletion, and file or directory rename through
@@ -128,6 +131,7 @@ Callable from XAP as `theConfig.<name>(...)`:
 | `RemoveDir(path)` | int/bool | Remove an empty directory |
 | `MoveFile(src, dst)` | bool | Move/rename, replacing dst |
 | `CopyFile(src, dst)` | bool | Copy the file's bytes |
+| `ClearCache()` | int/bool | Format cache partitions X:, Y:, and Z:, then recursively clear `C:\cache`; the running dashboard's locked `LocalCache00.bin` is intentionally retained and does not count as a failure |
 | `SendDiscordRelay(titleID)` | int | Send a title ID to the configured relay and block until complete |
 | `SendDiscordRelayAsync(titleID)` | int | Queue TCP/WebSocket on a worker thread; UDP uses the blocking completion-confirmed path |
 | `GetDiscordRelayStatus()` | int | Relay state: 0 idle, 1 sending, 2 sent, or a negative Winsock error |
