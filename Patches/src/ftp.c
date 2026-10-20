@@ -402,13 +402,26 @@ static void two_digits(char* out, int value)
 	out[1] = (char)('0' + value % 10);
 }
 
+static void four_digits(char* out, int value)
+{
+	out[0] = (char)('0' + (value / 1000) % 10);
+	out[1] = (char)('0' + (value / 100) % 10);
+	out[2] = (char)('0' + (value / 10) % 10);
+	out[3] = (char)('0' + value % 10);
+}
+
 static void list_time(char out[13], const DWORD fileTime[2])
 {
+	// Traditional Unix LIST output uses HH:MM for recent files and replaces
+	// it with the year for files older than about six months. Always sending
+	// HH:MM makes FTP clients guess the omitted year, often as the prior year.
+	const unsigned long long sixMonths = 180ULL * 24ULL * 60ULL * 60ULL * 10000000ULL;
 	static const char months[] = "JanFebMarAprMayJunJulAugSepOctNovDec";
 	TIME_FIELDS fields;
 	RtlTimeToTimeFields(fileTime, &fields);
 	if (fields.Month < 1 || fields.Month > 12 || fields.Day < 1 || fields.Day > 31
-		|| fields.Hour < 0 || fields.Hour > 23 || fields.Minute < 0 || fields.Minute > 59)
+		|| fields.Hour < 0 || fields.Hour > 23 || fields.Minute < 0 || fields.Minute > 59
+		|| fields.Year < 1601 || fields.Year > 9999)
 	{
 		copy_str(out, "Jan 01 00:00", 13);
 		return;
@@ -420,10 +433,23 @@ static void list_time(char out[13], const DWORD fileTime[2])
 	out[3] = ' ';
 	two_digits(out + 4, fields.Day);
 	out[6] = ' ';
-	two_digits(out + 7, fields.Hour);
-	out[9] = ':';
-	two_digits(out + 10, fields.Minute);
-	out[12] = 0;
+
+	DWORD nowTime[2];
+	KeQuerySystemTime(nowTime);
+	unsigned long long fileTicks = ((unsigned long long)fileTime[1] << 32) | fileTime[0];
+	unsigned long long nowTicks = ((unsigned long long)nowTime[1] << 32) | nowTime[0];
+	if (fileTicks > nowTicks || nowTicks - fileTicks > sixMonths)
+	{
+		four_digits(out + 7, fields.Year);
+		out[11] = 0;
+	}
+	else
+	{
+		two_digits(out + 7, fields.Hour);
+		out[9] = ':';
+		two_digits(out + 10, fields.Minute);
+		out[12] = 0;
+	}
 }
 
 static void send_root_listing(SOCKET data, int namesOnly)

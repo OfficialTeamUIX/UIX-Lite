@@ -144,6 +144,7 @@ typedef struct TIME_FIELDS
 #define KIMPORT(type, slot) ((type)(*(void**)(slot)))
 #define RtlInitAnsiString       KIMPORT(void (STDCALL *)(ANSI_STRING*, const char*), 0x0001200c)
 #define RtlTimeToTimeFields     KIMPORT(void (STDCALL *)(const DWORD*, TIME_FIELDS*), 0x0001208c)
+#define KeQuerySystemTime       KIMPORT(void (STDCALL *)(DWORD*), 0x00012090)
 #define NtOpenFile              KIMPORT(int (STDCALL *)(HANDLE*, DWORD, OBJECT_ATTRIBUTES*, IO_STATUS_BLOCK*, DWORD, DWORD), 0x00012010)
 #define NtCreateEvent           KIMPORT(int (STDCALL *)(HANDLE*, OBJECT_ATTRIBUTES*, DWORD, BOOL), 0x0001212c)
 #define NtWaitForSingleObject   KIMPORT(int (STDCALL *)(HANDLE, BOOL, long long*), 0x00012120)
