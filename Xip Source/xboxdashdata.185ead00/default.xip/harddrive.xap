@@ -293,10 +293,10 @@ function EnterLauncherMenu()
 			bRecentToggled = false;
 			bInBrowser = false;
 			UpdateLauncherMenu();
-			if(mnuName == Translate("File Browser"))
+			if(mnuName == "File Browser")
 			{
 				bInBrowser = true;
-				subTitle0 = mnuName;
+				subTitle0 = Translate(mnuName);
 				if(bInRoot)
 				{
 					LoadRootContents();
@@ -308,14 +308,14 @@ function EnterLauncherMenu()
 				}
 				StartTitleList();
 			}
-			else if(mnuName == Translate("UIX Update"))
+			else if(mnuName == "UIX Update")
 			{
 				launch("update.xip","\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00");
 			}
 			else
 			{
 				CurFillDir = arrMenuPaths[nCurLauncherItem0];
-				subTitle0 = mnuName;
+				subTitle0 = Translate(mnuName);
 				TempTitleList = GetTitleList(mnuName);
 				StartTitleList();
 			}
@@ -343,7 +343,7 @@ function LoadMenuItems()
 	}
 	for (var i = 0; i < nMaxLauncherMenuItems; i = i + 1)
 	{
-		var v = Translate(GetSavedValue("LauncherMenu", "Title" + i));
+		var v = GetSavedValue("LauncherMenu", "Title" + i);
 		if(v != "") 
 		{
 			arrMenuNames[TotalSections] = v;
@@ -351,13 +351,13 @@ function LoadMenuItems()
 			TotalSections = TotalSections + 1;
 		}
 	}
-	arrMenuNames[TotalSections] = Translate("File Browser");
+	arrMenuNames[TotalSections] = "File Browser";
 	arrMenuPaths[TotalSections] = Translate("Xbox Root");
 	TotalSections = TotalSections + 1;
 	if(ShowUIXUpdateInSettings != true)
 	{
-		arrMenuNames[TotalSections] = Translate("UIX Update");
-		arrMenuPaths[TotalSections] = Translate("");
+		arrMenuNames[TotalSections] = "UIX Update";
+		arrMenuPaths[TotalSections] = "";
 		TotalSections = TotalSections + 1;
 	}
 	if(TotalSections >= 3) { nCurLauncherVisible0 = Math.min(5, TotalSections); } else { nCurLauncherVisible0 = 2; }
@@ -434,7 +434,7 @@ function UpdateLauncherMenu()
 	for (var i = 0; i < nCurLauncherVisible0; i = i + 1)
 	{
 		var n = nCurLauncherScroll0 + i;
-		var v = arrMenuNames[n];
+		var v = Translate(arrMenuNames[n]);
 		c.theMenuButtons.children[i].visible = true;
 		c.theMenuButtons.children[i].children[1].children[0].geometry.text = v;
 		
@@ -684,10 +684,10 @@ DEF theLauncher Level
 				{
 					return;
 				}
-				else if(mnuName == Translate("File Browser"))
+				else if(mnuName == "File Browser")
 				{
 					bInBrowser = true;
-					subTitle0 = mnuName;
+					subTitle0 = Translate(mnuName);
 					if(bInRoot)
 					{
 						LoadRootContents();
@@ -700,14 +700,14 @@ DEF theLauncher Level
 					thePlayerPanelIn.Play();
 					StartTitleList();
 				}
-				else if(mnuName == Translate("UIX Update"))
+				else if(mnuName == "UIX Update")
 				{
 					launch("update.xip","\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00");
 				}
 				else
 				{
 					CurFillDir = arrMenuPaths[nCurLauncherItem0];
-					subTitle0 = mnuName;
+					subTitle0 = Translate(mnuName);
 					TempTitleList = GetTitleList(mnuName);
 					thePlayerPanelIn.Play();
 					StartTitleList();
@@ -1031,10 +1031,10 @@ function LoadRootContents()
 	if(theDiscDrive.discType != "none") RootDirectory[RootDirectory.length] = "D";
 	RootDirectory[RootDirectory.length] = "E";
 	var nPartitions = StringToNumber(GetSavedValue("ExtendedPartitions","Partitions"));
-	if(nPartitions & 1) RootDirectory[RootDirectory.length] = "F";
-	if(nPartitions & 2) RootDirectory[RootDirectory.length] = "G";
 	if(nPartitions & 16) RootDirectory[RootDirectory.length] = "E2";
+	if(nPartitions & 1) RootDirectory[RootDirectory.length] = "F";
 	if(nPartitions & 4) RootDirectory[RootDirectory.length] = "F2";
+	if(nPartitions & 2) RootDirectory[RootDirectory.length] = "G";
 	if(nPartitions & 8) RootDirectory[RootDirectory.length] = "G2";
 	RootDirectory[RootDirectory.length] = "X";
 	RootDirectory[RootDirectory.length] = "Y";
