@@ -321,9 +321,10 @@ function EnterLauncherMenu()
 			}
 		}
 	}
-	if (bFromToolbox) 
+	if (bFromUpdate) 
 	{
-		bFromToolbox = false;
+		bFromUpdate = false;
+		LauncherViewpoint.jump = false;
 		nCurLauncherItem0 = TotalSections - 1;
 		if(TotalSections > 5) nCurLauncherScroll0 = TotalSections - 5;
 		UpdateLauncherMenu();

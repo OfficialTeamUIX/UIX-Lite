@@ -4009,9 +4009,9 @@ DEF theSettingsMenu Level
 							theSetModeMenu.GoTo();
 						}
 					}
-					else if (bFromToolbox)
+					else if (bFromUpdate)
 					{
-						bFromToolbox = false;
+						bFromUpdate = false;
 						nCurSettingsMenuItem = nTooboxItem;
 						if(nCurSettingsMenuItem >= nNumSettingsMenuItems) { nSettingsScroll = nCurSettingsMenuItem - nNumSettingsMenuItems + 1; }
 						nCurSettingsMenuButton = nCurSettingsMenuItem - nSettingsScroll;

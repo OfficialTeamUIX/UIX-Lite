@@ -536,6 +536,35 @@ function ParseEscapedChars(sText)
 	return sText;
 }
 
+///////////////////////////////////////////////////////////////////
+DEF theInfoPanel Layer
+{
+	viewpoint Viewpoint
+	{
+		fieldOfView 1.2
+		position 000000 -30.299999 120.300003
+	}
+
+	children
+	[
+		DEF theInfoPanelTransform Transform
+		{
+			children
+			[
+				DEF theInfoPanelInline Inline
+				{
+					preload true
+					url "info_panel/default.xap"
+					function onLoad()
+					{
+						theInfoPanelInline.children[0].UpdateInfoPanel();
+					}
+				}
+			]
+		}
+	]
+}
+
 DEF theSkinsInline Inline
 {
 	visible false
@@ -558,6 +587,7 @@ DEF theLauncherInline Inline
 
 	function onLoad()
 	{
+		if(bFromUpdate) theLauncherInline.children[0].LauncherViewpoint.jump = true;
 		theLauncherInline.children[0].theLauncher.GoTo();
 	}
 }
@@ -1714,6 +1744,7 @@ DEF theMainMenu Level
 					c.Main_pod_backing02.visible = false;
 				}
 				if(bUseMainMenuAttract){ MainMenuAttract(); }
+				if(GetSavedBooleanValue("FTP","Enabled") & bShowInfoPanel) theInfoPanelInline.children[0].ShowInfoPanel(); else theInfoPanelInline.children[0].HideInfoPanel();
 				g_theMainMenuLoaded = true;
 			}
 		}
@@ -1880,11 +1911,21 @@ DEF theMainMenu Level
 		}
 		function OnBlackDown()
 		{
-			//TellUser(theConfig.GetXbeTitleID("Y:\\xboxdash.xbe") + "\n" + theConfig.GetXbeTitleName("Y:\\xboxdash.xbe"),"");
 		}
 		function OnWhiteDown()
 		{
-			TellUser(theConfig.GetIPAddress(),"");
+			if(bShowInfoPanel)
+			{
+				bShowInfoPanel = false;
+				SetSavedBooleanValue("FTP","ShowInfoPanel",false);
+				theInfoPanelInline.children[0].HideInfoPanel();
+			}
+			else
+			{
+				bShowInfoPanel = true;
+				SetSavedBooleanValue("FTP","ShowInfoPanel",true);
+				theInfoPanelInline.children[0].ShowInfoPanel();
+			}
 		}
 		function OnKeyVerified()
 		{
@@ -1913,6 +1954,8 @@ DEF theMainMenu Level
 		{
 			bNetworkReady = true;
 			if(bPresenceEnabled) theConfig.SendDiscordRelayAsync("FFFE0000");
+			theInfoPanelInline.children[0].UpdateInfoPanel();
+			theInfoPanelInline.children[0].DVDStatusIconTexture.url = "dvdstatusicon.xbx";
 		}
 		if(bHDDInitialize)
 		{
@@ -2007,6 +2050,7 @@ DEF theMainMenu Level
 		{
 			UpdateMainMenu();
 		}
+		if(GetSavedBooleanValue("FTP","Enabled") & bShowInfoPanel) theInfoPanelInline.children[0].ShowInfoPanel(); else theInfoPanelInline.children[0].HideInfoPanel();
 	}
 	
 	function OnArrival()
@@ -2025,6 +2069,10 @@ DEF theMainMenu Level
 		{
 			theMessageJoystick.isBound = true;
 		}
+	}
+	function OnDeactivate()
+	{
+		theInfoPanelInline.children[0].HideInfoPanel();
 	}
 }
 
@@ -2120,9 +2168,10 @@ var bRefreshCache;
 var bHasExtendedPartition;
 var bUseMainMenuAttract;
 var bMainMenuAttractFinish;
-var bFromToolbox;
+var bFromUpdate;
 var bIsCerbios;
 var bIsTheseus;
+var bShowInfoPanel;
 var DriveLocations;
 var PartitionLocations;
 var sBuildDate;
@@ -2148,7 +2197,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "261017"; //Date of commit YYMMDD
+	sBuildDate = "261024"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2156,7 +2205,7 @@ function initialize()
 	bHDDInitialized = false;
 	bMusicPlayerReady = false;
 	bPlayingCd = false;
-	bFromToolbox = false;
+	bFromUpdate = false;
 	ControlPanelOut = false;
 	RightThumb = false;
 	LeftThumb = false;
@@ -2174,6 +2223,7 @@ function initialize()
 	bOutOfBoxFlow = false;
 	bMainMenuAttractFinish = false;
 	bAddMissingUdata = false;
+	bShowInfoPanel = true;
 	nMusicButton = 1;
 	nXOLineButton = 2;
 	nCurMainMenuItem = 1; // start with music selected
@@ -2216,8 +2266,8 @@ function initialize()
 	bIsCerbios = (theConfig.GetROMVersion() == "1.00.8008.135");
 	bIsTheseus = theConfig.FileExists("Q:\\System\\config.ini");
 	version.file = "T:\\version";
-	PlaylistInfo.file = "T:\\PlaylistInfo.xbx";    
 	version.SetValue("version","0.6." + sBuildDate);
+	PlaylistInfo.file = "T:\\PlaylistInfo.xbx";    
 	ConfigFolder = "Y:\\UIX Configs\\";
 	ConfigFile.file = ConfigFolder + "config.ini";
 	CacheFile.file = ConfigFolder + "cache.ini";
@@ -2240,6 +2290,9 @@ function initialize()
 	if(GetSavedValue("ShowInSettings","UIXUpdate") == "") SetSavedBooleanValue("ShowInSettings","UIXUpdate",false);
 	if(GetSavedValue("ShowInSettings","Reboot") == "") SetSavedBooleanValue("ShowInSettings","Reboot",true);
 	if(GetSavedValue("ShowInSettings","Shutdown") == "") SetSavedBooleanValue("ShowInSettings","Shutdown",true);
+	if(GetSavedValue("FTP","ShowInfoPanel") == "") SetSavedBooleanValue("FTP","ShowInfoPanel",true);
+	bShowInfoPanel = GetSavedBooleanValue("FTP","ShowInfoPanel");
+	
 	ShowMemoryInSettings = GetSavedBooleanValue("ShowInSettings","Memory");
 	ShowMusicInSettings = GetSavedBooleanValue("ShowInSettings","Music");
 	ShowXOnlineInSettings = GetSavedBooleanValue("ShowInSettings","XOnline");
@@ -2353,11 +2406,11 @@ function MainInitPart3()
 		EnableAmbientAudio();
 		if (nSettingArea == 32)
 		{
-			bFromToolbox = true;
+			bFromUpdate = true;
 			bBackToLauncher = false;
 			if (ShowUIXUpdateInSettings != true)
 			{
-				GoToLauncher(); 
+				GoToLauncher();
 				return;
 			}
 			else
