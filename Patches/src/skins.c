@@ -236,8 +236,23 @@ static void snapshot_retail(void)
 	s_nRetail = dash_material_count < MAX_MATERIALS ? dash_material_count : MAX_MATERIALS;
 	for (int i = 0; i < s_nRetail; i++)
 	{
-		s_retail[i][0] = dash_materials[i]->colorA;
-		s_retail[i][1] = dash_materials[i]->colorB;
+		Material* m = dash_materials[i];
+		DWORD vt = (DWORD)m->vtable;
+		s_retail[i][0] = 0;
+		s_retail[i][1] = 0;
+		if (vt == MAT_SOLID || vt == MAT_BACKING || vt == MAT_MODULATE)
+		{
+			// These classes contain one color at +0x0c. In particular, a
+			// Solid object is only 0x10 bytes; reading colorB at +0x10 reads
+			// beyond the allocation and made boot depend on heap layout.
+			s_retail[i][0] = m->colorA;
+		}
+		else if (vt == MAT_FALLOFF || vt == MAT_FALLOFFTEX
+			|| vt == MAT_INNERWALL || vt == MAT_ANISO)
+		{
+			s_retail[i][0] = m->colorA;
+			s_retail[i][1] = m->colorB;
+		}
 	}
 }
 
@@ -245,12 +260,17 @@ static void restore_retail(void)
 {
 	for (int i = 0; i < s_nRetail; i++)
 	{
-		DWORD vt = (DWORD)dash_materials[i]->vtable;
-		if (vt == MAT_SOLID || vt == MAT_BACKING || vt == MAT_MODULATE || vt == MAT_FALLOFF
-			|| vt == MAT_FALLOFFTEX || vt == MAT_INNERWALL || vt == MAT_ANISO)
+		Material* m = dash_materials[i];
+		DWORD vt = (DWORD)m->vtable;
+		if (vt == MAT_SOLID || vt == MAT_BACKING || vt == MAT_MODULATE)
 		{
-			dash_materials[i]->colorA = s_retail[i][0];
-			dash_materials[i]->colorB = s_retail[i][1];
+			m->colorA = s_retail[i][0];
+		}
+		else if (vt == MAT_FALLOFF || vt == MAT_FALLOFFTEX
+			|| vt == MAT_INNERWALL || vt == MAT_ANISO)
+		{
+			m->colorA = s_retail[i][0];
+			m->colorB = s_retail[i][1];
 		}
 	}
 }
@@ -258,16 +278,18 @@ static void restore_retail(void)
 void skin_textures_apply(void);
 void skin_meshes_apply(void);
 
-// Retail colors, then Skins\<name>.xbx on top; an empty name leaves retail
-int skin_apply(const char* name)
+static void set_skin_name(const char* name)
 {
-	restore_retail();
 	int k = 0;
 	for (; name[k] && k < 63; k++)
 		g_szSkin[k] = name[k];
 	g_szSkin[k] = 0;
-	skin_textures_apply();
-	skin_meshes_apply();
+}
+
+// Apply only material colors. Startup uses this after the retail material
+// table exists but before scene textures and meshes are safe to reload.
+static int skin_apply_colors(const char* name)
+{
 	if (!name[0])
 		return 1;
 
@@ -297,6 +319,17 @@ int skin_apply(const char* name)
 	return 1;
 }
 
+// Retail colors, then Skins\<name>.xbx on top; an empty name leaves retail.
+// This is the live ApplySkin path, after scene construction has completed.
+int skin_apply(const char* name)
+{
+	restore_retail();
+	set_skin_name(name);
+	skin_textures_apply();
+	skin_meshes_apply();
+	return skin_apply_colors(name);
+}
+
 void skin_apply_current(void);
 
 // The root XIP may request textures before material initialization selects
@@ -322,7 +355,11 @@ void patch_material_init(void)
 {
 	dash_init_materials();
 	snapshot_retail();
-	if (patch_features & FEATURE_SKINS) skin_apply_current();
+	if (patch_features & FEATURE_SKINS)
+	{
+		skin_ensure_boot_name();
+		skin_apply_colors(g_szSkin);
+	}
 }
 
 // Theseus's key: [Dashboard Settings] Current Skin

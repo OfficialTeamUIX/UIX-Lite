@@ -1,0 +1,192 @@
+DEF theDNAwaver Transform
+{
+	children
+	[
+		DEF theDummy Transform //Bug fix
+		{
+			alpha 0.01
+			children
+			[
+				Shape
+				{
+					appearance Appearance { material MaxMaterial { name "MenuCell" } }
+					geometry Mesh { url "Backing_dna.xm" }
+				}
+			]
+			translation 0 0 5000
+		}
+		DEF theDNA1 Transform
+		{
+			children
+			[
+				Spinner
+				{
+					rpm 0
+					axis 0 1 0
+					children
+					[
+						DEF DNA1 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance { material MaxMaterial { name "MenuCell" } }
+									geometry DEF DNA1_Mesh Mesh { url "" }
+								}
+							]
+						}
+						DEF DNAString1 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance { material MaxMaterial { name "FlatSrfc/PodParts" } }
+									geometry DEF DNAString1_Mesh Mesh { url "" }
+								}
+							]
+						}
+					]
+				}
+			]
+			scale 8 8 8
+			rotation 0 0 .5 0.1745330
+			translation -3900 0 -5100
+		}
+		DEF theDNA3 Transform
+		{
+			children
+			[
+				Spinner
+				{
+					rpm 0
+					axis 0 1 0
+					children
+					[
+						DEF DNA3 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance { material MaxMaterial { name "MenuCell" } }
+									geometry DEF DNA3_Mesh Mesh { url "" }
+								}
+							]
+						}
+						DEF DNAString3 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance { material MaxMaterial { name "FlatSrfc/PodParts" } }
+									geometry DEF DNAString3_Mesh Mesh { url "" }
+								}
+							]
+						}
+					]
+				}
+			]
+			scale 8 8 8
+			rotation 0 0 1 -.523599
+			translation 0 0 -5100
+		}
+		DEF theDNA5 Transform
+		{
+			children
+			[
+				Spinner
+				{
+					rpm 0
+					axis 0 1 0
+					children
+					[
+						DEF DNA5 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance { material MaxMaterial { name "MenuCell" } }
+									geometry DEF DNA5_Mesh Mesh { url "" }
+								}
+							]
+						}
+						DEF DNAString5 Transform
+						{
+							children
+							[
+								Shape
+								{
+									appearance Appearance { material MaxMaterial { name "FlatSrfc/PodParts" } }
+									geometry DEF DNAString5_Mesh Mesh { url "" }
+								}
+							]
+						}
+					]
+				}
+			]
+			scale 8 8 8
+			rotation 0 0 .3 -0.1745330
+			translation 3000 0 -5100
+		}
+	]
+}
+
+function LoadBGMeshValues()
+{
+	var SkinFile = new Settings;
+	var CurrentSkin = GetSavedValue("Dashboard Settings","Current Skin");
+	var sPath = ConfigFolder + "Skins\\" + CurrentSkin + "\\" + CurrentSkin + ".xbx";
+	SkinFile.file = sPath;
+	SkinFile.section = "BGMesh";
+	
+	var theDNA = SkinFile.GetValue("BGMesh").toLowerCase();
+	var DNAAlpha = SkinFile.GetValue("BGMeshAlpha");
+
+	///dna spinner
+	var x = SkinFile.GetValue("BGMesh1-rpm");
+	var y = SkinFile.GetValue("BGMesh2-rpm");
+	var z = SkinFile.GetValue("BGMesh3-rpm");
+
+	if((x == "") | (y == "") | (z == "")) { x = 2; y = 2; z = 2; }
+
+	theDNA1.children[0].rpm = x;
+	theDNA3.children[0].rpm = y;
+	theDNA5.children[0].rpm = z;
+	theDNA1.SetAlpha(DNAAlpha);
+	theDNA3.SetAlpha(DNAAlpha);
+	theDNA5.SetAlpha(DNAAlpha);
+	
+	var dnaMesh = "blank_mesh.xm";
+	var dnaBackingMesh = "blank_mesh.xm";
+
+	if (theDNA == "chains")
+	{
+		dnaMesh = "chain.xm";
+	}
+	else if ((theDNA == "spirals") | (theDNA == "corkscrews"))
+	{
+		dnaMesh = theDNA + ".xm";
+	}
+	else if (theDNA == "dna")
+	{
+		dnaMesh = "Backing_dna.xm";
+		dnaBackingMesh = "Backing_dna_SIDES.xm";
+	}
+	else if (theDNA == "squigles")
+	{
+		dnaMesh = "Backing_squigles.xm";
+		dnaBackingMesh = "Backing_squigles_sides.xm";
+	}
+	
+	DNA1_Mesh.url = dnaMesh;
+	DNA3_Mesh.url = dnaMesh;
+	DNA5_Mesh.url = dnaMesh;
+	DNAString1_Mesh.url = dnaBackingMesh;
+	DNAString3_Mesh.url = dnaBackingMesh;
+	DNAString5_Mesh.url = dnaBackingMesh;
+}
+

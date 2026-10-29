@@ -1,9 +1,9 @@
 001fe430 T patch_config_getfunctionmap
-00208400 T patch_create_device
-0020aa94 D patch_features
-00206f10 T patch_material_init
-002077d0 T patch_mesh_cache_lookup
-00207a30 T patch_mesh_destroy
-00207520 T patch_mesh_load
-00201400 T patch_start
-00208010 T patch_texture_from_xip
+00208db0 T patch_create_device
+0020b5c8 D patch_features
+00207a40 T patch_material_init
+002083c0 T patch_mesh_cache_lookup
+00208620 T patch_mesh_destroy
+00208070 T patch_mesh_load
+00201490 T patch_start
+002089c0 T patch_texture_from_xip

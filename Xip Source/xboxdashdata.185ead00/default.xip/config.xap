@@ -49,6 +49,8 @@ function buildconfigList() //written this way so u can easily rearrange and add,
 	i = i + 1;
 	configList[i] = "FTP Settings";
 	i = i + 1;
+	configList[i] = "NTP Settings";
+	i = i + 1;
 	configList[i] = "Change Displayed Name of Titles";
 	
 	clearText();
@@ -329,6 +331,33 @@ function BuildFSList()
 	i = i + 1;
 	configList[i] = "Port:";
 	configValues[i] = "FTP-Port";
+	configSelect[i] = "configKeyb()";
+	
+	clearText();
+	updateText();
+}
+
+function BuildNTPList()
+{
+	var i = 0;
+	configList = new Array;
+	configValues = new Array;
+	configSelect = new Array;
+	
+	configList[i] = "Enable NTP:";
+	configValues[i] = "NTP-Enabled";
+	configSelect[i] = "toggleTF()";
+	i = i + 1;
+	configList[i] = "Server:";
+	configValues[i] = "NTP-Server";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	configList[i] = "Port:";
+	configValues[i] = "NTP-Port";
+	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	configList[i] = "Timeout:";
+	configValues[i] = "NTP-Timeout";
 	configSelect[i] = "configKeyb()";
 	
 	clearText();
@@ -805,6 +834,18 @@ function AddMissingUdata()
 	}
 }
 
+function ClearCache()
+{
+	if(theConfig.ClearCache())
+	{
+		TellUser(Translate("Cleared System Cache."),"");
+	}
+	else
+	{
+		TellUser(Translate("Clear System Cache Failed."),"");
+	}
+}
+
 DEF theConfigPanel Level
 {
 	archive "uix_settings.xip"
@@ -976,6 +1017,12 @@ DEF theConfigPanel Level
 					BuildFSList();
 					tabSlot(LV2Hold);
 					c.theConfigHeader.children[0].geometry.text = Translate("FTP Settings");
+				}
+				else if(configList[LV1Item] == "NTP Settings")
+				{
+					BuildNTPList();
+					tabSlot(LV2Hold);
+					c.theConfigHeader.children[0].geometry.text = Translate("NTP Settings");
 				}
 				else if(configList[LV1Item] == "Change Displayed Name of Titles")
 				{

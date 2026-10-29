@@ -9,7 +9,7 @@
 #include "dash5960.h"
 
 #define SKIN_DIR "Y:\\UIX Configs\\Skins\\"
-#define MAX_TRACKED_MESHES 8
+#define MAX_TRACKED_MESHES 256
 #define MAX_MESH_PATH 260
 
 extern char g_szSkin[64];
@@ -65,10 +65,47 @@ static void copy_wide(WCHAR* dst, const WCHAR* src, int cap)
 	dst[n] = 0;
 }
 
+static void replace_wide_base(WCHAR* path, const char* base, int cap)
+{
+	int end = 0;
+	int start = 0;
+	while (path[end] && end < cap - 1)
+	{
+		if (path[end] == '\\' || path[end] == '/') start = end + 1;
+		end++;
+	}
+	int n = 0;
+	while (base[n] && start + n < cap - 1)
+	{
+		path[start + n] = (WCHAR)(BYTE)base[n];
+		n++;
+	}
+	path[start + n] = 0;
+}
+
 static TrackedMesh* track(void* object, const char* base)
 {
 	for (int i = 0; i < MAX_TRACKED_MESHES; i++)
-		if (s_meshes[i].object == object) return &s_meshes[i];
+		if (s_meshes[i].object == object)
+		{
+			TrackedMesh* mesh = &s_meshes[i];
+			int n = 0;
+			while (mesh->base[n] && base[n]
+				&& lower(mesh->base[n]) == lower(base[n])) n++;
+			if (!mesh->base[n] && !base[n])
+				return mesh;
+
+			// The XAP changed this Mesh object's URL. Preserve the original
+			// archive-qualified directory: ApplySkin runs outside the Inline's
+			// archive context, so resolving the new relative name from scratch
+			// would search the wrong XIP. Replace only the saved basename.
+			for (n = 0; base[n] && n < (int)sizeof(mesh->base) - 1; n++)
+				mesh->base[n] = base[n];
+			mesh->base[n] = 0;
+			if (mesh->retailPath[0])
+				replace_wide_base(mesh->retailPath, base, MAX_MESH_PATH);
+			return mesh;
+		}
 	for (int i = 0; i < MAX_TRACKED_MESHES; i++)
 		if (!s_meshes[i].object)
 		{
@@ -117,11 +154,9 @@ void THISCALL patch_mesh_load(void* object, const WCHAR* url)
 		dash_mesh_load(object, url);
 		return;
 	}
-	if (!skin_is_skinnable(base))
-	{
-		dash_mesh_load(object, url);
-		return;
-	}
+	// Track every XM node. Layers can select models that are not part of the
+	// small retail alias list, and those nodes must also be reloaded when a
+	// skin is reapplied or their URL changes.
 	TrackedMesh* previous = s_loadingMesh;
 	s_loadingMesh = track(object, base);
 	dash_mesh_load(object, url);
@@ -164,9 +199,13 @@ void skin_meshes_apply(void)
 			BYTE* object = (BYTE*)s_meshes[i].object;
 			WCHAR* url = *(WCHAR**)(object + 0x1c);
 			if (url && url[0])
-				patch_mesh_load(object, url);
-			// Mesh::Update normally clears this through vtable slot +0x5c after
-			// loading. ApplySkin has completed the same load synchronously.
-			object[0x20] = 0;
+			{
+				// Hidden or fully transparent Mesh nodes are skipped by normal scene
+				// traversal. Force the retail update routine so a changed URL is
+				// resolved even when the node is not currently being rendered. This
+				// also runs the Mesh post-load callback and clears the dirty flag.
+				object[0x20] = 1;
+				dash_mesh_update(object);
+			}
 		}
 }

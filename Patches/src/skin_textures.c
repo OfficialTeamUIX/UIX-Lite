@@ -38,7 +38,7 @@ typedef struct Tracked
 	char  base[40];
 } Tracked;
 
-#define MAX_TRACKED 48
+#define MAX_TRACKED 256
 static Tracked s_tex[MAX_TRACKED];
 
 static void* parse_texture(const WCHAR* url, void* buf, DWORD size)

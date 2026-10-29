@@ -26,6 +26,8 @@ extern int THISCALL Config_ClearCache(void* pThis);
 extern int THISCALL Config_SendDiscordRelay(void* pThis, const WCHAR* title);
 extern int THISCALL Config_SendDiscordRelayAsync(void* pThis, const WCHAR* title);
 extern int THISCALL Config_GetDiscordRelayStatus(void* pThis);
+extern int THISCALL Config_SyncNetworkTimeAsync(void* pThis);
+extern int THISCALL Config_GetNetworkTimeStatus(void* pThis);
 
 #define MAX_FNS 192
 
@@ -72,6 +74,8 @@ static const unsigned short s_szClearCache[] = u"ClearCache";
 static const unsigned short s_szSendDiscordRelay[] = u"SendDiscordRelay";
 static const unsigned short s_szSendDiscordRelayAsync[] = u"SendDiscordRelayAsync";
 static const unsigned short s_szGetDiscordRelayStatus[] = u"GetDiscordRelayStatus";
+static const unsigned short s_szSyncNetworkTimeAsync[] = u"SyncNetworkTimeAsync";
+static const unsigned short s_szGetNetworkTimeStatus[] = u"GetNetworkTimeStatus";
 
 static void add(int* n, const ScriptFn* like, void* fn, const unsigned short* name)
 {
@@ -93,8 +97,8 @@ ScriptFn* patch_config_getfunctionmap(void)
 		const ScriptFn* intEntry = 0;       // sig 2, int f(void)
 		const ScriptFn* stringEntry = 0;    // sig 8, string f(void), like GetXdashVersion
 		const ScriptFn* strStrEntry = 0;    // sig 5, string f(string), like Translate
-		// Reserve twenty possible extension entries plus the terminating zero entry.
-		for (const ScriptFn* f = dash_config_functions; f->code && n < MAX_FNS - 21; f++)
+		// Reserve twenty-two possible extension entries plus the terminating zero entry.
+		for (const ScriptFn* f = dash_config_functions; f->code && n < MAX_FNS - 23; f++)
 		{
 			s_fns[n++] = *f;
 			if (!voidEntry && f->sig == SIG_VOID)
@@ -151,6 +155,8 @@ ScriptFn* patch_config_getfunctionmap(void)
 		{
 			add(&n, intEntry, (void*)Config_ClearCache, s_szClearCache);
 			add(&n, intEntry, (void*)Config_GetDiscordRelayStatus, s_szGetDiscordRelayStatus);
+			add(&n, intEntry, (void*)Config_SyncNetworkTimeAsync, s_szSyncNetworkTimeAsync);
+			add(&n, intEntry, (void*)Config_GetNetworkTimeStatus, s_szGetNetworkTimeStatus);
 		}
 		s_fns[n].code = 0;
 		s_bBuilt = 1;

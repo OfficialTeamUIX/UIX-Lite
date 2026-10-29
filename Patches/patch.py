@@ -59,6 +59,11 @@ HOOKS = [
 
 # In-place edits: (address, retail bytes, new bytes, feature, what)
 INPLACE = [
+    # Append NtSetSystemTime (kernel ordinal 228) in the reserved zero space
+    # immediately after the retail thunk table. 0x12284 remains its terminator.
+    (0x00012280, "00000000", "e4000080", "config",
+     "kernel thunk: import NtSetSystemTime for SNTP clock synchronization"),
+
     # XIP loader. A retail XIP carries a signed table of chunk digests; any
     # mismatch reboots the box (push 4 / call HalReturnToFirmware).
     (0x0003D4C8, "75", "eb", "xipsig", "jmp: don't reboot when the signature section is missing"),

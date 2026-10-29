@@ -59,6 +59,27 @@ Port=21        ; listen port
 The dashboard's LAN IP is available to skins as `theConfig.GetIPAddress()`
 (returns e.g. `192.168.1.50`), the same way `GetXdashVersion()` works, so a
 skin can show people where to point their FTP client.
+
+### Network time
+
+`theConfig.SyncNetworkTimeAsync()` synchronizes the system's UTC clock with an
+SNTP server without changing the dashboard's timezone or daylight-saving
+settings. Configure it in `C:\UIX Configs\config.ini` (all keys are optional):
+The patcher appends the required `NtSetSystemTime` ordinal to reserved space at
+the end of the retail kernel-import thunk table, so the Xbox loader resolves it
+for the running kernel rather than relying on a kernel-build-specific address.
+
+```ini
+[NTP]
+Enabled=1
+Server=time.nist.gov ; hostname or numeric IPv4
+Port=123
+Timeout=5000     ; response timeout in milliseconds (1000-30000)
+```
+
+Call it after `GetIPAddress()` no longer returns `0.0.0.0`. The UDP request is
+completion-confirmed on the XAP caller thread; waiting for and validating the
+reply, then setting the clock, happens on a worker thread.
 `LIST` reports each entry's actual last-write month, day, hour, and minute,
 reports files and directories separately, and removes write permission from
 entries carrying the FATX read-only attribute.
@@ -105,10 +126,11 @@ Hooks are 5-byte `call`/`jmp` redirects at these sites:
 | `0005c0c4` | a Mesh node is destroyed | `patch_mesh_destroy` (`skin_meshes.c`): remove the node from live-reload tracking |
 | `0003a490` | theConfig's script function table | `patch_config_getfunctionmap` (`config_functions.c`): adds the script functions below |
 
-A selected skin with `cellwall.xm` (or its `Inner_cell-FACES.xm` alias) uses
-that mesh. If the file is absent, the saved archive-qualified XIP path restores
-the retail mesh synchronously when `ApplySkin()` runs, matching texture fallback
-behavior even when the Mesh node is not scheduled for another URL update.
+Every loaded `.xm` Mesh node is tracked for live skin changes. A matching file
+in the selected skin replaces its retail mesh; `cellwall.xm` and
+`Inner_cell-FACES.xm` additionally remain aliases. If a matching skin file is
+absent, the saved archive-qualified XIP path restores the retail mesh
+synchronously when `ApplySkin()` runs.
 
 ### Script functions added to theConfig
 
@@ -136,6 +158,14 @@ Callable from XAP as `theConfig.<name>(...)`:
 | `SendDiscordRelay(titleID)` | int | Send a title ID to the configured relay and block until complete |
 | `SendDiscordRelayAsync(titleID)` | int | Queue TCP/WebSocket on a worker thread; UDP uses the blocking completion-confirmed path |
 | `GetDiscordRelayStatus()` | int | Relay state: 0 idle, 1 sending, 2 sent, or a negative Winsock error |
+| `SyncNetworkTimeAsync()` | int/bool | Start an SNTP query after networking is ready; returns 1 if accepted |
+| `GetNetworkTimeStatus()` | int | Time state: 0 idle, 2 querying, 3 synchronized, or a negative diagnostic code |
+
+Network-time diagnostics are `-21001` disabled, `-21002` network not ready,
+`-21003` socket creation, `-21004` socket option, `-21005` event creation,
+`-21006` request transmission, `-21007` receive failure, `-21008` timeout,
+`-21009` through `-21013` invalid reply/time, `-21014` clock update failure,
+`-21015` worker creation failure, and `-21016` hostname resolution failure.
 
 Relay status uses negative Winsock errors for socket failures. Diagnostic
 codes `-20001` through `-20004` identify invalid configuration, network not

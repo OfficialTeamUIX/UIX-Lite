@@ -145,6 +145,9 @@ typedef struct TIME_FIELDS
 #define RtlInitAnsiString       KIMPORT(void (STDCALL *)(ANSI_STRING*, const char*), 0x0001200c)
 #define RtlTimeToTimeFields     KIMPORT(void (STDCALL *)(const DWORD*, TIME_FIELDS*), 0x0001208c)
 #define KeQuerySystemTime       KIMPORT(void (STDCALL *)(DWORD*), 0x00012090)
+// Added by patch.py at the retail kernel-thunk terminator. The loader resolves
+// ordinal 228 (NtSetSystemTime) and the following zero remains the terminator.
+#define NtSetSystemTime         KIMPORT(int (STDCALL *)(const DWORD*, DWORD*), 0x00012280)
 #define NtOpenFile              KIMPORT(int (STDCALL *)(HANDLE*, DWORD, OBJECT_ATTRIBUTES*, IO_STATUS_BLOCK*, DWORD, DWORD), 0x00012010)
 #define NtCreateEvent           KIMPORT(int (STDCALL *)(HANDLE*, OBJECT_ATTRIBUTES*, DWORD, BOOL), 0x0001212c)
 #define NtWaitForSingleObject   KIMPORT(int (STDCALL *)(HANDLE, BOOL, long long*), 0x00012120)
@@ -163,6 +166,7 @@ typedef struct TIME_FIELDS
 #define dash_materials      ((Material**)0x0017c6b8)
 #define dash_material_count (*(int*)0x0017e754)
 #define dash_texture_from_xip ((void* (FASTCALL *)(const WCHAR*))0x00060c90)
+#define dash_mesh_update       ((void (THISCALL *)(void*))0x0005c200)
 #define dash_mesh_load         ((void (THISCALL *)(void*, const WCHAR*))0x0005c250)
 #define dash_mesh_cache_lookup ((void* (STDCALL *)(WCHAR*, int))0x0003dba0)
 #define dash_mesh_destroy      ((void (STDCALL *)(void*))0x0005c0e0)

@@ -230,11 +230,6 @@ NavigationInfo
 	//  speed 10
 }
 
-DEF theBackground Background
-{
-	skyColor 0 0 0
-}
-
 DEF theSkinBackground Background
 {
 	backdrop ImageTexture { url "background.bmp" }
@@ -537,6 +532,36 @@ function ParseEscapedChars(sText)
 }
 
 ///////////////////////////////////////////////////////////////////
+DEF theBGMesh Layer
+{
+	viewpoint Viewpoint
+	{
+		fieldOfView 1.3
+		orientation -0.177400 -0.983500 -0.036250 -0.045440
+		position 11.180000 -32.299999 174.300003
+	}
+
+	children
+	[
+		DEF theBGMeshTransform Transform
+		{
+			children
+			[
+				DEF theBGMeshInline Inline
+				{
+					preload true
+					url "bg_mesh/default.xap"
+					function onLoad()
+					{
+						theBGMeshInline.children[0].LoadBGMeshValues();
+					}
+				}
+			]
+		}
+	]
+}
+
+///////////////////////////////////////////////////////////////////
 DEF theInfoPanel Layer
 {
 	viewpoint Viewpoint
@@ -565,6 +590,7 @@ DEF theInfoPanel Layer
 	]
 }
 
+///////////////////////////////////////////////////////////////////
 DEF theSkinsInline Inline
 {
 	visible false
@@ -1744,7 +1770,7 @@ DEF theMainMenu Level
 					c.Main_pod_backing02.visible = false;
 				}
 				if(bUseMainMenuAttract){ MainMenuAttract(); }
-				if(GetSavedBooleanValue("FTP","Enabled") & bShowInfoPanel) theInfoPanelInline.children[0].ShowInfoPanel(); else theInfoPanelInline.children[0].HideInfoPanel();
+				if(bFtpEnabled & bShowInfoPanel) theInfoPanelInline.children[0].ShowInfoPanel(); else theInfoPanelInline.children[0].HideInfoPanel();
 				g_theMainMenuLoaded = true;
 			}
 		}
@@ -1914,17 +1940,20 @@ DEF theMainMenu Level
 		}
 		function OnWhiteDown()
 		{
-			if(bShowInfoPanel)
+			if(bFtpEnabled)
 			{
-				bShowInfoPanel = false;
-				SetSavedBooleanValue("FTP","ShowInfoPanel",false);
-				theInfoPanelInline.children[0].HideInfoPanel();
-			}
-			else
-			{
-				bShowInfoPanel = true;
-				SetSavedBooleanValue("FTP","ShowInfoPanel",true);
-				theInfoPanelInline.children[0].ShowInfoPanel();
+				if(bShowInfoPanel)
+				{
+					bShowInfoPanel = false;
+					SetSavedBooleanValue("FTP","ShowInfoPanel",false);
+					theInfoPanelInline.children[0].HideInfoPanel();
+				}
+				else
+				{
+					bShowInfoPanel = true;
+					SetSavedBooleanValue("FTP","ShowInfoPanel",true);
+					theInfoPanelInline.children[0].ShowInfoPanel();
+				}
 			}
 		}
 		function OnKeyVerified()
@@ -1956,6 +1985,7 @@ DEF theMainMenu Level
 			if(bPresenceEnabled) theConfig.SendDiscordRelayAsync("FFFE0000");
 			theInfoPanelInline.children[0].UpdateInfoPanel();
 			theInfoPanelInline.children[0].DVDStatusIconTexture.url = "dvdstatusicon.xbx";
+			theConfig.SyncNetworkTimeAsync();
 		}
 		if(bHDDInitialize)
 		{
@@ -2050,7 +2080,7 @@ DEF theMainMenu Level
 		{
 			UpdateMainMenu();
 		}
-		if(GetSavedBooleanValue("FTP","Enabled") & bShowInfoPanel) theInfoPanelInline.children[0].ShowInfoPanel(); else theInfoPanelInline.children[0].HideInfoPanel();
+		if(bFtpEnabled & bShowInfoPanel) theInfoPanelInline.children[0].ShowInfoPanel(); else theInfoPanelInline.children[0].HideInfoPanel();
 	}
 	
 	function OnArrival()
@@ -2170,12 +2200,11 @@ var bUseMainMenuAttract;
 var bMainMenuAttractFinish;
 var bFromUpdate;
 var bIsCerbios;
-var bIsTheseus;
+var bFtpEnabled;
 var bShowInfoPanel;
 var DriveLocations;
 var PartitionLocations;
 var sBuildDate;
-var bSkinExists;
 var sLauncherMenu;
 var bMainMenuOnAutoSignIn;
 
@@ -2197,7 +2226,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "261024"; //Date of commit YYMMDD
+	sBuildDate = "261029"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2264,7 +2293,6 @@ function initialize()
 	TitleNamesFile = new Settings;
 	PlaylistInfo = new Settings;
 	bIsCerbios = (theConfig.GetROMVersion() == "1.00.8008.135");
-	bIsTheseus = theConfig.FileExists("Q:\\System\\config.ini");
 	version.file = "T:\\version";
 	version.SetValue("version","0.6." + sBuildDate);
 	PlaylistInfo.file = "T:\\PlaylistInfo.xbx";    
@@ -2279,8 +2307,8 @@ function initialize()
 	btHcScreenSaver = GetSavedBooleanValue("default","UsetHcScreenSaver");
 	bUseMainMenuAttract = GetSavedBooleanValue("default","UseMainMenuAttract");
 	bUseUnderlay = GetSavedBooleanValue("default","UseListUnderlay");
-	bSkinExists = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00\\Skin.xip");
-
+	bFtpEnabled = GetSavedBooleanValue("FTP","Enabled");
+	
 	if(GetSavedValue("DiscordRelay","PresenceEnabled") == "") SetSavedBooleanValue("DiscordRelay","PresenceEnabled",false);
 	if(GetSavedValue("DiscordRelay","IP") == "") SetSavedValue("DiscordRelay","IP","0.0.0.0");
 	if(GetSavedValue("DiscordRelay","Port") == "") SetSavedValue("DiscordRelay","Port","1101");
@@ -4086,16 +4114,4 @@ function GetDrivePath(x,y)
 	if(x == "Harddisk1" & y == "Partition1") return "R:\\";
 	if(x == "Harddisk1" & y == "Partition6") return "P:\\";
 	if(x == "Harddisk1" & y == "Partition7") return "Q:\\";
-}
-
-function ClearCache()
-{
-	if(theConfig.ClearCache())
-	{
-		TellUser(Translate("Cleared System Cache."),"");
-	}
-	else
-	{
-		TellUser(Translate("Clear System Cache Failed."),"");
-	}
 }

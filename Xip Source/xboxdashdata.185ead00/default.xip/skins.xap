@@ -103,6 +103,7 @@ function DoAction()
 	else if (nCurPlayerMenuItem == 0)
 	{
 		SetSavedValue("Dashboard Settings", "Current Skin", SkinMenuList[skinSelect]);
+		theBGMeshInline.children[0].LoadBGMeshValues();
 		theConfig.ApplySkin();
 	}
 }
@@ -176,6 +177,7 @@ DEF theSkinsMenu Level
 	{
 		function OnADown()
 		{
+			PlaySoundA();
 			theSkinsMenu.children[0].children[0].MU_select_pod_HL.children[0].appearance.material.param = 1;
 			DoAction();
 		}
@@ -209,8 +211,7 @@ DEF theSkinsMenu Level
 			skinSelect = skinSelect - 1;
 			if (skinButton == 0) { skinScroll = skinScroll - 1; }
 			else { skinButton = skinButton - 1; }
-			//theConfig.ChangeSkin( SkinMenuList[skinSelect] );
-			UpdateSkinMenu();
+			pdateSkinMenu();
 		}
 		
 		function OnLeftThumbMoveDown()
@@ -220,7 +221,6 @@ DEF theSkinsMenu Level
 			skinSelect = skinSelect + 1;
 			if (skinButton == 8) { skinScroll = skinScroll + 1; }
 			else { skinButton = skinButton + 1; }
-			//theConfig.ChangeSkin( SkinMenuList[skinSelect] );
 			UpdateSkinMenu();                        
 		}
 		
@@ -250,7 +250,6 @@ DEF theSkinsMenu Level
 			skinSelect = skinSelect - 1;
 			if (skinButton == 0) { skinScroll = skinScroll - 1; }
 			else { skinButton = skinButton - 1; }
-			//theConfig.ChangeSkin( SkinMenuList[skinSelect] );
 			UpdateSkinMenu();
 		}
 		
@@ -261,7 +260,6 @@ DEF theSkinsMenu Level
 			skinSelect = skinSelect + 1;
 			if (skinButton == 8) { skinScroll = skinScroll + 1; }
 			else { skinButton = skinButton + 1; }
-			//theConfig.ChangeSkin( SkinMenuList[skinSelect] );
 			UpdateSkinMenu();                        
 		}
 	}

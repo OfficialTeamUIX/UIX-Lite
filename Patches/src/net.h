@@ -32,6 +32,13 @@ typedef struct WSABUF
 	char* buf;
 } WSABUF;
 
+typedef struct XNDNS
+{
+	int   status;
+	DWORD count;
+	DWORD addresses[8];
+} XNDNS;
+
 #define socket      ((SOCKET (STDCALL *)(int, int, int))0x00130789)
 #define closesocket ((int (STDCALL *)(SOCKET))0x00130794)
 #define shutdown    ((int (STDCALL *)(SOCKET, int))0x0013079f)
@@ -44,6 +51,8 @@ typedef struct WSABUF
 #define WSASend     ((int (STDCALL *)(SOCKET, WSABUF*, DWORD, DWORD*, DWORD, void*, void*))0x00130812)
 #define WSASendTo   ((int (STDCALL *)(SOCKET, WSABUF*, DWORD, DWORD*, DWORD, const sockaddr_in*, int, void*, void*))0x00130821)
 #define XNetGetTitleXnAddr ((DWORD (STDCALL *)(BYTE*))0x0013077e) // first DWORD of the XNADDR is our IP
+#define XNetDnsLookup       ((int (STDCALL *)(const char*, HANDLE, XNDNS**))0x00130751)
+#define XNetDnsRelease      ((int (STDCALL *)(XNDNS*))0x00130768)
 
 int    net_listen(SOCKET s, int backlog);
 SOCKET net_accept(SOCKET s);
