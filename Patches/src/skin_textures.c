@@ -108,7 +108,7 @@ void* skin_load_texture(const char* file)
 {
 	char path[200];
 	int i = 0;
-	for (const char* s = "Y:\\UIX Configs\\Skins\\"; *s; s++)
+	for (const char* s = "T:\\UIXLite\\Skins\\"; *s; s++)
 		path[i++] = *s;
 	for (const char* s = g_szSkin; *s && i < 120; s++)
 		path[i++] = *s;

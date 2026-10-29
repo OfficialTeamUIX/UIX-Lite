@@ -41,6 +41,17 @@ static void mount(char letter, const char* device)
 // patch.py writes the selected features here
 DWORD patch_features = 0xFFFFFFFF;
 
+// Replaces the call at 0002d830.  Retail's initializer establishes C:, Y:,
+// and T:; only after it returns is the title-data path safe to use.
+void patch_drive_init(void)
+{
+	((void (*)(void))0x0002dd20)();
+	CreateDirectoryA("T:\\UIXLite", 0);
+	CreateDirectoryA("T:\\UIXLite\\Skins", 0);
+	if (patch_features & FEATURE_FTP)
+		ftp_start();
+}
+
 // Replaces main's call to dash_run (0002dca1)
 void patch_start(void)
 {
@@ -54,11 +65,6 @@ void patch_start(void)
 	if (patch_features & FEATURE_DRIVES)
 		for (unsigned i = 0; i < sizeof(kDrives) / sizeof(kDrives[0]); i++)
 			mount(kDrives[i].letter, kDrives[i].device);
-
-	// Start the bootstrap thread here. It waits for readiness, then reads all
-	// FTP settings (including Enabled) before it creates the listener.
-	if (patch_features & FEATURE_FTP)
-		ftp_start();
 
 	dash_run();
 }

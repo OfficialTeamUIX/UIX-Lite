@@ -8,7 +8,7 @@
 
 #include "dash5960.h"
 
-#define SKIN_DIR "Y:\\UIX Configs\\Skins\\"
+#define SKIN_DIR "T:\\UIXLite\\Skins\\"
 #define MAX_TRACKED_MESHES 256
 #define MAX_MESH_PATH 260
 

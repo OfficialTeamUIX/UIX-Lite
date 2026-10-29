@@ -18,7 +18,7 @@ function initialize()
 function GetSkins()
 {
 	var b = new Folder;
-	b.path = "Y:\\UIX Configs\\Skins";
+	b.path = ConfigFolder + "Skins";
 	skinCount = b.subFolders.length();
 	var skinsArray = new Array();
 	var a;
@@ -87,7 +87,7 @@ function StartSkinMenu()
 function ShowSkinInfo()
 {
 	var info = new Settings;
-	info.file = "Y:\\UIX Configs\\Skins\\" + SkinMenuList[skinSelect] + "\\" + SkinMenuList[skinSelect] + ".xbx";
+	info.file = ConfigFolder + "Skins\\" + SkinMenuList[skinSelect] + "\\" + SkinMenuList[skinSelect] + ".xbx";
 	info.section = "SkinInfo";
 	var author = info.GetValue("Author");
 	var date = info.GetValue("DateCreated");

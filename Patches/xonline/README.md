@@ -36,8 +36,10 @@ Keep generated filenames below the FATX 42-character limit.
 ## Skin behavior
 
 The patch reads `[Dashboard Settings] Current Skin` from
-`Y:\UIX Configs\config.ini` when XOnline Dashboard starts. The selected
-skin is loaded from `Y:\UIX Configs\Skins\<Name>\`.
+`T:\UIXLite\config.ini` when XOnline Dashboard starts. `T:` is the dashboard
+title-data mapping for `\Device\Harddisk0\Partition1\TDATA\fffe0000\`. The selected
+The `T:\UIXLite` and `T:\UIXLite\Skins` directories are created automatically
+when needed. The selected skin is loaded from `T:\UIXLite\Skins\<Name>\`.
 
 The color hooks apply `Color`, `ColorA`, and `ColorB` values to matching
 XOnline material names. The texture hooks replace files normally loaded from

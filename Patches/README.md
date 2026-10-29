@@ -25,7 +25,7 @@ Pick features with `--only` or `--skip` (comma-separated):
 | `xipsig` | Loads modified XIPs by skipping the signature and digest checks. UIX Lite's XIPs need this |
 | `dvdregion` | Plays DVDs from any region |
 | `ram128` | Clears the XBE `Limit64Megabytes` initialization flag, allowing a RAM-upgraded Xbox or emulator to expose memory above 64 MB |
-| `skins` | Theseus-style skins from `C:\UIX Configs\Skins\<Name>\`, switchable live from Settings > Skins |
+| `skins` | Theseus-style skins from `T:\UIXLite\Skins\<Name>\`, switchable live from Settings > Skins |
 | `discimages` | Title folders with `default.iso` or `default.cci` show in the Launcher and boot (Cerbios) |
 | `config` | File operations, XBE title information, and LAN-address functions exposed to XAP |
 | `ftp` | FTP file server on port 21 for pushing files to the console over the LAN |
@@ -46,7 +46,8 @@ using the same letters the dashboard's file browser shows (`C`, `D`, `E`, `F`, `
 It comes up on its own once the network is ready and coexists with
 Insignia sign-in.
 
-Configure or disable it in `C:\UIX Configs\config.ini` (all keys are optional):
+Configure or disable it in `T:\UIXLite\config.ini` (all keys are optional).
+`T:` maps to `\Device\Harddisk0\Partition1\TDATA\fffe0000\`:
 
 ```
 [FTP]
@@ -64,7 +65,7 @@ skin can show people where to point their FTP client.
 
 `theConfig.SyncNetworkTimeAsync()` synchronizes the system's UTC clock with an
 SNTP server without changing the dashboard's timezone or daylight-saving
-settings. Configure it in `C:\UIX Configs\config.ini` (all keys are optional):
+settings. Configure it in `T:\UIXLite\config.ini` (all keys are optional):
 The patcher appends the required `NtSetSystemTime` ordinal to reserved space at
 the end of the retail kernel-import thunk table, so the Xbox loader resolves it
 for the running kernel rather than relying on a kernel-build-specific address.
@@ -175,7 +176,7 @@ error value.
 Diagnostic code `-20013` means the UDP request did not complete within ten
 seconds. Codes `-20014` and `-20015` mean its completion status or completed
 byte count was invalid.
-Configure the relay in `C:\UIX Configs\config.ini`:
+Configure the relay in `T:\UIXLite\config.ini`:
 
 ```ini
 [DiscordRelay]

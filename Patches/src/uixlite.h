@@ -3,7 +3,7 @@
 #pragma once
 #include "dash5960.h"
 
-#define CONFIG_INI "Y:\\UIX Configs\\config.ini"
+#define CONFIG_INI "T:\\UIXLite\\config.ini"
 
 // Whole file, NUL-terminated, from the dashboard heap (dash_free it); 0 if missing
 char* skin_read_file(const char* path, DWORD* size);

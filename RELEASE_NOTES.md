@@ -21,7 +21,7 @@ itself.
   - Drives appear as the file browser's letters (`C`, `E`, `F`, `G`, `D` for
     a disc, `E2`/`F2`/`G2` for a second HDD), not the raw system letters.
   - Upload, download, resume, directory listing, make/remove/delete.
-  - Configure it in `UIX Configs\config.ini`:
+  - Configure it in `T:\UIXLite\config.ini`:
     ```
     [FTP]
     Enabled=1
@@ -50,8 +50,9 @@ itself.
 
 ## Installing
 
-Copy `xboxdash.xbe`, `xboxdashdata.185ead00\` and `UIX Configs\` to the root
-of your `C:` partition, over your existing 5960 install. Leave your fonts,
+Copy `xboxdash.xbe` and `xboxdashdata.185ead00\` to the root of your `C:`
+partition over your existing 5960 install, and place the UIX Lite support files
+under `T:\UIXLite\`. Leave your fonts,
 `Xbox.xtf` / `XBox Book.xtf` and `xodash` alone. See `INSTALL.txt` in the
 build for the details.
 

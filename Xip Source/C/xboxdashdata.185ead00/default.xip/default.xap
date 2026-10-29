@@ -472,7 +472,7 @@ DEF theTranslator Translator
 function Translate(text)
 {
 	var MatchWord = text.toUpperCase();
-	if(theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\xlate.ini"))
+	if(theConfig.FileExists(ConfigFolder + "xlate.ini"))
 	{
 		var Languages = new Array( "ENGLISH","JAPANESE","DEUTSCH","FRANÇAIS","ESPAÑOL","ITALIANO","KOREAN","CHINESE","PORTUGUÊS");
 		var index = Math.max(0,theConfig.GetLanguage() - 1);
@@ -1770,7 +1770,7 @@ DEF theMainMenu Level
 					c.Main_pod_backing02.visible = false;
 				}
 				if(bUseMainMenuAttract){ MainMenuAttract(); }
-				if(bFtpEnabled & bShowInfoPanel) theInfoPanelInline.children[0].ShowInfoPanel(); else theInfoPanelInline.children[0].HideInfoPanel();
+				if(GetSavedBooleanValue("FTP","Enabled") & GetSavedBooleanValue("FTP","ShowInfoPanel")) theInfoPanelInline.children[0].ShowInfoPanel(); else theInfoPanelInline.children[0].HideInfoPanel();
 				g_theMainMenuLoaded = true;
 			}
 		}
@@ -2296,31 +2296,23 @@ function initialize()
 	version.file = "T:\\version";
 	version.SetValue("version","0.6." + sBuildDate);
 	PlaylistInfo.file = "T:\\PlaylistInfo.xbx";    
-	ConfigFolder = "Y:\\UIX Configs\\";
+	ConfigFolder = "T:\\UIXLite\\";
+	if(theConfig.FileExists(ConfigFolder) == false) theConfig.CreateDir(ConfigFolder);
 	ConfigFile.file = ConfigFolder + "config.ini";
 	CacheFile.file = ConfigFolder + "cache.ini";
 	XlateFile.file = ConfigFolder + "xlate.ini";
 	TitleNamesFile.file = ConfigFolder + "TitleNames.ini";
+	
+	EnsureConfigDefaults();
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
 	bMainMenuOnAutoSignIn = GetSavedBooleanValue("default","MainMenuOnAutoSignIn");true;
 	btHcScreenSaver = GetSavedBooleanValue("default","UsetHcScreenSaver");
 	bUseMainMenuAttract = GetSavedBooleanValue("default","UseMainMenuAttract");
 	bUseUnderlay = GetSavedBooleanValue("default","UseListUnderlay");
-	bFtpEnabled = GetSavedBooleanValue("FTP","Enabled");
-	
-	if(GetSavedValue("DiscordRelay","PresenceEnabled") == "") SetSavedBooleanValue("DiscordRelay","PresenceEnabled",false);
-	if(GetSavedValue("DiscordRelay","IP") == "") SetSavedValue("DiscordRelay","IP","0.0.0.0");
-	if(GetSavedValue("DiscordRelay","Port") == "") SetSavedValue("DiscordRelay","Port","1101");
 	bPresenceEnabled = GetSavedBooleanValue("DiscordRelay","PresenceEnabled");
-
-	if(GetSavedValue("ShowInSettings","Configuration") == "") SetSavedBooleanValue("ShowInSettings","Configuration",true);
-	if(GetSavedValue("ShowInSettings","UIXUpdate") == "") SetSavedBooleanValue("ShowInSettings","UIXUpdate",false);
-	if(GetSavedValue("ShowInSettings","Reboot") == "") SetSavedBooleanValue("ShowInSettings","Reboot",true);
-	if(GetSavedValue("ShowInSettings","Shutdown") == "") SetSavedBooleanValue("ShowInSettings","Shutdown",true);
-	if(GetSavedValue("FTP","ShowInfoPanel") == "") SetSavedBooleanValue("FTP","ShowInfoPanel",true);
+	bFtpEnabled = GetSavedBooleanValue("FTP","Enabled");
 	bShowInfoPanel = GetSavedBooleanValue("FTP","ShowInfoPanel");
-	
 	ShowMemoryInSettings = GetSavedBooleanValue("ShowInSettings","Memory");
 	ShowMusicInSettings = GetSavedBooleanValue("ShowInSettings","Music");
 	ShowXOnlineInSettings = GetSavedBooleanValue("ShowInSettings","XOnline");
@@ -2335,7 +2327,7 @@ function initialize()
 	bPartitionScanCompleted = GetSavedBooleanValue("ExtendedPartitions","PartitionScanCompleted");
 	if(bPartitionScanCompleted)
 	{
-		bPartitionScanCompleted = theConfig.NtFileExists("\\Device\\Harddisk0\\Partition2\\UIX Configs\\Cache.ini");
+		bPartitionScanCompleted = theConfig.FileExists(ConfigFolder + "cache.ini");
 		if(bPartitionScanCompleted)
 		{
 			nPartitions = StringToNumber(GetSavedValue("ExtendedPartitions","Partitions"));
@@ -4035,6 +4027,95 @@ function SetTitleName(x,y)
 	var b = y;
 	TitleNamesFile.section = "default";
 	return TitleNamesFile.SetValue(a,b);
+}
+
+function EnsureDefaultValue(section, key, value)
+{
+	if(GetSavedValue(section, key) == "")
+	{
+		SetSavedValue(section, key, value);
+	}
+}
+
+function EnsureDefaultBoolean(section, key, value)
+{
+	if(GetSavedValue(section, key) == "")
+	{
+		SetSavedBooleanValue(section, key, value);
+	}
+}
+
+function EnsureConfigDefaults()
+{
+	EnsureDefaultValue("default","MainOrbStyle","Stock");
+	EnsureDefaultBoolean("default","ShowInsignia",false);
+	EnsureDefaultValue("default","LauncherOrbIcon","Xbox");
+	EnsureDefaultBoolean("default","UseMainMenuAttract",false);
+	EnsureDefaultBoolean("default","UsetHcScreenSaver",true);
+	EnsureDefaultBoolean("default","UseListUnderlay",false);
+	EnsureDefaultBoolean("default","AutoLaunchMedia",false);
+	EnsureDefaultBoolean("default","MainMenuOnAutoSignIn",true);
+	EnsureDefaultBoolean("default","BackgroundMusic",false);
+
+	EnsureDefaultValue("Dashboard Settings","Current Skin","Stock");
+
+	EnsureDefaultValue("MainMenu","MainMenuItems","5");
+	EnsureDefaultValue("MainMenu","Button1Text","MEMORY");
+	EnsureDefaultValue("MainMenu","Button1Action","GoToMemory()");
+	EnsureDefaultValue("MainMenu","Button2Text","MUSIC");
+	EnsureDefaultValue("MainMenu","Button2Action","GoToMusic()");
+	EnsureDefaultValue("MainMenu","Button3Text","XONLINE");
+	EnsureDefaultValue("MainMenu","Button3Action","GoToXOnline()");
+	EnsureDefaultValue("MainMenu","Button4Text","LAUNCHER");
+	EnsureDefaultValue("MainMenu","Button4Action","GoToLauncher()");
+	EnsureDefaultValue("MainMenu","ButtonYXAction","ToggleNoisyCam()");
+	EnsureDefaultBoolean("MainMenu","AdvancedMode",false);
+
+	EnsureDefaultValue("LauncherMenu","Title0","Applications");
+	EnsureDefaultValue("LauncherMenu","Path0","Applications;Apps");
+	EnsureDefaultValue("LauncherMenu","Title1","Dashboards");
+	EnsureDefaultValue("LauncherMenu","Path1","Dashboards");
+	EnsureDefaultValue("LauncherMenu","Title2","Games");
+	EnsureDefaultValue("LauncherMenu","Path2","Games");
+	EnsureDefaultValue("LauncherMenu","Title3","Emulators");
+	EnsureDefaultValue("LauncherMenu","Path3","Emulators;Emus");
+	EnsureDefaultValue("LauncherMenu","Title4","Homebrew");
+	EnsureDefaultValue("LauncherMenu","Path4","Homebrew");
+	EnsureDefaultValue("LauncherMenu","Title5","");
+	EnsureDefaultValue("LauncherMenu","Path5","");
+	EnsureDefaultValue("LauncherMenu","Title6","");
+	EnsureDefaultValue("LauncherMenu","Path6","");
+	EnsureDefaultValue("LauncherMenu","Title7","");
+	EnsureDefaultValue("LauncherMenu","Path7","");
+
+	EnsureDefaultBoolean("ShowInSettings","Memory",false);
+	EnsureDefaultBoolean("ShowInSettings","Music",false);
+	EnsureDefaultBoolean("ShowInSettings","XOnline",false);
+	EnsureDefaultBoolean("ShowInSettings","Launcher",false);
+	EnsureDefaultBoolean("ShowInSettings","Configuration",true);
+	EnsureDefaultBoolean("ShowInSettings","UIXUpdate",false);
+	EnsureDefaultBoolean("ShowInSettings","Reboot",true);
+	EnsureDefaultBoolean("ShowInSettings","Shutdown",true);
+	
+	EnsureDefaultValue("QuickLaunch","QuickLaunchA","E:\\Dashboards\\UnleashX\\default.xbe");
+	EnsureDefaultValue("QuickLaunch","QuickLaunchB","");
+	EnsureDefaultValue("QuickLaunch","QuickLaunchX","");
+	EnsureDefaultValue("QuickLaunch","QuickLaunchY","");
+
+	EnsureDefaultBoolean("NTP","Enabled",true);
+	EnsureDefaultValue("NTP","Server","time.nist.gov");
+	EnsureDefaultValue("NTP","Port","123");
+	EnsureDefaultValue("NTP","Timeout","5000");
+
+	EnsureDefaultBoolean("FTP","Enabled",true);
+	EnsureDefaultValue("FTP","User","xbox");
+	EnsureDefaultValue("FTP","Pass","xbox");
+	EnsureDefaultValue("FTP","Port","21");
+	EnsureDefaultBoolean("FTP","ShowInfoPanel",true);
+
+	EnsureDefaultBoolean("DiscordRelay","PresenceEnabled",false);
+	EnsureDefaultValue("DiscordRelay","IP","0.0.0.0");
+	EnsureDefaultValue("DiscordRelay","Port","1101");
 }
 
 function GetSavedValue(x,y) 

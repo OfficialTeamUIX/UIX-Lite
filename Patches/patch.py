@@ -46,6 +46,7 @@ FEATURE_BITS = {"drives": 0x1, "ftp": 0x2, "config": 0x4, "skins": 0x8, "discima
 # 5-byte call / jmp redirects into the patch code:
 # (address, retail bytes, symbol, opcode, features that need it)
 HOOKS = [
+    (0x0002D830, "e8eb040000", "patch_drive_init",          0xE8, {"skins", "config", "ftp"}),
     (0x0002DCA1, "e85afdffff", "patch_start",                 0xE8, {"drives", "ftp", "discimages"}),
     (0x0002CE6F, "e85cb41100", "patch_create_device",         0xE8, {"video720"}),            # D3D setup: create the device
     (0x0002D89D, "e80ea40200", "patch_material_init",         0xE8, {"skins"}),

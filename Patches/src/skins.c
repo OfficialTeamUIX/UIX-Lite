@@ -8,13 +8,13 @@
 
 #include "uixlite.h"
 
-#define CONFIG_PATH "Y:\\UIX Configs\\config.ini"
+#define CONFIG_PATH "T:\\UIXLite\\config.ini"
 #define MAX_MATERIALS 256
 
 // Retail colors as the dashboard built them, so each skin starts from retail
 static DWORD s_retail[MAX_MATERIALS][2];
 static int s_nRetail;
-#define SKIN_DIR    "Y:\\UIX Configs\\Skins\\"
+#define SKIN_DIR    "T:\\UIXLite\\Skins\\"
 
 char g_szSkin[64];
 static int s_bootSkinNameLoaded;

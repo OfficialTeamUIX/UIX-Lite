@@ -1,4 +1,5 @@
 typedef unsigned char BYTE;
+typedef unsigned short WORD;
 typedef unsigned int DWORD;
 typedef int BOOL;
 typedef void* HANDLE;
@@ -13,13 +14,23 @@ typedef void* HANDLE;
 #define ReadFile ((BOOL (STDCALL *)(HANDLE,void*,DWORD,DWORD*,void*))0x0007bb2d)
 #define CloseHandle ((BOOL (STDCALL *)(HANDLE))0x0007b432)
 #define CreateFileA ((HANDLE (STDCALL *)(const char*,DWORD,DWORD,void*,DWORD,DWORD,HANDLE))0x0007b476)
-#define EnsureYDrive ((int (STDCALL *)(void))0x0007aa4c)
+#define CreateDirectoryA ((BOOL (STDCALL *)(const char*,void*))0x0007d413)
+#define IoCreateSymbolicLink (*(int (STDCALL **)(void*,void*))0x00012030)
+#define IoDeleteSymbolicLink (*(int (STDCALL **)(void*))0x00012034)
+#define RtlInitAnsiString (*(void (STDCALL **)(void*,const char*))0x00012038)
+
+typedef struct
+{
+    WORD Length;
+    WORD MaximumLength;
+    char* Buffer;
+} ANSI_STRING;
 
 static char s_skin[64];
 static char s_skinText[16384];
 static char s_skinDrive;
 static int s_loaded;
-static int s_yMapped;
+static int s_tMapped;
 static int lower(int c) { return c >= 'A' && c <= 'Z' ? c + 32 : c; }
 static int ieq_n(const char* a,const char* b,int n)
 {
@@ -53,10 +64,16 @@ static void ini_value(const char* text,const char* section,const char* key,char*
 }
 static int read_file(const char* path,char* dst,int cap)
 {
-    if(!s_yMapped)
+    if(!s_tMapped)
     {
-        EnsureYDrive();
-        s_yMapped=1;
+        ANSI_STRING link,target;
+        RtlInitAnsiString(&link,"\\??\\T:");
+        RtlInitAnsiString(&target,"\\Device\\Harddisk0\\Partition1\\TDATA\\fffe0000");
+        IoDeleteSymbolicLink(&link);
+        IoCreateSymbolicLink(&link,&target);
+        CreateDirectoryA("T:\\UIXLite",0);
+        CreateDirectoryA("T:\\UIXLite\\Skins",0);
+        s_tMapped=1;
     }
     HANDLE h=CreateFileA(path,GENERIC_READ,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
     if(h==INVALID_HANDLE_VALUE)return 0;
@@ -67,14 +84,14 @@ static void ensure_skin(void)
 {
     if(s_loaded)return;
     static char cfg[4096];
-    if(!read_file("Y:\\UIX Configs\\config.ini",cfg,sizeof(cfg)))return;
-    s_skinDrive='Y';
+    if(!read_file("T:\\UIXLite\\config.ini",cfg,sizeof(cfg)))return;
+    s_skinDrive='T';
     ini_value(cfg,"Dashboard Settings","Current Skin",s_skin,sizeof(s_skin));
     if(!s_skin[0]){s_loaded=1;return;}
     if(s_skin[0])
     {
         char p[192]; int n=0;
-        const char* pre="y:\\UIX Configs\\Skins\\";
+        const char* pre="T:\\UIXLite\\Skins\\";
         for(int i=0;pre[i];i++)p[n++]=pre[i];
         p[0]=s_skinDrive;
         for(int i=0;s_skin[i]&&n<120;i++)p[n++]=s_skin[i]; p[n++]='\\';
@@ -139,7 +156,7 @@ static const char* skin_texture_path(const char* path,char* out,int cap)
     const char* base=path;
     for(const char* q=path;*q;q++)if(*q=='\\'||*q=='/')base=q+1;
     if(!s_skin[0])return path;
-    int n=0;const char* pre="Y:\\UIX Configs\\Skins\\";
+    int n=0;const char* pre="T:\\UIXLite\\Skins\\";
     for(int i=0;pre[i]&&n<cap-1;i++)out[n++]=pre[i];
     for(int i=0;s_skin[i]&&n<cap-1;i++)out[n++]=s_skin[i];
     if(n<cap-1)out[n++]='\\';
@@ -168,7 +185,7 @@ HANDLE STDCALL patch_xonline_createfile(const char* path,DWORD access,DWORD shar
     if(path&&s_skin[0]&&ieq_n(path,"B:\\Media\\Xbx\\",13))
     {
         const char* base=path;for(const char* q=path;*q;q++)if(*q=='\\'||*q=='/')base=q+1;
-        char p[192];int n=0;const char* pre="y:\\UIX Configs\\Skins\\";
+        char p[192];int n=0;const char* pre="T:\\UIXLite\\Skins\\";
         for(int i=0;pre[i];i++)p[n++]=pre[i];for(int i=0;s_skin[i]&&n<120;i++)p[n++]=s_skin[i];p[n++]='\\';
         p[0]=s_skinDrive;
         for(int i=0;base[i]&&n<191;i++)p[n++]=base[i];p[n]=0;
