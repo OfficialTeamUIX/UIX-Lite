@@ -2,7 +2,7 @@
 //
 // XAP entry points:
 //   SendDiscordRelay(titleID)       blocking, 1 on delivery / 0 on failure
-//   SendDiscordRelayAsync(titleID)  async for TCP/WebSocket; blocking for UDP
+//   SendDiscordRelayAsync(titleID)  non-blocking worker for every transport
 //   GetDiscordRelayStatus()         0 idle, 1 sending, 2 sent, negative error
 
 #include "dash5960.h"
@@ -371,11 +371,6 @@ int THISCALL Config_SendDiscordRelayAsync(void* pThis, const WCHAR* title)
 		s_status = -(int)s_relayError;
 		return 0;
 	}
-
-	// Xbox UDP transmission is only reliable through the completion-confirmed
-	// caller-thread path. TCP and WebSocket safely run on a worker thread.
-	if (parsed.port == 1102)
-		return Config_SendDiscordRelay(pThis, title);
 
 	RelayJob* job = (RelayJob*)dash_malloc(sizeof(RelayJob));
 	if (!job)

@@ -1,0 +1,24 @@
+UIX Lite v0.6 (TESTING BUILD)
+=============================
+
+This is a test build. Back up your current dashboard first.
+
+Requirements
+  - A modded Xbox (modchip or softmod) that does NOT boot from the
+    dashboard files, and a working 5960 MS dashboard already in C:\.
+  - For disc-image launching: Cerbios (build 8008+).
+
+Install
+  Copy the contents of the C folder to the root of your C: partition, replacing what's there.
+  Copy the contents of the E folder to the root of your E: partition, replacing what's there.
+
+What's new in this build
+  - In-dashboard FTP server. Connect to the Xbox's IP, log in xbox / xbox.
+    Drives show up as the browser's letters (C, E, F, G, ...). Change the
+    login or turn it off in "UIX Setting" under "FTP Settings".
+  - default.iso / default.cci launching from the Launcher (Cerbios).
+  - Live skins, 720p on HDTV, and the rest of the UIX Lite feature set.
+  - Integrated Discord Presence.
+  - Updated skin support.
+  - NTP time synchronization 
+Please report anything odd: uploads, skins, disc-image booting, sign-in.

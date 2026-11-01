@@ -94,14 +94,14 @@ function UpdateTrackList()
 			var Trans = c.TrackNames.children[i].translation;
 			if(bInBrowser == false | bRecentToggled)
 			{
-				if(parseTrans(Trans,"X") != -0.41) c.TrackNames.children[i].SetTranslation(-0.42, parseTrans(Trans,"Y"), parseTrans(Trans,"Z"));
+				if(Trans.x != -0.41) c.TrackNames.children[i].SetTranslation(-0.42, Trans.y, Trans.z);
 				var strAltName = GetTitleName(strName0);
 				if (strAltName != "") strName0 = strAltName;
 				if(strName0.length() > 42) strName0 = strName0.substr(0,40) + "...";
 			}
 			else
 			{
-				c.TrackNames.children[i].SetTranslation(-0.34, parseTrans(Trans,"Y"), parseTrans(Trans,"Z"));
+				c.TrackNames.children[i].SetTranslation(-0.34, Trans.y, Trans.z);
 				c.TrackNames.children[i].children[1].visible = true;
 				if(sFileType[n] == "folder" | bInRoot)
 				{ 
@@ -596,13 +596,13 @@ DEF theLauncher Level
 					if(i < nPlayVisible0)
 					{
 						Y = YStart - (i * YStep);
-						c.TrackNames.children[i].SetTranslation(parseTrans(Trans,"X"), Y, parseTrans(Trans,"Z"));
+						c.TrackNames.children[i].SetTranslation(Trans.x, Y, Trans.z);
 						c.TrackNames.children[i].visible = true;
 					}
 					else
 					{
 						c.TrackNames.children[i].visible = false;
-						c.TrackNames.children[i].SetTranslation(parseTrans(Trans,"X"), Y, parseTrans(Trans,"Z"));
+						c.TrackNames.children[i].SetTranslation(Trans.x, Y, Trans.z);
 					}
 				}
 				EnterLauncherMenu();

@@ -157,7 +157,7 @@ Callable from XAP as `theConfig.<name>(...)`:
 | `CreateTitleMeta(path, titleName)` | bool | Create or replace a text metadata file containing `TitleName=<titleName>` |
 | `ClearCache()` | int/bool | Format cache partitions X:, Y:, and Z:, then recursively clear `C:\cache`; the running dashboard's locked `LocalCache00.bin` is intentionally retained and does not count as a failure |
 | `SendDiscordRelay(titleID)` | int | Send a title ID to the configured relay and block until complete |
-| `SendDiscordRelayAsync(titleID)` | int | Queue TCP/WebSocket on a worker thread; UDP uses the blocking completion-confirmed path |
+| `SendDiscordRelayAsync(titleID)` | int | Queue UDP, TCP, or WebSocket delivery on a worker thread |
 | `GetDiscordRelayStatus()` | int | Relay state: 0 idle, 1 sending, 2 sent, or a negative Winsock error |
 | `SyncNetworkTimeAsync()` | int/bool | Start an SNTP query after networking is ready; returns 1 if accepted |
 | `GetNetworkTimeStatus()` | int | Time state: 0 idle, 2 querying, 3 synchronized, or a negative diagnostic code |
@@ -188,10 +188,9 @@ Port=1102
 `PresenceEnabled` is a boolean (`true` or `false`) read and written by the XAP;
 the dashboard's **Enable Discord Presence** setting controls this value.
 Port `1101` uses WebSocket, `1102` uses UDP, and `1103` uses TCP. The address
-must be a numeric IPv4 address. `SendDiscordRelayAsync` is non-blocking for TCP
-and WebSocket. UDP waits for network readiness and confirmed transmission on the
-calling thread because worker-thread UDP requests do not reliably progress on
-this network stack.
+must be a numeric IPv4 address. `SendDiscordRelayAsync` is non-blocking for all
+three transports. Its worker waits for network readiness and, for UDP, waits for
+the completion-confirmed `WSASendTo` operation before publishing status `2`.
 
 The FTP server is `ftp.c`; it runs on the retail network stack through
 `net.c` (listen/accept, which the stack has but doesn't export) and the

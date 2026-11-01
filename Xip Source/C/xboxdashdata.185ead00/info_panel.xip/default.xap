@@ -207,10 +207,17 @@ function ShowInfoPanel()
 
 function UpdateInfoPanel()
 {
+	if(theInfoPanelInline.children.length() == 0)
+		return;
+
+		if(bFtpEnabled & bShowInfoPanel & g_theMainMenuLoaded)
+		ShowInfoPanel();
+	else
+		HideInfoPanel();
+	
 	theSoundtrackAlbumInfoText.text = theConfig.GetIPAddress();
-	//c.theSoundtrackSongInfoText.text = "Soundtrack Song Info";
-	//c.MEM_L1_text_totalmemory.children[0].geometry.text = "Total Memory";
 	AvailableMemoryText.text = "Pass: " + GetSavedValue("FTP","Pass");
 	TotalMemoryText.text = "User: " + GetSavedValue("FTP","User");
 }
+	
 ////////////END OF INFO PANEL/////////////////////

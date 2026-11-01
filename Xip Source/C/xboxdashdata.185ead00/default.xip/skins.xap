@@ -12,7 +12,7 @@ function initialize()
 	skinSelect = 0;
 	skinScroll = 0;
 	skinButton = 0;
-	nCurPlayerMenuItem = 1;
+	nCurPlayerMenuItem = 0;
 }
 
 function GetSkins()
@@ -81,7 +81,7 @@ function UpdateSkinMenu()
 function StartSkinMenu()
 {
 	var c = theSkinsMenu.children[0].children[0];
-	nCurPlayerMenuItem = 1;
+	nCurPlayerMenuItem = 0;
 }
 
 function ShowSkinInfo()
@@ -94,7 +94,7 @@ function ShowSkinInfo()
 	var version = info.GetValue("Version");
 	var madeusing = info.GetValue("MadeUsing");
 	var credits = info.GetValue("Credits");
-	TellUser(theTranslator.Translate("Author: " + author + "\nDate: " + date + "\nVersion: " + version + "\nMade with: " + madeusing + "\nCredits: " + credits),"nada()");
+	TellUser(theTranslator.Translate("Author: " + author + "\nDate: " + date + "\nVersion: " + version + "\nMade with: " + madeusing + "\nCredits: " + credits),"");
 }
 
 function DoAction()
@@ -120,7 +120,6 @@ DEF theSkinsMenu Level
 			
 			function onLoad()
 			{
-				StartSkinMenu();
 				GetSkins();
 				UpdateSkinMenu();
 			}
@@ -141,32 +140,24 @@ DEF theSkinsMenu Level
 		translation 97.67 4.819000 -251.870003
 		children
 		[
-			DEF theSettingsMenuShellSpinner Spinner
+			DEF theSettingsMenuShellWaver Waver
 			{
-				rpm 0
-				axis 0 0 0
+				rpm 0.75
 				children
 				[
-					DEF theSettingsMenuShellWaver Waver
+					Shape
 					{
-						rpm 2.25//rpm 0.75
-						children
-						[
-							Shape
-							{
-								appearance Appearance
-								{
-									material MaxMaterial { name "InnerWall_01" }
-									texture ImageTexture { alpha true url "cellwall.xbx" }
-								}
-								geometry Mesh { url "Inner_cell-FACES.xm" }
-							}
-							Shape
-							{
-								appearance MaxMaterial { name "InnerWall_02" }
-								geometry Sphere
-							}
-						]
+						appearance Appearance
+						{
+							material MaxMaterial { name "InnerWall_01" }
+							texture ImageTexture { alpha true url "cellwall.xbx" }
+						}
+						geometry Mesh { url "Inner_cell-FACES.xm" }
+					}
+					Shape
+					{
+						appearance MaxMaterial { name "InnerWall_02" }
+						geometry Sphere
 					}
 				]
 			}

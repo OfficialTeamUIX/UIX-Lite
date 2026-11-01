@@ -332,6 +332,10 @@ function BuildFSList()
 	configList[i] = "Port:";
 	configValues[i] = "FTP-Port";
 	configSelect[i] = "configKeyb()";
+	i = i + 1;
+	configList[i] = "Show FTP Info Panel:";
+	configValues[i] = "FTP-ShowInfoPanel";
+	configSelect[i] = "toggleTF()";
 	
 	clearText();
 	updateText();
@@ -646,17 +650,13 @@ function refreshMenu(x)
 function tabSlot(x)
 {
 	var c = theConfigPanel.children[0].children[0];
-	//var indentItemTrans = c.theLeftSlots.children[x].translation;
 	c.theLeftSlots.children[x].children[0].appearance.name = "GameHilite";
-	//c.theLeftSlots.children[x].SetTranslation(2.35, parseTrans(indentItemTrans,"Y"), parseTrans(indentItemTrans,"Z"));
 }
 
 function unTabSlot(x)
 {
 	var c = theConfigPanel.children[0].children[0];
-	//var indentItemTrans = c.theLeftSlots.children[x].translation;
 	c.theLeftSlots.children[x].children[0].appearance.name = "Material #1335";        
-	//c.theLeftSlots.children[x].SetTranslation(2, parseTrans(indentItemTrans,"Y"), parseTrans(indentItemTrans,"Z"));
 }
 
 function clearText()
@@ -884,21 +884,20 @@ DEF theConfigPanel Level
 					if(i < nMaxMenuItems)
 					{
 						Y = YStart - (i * YStep);
-						c.theLeftSlots.children[i].SetTranslation(parseTrans(TransLS,"X"), Y, parseTrans(TransLS,"Z"));
+						c.theLeftSlots.children[i].SetTranslation(TransLS.x, Y, TransLS.z);
 						c.theLeftSlots.children[i].visible = true;
-						c.theRightSlots.children[i].SetTranslation(parseTrans(TransRS,"X"), Y, parseTrans(TransRS,"Z"));
+						c.theRightSlots.children[i].SetTranslation(TransRS.x, Y, TransRS.z);
 						c.theRightSlots.children[i].visible = true;
 					}
 					else
 					{
 						c.theLeftSlots.children[i].visible = false;
-						c.theLeftSlots.children[i].SetTranslation(parseTrans(TransLS,"X"), Y, parseTrans(TransLS,"Z"));
+						c.theLeftSlots.children[i].SetTranslation(TransLS.x, Y, TransLS.z);
 						c.theRightSlots.children[i].visible = false;
-						c.theRightSlots.children[i].SetTranslation(parseTrans(TransRS,"X"), Y, parseTrans(TransRS,"Z"));
+						c.theRightSlots.children[i].SetTranslation(TransRS.x, Y, TransRS.z);
 					}
 				}
 				var cValue = getConfigMenuValue("default-ConfigPanelIcon");
-				//if(cValue.toLowerCase() == "globe") { c.GlobeIcon.visible = true; } else if(cValue.toLowerCase() == "uix") { c.UIXIcon.visible = true; } else { c.ConsoleIcon.visible = true; }
 				c.UIXIcon.visible = true;
 				buildconfigList();
 				tabSlot(0);

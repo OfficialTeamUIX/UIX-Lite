@@ -1,8 +1,8 @@
 // ntp.c: asynchronous SNTP clock synchronization for theConfig.
 //
-// The request is sent from the XAP caller thread using the same completion-
-// confirmed UDP path proven reliable by discord.c. A worker waits for the
-// reply and sets the UTC system clock, leaving timezone and DST settings alone.
+// The complete transaction runs on a worker: wait for networking, resolve the
+// server, send through the completion-confirmed UDP path, receive the reply,
+// and set the UTC system clock. The XAP caller returns immediately.
 
 // XAP entry points:
 //   SyncNetworkTimeAsync()  starts a query, returning 1 if accepted
@@ -46,6 +46,16 @@ static int s_ntpTimeoutMs = 5000;
 #define WSAEINPROGRESS 10036
 
 static WORD htons16(WORD v) { return (WORD)((v << 8) | (v >> 8)); }
+
+static int wait_network(int seconds)
+{
+	for (int i = 0; i < seconds * 10; i++)
+	{
+		if (net_ready() && net_address()) return 1;
+		SleepEx(100, 0);
+	}
+	return net_ready() && net_address();
+}
 
 static DWORD parse_ip(const char* s)
 {
@@ -186,10 +196,9 @@ static DWORD STDCALL ntp_receive_thread(void* parameter)
 	return 0;
 }
 
-int THISCALL Config_SyncNetworkTimeAsync(void* pThis)
+static DWORD STDCALL ntp_sync_thread(void* parameter)
 {
-	(void)pThis;
-	if (s_ntpStatus == 2) return 0;
+	(void)parameter;
 
 	char enabled[8] = "";
 	char server[256] = "";
@@ -205,7 +214,7 @@ int THISCALL Config_SyncNetworkTimeAsync(void* pThis)
 		dash_free(cfg);
 	}
 	if (!enabled_value(enabled)) { s_ntpStatus = -21001; return 0; }
-	if (!net_ready() || !net_address()) { s_ntpStatus = -21002; return 0; }
+	if (!wait_network(60)) { s_ntpStatus = -21002; return 0; }
 
 	int port = parse_uint(portText, 123, 1, 65535);
 	s_ntpTimeoutMs = parse_uint(timeoutText, 5000, 1000, 30000);
@@ -258,11 +267,19 @@ int THISCALL Config_SyncNetworkTimeAsync(void* pThis)
 		closesocket(s_ntpSocket); s_ntpSocket = INVALID_SOCKET;
 		return 0;
 	}
-	HANDLE thread = CreateThread(0, 0, (void*)ntp_receive_thread, 0, 0, 0);
+	return ntp_receive_thread(0);
+}
+
+int THISCALL Config_SyncNetworkTimeAsync(void* pThis)
+{
+	(void)pThis;
+	if (s_ntpStatus == 2) return 0;
+	s_ntpStatus = 2;
+	HANDLE thread = CreateThread(0, 0, (void*)ntp_sync_thread, 0, 0, 0);
 	if (!thread)
 	{
-		closesocket(s_ntpSocket); s_ntpSocket = INVALID_SOCKET;
-		s_ntpStatus = -21015; return 0;
+		s_ntpStatus = -21015;
+		return 0;
 	}
 	CloseHandle(thread);
 	return 1;
