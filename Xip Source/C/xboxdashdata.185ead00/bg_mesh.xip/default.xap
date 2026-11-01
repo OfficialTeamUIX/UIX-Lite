@@ -4,13 +4,12 @@ DEF theDNAwaver Transform
 	[
 		DEF theDummy Transform //Bug fix
 		{
-			alpha 0.01
 			children
 			[
 				Shape
 				{
 					appearance Appearance { material MaxMaterial { name "MenuCell" } }
-					geometry Mesh { url "Backing_dna.xm" }
+					geometry Mesh { url "blank_mesh.xm" }
 				}
 			]
 			translation 0 0 5000
@@ -32,7 +31,7 @@ DEF theDNAwaver Transform
 								Shape
 								{
 									appearance Appearance { material MaxMaterial { name "MenuCell" } }
-									geometry DEF DNA1_Mesh Mesh { url "" }
+									geometry DEF DNA1_Mesh Mesh { url "blank_mesh.xm" }
 								}
 							]
 						}
@@ -43,7 +42,7 @@ DEF theDNAwaver Transform
 								Shape
 								{
 									appearance Appearance { material MaxMaterial { name "FlatSrfc/PodParts" } }
-									geometry DEF DNAString1_Mesh Mesh { url "" }
+									geometry DEF DNAString1_Mesh Mesh { url "blank_mesh.xm" }
 								}
 							]
 						}
@@ -71,7 +70,7 @@ DEF theDNAwaver Transform
 								Shape
 								{
 									appearance Appearance { material MaxMaterial { name "MenuCell" } }
-									geometry DEF DNA3_Mesh Mesh { url "" }
+									geometry DEF DNA3_Mesh Mesh { url "blank_mesh.xm" }
 								}
 							]
 						}
@@ -82,7 +81,7 @@ DEF theDNAwaver Transform
 								Shape
 								{
 									appearance Appearance { material MaxMaterial { name "FlatSrfc/PodParts" } }
-									geometry DEF DNAString3_Mesh Mesh { url "" }
+									geometry DEF DNAString3_Mesh Mesh { url "blank_mesh.xm" }
 								}
 							]
 						}
@@ -110,7 +109,7 @@ DEF theDNAwaver Transform
 								Shape
 								{
 									appearance Appearance { material MaxMaterial { name "MenuCell" } }
-									geometry DEF DNA5_Mesh Mesh { url "" }
+									geometry DEF DNA5_Mesh Mesh { url "blank_mesh.xm" }
 								}
 							]
 						}
@@ -121,7 +120,7 @@ DEF theDNAwaver Transform
 								Shape
 								{
 									appearance Appearance { material MaxMaterial { name "FlatSrfc/PodParts" } }
-									geometry DEF DNAString5_Mesh Mesh { url "" }
+									geometry DEF DNAString5_Mesh Mesh { url "blank_mesh.xm" }
 								}
 							]
 						}
@@ -138,14 +137,14 @@ DEF theDNAwaver Transform
 function LoadBGMeshValues()
 {
 	var SkinFile = new Settings;
-	var CurrentSkin = GetSavedValue("Dashboard Settings","Current Skin");
-	var sPath = ConfigFolder + "Skins\\" + CurrentSkin + "\\" + CurrentSkin + ".xbx";
+	var CurrentSkin = GetSavedValue("default","CurrentSkin");
+	var sPath = GetSkinConfigPath(CurrentSkin);
 	SkinFile.file = sPath;
 	SkinFile.section = "BGMesh";
 	
 	var theDNA = SkinFile.GetValue("BGMesh").toLowerCase();
 	var DNAAlpha = SkinFile.GetValue("BGMeshAlpha");
-
+	
 	///dna spinner
 	var x = SkinFile.GetValue("BGMesh1-rpm");
 	var y = SkinFile.GetValue("BGMesh2-rpm");
@@ -189,4 +188,3 @@ function LoadBGMeshValues()
 	DNAString3_Mesh.url = dnaBackingMesh;
 	DNAString5_Mesh.url = dnaBackingMesh;
 }
-

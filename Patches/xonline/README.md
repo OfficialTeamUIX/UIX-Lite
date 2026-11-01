@@ -35,7 +35,7 @@ Keep generated filenames below the FATX 42-character limit.
 
 ## Skin behavior
 
-The patch reads `[Dashboard Settings] Current Skin` from
+The patch reads `[default] CurrentSkin` from
 `T:\UIXLite\config.ini` when XOnline Dashboard starts. `T:` is the dashboard
 title-data mapping for `\Device\Harddisk0\Partition1\TDATA\fffe0000\`. The selected
 The `T:\UIXLite` and `T:\UIXLite\Skins` directories are created automatically

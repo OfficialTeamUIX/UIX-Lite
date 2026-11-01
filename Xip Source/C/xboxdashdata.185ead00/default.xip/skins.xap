@@ -23,7 +23,7 @@ function GetSkins()
 	var skinsArray = new Array();
 	var a;
 	
-	currentSkin = GetSavedValue("Dashboard Settings","Current Skin");
+	currentSkin = GetSavedValue("default","CurrentSkin");
 	
 	for(var i = 0; i < skinCount; i = i + 1)
 	{
@@ -78,16 +78,10 @@ function UpdateSkinMenu()
 	}
 }
 
-function StartSkinMenu()
-{
-	var c = theSkinsMenu.children[0].children[0];
-	nCurPlayerMenuItem = 0;
-}
-
 function ShowSkinInfo()
 {
 	var info = new Settings;
-	info.file = ConfigFolder + "Skins\\" + SkinMenuList[skinSelect] + "\\" + SkinMenuList[skinSelect] + ".xbx";
+	info.file = GetSkinConfigPath(SkinMenuList[skinSelect]);
 	info.section = "SkinInfo";
 	var author = info.GetValue("Author");
 	var date = info.GetValue("DateCreated");
@@ -102,9 +96,11 @@ function DoAction()
 	if (nCurPlayerMenuItem == 1) { ShowSkinInfo(); }
 	else if (nCurPlayerMenuItem == 0)
 	{
-		SetSavedValue("Dashboard Settings", "Current Skin", SkinMenuList[skinSelect]);
+		SetSavedValue("default", "CurrentSkin", SkinMenuList[skinSelect]);
 		theBGMeshInline.children[0].LoadBGMeshValues();
 		theConfig.ApplySkin();
+		theSkinBackground.isBound = false;
+		theSkinBackground.isBound = true;
 	}
 }
 

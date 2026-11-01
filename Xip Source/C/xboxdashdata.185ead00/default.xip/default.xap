@@ -4018,6 +4018,17 @@ function SetTitleName(x,y)
 	return TitleNamesFile.SetValue(a,b);
 }
 
+function GetSkinConfigPath(sSkin)
+{
+	var sBase = ConfigFolder + "Skins\\" + sSkin + "\\" + sSkin;
+	var sIni = sBase + ".ini";
+
+	if(theConfig.FileExists(sIni))
+		return sIni;
+
+	return sBase + ".xbx";
+}
+
 function EnsureDefaultValue(section, key, value)
 {
 	if(GetSavedValue(section, key) == "")
@@ -4045,8 +4056,7 @@ function EnsureConfigDefaults()
 	EnsureDefaultBoolean("default","AutoLaunchMedia",false);
 	EnsureDefaultBoolean("default","MainMenuOnAutoSignIn",true);
 	EnsureDefaultBoolean("default","BackgroundMusic",false);
-
-	EnsureDefaultValue("Dashboard Settings","Current Skin","Stock");
+	EnsureDefaultValue("default","CurrentSkin","Stock");
 
 	EnsureDefaultValue("MainMenu","MainMenuItems","5");
 	EnsureDefaultValue("MainMenu","Button1Text","MEMORY");

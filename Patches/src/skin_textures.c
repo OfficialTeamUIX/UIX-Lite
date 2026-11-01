@@ -36,6 +36,7 @@ typedef struct Tracked
 	DWORD home[3];   // its stock data, format, size
 	Tex*  skin;      // skin texture whose image live shows, or 0
 	char  base[40];
+	BYTE  persistent; // synthetic root resource has dashboard lifetime
 } Tracked;
 
 #define MAX_TRACKED 256
@@ -56,14 +57,16 @@ static void* parse_texture(const WCHAR* url, void* buf, DWORD size)
 	return tex;
 }
 
-// Tiny black 64x64 DXT1 XPR used as the stable home resource for an asset
-// absent from the retail XIP. Real skin backgrounds remain removable overlays.
+// Transparent 512x512 DXT1 XPR used as the stable home resource for an asset
+// absent from the retail XIP. It matches legacy skin-background geometry so a
+// resource already registered by D3D can be replaced live without changing
+// its cached dimensions/format.
 static Tex* make_blank_texture(void)
 {
 	static const WCHAR xbxName[] = {
 		'b','a','c','k','g','r','o','u','n','d','.','x','b','x',0
 	};
-	const DWORD total = 0x1000, header = 0x800;
+	const DWORD total = 0x40800, header = 0x800;
 	BYTE* xpr = (BYTE*)dash_malloc(total);
 	if (!xpr)
 		return 0;
@@ -73,7 +76,17 @@ static Tex* make_blank_texture(void)
 	((DWORD*)xpr)[1] = total;
 	((DWORD*)xpr)[2] = header;
 	((DWORD*)xpr)[3] = 0x00040001; // texture, one reference
-	((DWORD*)xpr)[6] = 0x06610c2a; // 64x64 DXT1
+	((DWORD*)xpr)[6] = 0x09a10c29; // 512x512 DXT1, legacy background layout
+	// DXT1 transparency requires color0 <= color1 and selector 3. Zeroed
+	// endpoints satisfy the first condition; select entry 3 for every pixel so
+	// a skin with no background leaves the dashboard scene fully transparent.
+	for (DWORD block = header; block + 7 < total; block += 8)
+	{
+		xpr[block + 4] = 0xff;
+		xpr[block + 5] = 0xff;
+		xpr[block + 6] = 0xff;
+		xpr[block + 7] = 0xff;
+	}
 	Tex* tex = (Tex*)parse_texture(xbxName, xpr, total);
 	dash_free(xpr);
 	return tex;
@@ -181,7 +194,7 @@ static void prune(void)
 	for (int i = 0; i < MAX_TRACKED; i++)
 	{
 		Tracked* e = &s_tex[i];
-		if (e->live && (e->live->common & 0xffff) == 1)
+		if (e->live && !e->persistent && (e->live->common & 0xffff) == 1)
 		{
 			e->live->data = e->home[0];
 			e->live->format = e->home[1];
@@ -191,6 +204,7 @@ static void prune(void)
 			D3DResource_Release(e->live);
 			e->live = 0;
 			e->skin = 0;
+			e->persistent = 0;
 		}
 	}
 }
@@ -212,6 +226,7 @@ static Tracked* track(Tex* live, const char* base)
 		e->home[1] = live->format;
 		e->home[2] = live->size;
 		e->skin = 0;
+		e->persistent = 0;
 		int k = 0;
 		for (; base[k] && k < (int)sizeof(e->base) - 1; k++)
 			e->base[k] = base[k];
@@ -244,10 +259,17 @@ void* __attribute__((fastcall)) patch_texture_from_xip(const WCHAR* url)
 	char base[64];
 	base_name(url, base, sizeof(base));
 	if (!(patch_features & FEATURE_SKINS)) return tex;
+	// Only resources that ApplySkin can override need persistent tracker slots.
+	// Tracking every dashboard texture can fill the table before late resources
+	// such as the optional background are requested.
+	if (!skin_is_skinnable(base)) return tex;
 
 	// No stock copy to hang it on: synthesize a tiny black home texture and
-	// use the normal tracked-overlay path. This supports repeated switching
-	// between skins with and without background.xbx.
+	// use the normal tracked-overlay path only for an explicitly supported
+	// skin asset. Other missing XIP resources must remain missing; fabricating
+	// objects for every unresolved URL changes unrelated scene behavior.
+	// background.xbx is explicitly listed, so repeated switching between skins
+	// with and without a background remains supported.
 	if (!tex || (tex->common & 0x70000) != TYPE_TEXTURE)
 	{
 		if (tex)
@@ -257,7 +279,10 @@ void* __attribute__((fastcall)) patch_texture_from_xip(const WCHAR* url)
 		{
 			Tracked* e = track(blank, base);
 			if (e)
+			{
+				e->persistent = 1;
 				skin_entry(e);
+			}
 			return blank;
 		}
 		return 0;

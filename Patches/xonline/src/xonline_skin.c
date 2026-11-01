@@ -86,7 +86,7 @@ static void ensure_skin(void)
     static char cfg[4096];
     if(!read_file("T:\\UIXLite\\config.ini",cfg,sizeof(cfg)))return;
     s_skinDrive='T';
-    ini_value(cfg,"Dashboard Settings","Current Skin",s_skin,sizeof(s_skin));
+    ini_value(cfg,"default","CurrentSkin",s_skin,sizeof(s_skin));
     if(!s_skin[0]){s_loaded=1;return;}
     if(s_skin[0])
     {

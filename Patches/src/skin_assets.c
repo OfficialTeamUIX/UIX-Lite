@@ -1,6 +1,6 @@
-// skin_assets.c: aliases for skin assets. Every texture requested through the
-// XIP texture loader is skinnable; this list remains for mesh eligibility and
-// alternate filenames.
+// skin_assets.c: texture/mesh assets eligible for live skin overrides, plus
+// aliases used by legacy skin packs. Limiting persistent tracking to this list
+// preserves slots for optional late-loaded resources such as background.xbx.
 
 #include "dash5960.h"
 

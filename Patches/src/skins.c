@@ -1,7 +1,8 @@
 // skins.c: Theseus-style color skins on the retail material table.
 //
 // Retail colors stay as the dashboard built them; a skin only overrides the
-// materials it lists. Same .xbx format as Theseus: [Material] then
+// materials it lists. The file may use .ini or the Theseus .xbx extension:
+// [Material] then
 // Color=r,g,b,a for solid/backing/modulate, ColorA/ColorB for the falloff
 // family. Keys, EggGlow and EggGlowPulse pick their colors in Setup every
 // frame, so they're left alone for now.
@@ -15,6 +16,7 @@
 static DWORD s_retail[MAX_MATERIALS][2];
 static int s_nRetail;
 #define SKIN_DIR    "T:\\UIXLite\\Skins\\"
+
 
 char g_szSkin[64];
 static int s_bootSkinNameLoaded;
@@ -297,17 +299,27 @@ static int skin_apply_colors(const char* name)
 	int i = 0;
 	for (const char* s = SKIN_DIR; *s && i < 150; s++)
 		path[i++] = *s;
-	// Theseus layout: Skins\<Name>\<Name>.xbx, with the skin's textures beside it
+	// Skin layout: Skins\<Name>\<Name>.ini or the legacy Theseus .xbx,
+	// with the skin's textures beside it. Prefer .ini when both exist.
 	for (const char* s = name; *s && i < 100; s++)
 		path[i++] = *s;
 	path[i++] = '\\';
 	for (const char* s = name; *s && i < 150; s++)
 		path[i++] = *s;
-	for (const char* s = ".xbx"; *s && i < 159; s++)
+	int extension = i;
+	for (const char* s = ".ini"; *s && i < 159; s++)
 		path[i++] = *s;
 	path[i] = 0;
 
 	char* text = skin_read_file(path, 0);
+	if (!text)
+	{
+		i = extension;
+		for (const char* s = ".xbx"; *s && i < 159; s++)
+			path[i++] = *s;
+		path[i] = 0;
+		text = skin_read_file(path, 0);
+	}
 	if (!text)
 	{
 		OutputDebugStringA("[skins] skin file not found\n");
@@ -319,7 +331,8 @@ static int skin_apply_colors(const char* name)
 	return 1;
 }
 
-// Retail colors, then Skins\<name>.xbx on top; an empty name leaves retail.
+// Retail colors, then Skins\<name>\<name>.ini (or .xbx) on top; an empty
+// name leaves retail.
 // This is the live ApplySkin path, after scene construction has completed.
 int skin_apply(const char* name)
 {
@@ -335,7 +348,7 @@ void skin_apply_current(void);
 // The root XIP may request textures before material initialization selects
 // the configured skin. Read the boot name once for that early texture path.
 // ApplySkin deliberately does not use this cache: it must reread config.ini
-// whenever the UI changes Current Skin.
+// whenever the UI changes CurrentSkin.
 void skin_ensure_boot_name(void)
 {
 	if (s_bootSkinNameLoaded)
@@ -345,7 +358,7 @@ void skin_ensure_boot_name(void)
 	char* cfg = skin_read_file(CONFIG_PATH, 0);
 	if (cfg)
 	{
-		ini_value(cfg, "Dashboard Settings", "Current Skin", g_szSkin, sizeof(g_szSkin));
+		ini_value(cfg, "default", "CurrentSkin", g_szSkin, sizeof(g_szSkin));
 		dash_free(cfg);
 	}
 }
@@ -362,7 +375,7 @@ void patch_material_init(void)
 	}
 }
 
-// Theseus's key: [Dashboard Settings] Current Skin
+// Selected skin key: [default] CurrentSkin
 void skin_apply_current(void)
 {
 	char name[64];
@@ -370,7 +383,7 @@ void skin_apply_current(void)
 	char* cfg = skin_read_file(CONFIG_PATH, 0);
 	if (cfg)
 	{
-		ini_value(cfg, "Dashboard Settings", "Current Skin", name, sizeof(name));
+		ini_value(cfg, "default", "CurrentSkin", name, sizeof(name));
 		dash_free(cfg);
 	}
 	skin_apply(name);

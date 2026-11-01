@@ -30,6 +30,10 @@ Pick features with `--only` or `--skip` (comma-separated):
 | `config` | File operations, XBE title information, and LAN-address functions exposed to XAP |
 | `ftp` | FTP file server on port 21 for pushing files to the console over the LAN |
 
+Each skin's settings may be stored as either
+`T:\UIXLite\Skins\<Name>\<Name>.ini` or the legacy Theseus
+`T:\UIXLite\Skins\<Name>\<Name>.xbx`. If both exist, `.ini` takes precedence.
+
 Every XBX texture requested by the 5960 dashboard is eligible for a same-name
 override in the selected skin folder. The built-in asset groups additionally
 provide compatible alias names. Mesh eligibility remains separately limited.
@@ -133,6 +137,13 @@ in the selected skin replaces its retail mesh; `cellwall.xm` and
 absent, the saved archive-qualified XIP path restores the retail mesh
 synchronously when `ApplySkin()` runs.
 
+`ApplySkin()` reloads a Mesh only when it is currently using a skin override or
+the newly selected skin supplies one. Unrelated retail meshes are left in place
+so they retain the Inline/XIP context in which they were originally resolved.
+Each tracked Mesh also remembers its last successfully submitted URL. If XAP
+changes that URL while the node is hidden, `ApplySkin()` reloads just that node;
+the saved archive-qualified path supplies the original Inline/XIP directory.
+
 ### Script functions added to theConfig
 
 Callable from XAP as `theConfig.<name>(...)`:
@@ -217,7 +228,7 @@ That rebuilds `bin/`; commit it with the source change.
 
 `xonline/patch.py` is a separate, hash-locked patcher for the included
 `xonlinedash.xbe` (`SHA-256 FFE013D6...714D`). It reads the same
-`[Dashboard Settings] Current Skin` value each time XOnline Dashboard starts.
+`[default] CurrentSkin` value each time XOnline Dashboard starts.
 It applies `Color`, `ColorA`, and `ColorB` values to matching XOnline material
 names. XBX textures found beside the selected skin's XBX file override files
 with the same name under `B:\Media\Xbx`; missing replacements fall back to the
