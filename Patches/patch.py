@@ -70,7 +70,11 @@ INPLACE = [
     (0x0003D4C8, "75", "eb", "xipsig", "jmp: don't reboot when the signature section is missing"),
     (0x0003D520, "75", "eb", "xipsig", "jmp: don't reboot when the digest table is empty"),
     (0x0003D5BA, "6a04ff1518200100", "9090909090909090", "xipsig", "nop: don't reboot when the table's signature fails"),
-    (0x0003D863, "0f8385000000", "909090909090", "xipsig", "nop: read chunks the table doesn't list"),
+    # If this chunk has no digest entry, accept it without comparing past the
+    # digest array.  EDX must also be cleared because the success path stores it
+    # as the new buffer offset.  Layout: jb compare; xor edx,edx; jmp success.
+    (0x0003D863, "0f8385000000", "720433d2eb19", "xipsig",
+     "accept unlisted chunks safely and reset the chunk-buffer offset"),
     (0x0003D880, "756c", "9090", "xipsig", "nop: ignore a chunk digest mismatch"),
     # The second XIP reader, same three checks
     (0x0003EB13, "75", "eb", "xipsig", "jmp: don't reboot when the signature section is missing"),
