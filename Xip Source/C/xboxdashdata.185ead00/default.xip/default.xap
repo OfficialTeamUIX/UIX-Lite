@@ -2234,7 +2234,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "261031"; //Date of commit YYMMDD
+	sBuildDate = "261102"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -3769,7 +3769,7 @@ function ExecuteFile(sPath)
 	}
 	else if(theConfig.NtFileExists(launchPath + "\\" + launchXbe)) 
 	{
-		theMainMenu.children[0].children[0].theMainMenuLevel.visible = false;
+		if(g_theMainMenuLoaded) theMainMenu.children[0].children[0].theMainMenuLevel.visible = false;
 		theLaunchGameLevel.GoTo();
 	}
 }

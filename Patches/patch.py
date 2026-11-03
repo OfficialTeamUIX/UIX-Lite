@@ -67,7 +67,11 @@ INPLACE = [
 
     # XIP loader. A retail XIP carries a signed table of chunk digests; any
     # mismatch reboots the box (push 4 / call HalReturnToFirmware).
-    (0x0003D4C8, "75", "eb", "xipsig", "jmp: don't reboot when the signature section is missing"),
+    # The retail failure path reboots when the signature section is absent.
+    # Return from the table lookup instead; jumping only over the reboot would
+    # fall into a dereference of the null section pointer at 0x3D4D2.
+    (0x0003D4C8, "75086a04ff1518200100", "7505e95b000000eb0190", "xipsig",
+     "return safely when the signature section is missing"),
     (0x0003D520, "75", "eb", "xipsig", "jmp: don't reboot when the digest table is empty"),
     (0x0003D5BA, "6a04ff1518200100", "9090909090909090", "xipsig", "nop: don't reboot when the table's signature fails"),
     # If this chunk has no digest entry, accept it without comparing past the
@@ -75,10 +79,23 @@ INPLACE = [
     # as the new buffer offset.  Layout: jb compare; xor edx,edx; jmp success.
     (0x0003D863, "0f8385000000", "720433d2eb19", "xipsig",
      "accept unlisted chunks safely and reset the chunk-buffer offset"),
+    # A completely absent digest table leaves EDX null. Route it to the same
+    # unsigned-chunk path above instead of the retail reboot. The four NOPs
+    # replace the unused tail of the original six-byte near JE.
+    (0x0003D854, "0f84940000008b4314", "8b431485d2740a9090", "xipsig",
+     "accept chunks safely when no digest table exists"),
     (0x0003D880, "756c", "9090", "xipsig", "nop: ignore a chunk digest mismatch"),
     # The second XIP reader, same three checks
-    (0x0003EB13, "75", "eb", "xipsig", "jmp: don't reboot when the signature section is missing"),
-    (0x0003EBE7, "0f8483", "e98400", "xipsig", "je -> jmp (same target): skip the reboot"),
+    # Preserve the non-null fall-through to 0x3EB1D. On the null path, create
+    # the same ESI/EDI/EBX save frame expected by the common epilogue before
+    # returning false. Jumping over only the reboot both dereferences NULL+0x80
+    # and leaves the epilogue's register pops unbalanced.
+    (0x0003EB13, "75086a04ff1518200100", "7508565753e953010000", "xipsig",
+     "return safely with a balanced frame when the global signature section is missing"),
+    # No matching digest entry means this file is unsigned. Set the success
+    # result and use the common epilogue directly; no read buffer exists yet.
+    (0x0003EBE7, "0f84830000006a04ff1518200100", "c744241001000000eb7f90909090", "xipsig",
+     "accept a file with no digest entry without entering buffer cleanup"),
     (0x0003EC54, "74", "eb", "xipsig", "jmp: ignore a digest mismatch"),
 
     # DVD player setup. Retail refuses a disc whose region doesn't match the
