@@ -96,11 +96,21 @@ DEF thePeriodicSounds Group
 	]
 }
 
+function TryStartBackgroundMusic()
+{
+	if(bBackgroundMusicPending & BGMon & bControlPanelControlsLoaded == true & bControlPanelDisplayLoaded == true)
+	{
+		bBackgroundMusicPending = false;
+		theControlPanelControlsInline.children[0].MusicPlayerStart();
+	}
+}
+
 function EnableAmbientAudio()
 {
 	if(BGMon)
 	{
-		theControlPanelControlsInline.children[0].MusicPlayerStart();
+		bBackgroundMusicPending = true;
+		TryStartBackgroundMusic();
 	}
 	else
 	{
@@ -119,6 +129,7 @@ function EnableAmbientAudio()
 
 function DisableAmbientAudio()
 {
+	bBackgroundMusicPending = false;
 	for (var i = 0; i < theAmbientSounds.children.length(); i = i + 1)
 		theAmbientSounds.children[i].isActive = false;
 
@@ -2249,6 +2260,9 @@ var bMainMenuOnAutoSignIn;
 var bInfoPanelLoaded;
 var bMainMenuActive;
 var bUseREZN8Menu;
+var bControlPanelControlsLoaded;
+var bControlPanelDisplayLoaded;
+var bBackgroundMusicPending;
 
 // Discord Presence
 var bPresenceEnabled;
@@ -2307,6 +2321,7 @@ function initialize()
 	bNetworkReady = false;
 	bInfoPanelLoaded = false;
 	bMainMenuActive = false;
+	bBackgroundMusicPending = false;
 	BGMst = 0;
 	BGMtr = 0;
 	vCurAlbum = "";
@@ -2349,7 +2364,7 @@ function initialize()
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
 	bUseREZN8Menu = (GetSavedValue("default","MainOrbStyle") == "REZN8");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
-	bMainMenuOnAutoSignIn = GetSavedBooleanValue("default","MainMenuOnAutoSignIn");true;
+	bMainMenuOnAutoSignIn = GetSavedBooleanValue("default","MainMenuOnAutoSignIn");
 	btHcScreenSaver = GetSavedBooleanValue("default","UsetHcScreenSaver");
 	bUseMainMenuAttract = GetSavedBooleanValue("default","UseMainMenuAttract");
 	bUseUnderlay = GetSavedBooleanValue("default","UseListUnderlay");
@@ -2782,8 +2797,14 @@ DEF theInfoPanel Layer
 
 DEF theControlPanelControlsInline Inline
 {
+	preload true
 	visible true
 	url "controlpanel.xap"
+	function onLoad()
+	{
+		bControlPanelControlsLoaded = true;
+		TryStartBackgroundMusic();
+	}
 }
 
 DEF theControlPanelLayer Layer
@@ -2810,6 +2831,11 @@ DEF theControlPanelLayer Layer
 				{
 					preload true
 					url "controlpanel/default.xap"
+					function onLoad()
+					{
+						bControlPanelDisplayLoaded = true;
+						TryStartBackgroundMusic();
+					}
 				}
 			]
 		}
