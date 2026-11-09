@@ -145,7 +145,6 @@ DEF theREZN8Menu Level
 					bInRoot = true;
 					nCurHDMenuItem0  = TotalSections - 1;
 					if(TotalSections > 5) nCurHDMenuScroll0 = TotalSections - 5;
-					theInfoPanelInline.children[0].HideInfoPanel();
 					enterREZN8HDlv1();
 				}
 			}
@@ -850,6 +849,11 @@ function enterREZN8HDlv1()
 	c.theMovies_inner.visible = false;
 	c.theMemory_inner.visible = false;
 	c.theSettings_inner.visible = false;
+	c.theGamesTitle.visible = false;
+	c.theMoviesTitle.visible = false;
+	c.theMusicTitle.visible = false;
+	c.theMemoryTitle.visible = false;
+	c.theSettingsTitle.visible = false;
 
 	if(bFromUpdate) 
 	{
@@ -865,12 +869,6 @@ function enterREZN8HDlv1()
 	c.theMemoryUnit.SetTranslation(50, 200, 30);   //testing
 	c.theSettingsUnit.SetTranslation(-85, 5, 65);
 	//c.theSettingsUnit.SetRotation(0, 1, 0, 0.34906585);
-	c.theMoviesTitle.visible = false;
-	c.theGamesTitle.visible = false;
-	c.theMoviesTitle.visible = false;
-	c.theMusicTitle.visible = false;
-	c.theMemoryTitle.visible = false;
-	c.theSettingsTitle.visible = false;
 	c.theIcons.visible = true;
 
 	bInRecentTitles = false;
@@ -926,6 +924,8 @@ function enterREZN8HDlv2()
 	c.theIcons.SetTranslation(95.5,-3.3,-20 );
 	c.theScreenOutput.fade = 0.75;
 	c.theScreenOutput.SetAlpha(0.30);
+	nPlayScroll0 = 0;
+	nPlayCursor0 = 0;
 	UpdateTrackList();
 }
 
