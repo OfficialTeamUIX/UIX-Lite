@@ -23,3 +23,9 @@ $OBJCOPY -O binary build/uixlite.elf bin/uixlite.bin
 $NM build/uixlite.elf | grep -E " [TtDd] patch_" > bin/symbols.txt
 cat bin/symbols.txt
 ls -l bin/uixlite.bin
+PYTHON=${PYTHON:-python3}
+command -v "$PYTHON" >/dev/null 2>&1 || PYTHON=python
+"$PYTHON" make_package.py \
+  --output bin/xboxdash-5960-uixlite.vxp \
+  --manifest package-manifest.ini \
+  --payload bin/uixlite.bin --symbols bin/symbols.txt

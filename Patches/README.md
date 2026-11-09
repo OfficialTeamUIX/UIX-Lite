@@ -1,22 +1,37 @@
 # UIX Lite XBE patches
 
-Everything UIX Lite changes in `xboxdash.xbe`, as source. `patch.py` applies it
-to your own retail 5960 dashboard; no patched XBE is shipped.
+This directory contains the source, command-line patcher, and VisualXIP package
+for applying the UIX Lite changes to a retail 5960 `xboxdash.xbe`.
 
 ## Patching
 
-You need Python 3 and the retail 5960 `xboxdash.xbe` (from `C:\` on the Xbox).
+You need the retail 5960 `xboxdash.xbe` (from `C:\` on the Xbox) and one of
+these patchers:
+
+- Python 3 for the command-line `patch.py` patcher; or
+- the latest VisualXIP for the graphical `.vxp` patch package.
+
+### Python command line
 
 ```
 python3 patch.py xboxdash.xbe xboxdash_uixlite.xbe
 ```
 
-The patcher checks the input is the retail 5960 XBE (MD5
-`08d3a6f99184679aa13008d6397bacce`) and refuses anything else, and never
-touches the input. Copy the output back to `C:\xboxdash.xbe` along with the
-UIX Lite XIPs.
+### VisualXIP
 
-Pick features with `--only` or `--skip` (comma-separated):
+Open `bin/xboxdash-5960-uixlite.vxp` in the latest VisualXIP, select the retail
+`xboxdash.xbe` as the input, choose the features you want, and save the patched
+XBE to a new file. The `.vxp` contains the payload, symbols, feature
+definitions, hooks, and in-place edits; it does not contain a patched Microsoft
+XBE.
+
+Both methods verify that the input is the retail 5960 XBE (MD5
+`08d3a6f99184679aa13008d6397bacce`), refuse anything else, and never modify
+the input file. Copy the newly patched output back to
+`C:\xboxdash.xbe` along with the UIX Lite XIPs.
+
+In VisualXIP, select features in the feature list. On the command line, use
+`--only` or `--skip` with comma-separated feature names:
 
 | Feature | What it does |
 |---|---|
@@ -115,6 +130,7 @@ modded BIOS.
 | `src/*.c` | The code the patches add, built into one new section (`.uixlite`, at `0x001fe000`) |
 | `src/dash5960.h` | The retail addresses the code calls into |
 | `bin/uixlite.bin`, `bin/symbols.txt` | That code, prebuilt by `build.sh`, so patching needs only Python |
+| `bin/xboxdash-5960-uixlite.vxp` | Self-contained VisualXIP patch package generated from `package-manifest.ini`, the payload, and symbols |
 | `patch.py` | Adds the section, points the hook sites at it, and makes the in-place edits (listed in the file with the instructions they write) |
 
 Hooks are 5-byte `call`/`jmp` redirects at these sites:
@@ -222,7 +238,8 @@ Only needed if you change `src/`. Needs LLVM (`clang`, `ld.lld`,
 ./build.sh
 ```
 
-That rebuilds `bin/`; commit it with the source change.
+That rebuilds `bin/uixlite.bin`, `bin/symbols.txt`, and
+`bin/xboxdash-5960-uixlite.vxp`; commit them with the source change.
 
 ## XOnline Dashboard skin patch
 

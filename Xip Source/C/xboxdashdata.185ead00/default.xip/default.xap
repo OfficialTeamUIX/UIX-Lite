@@ -562,35 +562,6 @@ DEF theBGMesh Layer
 }
 
 ///////////////////////////////////////////////////////////////////
-DEF theInfoPanel Layer
-{
-	viewpoint Viewpoint
-	{
-		fieldOfView 1.2
-		position 000000 -30.299999 120.300003
-	}
-
-	children
-	[
-		DEF theInfoPanelTransform Transform
-		{
-			children
-			[
-				DEF theInfoPanelInline Inline
-				{
-					preload true
-					url "info_panel/default.xap"
-					function onLoad()
-					{
-						theInfoPanelInline.children[0].UpdateInfoPanel();
-					}
-				}
-			]
-		}
-	]
-}
-
-///////////////////////////////////////////////////////////////////
 DEF theSkinsInline Inline
 {
 	visible false
@@ -1980,7 +1951,7 @@ DEF theMainMenu Level
 		sleep nTime;
 		nTime = 0.1;
 		var Moving = theMainMenu.children[0].children[0].theMainMenuLevel.moving;
-		if(bNetworkReady == false & (theConfig.GetIPAddress() != "0.0.0.0") & Moving == false)
+		if(bNetworkReady == false & (theConfig.GetIPAddress() != "0.0.0.0") & bInfoPanelLoaded)
 		{
 			bNetworkReady = true;
 			if(bPresenceEnabled) theConfig.SendDiscordRelayAsync("FFFE0000");
@@ -2081,7 +2052,7 @@ DEF theMainMenu Level
 		{
 			UpdateMainMenu();
 		}
-		if(theInfoPanelInline.children.length() > 0)
+		if(bInfoPanelLoaded)
 		{
 			if(bFtpEnabled & bShowInfoPanel)
 				theInfoPanelInline.children[0].ShowInfoPanel();
@@ -2215,6 +2186,7 @@ var PartitionLocations;
 var sBuildDate;
 var sLauncherMenu;
 var bMainMenuOnAutoSignIn;
+var bInfoPanelLoaded;
 
 // Discord Presence
 var bPresenceEnabled;
@@ -2234,7 +2206,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "261102"; //Date of commit YYMMDD
+	sBuildDate = "261104"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2271,6 +2243,7 @@ function initialize()
 	bShowDVDStopBackground = true;
 	bCleanupSpecifiedDrive = false;
 	bNetworkReady = false;
+	bInfoPanelLoaded = false;
 	BGMst = 0;
 	BGMtr = 0;
 	vCurAlbum = "";
@@ -2656,6 +2629,7 @@ function StartScreenSaverView()
 		theMainMenuWaver.rpm = 2.25;
 		theScreen.brightness = 0.8;
 		EnableCurrentAlternateViewpoint();
+		theInfoPanel.visible = false;
 	}
 	else if(CurrentViewpoint == theLauncherInline.children[0].LauncherViewpoint | CurrentViewpoint == theLauncherInline.children[0].theTitleListViewpoint)
 	{
@@ -2685,6 +2659,7 @@ function StopScreenSaverView()
 		c.select.SetAlpha(1);
 		theMainMenuWaver.rpm = 0.75;
 		DisableCurrentAlternateViewpoint();
+		theInfoPanel.visible = true;
 	}
 	else if(CurrentViewpoint == theLauncherInline.children[0].LauncherViewpoint | CurrentViewpoint == theLauncherInline.children[0].theTitleListViewpoint)
 	{
@@ -2700,7 +2675,40 @@ function StopScreenSaverView()
 	}    
 }
 
-// Audio PLayer//////////////////////////////////////////////////////////////
+// FTP Info Panel ///////////////////////////////////////////////////////////
+DEF theInfoPanel Layer
+{
+	fade 0.75 
+	transparency 0.95
+	
+	viewpoint Viewpoint
+	{
+		fieldOfView 1.2
+		position 000000 -30.299999 120.300003
+	}
+
+	children
+	[
+		DEF theInfoPanelTransform Transform
+		{
+			children
+			[
+				DEF theInfoPanelInline Inline
+				{
+					preload true
+					url "info_panel/default.xap"
+					function onLoad()
+					{
+						theInfoPanelInline.children[0].UpdateInfoPanel();
+						bInfoPanelLoaded = true;
+					}
+				}
+			]
+		}
+	]
+}
+
+// Audio PLayer /////////////////////////////////////////////////////////////
 
 DEF theControlPanelControlsInline Inline
 {

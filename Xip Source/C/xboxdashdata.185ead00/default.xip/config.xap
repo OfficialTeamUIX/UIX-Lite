@@ -414,7 +414,9 @@ function toggle345()
 function toggleMOS()
 {
 	var b = getConfigMenuValue(configValues[LV2Item]);
-	if(b.toLowerCase() == "thc") { refreshMenu("Stock"); } else { refreshMenu("tHc"); }
+	if(b.toLowerCase() == "thc") { refreshMenu("Stock"); } 
+	else if(b.toLowerCase() == "stock") { refreshMenu("REZN8"); } 
+	else { refreshMenu("tHc"); }
 }
 
 function toggleYX()

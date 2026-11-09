@@ -13,4 +13,7 @@ if not exist bin mkdir bin
 %NM% build\xonline_skin.elf > build\symbols-all.txt || exit /b 1
 findstr /R /C:" [TtDd] patch_" build\symbols-all.txt > bin\symbols.txt || exit /b 1
 type bin\symbols.txt
+set "PYTHON=python"
+where py >nul 2>nul && set "PYTHON=py -3"
+%PYTHON% ..\make_package.py --output "bin\xonlinedash-uixlite.vxp" --manifest "package-manifest.ini" --payload "bin\xonline_skin.bin" --symbols "bin\symbols.txt" || exit /b 1
 exit /b 0

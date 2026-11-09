@@ -60,6 +60,12 @@ for %%F in ("bin\uixlite.bin") do (
     echo %%~fF: %%~zF bytes
 )
 
+echo Creating xboxdash-5960-uixlite.vxp...
+set "PYTHON=python"
+where py >nul 2>nul && set "PYTHON=py -3"
+%PYTHON% make_package.py --output "bin\xboxdash-5960-uixlite.vxp" --manifest "package-manifest.ini" --payload "bin\uixlite.bin" --symbols "bin\symbols.txt"
+if errorlevel 1 goto :error
+
 echo Build completed successfully.
 exit /b 0
 

@@ -17,6 +17,8 @@ Some of these features include;
 * A customizable Launcher to launch titles from your Xbox hard disk, including `default.iso` / `default.cci` disc images on Cerbios.
 * An in-dashboard FTP server for pushing files to the console over the network.
 * Skins you can switch live from Settings>Skins.
+* Built-in Discord Presence updating via xbdStats.
+* Built-in NTP time synchonization.
 * The ability to customize the Main Menu items.
 * An option to select the tHc Main Orb style.
 * Define up to four QuickLaunch titles.
@@ -30,19 +32,19 @@ Some of these features include;
 
 * DO NOT USE ON AN UNMODIFIED XBOX. It won’t work, and you'll brick your Xbox. Make sure you have a modchip or softmod installed that doesn’t rely on the dashboard files to boot.
 * DO NOT DELETE YOUR ORIGINAL MS DASHBOARD FILES. SIMPLY REPLACE THE EXISTING FILES WITH THE MODIFIED FILES ONLY. KEEP ANY UNMODIFIED FILES.
-* Download the latest UIX-Lite-v0.5.XXXXXX.zip from the assets in the pre-patched release.
+* Download the latest UIX-Lite-v0.6.XXXXXX.zip from the assets in the pre-patched release.
 * Extract and Copy the pre-patched 5960 Dashboard files via ftp to the root of the C partition on your Xbox.
 
 ## How-To (From Source)
 
-* Every change UIX Lite makes to `xboxdash.xbe` is in [Patches](Patches), as source.
-* Run `python3 patch.py xboxdash.xbe xboxdash_uixlite.xbe` on your own retail 5960 `xboxdash.xbe`, then copy the result to `C:\xboxdash.xbe` with the UIX Lite XIPs. See [Patches/README.md](Patches/README.md) for the feature list.
+* Every change UIX Lite makes to `xboxdash.xbe` and xonlinedash.xbe is in [Patches](Patches), as source.
+* Run `python3 patch.py xboxdash.xbe xboxdash_uixlite.xbe` or use VisualXip's patcher on your own retail 5960 `xboxdash.xbe`, then copy the result to `C:\xboxdash.xbe` with the UIX Lite XIPs. See [Patches/README.md](Patches/README.md) for the feature list.
 
 ## How-To (Auto-Magically)
 
-* Download `UIXToolbox.xbe` from the `Releases` section of the repository.
-* Install it as an application on your Xbox, for example in `E:\Apps\UIXLiteToolbox\default.xbe`.
-* Once running the `UIXToolbox.xbe`, go to the installer section, `Restore Original MSDash 5960`, then `Install UIX Lite`.
+* Download `UIXInstaller.xbe` from the `Releases` section of the repository.
+* Install it as an application on your Xbox, for example in `E:\Apps\UIX Lite Installer\default.xbe`.
+* Once running the `UIXInstaller.xbe`, select `Install UIX Lite`.
 * Congratulations! You have successfully installed UIX Lite on your Xbox.
 
 
@@ -61,21 +63,21 @@ Some of these features include;
  
 ## Language Support
 
-* You can add Japanese, German, French, Spanish, Italian, Korean, Chinese, and Portuguese language translations by placing the optional xlate.ini into the ```T:\UIXLite\``` folder.
+* You can add Japanese, German, French, Spanish, Italian, Korean, Chinese, and Portuguese language translations by placing the optional xlate.ini into the ```E:\TDATA\fffe0000\UIXLite\``` folder.
 
 ## Skinning Support
 
 * As of UIX Lite v0.4 you are now able to apply custom skins to UIX Lite. Simply replace the skin.xip and xboxdash.xbe with ones from a prebuilt skin or use the tools created by Rocky5, and provided here, such as the [Xboxdash 5960 Colourizer](https://github.com/OfficialTeamUIX/UIX-Lite/tree/main/Tools/Colour%20Patcher) to patch the colors in the xboxdash.xbe or the [UIX Lite Skins Maker](https://github.com/OfficialTeamUIX/UIX-Lite/tree/main/Tools/Xip%20Skin%20maker) to create your own custom skin.
 * As of UIX Lite v0.5 the Skin.xip is optional and can be removed if desired.
+* As of UIX Lite v0.6 the Skin.xip is is no longer used and you are now able to apply custom skins in-dashboard using the Skins menu in Settings. Just add your custom skins to the ```E:\TDATA\fffe0000\UIXLite\Skins``` folder and they will be availible for selection in-dashboard.
 
 ## Launcher Icon Support
 
-* As of UIX Lite v0.4 you can now see the icon of your title as you browse through the list in the Launcher. For this feature to work you must have the Icons.ini located in ```T:\UIXLite\``` to indicate to UIX Lite the TitleID for each of your titles. The format is ```<FolderName>=<TitleID>``` where ```<FolderName>``` is the name of the directory that contains the title. 
+* As of UIX Lite v0.4 you can now see the icon of your title as you browse through the list in the Launcher. For this feature to work you must have the Icons.ini located in ```C:\UIX Configs\``` to indicate to UIX Lite the TitleID for each of your titles. The format is ```<FolderName>=<TitleID>``` where ```<FolderName>``` is the name of the directory that contains the title. 
 
  NOTE: As of Release v0.5, the icon files are no longer required to be inserted into the the default.xip and will be loaded directly from UDATA. 
-
-* You can use the "UIX Icon Installer" from the Tools release to create the Icons.ini automatically and also add any missing icons to your ```E:\UDATA``` if they are available in the online repository.
-
+ NOTE: As of Release v0.6, the Icons.ini is no longer required and the TitleID information will be automatically added to the cache.ini during the refresh action.
+ 
 ## Title Caching Support
 
 * As of UIX Lite v0.4 UIX Lite we have implemented title caching, which on first run will scan your partition for titles and add them to a cache. This is done so you don't have to rescan the partitions after every restart. As a consequence, if you add or remove any titles, the cache must be refreshed. This can be done by pressing Y while in the Launcher or by navigating to Setting>UIX Settings>General Settings>Rescan Partitions.
@@ -85,10 +87,14 @@ Some of these features include;
 [default]
 MainOrbStyle=Stock
 ShowInsignia=false
-ConfigPanelIcon=Globe
 LauncherOrbIcon=Xbox
 UseMainMenuAttract=false
 UsetHcScreenSaver=true
+UseListUnderlay=false
+AutoLaunchMedia=false
+MainMenuOnAutoSignIn=true
+BackgroundMusic=false
+CurrentSkin=Stock
 
 [MainMenu]
 MainMenuItems=5
@@ -127,7 +133,7 @@ Music=false
 XOnline=false
 Launcher=false
 Configuration=true
-StartFTP=false
+UIXUpdate=false
 Reboot=true
 Shutdown=true
 
@@ -137,6 +143,22 @@ QuickLaunchB=
 QuickLaunchX=
 QuickLaunchY=
 
+[NTP]
+Enabled=true
+Server=time.nist.gov
+Port=123
+Timeout=5000
+
+[FTP]
+Enabled=true
+User=xbox
+Pass=xbox
+Port=21
+
+[DiscordRelay]
+Enabled=true
+IP=10.0.2.2
+Port=1102
 ```
 
 ## Special Thanks

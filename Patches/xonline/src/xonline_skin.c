@@ -80,6 +80,7 @@ static int read_file(const char* path,char* dst,int cap)
     DWORD got=0; BOOL ok=ReadFile(h,dst,(DWORD)(cap-1),&got,0); CloseHandle(h);
     if(!ok)return 0; dst[got]=0; return (int)got;
 }
+
 static void ensure_skin(void)
 {
     if(s_loaded)return;
@@ -261,8 +262,8 @@ __asm__(
 
 void THISCALL patch_xonline_colors(void* object,DWORD a,DWORD b)
 {
-    ensure_skin();
     const char* name=object?*(const char**)((BYTE*)object+4):0;
+    ensure_skin();
     find_colors(name,&a,&b);
     *(DWORD*)((BYTE*)object+0x54)=a;
     *(DWORD*)((BYTE*)object+0x58)=b;
@@ -270,8 +271,8 @@ void THISCALL patch_xonline_colors(void* object,DWORD a,DWORD b)
 
 void THISCALL patch_xonline_rgba(void* object,float r,float g,float b,float a)
 {
-    ensure_skin(); DWORD c;
     const char* name=object?*(const char**)((BYTE*)object+4):0;
+    ensure_skin(); DWORD c;
     int found=find_color(name,&c);
     if(found)
     {

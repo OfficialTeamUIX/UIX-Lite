@@ -1,20 +1,35 @@
 # UIX Lite XOnline Dashboard patch
 
-This directory contains the separate, hash-locked patcher for the retail
-`xonlinedash.xbe`. No patched Microsoft XBE is distributed.
+This directory contains the source, hash-locked command-line patcher, and
+VisualXIP package for applying the UIX Lite changes to a supported retail
+`xonlinedash.xbe`.
 
 ## Patching
 
-You need Python 3 and the supported retail XOnline Dashboard XBE (SHA-256
-`FFE013D6067025281BC3C9BC9F9B62C99107BAAFDFB1005C2E98AE6DBC74714D`).
+You need the supported retail XOnline Dashboard `xonlinedash.xbe` (SHA-256
+`FFE013D6067025281BC3C9BC9F9B62C99107BAAFDFB1005C2E98AE6DBC74714D`) and one
+of these patchers:
+
+- Python 3 for the command-line `patch.py` patcher; or
+- the latest VisualXIP for the graphical `.vxp` patch package.
+
+### Python command line
 
 ```text
 python patch.py xonlinedash.xbe xonline_uix.xbe
 ```
 
-The input is never modified. All features are enabled by default. Select
-features with `--only` or remove features with `--skip`; names are
-comma-separated.
+### VisualXIP
+
+Open `bin/xonlinedash-uixlite.vxp` in the latest VisualXIP, select the supported
+retail `xonlinedash.xbe` as the input, choose the features you want, and save
+the patched XBE to a new file. The `.vxp` contains the payload, symbols,
+feature definitions, hooks, and in-place edits; it does not contain a patched
+Microsoft XBE.
+
+Both methods verify the retail input and do not modify it. All features are
+enabled by default. In VisualXIP, select features in the feature list. On the
+command line, use `--only` or `--skip` with comma-separated feature names.
 
 | Feature | What it does |
 |---|---|
@@ -72,5 +87,7 @@ macOS or Linux:
 
 The payload is linked at `0x00158D00` and placed into a verified empty cave in
 the supported retail XBE. The patcher checks every original hook byte before
-writing the output.
+writing the output. Both build scripts regenerate `bin/xonline_skin.bin`,
+`bin/symbols.txt`, and `bin/xonlinedash-uixlite.vxp`; commit all three with
+source changes.
 

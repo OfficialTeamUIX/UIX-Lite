@@ -17,3 +17,9 @@ mkdir -p build bin
 "$NM" build/xonline_skin.elf > build/symbols-all.txt
 grep -E ' [TtDd] patch_' build/symbols-all.txt > bin/symbols.txt
 cat bin/symbols.txt
+PYTHON=${PYTHON:-python3}
+command -v "$PYTHON" >/dev/null 2>&1 || PYTHON=python
+"$PYTHON" ../make_package.py \
+  --output bin/xonlinedash-uixlite.vxp \
+  --manifest package-manifest.ini \
+  --payload bin/xonline_skin.bin --symbols bin/symbols.txt
