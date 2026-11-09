@@ -126,8 +126,21 @@ function DisableAmbientAudio()
 		thePeriodicSounds.children[i].isActive = false;
 }
 
-// Transition sounds
-DEF theGamesMenuIn AudioClip { url "Audio/TransitionAudio/Games Main Menu In_LR.wav" volume 0.92 }
+function RefreshInfoPanel()
+{
+	if(bInfoPanelLoaded == false)
+		return;
+
+	var panel = theInfoPanelInline.children[0];
+	panel.UpdateInfoPanel();
+
+	if(bMainMenuActive & bFtpEnabled & bShowInfoPanel & bUseREZN8Menu == false)
+		panel.ShowInfoPanel();
+	else
+		panel.HideInfoPanel();
+}
+
+// Transition soundsDEF theGamesMenuIn AudioClip { url "Audio/TransitionAudio/Games Main Menu In_LR.wav" volume 0.92 }
 DEF theGamesMenuOut AudioClip { url "Audio/TransitionAudio/Games Main Menu Out_LR.wav" volume 0.92 }
 DEF theGamesSubMenuIn AudioClip {url "Audio/TransitionAudio/Games Sub Menu In_LR.wav" volume 0.92 }
 DEF theGamesSubMenuOut AudioClip {url "Audio/TransitionAudio/Games Sub Menu Out_LR.wav" volume 0.92 }
@@ -205,7 +218,11 @@ DEF theScreenSaver ScreenSaver
 	function OnStart()
 	{
 		theScreen.brightness = 0.1;
-		if(thcorb | btHcScreenSaver)
+		if (bUseREZN8Menu)
+		{
+			theREZN8Inline.children[0].EnterTestScreensaver();
+		}
+		else if(thcorb | btHcScreenSaver)
 		{
 			StartScreenSaverView();
 		}
@@ -214,7 +231,11 @@ DEF theScreenSaver ScreenSaver
 	function OnEnd()
 	{
 		theScreen.brightness = 1;
-		if(thcorb | btHcScreenSaver)
+		if (bUseREZN8Menu)
+		{
+			theREZN8Inline.children[0].ExitTestScreensaver();
+		}
+		else if(thcorb | btHcScreenSaver)
 		{
 			StopScreenSaverView();
 		}
@@ -575,6 +596,7 @@ function GoToSkins()
 	if( theSkinsInline.visible ) { theSkinsInline.children[0].theSkinsMenu.GoTo(); }
 	else { theSkinsInline.visible = true; }
 }
+
 ////////////////////////////////////////////////////////////////////////////
 
 DEF theLauncherInline Inline
@@ -713,6 +735,26 @@ function GoToUIXConfig()
 		theUIXConfigInline.visible = true;
 }
 	
+////////////////////////////////////////////////////////////////////////////
+
+DEF theREZN8Inline Inline
+{
+	visible false
+	url "rezn8.xap"
+	
+	function onLoad() 
+	{
+		if(bFromUpdate) theREZN8Inline.children[0].theREZN8Viewpoint.jump = true;
+		theREZN8Inline.children[0].theREZN8Menu.GoTo(); 
+	}
+}
+
+function GoToREZN8()
+{
+	if( theREZN8Inline.visible ) { theREZN8Inline.children[0].theREZN8Menu.GoTo(); }
+	else { theREZN8Inline.visible = true; }
+}
+
 ////////////////////////////////////////////////////////////////////////////
 
 function ClearInvalidMU()
@@ -1740,9 +1782,9 @@ DEF theMainMenu Level
 					c.Main_pod_backing01.visible = true;
 					c.Main_pod_backing02.visible = false;
 				}
-				if(bUseMainMenuAttract){ MainMenuAttract(); }
+				if(bUseMainMenuAttract & bUseREZN8Menu == false){ MainMenuAttract(); }
 				g_theMainMenuLoaded = true;
-				theInfoPanelInline.children[0].UpdateInfoPanel();
+				RefreshInfoPanel();
 			}
 		}
 	]
@@ -1908,6 +1950,8 @@ DEF theMainMenu Level
 		}
 		function OnBlackDown()
 		{
+			bUseREZN8Menu = true;
+			GoToREZN8();
 		}
 		function OnWhiteDown()
 		{
@@ -1917,14 +1961,13 @@ DEF theMainMenu Level
 				{
 					bShowInfoPanel = false;
 					SetSavedBooleanValue("FTP","ShowInfoPanel",false);
-					theInfoPanelInline.children[0].HideInfoPanel();
 				}
 				else
 				{
 					bShowInfoPanel = true;
 					SetSavedBooleanValue("FTP","ShowInfoPanel",true);
-					theInfoPanelInline.children[0].ShowInfoPanel();
 				}
+				RefreshInfoPanel();
 			}
 		}
 		function OnKeyVerified()
@@ -1967,6 +2010,12 @@ DEF theMainMenu Level
 				{ 
 					theMainMenu.children[0].children[0].theMainMenuLevel.visible = false; 
 					theMainMenu.shell.alpha = 0;
+				}
+				else if(bUseREZN8Menu)
+				{
+					theREZN8Inline.children[0].theREZN8Menu.children[0].children[0].audio_panel.visible = false;
+					theREZN8Inline.children[0].theREZN8Menu.children[0].children[0].theMainOrbsMenu.visible = false;
+					theREZN8Inline.children[0].theREZN8Menu.shell.alpha = 0;
 				}
 				else 
 				{ 
@@ -2011,13 +2060,27 @@ DEF theMainMenu Level
 			else if(bLaunchItem)
 			{
 				bHDDInitialized = true;
-				theLauncherInline.children[0].LaunchItem(sLocation,sFolder);
+				if(bUseREZN8Menu)
+				{
+					theREZN8Inline.children[0].LaunchItem(sLocation,sFolder);
+				}
+				else
+				{
+					theLauncherInline.children[0].LaunchItem(sLocation,sFolder);
+				}
 				bLaunchItem = false;
 			}
 			else if(bLoadDir)
 			{
 				bHDDInitialized = true;
-				theLauncherInline.children[0].LoadDir();
+				if (bUseREZN8Menu)
+				{
+					theREZN8Inline.children[0].LoadDir();
+				}
+				else
+				{
+					theLauncherInline.children[0].LoadDir();
+				}
 				bLoadDir = false;
 			}
 			else if(bAddMissingUdata)
@@ -2045,6 +2108,7 @@ DEF theMainMenu Level
 	
 	function OnActivate()
 	{
+		bMainMenuActive = true;
 		CurrentViewpoint = theMainMenuViewpoint;
 		CurrentAltViewpoint = theMainMenuAlternateViewpoint;
 		EnableAmbientAudio();
@@ -2052,17 +2116,12 @@ DEF theMainMenu Level
 		{
 			UpdateMainMenu();
 		}
-		if(bInfoPanelLoaded)
-		{
-			if(bFtpEnabled & bShowInfoPanel)
-				theInfoPanelInline.children[0].ShowInfoPanel();
-			else
-				theInfoPanelInline.children[0].HideInfoPanel();
-		}
+		RefreshInfoPanel();
 	}
 	
 	function OnArrival()
 	{
+		if(bUseREZN8Menu) GoToREZN8();
 		theSkinBackground.isBound = true;
 		if( false == bAcceptedLegalInfo )
 		{
@@ -2081,7 +2140,8 @@ DEF theMainMenu Level
 	
 	function OnDeactivate()
 	{
-		theInfoPanelInline.children[0].HideInfoPanel();
+		bMainMenuActive = false;
+		RefreshInfoPanel();
 	}
 }
 
@@ -2187,6 +2247,8 @@ var sBuildDate;
 var sLauncherMenu;
 var bMainMenuOnAutoSignIn;
 var bInfoPanelLoaded;
+var bMainMenuActive;
+var bUseREZN8Menu;
 
 // Discord Presence
 var bPresenceEnabled;
@@ -2206,7 +2268,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "261104"; //Date of commit YYMMDD
+	sBuildDate = "261108"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bHDDInitialize = false;
@@ -2244,6 +2306,7 @@ function initialize()
 	bCleanupSpecifiedDrive = false;
 	bNetworkReady = false;
 	bInfoPanelLoaded = false;
+	bMainMenuActive = false;
 	BGMst = 0;
 	BGMtr = 0;
 	vCurAlbum = "";
@@ -2284,6 +2347,7 @@ function initialize()
 	
 	EnsureConfigDefaults();
 	thcorb = (GetSavedValue("default","MainOrbStyle") == "tHc");
+	bUseREZN8Menu = (GetSavedValue("default","MainOrbStyle") == "REZN8");
 	ShowInsignia = GetSavedBooleanValue("default","ShowInsignia");
 	bMainMenuOnAutoSignIn = GetSavedBooleanValue("default","MainMenuOnAutoSignIn");true;
 	btHcScreenSaver = GetSavedBooleanValue("default","UsetHcScreenSaver");
@@ -2409,7 +2473,14 @@ function MainInitPart3()
 			bBackToLauncher = false;
 			if (ShowUIXUpdateInSettings != true)
 			{
-				GoToLauncher();
+				if(bUseREZN8Menu)
+				{
+					theMainMenu.GoTo();
+				}
+				else
+				{
+					GoToLauncher();
+				}
 				return;
 			}
 			else
@@ -2598,7 +2669,6 @@ function GoToFinalDestination()
 		{
 			theMainMenu.GoTo();
 		}
-		
 		EnableAmbientAudio();
 	}
 }
@@ -2699,8 +2769,8 @@ DEF theInfoPanel Layer
 					url "info_panel/default.xap"
 					function onLoad()
 					{
-						theInfoPanelInline.children[0].UpdateInfoPanel();
 						bInfoPanelLoaded = true;
+						RefreshInfoPanel();
 					}
 				}
 			]
@@ -3728,6 +3798,7 @@ function QuickLaunch(x)
 {
 	LeftTrigger  = false;
 	RightTrigger = false;
+	theInfoPanelInline.children[0].HideInfoPanel();
 	
 	var button = x;
 	var a = GetSavedValue("QuickLaunch","QuickLaunch" + button);

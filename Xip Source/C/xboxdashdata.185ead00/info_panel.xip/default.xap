@@ -207,12 +207,6 @@ function ShowInfoPanel()
 
 function UpdateInfoPanel()
 {
-	if(theInfoPanelInline.children.length() == 0)
-		return;
-
-	if(bFtpEnabled & bShowInfoPanel & g_theMainMenuLoaded & bUseREZN8Menu == false)
-		ShowInfoPanel();
-	
 	theSoundtrackAlbumInfoText.text = theConfig.GetIPAddress();
 	AvailableMemoryText.text = "Pass: " + GetSavedValue("FTP","Pass");
 	TotalMemoryText.text = "User: " + GetSavedValue("FTP","User");
