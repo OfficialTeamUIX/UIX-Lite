@@ -230,7 +230,7 @@ DEF theREZN8Menu Level
 			}
 			else
 			{
-				theInfoPanelInline.children[0].HideInfoPanel();
+				SetInfoPanelRequested(false);
 				eval(orbFunction);
 			}
 		}
@@ -253,7 +253,7 @@ DEF theREZN8Menu Level
 		function OnBlackDown()
 		{
 			bUseREZN8Menu = false;
-			bAnimatedOrbs = (bUseMainMenuAttract & bUseREZN8Menu);
+			theMainMenu.children[0].children[0].theMainMenuLevel.visible = true;
 			theMainMenu.GoTo();
 		}
 		function OnWhiteDown()
@@ -264,13 +264,13 @@ DEF theREZN8Menu Level
 				{
 					bShowInfoPanel = false;
 					SetSavedBooleanValue("FTP","ShowInfoPanel",false);
-					theInfoPanelInline.children[0].HideInfoPanel();
+					SetInfoPanelRequested(false);
 				}
 				else
 				{
 					bShowInfoPanel = true;
 					SetSavedBooleanValue("FTP","ShowInfoPanel",true);
-					theInfoPanelInline.children[0].ShowInfoPanel();
+					SetInfoPanelRequested(true);
 				}
 			}
 		}
@@ -278,6 +278,11 @@ DEF theREZN8Menu Level
 		function OnRightUp() { RightTrigger = false; }
 		function OnLeftDown() { LeftTrigger = true; }
 		function OnLeftUp() { LeftTrigger = false; }
+		function OnRightThumbDown()
+		{
+			previousControlType = theREZN8Joy;
+			StartControlPanel();
+		}
 		function OnMoveUp()
 		{
 			if(( bHDMenuVisible0 ) | ( InHDLevel2 )) { REZN8HDDMoveUp(); }
@@ -366,19 +371,14 @@ DEF theREZN8Menu Level
 		CurrentViewpoint = theREZN8Viewpoint;
 	}
 	
+	function OnDeactivate()
+	{
+		SetInfoPanelRequested(false);
+	}
+	
 	function OnArrival()
 	{
-		if(bInfoPanelLoaded)
-		{
-			if(bFtpEnabled & bShowInfoPanel & bFromUpdate == false)
-			{
-				theInfoPanelInline.children[0].ShowInfoPanel();
-			}
-			else
-			{
-				theInfoPanelInline.children[0].HideInfoPanel();
-			}
-		}
+		SetInfoPanelRequested(bFromUpdate == false);
 		if (g_bPanelDisplayed == true)
 		{
 			theMessageJoystick.isBound = true;
@@ -457,7 +457,7 @@ function GoBackToMainMenu()
 	c.theSettingsEqualizer.visible = false;
 	c.theIcons.visible = false;
 	
-	if(bFtpEnabled & bShowInfoPanel) theInfoPanelInline.children[0].ShowInfoPanel();
+	SetInfoPanelRequested(true);
 	theGamesMenuOut.Play();
 	if(bAnimatedOrbs) 
 	{
@@ -1247,7 +1247,7 @@ function REZN8OnADown()
 		LoadMenuItems();
 		LoadRecentTitles();
 		LoadRootContents();
-		theInfoPanelInline.children[0].HideInfoPanel();
+		SetInfoPanelRequested(false);
 		bInRoot = true;
 		
 		if(sLauncherMenu == "")
@@ -1598,7 +1598,7 @@ function EnterTestScreensaver()
 		UpdateListClockHands();
 
 		c.theMainOrbsMenu.fade = .75;
-		theInfoPanelInline.children[0].HideInfoPanel();
+		SetInfoPanelRequested(false);
 		//c.theMainClock.SetAlpha(1);
 		c.theMainClock.visible = true;
 		//c.theGames_inner.visible = false;
@@ -1629,7 +1629,7 @@ function ExitTestScreensaver()
 	if(InMainLevel)
 	{
 		c.theMainOrbsMenu.fade = .5;
-		if(bFtpEnabled & bShowInfoPanel) theInfoPanelInline.children[0].ShowInfoPanel();
+		SetInfoPanelRequested(true);
 		c.theMainOrbsMenu.SetTranslation(-15, -10, -29);
 		c.theMoviesTitle.visible = true;
 		c.theMusicTitle.visible = true;

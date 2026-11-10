@@ -137,6 +137,12 @@ function DisableAmbientAudio()
 		thePeriodicSounds.children[i].isActive = false;
 }
 
+function SetInfoPanelRequested(value)
+{
+	bInfoPanelRequested = value;
+	RefreshInfoPanel();
+}
+
 function RefreshInfoPanel()
 {
 	if(bInfoPanelLoaded == false)
@@ -145,13 +151,14 @@ function RefreshInfoPanel()
 	var panel = theInfoPanelInline.children[0];
 	panel.UpdateInfoPanel();
 
-	if(bMainMenuActive & bFtpEnabled & bShowInfoPanel & bUseREZN8Menu == false)
+	if(bInfoPanelRequested & bFtpEnabled & bShowInfoPanel)
 		panel.ShowInfoPanel();
 	else
 		panel.HideInfoPanel();
 }
 
-// Transition soundsDEF theGamesMenuIn AudioClip { url "Audio/TransitionAudio/Games Main Menu In_LR.wav" volume 0.92 }
+// Transition sounds
+DEF theGamesMenuIn AudioClip { url "Audio/TransitionAudio/Games Main Menu In_LR.wav" volume 0.92 }
 DEF theGamesMenuOut AudioClip { url "Audio/TransitionAudio/Games Main Menu Out_LR.wav" volume 0.92 }
 DEF theGamesSubMenuIn AudioClip {url "Audio/TransitionAudio/Games Sub Menu In_LR.wav" volume 0.92 }
 DEF theGamesSubMenuOut AudioClip {url "Audio/TransitionAudio/Games Sub Menu Out_LR.wav" volume 0.92 }
@@ -762,6 +769,7 @@ DEF theREZN8Inline Inline
 
 function GoToREZN8()
 {
+	if(g_theMainMenuLoaded) theMainMenu.children[0].children[0].theMainMenuLevel.visible = false;
 	if( theREZN8Inline.visible ) { theREZN8Inline.children[0].theREZN8Menu.GoTo(); }
 	else { theREZN8Inline.visible = true; }
 }
@@ -1795,6 +1803,7 @@ DEF theMainMenu Level
 				}
 				if(bUseMainMenuAttract & bUseREZN8Menu == false){ MainMenuAttract(); }
 				g_theMainMenuLoaded = true;
+				if(bUseREZN8Menu) theMainMenu.children[0].children[0].theMainMenuLevel.visible = false;
 				RefreshInfoPanel();
 			}
 		}
@@ -2119,7 +2128,7 @@ DEF theMainMenu Level
 	
 	function OnActivate()
 	{
-		bMainMenuActive = true;
+		SetInfoPanelRequested(bUseREZN8Menu == false);
 		CurrentViewpoint = theMainMenuViewpoint;
 		CurrentAltViewpoint = theMainMenuAlternateViewpoint;
 		EnableAmbientAudio();
@@ -2127,11 +2136,11 @@ DEF theMainMenu Level
 		{
 			UpdateMainMenu();
 		}
-		RefreshInfoPanel();
 	}
 	
 	function OnArrival()
 	{
+		SetInfoPanelRequested(bUseREZN8Menu == false);
 		if(bUseREZN8Menu) GoToREZN8();
 		theSkinBackground.isBound = true;
 		if( false == bAcceptedLegalInfo )
@@ -2151,8 +2160,7 @@ DEF theMainMenu Level
 	
 	function OnDeactivate()
 	{
-		bMainMenuActive = false;
-		RefreshInfoPanel();
+		SetInfoPanelRequested(false);
 	}
 }
 
@@ -2258,7 +2266,7 @@ var sBuildDate;
 var sLauncherMenu;
 var bMainMenuOnAutoSignIn;
 var bInfoPanelLoaded;
-var bMainMenuActive;
+var bInfoPanelRequested;
 var bUseREZN8Menu;
 var bControlPanelControlsLoaded;
 var bControlPanelDisplayLoaded;
@@ -2282,9 +2290,11 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "261108"; //Date of commit YYMMDD
+	sBuildDate = "261109"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
+	bLoadDir = false;
+	bRefreshCache = false;
 	bHDDInitialize = false;
 	bHDDInitializing = false;
 	bHDDInitialized = false;
@@ -2320,7 +2330,7 @@ function initialize()
 	bCleanupSpecifiedDrive = false;
 	bNetworkReady = false;
 	bInfoPanelLoaded = false;
-	bMainMenuActive = false;
+	bInfoPanelRequested = false;
 	bBackgroundMusicPending = false;
 	BGMst = 0;
 	BGMtr = 0;
@@ -3824,7 +3834,7 @@ function QuickLaunch(x)
 {
 	LeftTrigger  = false;
 	RightTrigger = false;
-	theInfoPanelInline.children[0].HideInfoPanel();
+	SetInfoPanelRequested(false);
 	
 	var button = x;
 	var a = GetSavedValue("QuickLaunch","QuickLaunch" + button);
