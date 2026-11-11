@@ -98,7 +98,7 @@ DEF thePeriodicSounds Group
 
 function TryStartBackgroundMusic()
 {
-	if(bBackgroundMusicPending & BGMon & bControlPanelControlsLoaded == true & bControlPanelDisplayLoaded == true)
+	if(bBackgroundMusicPending & BGMon & bControlPanelControlsLoaded == true & theControlPanelInline.children.length() > 0)
 	{
 		bBackgroundMusicPending = false;
 		theControlPanelControlsInline.children[0].MusicPlayerStart();
@@ -238,7 +238,7 @@ DEF theScreenSaver ScreenSaver
 		theScreen.brightness = 0.1;
 		if (bUseREZN8Menu)
 		{
-			theREZN8Inline.children[0].EnterTestScreensaver();
+			theREZN8Inline.children[0].EnterScreensaver();
 		}
 		else if(thcorb | btHcScreenSaver)
 		{
@@ -251,7 +251,7 @@ DEF theScreenSaver ScreenSaver
 		theScreen.brightness = 1;
 		if (bUseREZN8Menu)
 		{
-			theREZN8Inline.children[0].ExitTestScreensaver();
+			theREZN8Inline.children[0].ExitScreensaver();
 		}
 		else if(thcorb | btHcScreenSaver)
 		{
@@ -769,7 +769,7 @@ DEF theREZN8Inline Inline
 
 function GoToREZN8()
 {
-	if(g_theMainMenuLoaded) theMainMenu.children[0].children[0].theMainMenuLevel.visible = false;
+	if(g_theMainMenuLoaded) theMainMenu.children[0].children[0].theMainMenuLevel.SetAlpha(0.01);
 	if( theREZN8Inline.visible ) { theREZN8Inline.children[0].theREZN8Menu.GoTo(); }
 	else { theREZN8Inline.visible = true; }
 }
@@ -1803,7 +1803,7 @@ DEF theMainMenu Level
 				}
 				if(bUseMainMenuAttract & bUseREZN8Menu == false){ MainMenuAttract(); }
 				g_theMainMenuLoaded = true;
-				if(bUseREZN8Menu) theMainMenu.children[0].children[0].theMainMenuLevel.visible = false;
+				if(bUseREZN8Menu) c.theMainMenuLevel.SetAlpha(0.01);
 				RefreshInfoPanel();
 			}
 		}
@@ -2013,6 +2013,7 @@ DEF theMainMenu Level
 	{
 		sleep nTime;
 		nTime = 0.1;
+		if(bBackgroundMusicPending) TryStartBackgroundMusic();
 		var Moving = theMainMenu.children[0].children[0].theMainMenuLevel.moving;
 		if(bNetworkReady == false & (theConfig.GetIPAddress() != "0.0.0.0") & bInfoPanelLoaded)
 		{
@@ -2269,7 +2270,6 @@ var bInfoPanelLoaded;
 var bInfoPanelRequested;
 var bUseREZN8Menu;
 var bControlPanelControlsLoaded;
-var bControlPanelDisplayLoaded;
 var bBackgroundMusicPending;
 
 // Discord Presence
@@ -2290,7 +2290,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "261109"; //Date of commit YYMMDD
+	sBuildDate = "261111"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bLoadDir = false;
@@ -2841,11 +2841,6 @@ DEF theControlPanelLayer Layer
 				{
 					preload true
 					url "controlpanel/default.xap"
-					function onLoad()
-					{
-						bControlPanelDisplayLoaded = true;
-						TryStartBackgroundMusic();
-					}
 				}
 			]
 		}

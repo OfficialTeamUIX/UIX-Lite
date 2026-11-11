@@ -149,9 +149,9 @@ function LoadBGMeshValues()
 	var x = SkinFile.GetValue("BGMesh1-rpm");
 	var y = SkinFile.GetValue("BGMesh2-rpm");
 	var z = SkinFile.GetValue("BGMesh3-rpm");
-
+	
 	if((x == "") | (y == "") | (z == "")) { x = 2; y = 2; z = 2; }
-
+	
 	theDNA1.children[0].rpm = x;
 	theDNA3.children[0].rpm = y;
 	theDNA5.children[0].rpm = z;
@@ -161,7 +161,7 @@ function LoadBGMeshValues()
 	
 	var dnaMesh = "blank_mesh.xm";
 	var dnaBackingMesh = "blank_mesh.xm";
-
+	
 	if (theDNA == "chains")
 	{
 		dnaMesh = "chain.xm";

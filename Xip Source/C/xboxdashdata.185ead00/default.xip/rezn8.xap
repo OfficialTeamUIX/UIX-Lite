@@ -1,7 +1,8 @@
 var InMainLevel;
-var bInTestScreenSaverView;
+var bInScreenSaverView;
 var bAnimatedOrbs;
 var MenuItem;
+var nREZN8MoveDirection;
 
 DEF theREZN8ClockLevel Level
 {
@@ -9,12 +10,25 @@ DEF theREZN8ClockLevel Level
 	behavior
 	{
 		sleep 15;
-		if(bInTestScreenSaverView) { UpdateListClockHands(); }
+		if(bInScreenSaverView) { UpdateListClockHands(); }
 	}
 	function OnActivate() {}
 }
 
-function initialize() {}
+function initialize()
+{
+	nREZN8MoveDirection = 0;
+}
+
+function REZN8OrbsMoving()
+{
+	var c = theREZN8Menu.children[0].children[0];
+	return c.theMovieUnit.moving |
+		c.theMemoryUnit.moving |
+		c.theSettingsUnit.moving |
+		c.theGamesUnit.moving |
+		c.theMusicUnit.moving;
+}
 
 DEF theREZN8Menu Level
 {
@@ -72,7 +86,7 @@ DEF theREZN8Menu Level
 				nPreviousPlayCursor0 = 0;
 				nPlayScroll0 = 0;
 				//end flip down area//
-				bInTestScreenSaverView = false;
+				bInScreenSaverView = false;
 				bInRecentTitles = false;
 				bRecentToggled = false;
 				bInBrowser = false;
@@ -253,7 +267,7 @@ DEF theREZN8Menu Level
 		function OnBlackDown()
 		{
 			bUseREZN8Menu = false;
-			theMainMenu.children[0].children[0].theMainMenuLevel.visible = true;
+			theMainMenu.children[0].children[0].theMainMenuLevel.SetAlpha(1.0);
 			theMainMenu.GoTo();
 		}
 		function OnWhiteDown()
@@ -274,9 +288,9 @@ DEF theREZN8Menu Level
 				}
 			}
 		}
-		function OnRightDown() { RightTrigger = true; }
-		function OnRightUp() { RightTrigger = false; }
-		function OnLeftDown() { LeftTrigger = true; }
+		function OnRightDown() { RightTrigger = true; if(bInBrowser == false & InMainLevel == false) OnMoveRight();}
+		function OnRightUp() { RightTrigger = false;}
+		function OnLeftDown() { LeftTrigger = true; if(bInBrowser == false & InMainLevel == false) OnMoveLeft();}
 		function OnLeftUp() { LeftTrigger = false; }
 		function OnRightThumbDown()
 		{
@@ -297,6 +311,8 @@ DEF theREZN8Menu Level
 			{
 				if(bAnimatedOrbs)
 				{
+					if((nREZN8MoveDirection == -1) & REZN8OrbsMoving()) { return; }
+					nREZN8MoveDirection = -1;
 					MenuItem = MenuItem + 1;
 					theMainMenuBackward.Play();
 					UpdateTheREZN8Orbs();
@@ -317,6 +333,8 @@ DEF theREZN8Menu Level
 			{
 				if(bAnimatedOrbs)
 				{
+					if((nREZN8MoveDirection == 1) & REZN8OrbsMoving()) { return; }
+					nREZN8MoveDirection = 1;
 					MenuItem = MenuItem - 1;
 					if((MenuItem == -1) | (MenuItem == 0)) { MenuItem = 5; }
 					theMainMenuForward.Play();
@@ -1587,21 +1605,20 @@ function UpdateListClockHands()
 	c.ClockMinuteHand.SetRotation(0, 0, -1, (nClockMinute - 15) * 6.283 / 60);
 }
 
-function EnterTestScreensaver()
+function EnterScreensaver()
 {
 	var c = theREZN8Menu.children[0].children[0];
 	if( CurrentViewpoint == theREZN8Viewpoint & InMainLevel)
 	{
-		//bInScreenSaverView = true;
+		bInScreenSaverView = true;
 		theScreen.brightness = 0.5;
-		bInTestScreenSaverView = true;
 		UpdateListClockHands();
-
-		c.theMainOrbsMenu.fade = .75;
 		SetInfoPanelRequested(false);
-		//c.theMainClock.SetAlpha(1);
+		c.theMainOrbsMenu.fade = .75;
 		c.theMainClock.visible = true;
-		//c.theGames_inner.visible = false;
+		c.Music_Holder.SetAlpha(1.0);
+		c.theMainClock.SetAlpha(1.0);
+		c.theGames_inner.visible = false;
 		if(bAnimatedOrbs)
 		{
 			if(MenuItem == 1) { c.theMainOrbsMenu.SetTranslation(50, -50, 110); }
@@ -1610,7 +1627,10 @@ function EnterTestScreensaver()
 			else if(MenuItem == 4) { c.theMainOrbsMenu.SetTranslation(-105, -25, 90); }
 			else if(MenuItem == 5) { c.theMainOrbsMenu.SetTranslation(-50, -45, 100); }
 		}
-		else { c.theMainOrbsMenu.SetTranslation(50, -45, 105); }
+		else
+		{ 
+			c.theMainOrbsMenu.SetTranslation(50, -45, 105);
+		}
 		c.theMusic_inner.visible = false;
 		c.theMoviesTitle.visible = false;
 		c.theMusicTitle.visible = false;
@@ -1620,10 +1640,9 @@ function EnterTestScreensaver()
 	}
 }
 
-function ExitTestScreensaver()
+function ExitScreensaver()
 {
-	//bInScreenSaverView = false;
-	bInTestScreenSaverView = false;
+	bInScreenSaverView = false;
 	var c = theREZN8Menu.children[0].children[0];
 	c.theMainClock.visible = false;
 	if(InMainLevel)
@@ -1636,7 +1655,16 @@ function ExitTestScreensaver()
 		c.theMemoryTitle.visible = true;
 		c.theGamesTitle.visible = true;
 		c.theSettingsTitle.visible = true;
-		if(bAnimatedOrbs){UpdateTheREZN8Orbs();}else{UpdateTheREZN8Menu();}
+		if(bAnimatedOrbs)
+		{
+			c.Music_Holder.SetAlpha(0.75);
+			UpdateTheREZN8Orbs();
+		}
+		else
+		{
+			c.Music_Holder.SetAlpha(0.20);
+			UpdateTheREZN8Menu();
+		}
 	}
 }
 /////////////////////////////////////////////////////////////////////////////////////
