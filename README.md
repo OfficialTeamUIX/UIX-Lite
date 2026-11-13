@@ -16,6 +16,8 @@ As stated in the title above UIX Lite is a collection of patches and XIP edits t
 Some of these features include; 
 * A customizable Launcher to launch titles from your Xbox hard disk, including `default.iso` / `default.cci` disc images on Cerbios.
 * An in-dashboard FTP server for pushing files to the console over the network.
+* Background initialization of extended F/G partitions, with an indexing
+  message only when they are accessed before initialization completes.
 * Skins you can switch live from Settings>Skins.
 * Built-in Discord Presence updating via xbdStats.
 * Built-in NTP time synchonization.

@@ -2015,6 +2015,10 @@ DEF theMainMenu Level
 		nTime = 0.1;
 		if(bBackgroundMusicPending) TryStartBackgroundMusic();
 		var Moving = theMainMenu.children[0].children[0].theMainMenuLevel.moving;
+		if(theConfig.ExtendedPartitionsInitialized())
+		{
+			bHDDInitialized = true;
+		}
 		if(bNetworkReady == false & (theConfig.GetIPAddress() != "0.0.0.0") & bInfoPanelLoaded)
 		{
 			bNetworkReady = true;
@@ -2025,37 +2029,46 @@ DEF theMainMenu Level
 		}
 		if(bHDDInitialize)
 		{
-			if(bLaunchItem | bExecuteFile)
+			if(bHDDInitialized)
 			{
-				if(bExecuteFile) 
-				{ 
-					theMainMenu.children[0].children[0].theMainMenuLevel.visible = false; 
-					theMainMenu.shell.alpha = 0;
-				}
-				else if(bUseREZN8Menu)
-				{
-					theREZN8Inline.children[0].theREZN8Menu.children[0].children[0].audio_panel.visible = false;
-					theREZN8Inline.children[0].theREZN8Menu.children[0].children[0].theMainOrbsMenu.visible = false;
-					theREZN8Inline.children[0].theREZN8Menu.shell.alpha = 0;
-				}
-				else 
-				{ 
-					theLauncherInline.children[0].theLauncher.children[0].children[0].theWholeThing.visible = false;
-					theLauncherInline.children[0].theLauncher.shell.alpha = 0;
-				}
-				// Bind the proper background image
-				if( theConfig.GetVideoMode() == 2 )
-				{ theXboxLogo16x9Background.isBound = true; }
-				else { theXboxLogo4x3Background.isBound = true; }
-				nTime = 1.6;
+				// Skip the message, but continue the queued operation.
+				bHDDInitialize = false;
+				bHDDInitializing = true;
 			}
 			else
 			{
-				BlockUser(Translate("INDEXING_PARTITION"));
-				nTime = 1.1;
+				if(bLaunchItem | bExecuteFile)
+				{
+					if(bExecuteFile)
+					{
+						theMainMenu.children[0].children[0].theMainMenuLevel.visible = false;
+						theMainMenu.shell.alpha = 0;
+					}
+					else if(bUseREZN8Menu)
+					{
+						theREZN8Inline.children[0].theREZN8Menu.children[0].children[0].audio_panel.visible = false;
+						theREZN8Inline.children[0].theREZN8Menu.children[0].children[0].theMainOrbsMenu.visible = false;
+						theREZN8Inline.children[0].theREZN8Menu.shell.alpha = 0;
+					}
+					else
+					{
+						theLauncherInline.children[0].theLauncher.children[0].children[0].theWholeThing.visible = false;
+						theLauncherInline.children[0].theLauncher.shell.alpha = 0;
+					}
+					// Bind the proper background image
+					if( theConfig.GetVideoMode() == 2 )
+					{ theXboxLogo16x9Background.isBound = true; }
+					else { theXboxLogo4x3Background.isBound = true; }
+					nTime = 1.6;
+				}
+				else
+				{
+					BlockUser(Translate("INDEXING_PARTITION"));
+					nTime = 1.1;
+				}
+				bHDDInitialize = false;
+				bHDDInitializing = true;
 			}
-			bHDDInitialize = false;
-			bHDDInitializing = true;
 		}
 		else if(bHDDInitializing)
 		{
@@ -2290,7 +2303,7 @@ var CurrentGameBoardAltViewpoint;
 
 function initialize()
 {
-	sBuildDate = "261111"; //Date of commit YYMMDD
+	sBuildDate = "261113"; //Date of commit YYMMDD
 	bLaunchItem = false;
 	bExecuteFile = false;
 	bLoadDir = false;

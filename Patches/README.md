@@ -35,7 +35,7 @@ In VisualXIP, select features in the feature list. On the command line, use
 
 | Feature | What it does |
 |---|---|
-| `drives` | Maps the CD-ROM internally as `B:` (displayed as `D:` only with media present), HDD0 cache partitions 3/4/5 as `S:`/`V:`/`W:` (displayed as `X:`/`Y:`/`Z:`), partitions 6/7 as `N:`/`O:`, and a second hard drive's partitions 6/7/1 as `P:`/`Q:`/`R:` |
+| `drives` | Maps the CD-ROM internally as `B:` (displayed as `D:` only with media present), HDD0 cache partitions 3/4/5 as `S:`/`V:`/`W:` (displayed as `X:`/`Y:`/`Z:`), partitions 6/7 as `N:`/`O:`, and a second hard drive's partitions 6/7/1 as `P:`/`Q:`/`R:`; a boot worker warms the extended-partition subsystem |
 | `video720` | 1280x720 progressive on an HDTV pack when 720p and widescreen are enabled (NTSC) |
 | `xipsig` | Loads modified XIPs by skipping the signature and digest checks. UIX Lite's XIPs need this |
 | `dvdregion` | Plays DVDs from any region |
@@ -188,6 +188,24 @@ Callable from XAP as `theConfig.<name>(...)`:
 | `GetDiscordRelayStatus()` | int | Relay state: 0 idle, 1 sending, 2 sent, or a negative Winsock error |
 | `SyncNetworkTimeAsync()` | int/bool | Start an SNTP query after networking is ready; returns 1 if accepted |
 | `GetNetworkTimeStatus()` | int | Time state: 0 idle, 2 querying, 3 synchronized, or a negative diagnostic code |
+| `ExtendedPartitionsInitialized()` | int/bool | Returns 1 after the background extended-partition warm-up has completed |
+
+### Extended-partition initialization
+
+The first access to an extended F/G partition makes the Xbox storage stack do
+deferred initialization under a shared filesystem lock. With the `drives`
+feature enabled, UIX Lite starts that work on a native worker after the retail
+drive initializer has established the normal dashboard mappings. Rendering and
+controller input remain on the dashboard thread.
+
+`default.xap` polls `theConfig.ExtendedPartitionsInitialized()`. Once ready it
+sets `bHDDInitialized`; any queued initialization request proceeds directly to
+its scan, launch, directory-load, cache-refresh, or UDATA operation without
+showing the indexing message. If an extended partition is requested before the
+worker completes, the existing indexing message covers the remaining delay.
+Filesystem operations issued during warm-up can still wait behind the storage
+stack's shared lock. Testing observed approximately 49 seconds for the initial
+probe on the affected setup.
 
 Network-time diagnostics are `-21001` disabled, `-21002` network not ready,
 `-21003` socket creation, `-21004` socket option, `-21005` event creation,

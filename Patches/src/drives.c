@@ -41,6 +41,15 @@ static void mount(char letter, const char* device)
 // patch.py writes the selected features here
 DWORD patch_features = 0xFFFFFFFF;
 
+static DWORD STDCALL warm_extended_partitions(void* unused);
+static volatile DWORD s_extended_partitions_initialized;
+
+int THISCALL Config_ExtendedPartitionsInitialized(void* pThis)
+{
+	(void)pThis;
+	return s_extended_partitions_initialized != 0;
+}
+
 // Replaces the call at 0002d830.  Retail's initializer establishes C:, Y:,
 // and T:; only after it returns is the title-data path safe to use.
 void patch_drive_init(void)
@@ -50,6 +59,27 @@ void patch_drive_init(void)
 	CreateDirectoryA("T:\\UIXLite\\Skins", 0);
 	if (patch_features & FEATURE_FTP)
 		ftp_start();
+	if (patch_features & FEATURE_DRIVES)
+	{
+		HANDLE thread = CreateThread(0, 0, (void*)warm_extended_partitions,
+		                             0, 0, 0);
+		if (thread)
+			CloseHandle(thread);
+	}
+}
+
+// The first XAPI access to an extended partition makes the storage stack do
+// its deferred initialization.  FTP root listings already prove that these
+// exact probes can absorb that delay on a worker without stalling the UI.
+static DWORD STDCALL warm_extended_partitions(void* unused)
+{
+	(void)unused;
+	GetFileAttributesA("N:\\"); // HDD0 partition 6 (scene F:)
+	GetFileAttributesA("O:\\"); // HDD0 partition 7 (scene G:)
+	GetFileAttributesA("P:\\"); // HDD1 partition 6 (scene F2:)
+	GetFileAttributesA("Q:\\"); // HDD1 partition 7 (scene G2:)
+	s_extended_partitions_initialized = 1;
+	return 0;
 }
 
 // Replaces main's call to dash_run (0002dca1)
