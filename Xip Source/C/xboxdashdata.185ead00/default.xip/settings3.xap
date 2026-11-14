@@ -3547,8 +3547,11 @@ function StartSettingsMenu()
 		index = index + 1;
 	}
 	
-	sSettingsMenu[index] = Translate("Skins");
-	index = index + 1;
+	if(ShowSkinsInSettings)
+	{
+		sSettingsMenu[index] = Translate("Skins");
+		index = index + 1;
+	}
 	sSettingsMenu[index] = theTranslator.Translate("CLOCK");
 	index = index + 1;
 	sSettingsMenu[index] = theTranslator.Translate("LANGUAGE");

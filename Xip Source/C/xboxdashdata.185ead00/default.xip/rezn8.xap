@@ -386,6 +386,7 @@ DEF theREZN8Menu Level
 	
 	function OnActivate()
 	{
+		UpdateOrbText();
 		CurrentViewpoint = theREZN8Viewpoint;
 	}
 	
@@ -531,7 +532,7 @@ function LoadMenuItems()
 	}
 	for (var i = 0; i < nMaxLauncherMenuItems; i = i + 1)
 	{
-		var v = Translate(GetSavedValue("LauncherMenu", "Title" + i));
+		var v = GetSavedValue("LauncherMenu", "Title" + i);
 		if(v != "") 
 		{
 			arrMenuNames[TotalSections] = v;
@@ -539,7 +540,7 @@ function LoadMenuItems()
 			TotalSections = TotalSections + 1;
 		}
 	}
-	arrMenuNames[TotalSections] = Translate("File Browser");
+	arrMenuNames[TotalSections] = "File Browser";
 	arrMenuPaths[TotalSections] = Translate("Xbox Root");
 	TotalSections = TotalSections + 1;
 	if(ShowUIXUpdateInSettings != true)
@@ -1123,7 +1124,7 @@ function UpdateHDMenu()
 	for (var i = 0; i < nCurHDMenuVisible0; i = i + 1)
 	{
 		var n = nCurHDMenuScroll0 + i;
-		var v = arrMenuNames[n];
+		var v = Translate(arrMenuNames[n]);
 		c.theMenuButtons.children[i].visible = true;
 		c.theMenuButtons.children[i].children[1].children[0].geometry.text = v;
 
@@ -1327,7 +1328,7 @@ function REZN8OnADown()
 			{
 				return;
 			}
-			else if(mnuName == Translate("File Browser"))
+			else if(mnuName == "File Browser")
 			{
 				bInBrowser = true;
 				subTitle0 = mnuName;
@@ -1343,14 +1344,14 @@ function REZN8OnADown()
 				exitREZN8HDlv1();
 				enterREZN8HDlv2();
 			}
-			else if(mnuName == Translate("UIX Update"))
+			else if(mnuName == "UIX Update")
 			{
 				launch("update.xip","\\Device\\Harddisk0\\Partition2\\xboxdashdata.185ead00");
 			}
 			else
 			{
 				CurFillDir = arrMenuPaths[nCurHDMenuItem0];
-				subTitle0 = mnuName;
+				subTitle0 = Translate(mnuName);
 				TempTitleList = GetTitleList(mnuName);
 				exitREZN8HDlv1();
 				enterREZN8HDlv2();

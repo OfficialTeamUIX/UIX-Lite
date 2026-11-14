@@ -2039,9 +2039,9 @@ DEF theMainMenu Level
 			{
 				if(bLaunchItem | bExecuteFile)
 				{
-					if(bExecuteFile)
-					{
-						theMainMenu.children[0].children[0].theMainMenuLevel.visible = false;
+					if(bExecuteFile) 
+					{ 
+						theMainMenu.children[0].children[0].theMainMenuLevel.visible = false; 
 						theMainMenu.shell.alpha = 0;
 					}
 					else if(bUseREZN8Menu)
@@ -2050,8 +2050,8 @@ DEF theMainMenu Level
 						theREZN8Inline.children[0].theREZN8Menu.children[0].children[0].theMainOrbsMenu.visible = false;
 						theREZN8Inline.children[0].theREZN8Menu.shell.alpha = 0;
 					}
-					else
-					{
+					else 
+					{ 
 						theLauncherInline.children[0].theLauncher.children[0].children[0].theWholeThing.visible = false;
 						theLauncherInline.children[0].theLauncher.shell.alpha = 0;
 					}
@@ -2295,6 +2295,7 @@ var ShowMusicInSettings;
 var ShowXOnlineInSettings;
 var ShowLauncherInSettings;
 var ShowConfigInSettings;
+var ShowSkinsInSettings;
 var ShowUIXUpdateInSettings;
 var ShowRebootInSettings;
 var ShowShutdownInSettings;
@@ -2399,6 +2400,7 @@ function initialize()
 	ShowXOnlineInSettings = GetSavedBooleanValue("ShowInSettings","XOnline");
 	ShowLauncherInSettings = GetSavedBooleanValue("ShowInSettings","Launcher");
 	ShowConfigInSettings = GetSavedBooleanValue("ShowInSettings","Configuration");
+	ShowSkinsInSettings = GetSavedBooleanValue("ShowInSettings","Skins");
 	ShowUIXUpdateInSettings = GetSavedBooleanValue("ShowInSettings","UIXUpdate");
 	ShowRebootInSettings = GetSavedBooleanValue("ShowInSettings","Reboot");
 	ShowShutdownInSettings = GetSavedBooleanValue("ShowInSettings","Shutdown");
@@ -4215,6 +4217,7 @@ function EnsureConfigDefaults()
 	EnsureDefaultBoolean("ShowInSettings","XOnline",false);
 	EnsureDefaultBoolean("ShowInSettings","Launcher",false);
 	EnsureDefaultBoolean("ShowInSettings","Configuration",true);
+	EnsureDefaultBoolean("ShowInSettings","Skins",true);
 	EnsureDefaultBoolean("ShowInSettings","UIXUpdate",false);
 	EnsureDefaultBoolean("ShowInSettings","Reboot",true);
 	EnsureDefaultBoolean("ShowInSettings","Shutdown",true);

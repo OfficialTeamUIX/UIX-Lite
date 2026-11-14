@@ -244,6 +244,10 @@ function BuildSSList()
 	configValues[i] = "ShowInSettings-Configuration";
 	configSelect[i] = "toggleTF()";
 	i = i + 1;
+	configList[i] = "Skins:";
+	configValues[i] = "ShowInSettings-Skins";
+	configSelect[i] = "toggleTF()";
+	i = i + 1;
 	configList[i] = "UIX Update:";
 	configValues[i] = "ShowInSettings-UIXUpdate";
 	configSelect[i] = "toggleTF()";

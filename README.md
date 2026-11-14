@@ -135,6 +135,7 @@ Music=false
 XOnline=false
 Launcher=false
 Configuration=true
+Skins=true
 UIXUpdate=false
 Reboot=true
 Shutdown=true
